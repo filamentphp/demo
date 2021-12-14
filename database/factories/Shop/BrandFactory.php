@@ -1,25 +1,24 @@
 <?php
 
-declare(strict_types=1);
+namespace Database\Factories\Shop;
 
-namespace Database\Factories\Blog;
-
-use App\Models\Blog\Category;
+use App\Models\Shop\Brand;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
-final class CategoryFactory extends Factory
+final class BrandFactory extends Factory
 {
     /**
      * @var string
      */
-    protected $model = Category::class;
+    protected $model = Brand::class;
 
     public function definition(): array
     {
         return [
-            'name' => $name = $this->faker->unique()->words(3, true),
+            'name' => $name = $this->faker->unique()->company(),
             'slug' => Str::slug($name),
+            'website' => 'www.' . $this->faker->domainName(),
             'description' => $this->faker->realText(),
             'is_visible' => $this->faker->boolean(),
         ];
