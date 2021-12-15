@@ -9,7 +9,7 @@ class AddressFactory extends Factory
     public function definition(): array
     {
         return [
-            'country' => $this->faker->countryCode(),
+            'country' => strtolower($this->faker->countryCode()),
             'street' => $this->faker->streetAddress(),
             'state' => $this->faker->state(),
             'city' => $this->faker->city(),
