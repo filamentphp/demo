@@ -81,9 +81,7 @@ final class OrderResource extends Resource
                                                     ->schema([
                                                         Forms\Components\Select::make('shop_product_id')
                                                             ->label('Product')
-                                                            ->searchable()
-                                                            ->getSearchResultsUsing(fn (string $query) => Product::where('name', 'like', "%{$query}%")->pluck('name', 'id'))
-                                                            ->getOptionLabelUsing(fn ($value): ?string => Product::find($value)?->name)
+                                                            ->options(Product::query()->pluck('name', 'id'))
                                                             ->required()
                                                             ->reactive()
                                                             ->afterStateUpdated(fn ($state, callable $set) => $set('unit_price', Product::find($state)?->price ?? 0))
@@ -95,6 +93,7 @@ final class OrderResource extends Resource
                                                                     ->numeric()
                                                                     ->integer()
                                                             )
+                                                            ->default(1)
                                                             ->required(),
                                                         Forms\Components\TextInput::make('unit_price')
                                                             ->label('Unit Price')
