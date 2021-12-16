@@ -58,17 +58,18 @@ final class PostResource extends Resource
                                             ->relationship('category', 'name')
                                             ->searchable()
                                             ->required(),
+                                        Forms\Components\DatePicker::make('published_at')
+                                            ->label('Published Date'),
                                         SpatieTagsInput::make('tags')
-                                            ->required()
-                                            ->columnSpan(2),
+                                            ->required(),
                                     ]),
 
                             ])
                             ->columnSpan(2),
                         Forms\Components\Card::make()
                             ->schema([
-                                Forms\Components\DatePicker::make('published_at')
-                                    ->label('Published Date'),
+                                Forms\Components\Placeholder::make('Summary')
+                                    ->helperText('No information entered yet.'),
                             ])
                             ->columnSpan(1),
                     ]),

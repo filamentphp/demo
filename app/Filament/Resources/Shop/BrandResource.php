@@ -57,7 +57,10 @@ final class BrandResource extends Resource
                             ])
                             ->columnSpan(2),
                         Forms\Components\Card::make()
-                            ->schema([])
+                            ->schema([
+                                Forms\Components\Placeholder::make('Summary')
+                                    ->helperText('No information entered yet.'),
+                            ])
                             ->columnSpan(1),
                     ]),
             ]);

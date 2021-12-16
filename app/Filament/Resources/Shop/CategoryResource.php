@@ -61,8 +61,8 @@ final class CategoryResource extends Resource
                             ->columnSpan(2),
                         Forms\Components\Card::make()
                             ->schema([
-                                // SpatieMediaLibraryFileUpload::make('media')
-                                //     ->label('Image Preview'),
+                                Forms\Components\Placeholder::make('Summary')
+                                    ->helperText('No information entered yet.'),
                             ])
                             ->columnSpan(1),
                     ]),
