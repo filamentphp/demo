@@ -9,9 +9,4 @@ use Filament\Resources\Pages\ListRecords;
 class ListBrands extends ListRecords
 {
     protected static string $resource = BrandResource::class;
-
-    protected function getTableRecordUrlUsing(): ?Closure
-    {
-        return null;
-    }
 }

@@ -1,14 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Database\Factories\Blog;
 
 use App\Models\Blog\Post;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
-final class PostFactory extends Factory
+class PostFactory extends Factory
 {
     /**
      * @var string

@@ -6,7 +6,7 @@ use App\Models\Shop\Brand;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
-final class BrandFactory extends Factory
+class BrandFactory extends Factory
 {
     /**
      * @var string

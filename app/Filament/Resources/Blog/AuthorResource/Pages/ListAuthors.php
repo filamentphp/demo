@@ -9,9 +9,4 @@ use Filament\Resources\Pages\ListRecords;
 class ListAuthors extends ListRecords
 {
     protected static string $resource = AuthorResource::class;
-
-    protected function getTableRecordUrlUsing(): ?Closure
-    {
-        return null;
-    }
 }

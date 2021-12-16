@@ -30,6 +30,8 @@ class OrderResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
 
+    protected static ?int $navigationSort = 2;
+
     public static function form(Form $form): Form
     {
         return $form
@@ -53,7 +55,6 @@ class OrderResource extends Resource
                                                     ->getOptionLabelUsing(fn ($value): ?string => Customer::find($value)?->name)
                                                     ->required(),
                                                 Forms\Components\Select::make('status')
-                                                    ->searchable()
                                                     ->options([
                                                         'new' => 'New',
                                                         'processing' => 'Processing',

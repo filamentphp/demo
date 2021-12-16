@@ -1,13 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Database\Factories\Blog;
 
 use App\Models\Blog\Author;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-final class AuthorFactory extends Factory
+class AuthorFactory extends Factory
 {
     /**
      * @var string

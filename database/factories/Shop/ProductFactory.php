@@ -1,14 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Database\Factories\Shop;
 
 use App\Models\Shop\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
-final class ProductFactory extends Factory
+class ProductFactory extends Factory
 {
     /**
      * @var string
