@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\Shop\ReviewResource\Pages;
 
 use App\Filament\Resources\Shop\ReviewResource;
-use Closure;
 use Filament\Resources\Pages\ListRecords;
 
 class ListReviews extends ListRecords

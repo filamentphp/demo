@@ -3,13 +3,9 @@
 namespace App\Filament\Resources\Shop;
 
 use App\Filament\Resources\Shop\ReviewResource\Pages;
-use App\Filament\Resources\Shop\ReviewResource\RelationManagers;
-use App\Models\Blog\Author;
 use App\Models\Shop\Review;
 use Filament\Forms;
 use Filament\Resources\Form;
-use Filament\Resources\Pages\CreateRecord;
-use Filament\Resources\Pages\EditRecord;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
@@ -61,7 +57,7 @@ class ReviewResource extends Resource
                                 Forms\Components\MarkdownEditor::make('content')
                                     ->label('Content')
                                     ->columnSpan(2),
-                            ])
+                            ]),
                     ])
                     ->columnSpan(2),
                 Forms\Components\Card::make()

@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\Shop;
 
 use App\Filament\Resources\Shop\ProductResource\Pages;
-use App\Filament\Resources\Shop\ProductResource\RelationManagers;
 use App\Models\Shop\Product;
 use Filament\Forms;
 use Filament\Forms\Components\SpatieMediaLibraryMultipleFileUpload;
@@ -121,7 +120,7 @@ class ProductResource extends Resource
                                 Forms\Components\DatePicker::make('published_at')
                                     ->label('Availability')
                                     ->default(now())
-                                    ->required()
+                                    ->required(),
                             ]),
                         Forms\Components\Card::make()
                             ->schema([
@@ -132,7 +131,7 @@ class ProductResource extends Resource
                                     ->required(),
                                 Forms\Components\BelongsToManyMultiSelect::make('categories')
                                     ->relationship('categories', 'name')
-                                    ->required()
+                                    ->required(),
                             ]),
                     ])
                     ->columnSpan(1),

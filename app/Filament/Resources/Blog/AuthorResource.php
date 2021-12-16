@@ -3,16 +3,12 @@
 namespace App\Filament\Resources\Blog;
 
 use App\Filament\Resources\Blog\AuthorResource\Pages;
-use App\Filament\Resources\Blog\AuthorResource\RelationManagers;
 use App\Models\Blog\Author;
 use Filament\Forms;
 use Filament\Resources\Form;
-use Filament\Resources\Pages\CreateRecord;
-use Filament\Resources\Pages\EditRecord;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
-use Illuminate\Database\Eloquent\Model;
 
 class AuthorResource extends Resource
 {

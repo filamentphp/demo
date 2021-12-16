@@ -11,7 +11,7 @@ class EditOrder extends EditRecord
 
     protected function mutateFormDataBeforeSave(array $data): array
     {
-        $total =  0;
+        $total = 0;
         foreach ($data['items'] as $item) {
             $total += $item['unit_price'] * $item['qty'];
         }

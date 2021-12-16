@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\Shop\OrderResource\Pages;
 
 use App\Filament\Resources\Shop\OrderResource;
-use Closure;
 use Filament\Resources\Pages\ListRecords;
 
 class ListOrders extends ListRecords

@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\Blog\AuthorResource\Pages;
 
 use App\Filament\Resources\Blog\AuthorResource;
-use Closure;
 use Filament\Resources\Pages\ListRecords;
 
 class ListAuthors extends ListRecords

@@ -3,13 +3,9 @@
 namespace App\Filament\Resources\Shop;
 
 use App\Filament\Resources\Shop\CategoryResource\Pages;
-use App\Filament\Resources\Shop\CategoryResource\RelationManagers;
-use App\Models\Blog\Author;
 use App\Models\Shop\Category;
 use Filament\Forms;
 use Filament\Resources\Form;
-use Filament\Resources\Pages\CreateRecord;
-use Filament\Resources\Pages\EditRecord;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;

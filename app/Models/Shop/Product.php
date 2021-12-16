@@ -62,7 +62,7 @@ class Product extends Model implements HasMedia
         'is_visible' => 'boolean',
         'backorder' => 'boolean',
         'requires_shipping' => 'boolean',
-        'published_at' => 'date'
+        'published_at' => 'date',
     ];
 
     public function brand(): BelongsTo

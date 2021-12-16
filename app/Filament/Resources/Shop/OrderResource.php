@@ -3,15 +3,11 @@
 namespace App\Filament\Resources\Shop;
 
 use App\Filament\Resources\Shop\OrderResource\Pages;
-use App\Filament\Resources\Shop\OrderResource\RelationManagers;
-use App\Models\Blog\Author;
 use App\Models\Shop\Customer;
 use App\Models\Shop\Order;
 use App\Models\Shop\Product;
 use Filament\Forms;
 use Filament\Resources\Form;
-use Filament\Resources\Pages\CreateRecord;
-use Filament\Resources\Pages\EditRecord;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
@@ -101,7 +97,7 @@ class OrderResource extends Resource
                                                     ->numeric()
                                                     ->required()
                                                     ->columnSpan(2),
-                                            ])
+                                            ]),
                                     ])
                                     ->dehydrated()
                                     ->disableLabel()

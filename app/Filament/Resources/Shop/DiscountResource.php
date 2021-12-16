@@ -3,13 +3,9 @@
 namespace App\Filament\Resources\Shop;
 
 use App\Filament\Resources\Shop\DiscountResource\Pages;
-use App\Filament\Resources\Shop\DiscountResource\RelationManagers;
-use App\Models\Blog\Author;
 use App\Models\Shop\Discount;
 use Filament\Forms;
 use Filament\Resources\Form;
-use Filament\Resources\Pages\CreateRecord;
-use Filament\Resources\Pages\EditRecord;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
@@ -74,7 +70,7 @@ class DiscountResource extends Resource
                                 Forms\Components\Checkbox::make('usage_limit_per_customer')
                                     ->label('Limit to one use per customer')
                                     ->columnSpan('full'),
-                            ])
+                            ]),
                     ])
                     ->columnSpan(2),
                 Forms\Components\Card::make()

@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
         Author::factory()->count(20)
             ->has(
                 Post::factory()->count(10)
-                    ->state(fn (array $attributes, Author $author) =>  ['blog_category_id' => $blogCategories->pluck('id')->random()]),
+                    ->state(fn (array $attributes, Author $author) => ['blog_category_id' => $blogCategories->pluck('id')->random()]),
                 'posts'
             )
             ->create();
@@ -50,7 +50,7 @@ class DatabaseSeeder extends Seeder
             ->hasAttached($categories->random(rand(3, 6)), ['created_at' => now(), 'updated_at' => now()])
             ->has(
                 Review::factory()->count(rand(10, 20))
-                    ->state(fn (array $attributes, Product $product) =>  ['shop_customer_id' => $customers->pluck('id')->random()]),
+                    ->state(fn (array $attributes, Product $product) => ['shop_customer_id' => $customers->pluck('id')->random()]),
                 'reviews'
             )
             ->create();
@@ -58,7 +58,7 @@ class DatabaseSeeder extends Seeder
             ->sequence(fn ($sequence) => ['shop_customer_id' => $customers->pluck('id')->random()])
             ->has(
                 OrderItem::factory()->count(rand(2, 5))
-                    ->state(fn (array $attributes, Order $order) =>  ['shop_product_id' => $products->pluck('id')->random()]),
+                    ->state(fn (array $attributes, Order $order) => ['shop_product_id' => $products->pluck('id')->random()]),
                 'items'
             )
             ->create();
