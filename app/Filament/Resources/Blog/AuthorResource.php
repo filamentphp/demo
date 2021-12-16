@@ -12,6 +12,7 @@ use Filament\Resources\Pages\EditRecord;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Illuminate\Database\Eloquent\Model;
 
 class AuthorResource extends Resource
 {
@@ -31,41 +32,39 @@ class AuthorResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Grid::make(3)
+                Forms\Components\Card::make()
                     ->schema([
-                        Forms\Components\Card::make()
+                        Forms\Components\Grid::make()
                             ->schema([
-                                Forms\Components\Grid::make()
-                                    ->schema([
-                                        Forms\Components\TextInput::make('name')
-                                            ->required(),
-                                        Forms\Components\TextInput::make('email')
-                                            ->required()
-                                            ->email()
-                                            ->unique(Author::class, 'email', fn ($record) => $record),
-                                        Forms\Components\MarkdownEditor::make('bio')
-                                            ->columnSpan(2),
-                                        Forms\Components\TextInput::make('github_handle')
-                                            ->label('GitHub')
-                                            ->url(),
-                                        Forms\Components\TextInput::make('twitter_handle')
-                                            ->label('Twitter')
-                                            ->url(),
-                                    ]),
-                            ])
-                            ->columnSpan(2),
-                        Forms\Components\Card::make()
-                            ->schema([
-                                Forms\Components\Placeholder::make('Summary')
-                                    ->helperText('No information saved yet.')
-                                    ->hidden(fn ($livewire) => $livewire instanceof EditRecord),
-                                Forms\Components\Placeholder::make('Summary')
-                                    ->helperText(fn ($record) => "This record was last modified {$record->updated_at->diffForHumans()}.")
-                                    ->hidden(fn ($livewire) => $livewire instanceof CreateRecord),
-                            ])
-                            ->columnSpan(1),
-                    ]),
-            ]);
+                                Forms\Components\TextInput::make('name')
+                                    ->required(),
+                                Forms\Components\TextInput::make('email')
+                                    ->required()
+                                    ->email()
+                                    ->unique(Author::class, 'email', fn ($record) => $record),
+                                Forms\Components\MarkdownEditor::make('bio')
+                                    ->columnSpan(2),
+                                Forms\Components\TextInput::make('github_handle')
+                                    ->label('GitHub')
+                                    ->url(),
+                                Forms\Components\TextInput::make('twitter_handle')
+                                    ->label('Twitter')
+                                    ->url(),
+                            ]),
+                    ])
+                    ->columnSpan(2),
+                Forms\Components\Card::make()
+                    ->schema([
+                        Forms\Components\Placeholder::make('created_at')
+                            ->label('Created at')
+                            ->content(fn (?Author $record): string => $record ? $record->created_at->diffForHumans() : '-'),
+                        Forms\Components\Placeholder::make('updated_at')
+                            ->label('Last modified at')
+                            ->content(fn (?Author $record): string => $record ? $record->updated_at->diffForHumans() : '-'),
+                    ])
+                    ->columnSpan(1),
+            ])
+            ->columns(3);
     }
 
     public static function table(Table $table): Table

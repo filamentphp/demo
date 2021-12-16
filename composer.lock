@@ -1239,7 +1239,7 @@
         },
         {
             "name": "filament/filament",
-            "version": "v2.5.28",
+            "version": "v2.5.29",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel-filament/admin.git",
@@ -1299,16 +1299,16 @@
         },
         {
             "name": "filament/forms",
-            "version": "v2.5.28",
+            "version": "v2.5.29",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel-filament/forms.git",
-                "reference": "d4af89edb12713a64dacd8e1dc77f13ded12342e"
+                "reference": "1cda0bc71ac7d5bb7df6815be10adaadc70de9b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel-filament/forms/zipball/d4af89edb12713a64dacd8e1dc77f13ded12342e",
-                "reference": "d4af89edb12713a64dacd8e1dc77f13ded12342e",
+                "url": "https://api.github.com/repos/laravel-filament/forms/zipball/1cda0bc71ac7d5bb7df6815be10adaadc70de9b5",
+                "reference": "1cda0bc71ac7d5bb7df6815be10adaadc70de9b5",
                 "shasum": ""
             },
             "require": {
@@ -1348,11 +1348,11 @@
                 "issues": "https://github.com/laravel-filament/filament/issues",
                 "source": "https://github.com/laravel-filament/filament"
             },
-            "time": "2021-12-16T00:50:43+00:00"
+            "time": "2021-12-16T16:31:57+00:00"
         },
         {
             "name": "filament/spatie-laravel-media-library-plugin",
-            "version": "v2.5.28",
+            "version": "v2.5.29",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel-filament/spatie-laravel-media-library-plugin.git",
@@ -1389,7 +1389,7 @@
         },
         {
             "name": "filament/spatie-laravel-settings-plugin",
-            "version": "v2.5.28",
+            "version": "v2.5.29",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel-filament/spatie-laravel-settings-plugin.git",
@@ -1433,7 +1433,7 @@
         },
         {
             "name": "filament/spatie-laravel-tags-plugin",
-            "version": "v2.5.28",
+            "version": "v2.5.29",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel-filament/spatie-laravel-tags-plugin.git",
@@ -1470,7 +1470,7 @@
         },
         {
             "name": "filament/spatie-laravel-translatable-plugin",
-            "version": "v2.5.28",
+            "version": "v2.5.29",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel-filament/spatie-laravel-translatable-plugin.git",
@@ -1514,7 +1514,7 @@
         },
         {
             "name": "filament/tables",
-            "version": "v2.5.28",
+            "version": "v2.5.29",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel-filament/tables.git",
@@ -4682,16 +4682,16 @@
         },
         {
             "name": "spatie/laravel-medialibrary",
-            "version": "9.10.2",
+            "version": "9.10.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-medialibrary.git",
-                "reference": "bc03542bdc7cc7e5f37d0f9a345bf0631f103fc3"
+                "reference": "3d30f6d65606c292d6bffddb7af3d15d93ba3b58"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-medialibrary/zipball/bc03542bdc7cc7e5f37d0f9a345bf0631f103fc3",
-                "reference": "bc03542bdc7cc7e5f37d0f9a345bf0631f103fc3",
+                "url": "https://api.github.com/repos/spatie/laravel-medialibrary/zipball/3d30f6d65606c292d6bffddb7af3d15d93ba3b58",
+                "reference": "3d30f6d65606c292d6bffddb7af3d15d93ba3b58",
                 "shasum": ""
             },
             "require": {
@@ -4773,7 +4773,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-medialibrary/issues",
-                "source": "https://github.com/spatie/laravel-medialibrary/tree/9.10.2"
+                "source": "https://github.com/spatie/laravel-medialibrary/tree/9.10.3"
             },
             "funding": [
                 {
@@ -4785,7 +4785,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-12-14T16:27:49+00:00"
+            "time": "2021-12-16T08:38:21+00:00"
         },
         {
             "name": "spatie/laravel-package-tools",
@@ -4996,27 +4996,27 @@
         },
         {
             "name": "spatie/laravel-translatable",
-            "version": "5.0.3",
+            "version": "5.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-translatable.git",
-                "reference": "06aa692efc2eed838ac47a6324dc179167a97b0b"
+                "reference": "0e0bca41f4e8ecc6cec90aab7c5e03789253ba00"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-translatable/zipball/06aa692efc2eed838ac47a6324dc179167a97b0b",
-                "reference": "06aa692efc2eed838ac47a6324dc179167a97b0b",
+                "url": "https://api.github.com/repos/spatie/laravel-translatable/zipball/0e0bca41f4e8ecc6cec90aab7c5e03789253ba00",
+                "reference": "0e0bca41f4e8ecc6cec90aab7c5e03789253ba00",
                 "shasum": ""
             },
             "require": {
-                "illuminate/database": "^7.0|^8.0",
-                "illuminate/support": "^7.0|^8.0",
+                "illuminate/database": "^8.0",
+                "illuminate/support": "^8.0",
                 "php": "^8.0",
-                "spatie/laravel-package-tools": "^1.6"
+                "spatie/laravel-package-tools": "^1.9"
             },
             "require-dev": {
                 "mockery/mockery": "^1.4",
-                "orchestra/testbench": "^5.0|^6.0"
+                "orchestra/testbench": "^6.23"
             },
             "type": "library",
             "extra": {
@@ -5067,7 +5067,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-translatable/issues",
-                "source": "https://github.com/spatie/laravel-translatable/tree/5.0.3"
+                "source": "https://github.com/spatie/laravel-translatable/tree/5.1.0"
             },
             "funding": [
                 {
@@ -5075,7 +5075,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2021-10-04T14:59:49+00:00"
+            "time": "2021-12-16T08:41:16+00:00"
         },
         {
             "name": "spatie/temporary-directory",
@@ -8577,16 +8577,16 @@
         },
         {
             "name": "laravel/sail",
-            "version": "v1.12.11",
+            "version": "v1.12.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/sail.git",
-                "reference": "236b1eb30c36c642b038dc1081036827310b6902"
+                "reference": "c60773f04f093bd1d2f3b99ff9e5a1aa5b05b8b6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/sail/zipball/236b1eb30c36c642b038dc1081036827310b6902",
-                "reference": "236b1eb30c36c642b038dc1081036827310b6902",
+                "url": "https://api.github.com/repos/laravel/sail/zipball/c60773f04f093bd1d2f3b99ff9e5a1aa5b05b8b6",
+                "reference": "c60773f04f093bd1d2f3b99ff9e5a1aa5b05b8b6",
                 "shasum": ""
             },
             "require": {
@@ -8633,7 +8633,7 @@
                 "issues": "https://github.com/laravel/sail/issues",
                 "source": "https://github.com/laravel/sail"
             },
-            "time": "2021-12-14T17:54:29+00:00"
+            "time": "2021-12-16T14:58:08+00:00"
         },
         {
             "name": "maximebf/debugbar",
@@ -10665,5 +10665,5 @@
         "php": "^7.3|^8.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.0.0"
 }

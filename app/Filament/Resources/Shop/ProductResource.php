@@ -33,114 +33,111 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Grid::make(3)
+                Forms\Components\Group::make()
                     ->schema([
-                        Forms\Components\Group::make()
+                        Forms\Components\Card::make()
                             ->schema([
-                                Forms\Components\Card::make()
+                                Forms\Components\Grid::make()
                                     ->schema([
-                                        Forms\Components\Grid::make()
-                                            ->schema([
-                                                Forms\Components\TextInput::make('name')
-                                                    ->required()
-                                                    ->reactive()
-                                                    ->afterStateUpdated(fn ($state, callable $set) => $set('slug', Str::slug($state))),
-                                                Forms\Components\TextInput::make('slug')
-                                                    ->disabled()
-                                                    ->required()
-                                                    ->unique(Product::class, 'slug', fn ($record) => $record),
-                                                Forms\Components\MarkdownEditor::make('description')
-                                                    ->columnSpan(2),
-                                            ]),
+                                        Forms\Components\TextInput::make('name')
+                                            ->required()
+                                            ->reactive()
+                                            ->afterStateUpdated(fn ($state, callable $set) => $set('slug', Str::slug($state))),
+                                        Forms\Components\TextInput::make('slug')
+                                            ->disabled()
+                                            ->required()
+                                            ->unique(Product::class, 'slug', fn ($record) => $record),
+                                        Forms\Components\MarkdownEditor::make('description')
+                                            ->columnSpan(2),
                                     ]),
-                                Forms\Components\Card::make()
+                            ]),
+                        Forms\Components\Card::make()
+                            ->schema([
+                                SpatieMediaLibraryMultipleFileUpload::make('media')
+                                    ->collection('product-images')
+                                    ->required(),
+                            ]),
+                        Forms\Components\Card::make()
+                            ->schema([
+                                Forms\Components\Placeholder::make('Pricing'),
+                                Forms\Components\Grid::make()
                                     ->schema([
-                                        SpatieMediaLibraryMultipleFileUpload::make('media')
-                                            ->collection('product-images')
+                                        Forms\Components\TextInput::make('price')
+                                            ->numeric()
+                                            ->required(),
+                                        Forms\Components\TextInput::make('old_price')
+                                            ->label('Compare at price')
+                                            ->numeric()
+                                            ->required(),
+                                        Forms\Components\TextInput::make('cost')
+                                            ->label('Cost per item')
+                                            ->helperText('Customers won\'t see this price.')
+                                            ->numeric()
                                             ->required(),
                                     ]),
-                                Forms\Components\Card::make()
+                            ]),
+                        Forms\Components\Card::make()
+                            ->schema([
+                                Forms\Components\Placeholder::make('Inventory'),
+                                Forms\Components\Grid::make()
                                     ->schema([
-                                        Forms\Components\Placeholder::make('Pricing'),
-                                        Forms\Components\Grid::make()
-                                            ->schema([
-                                                Forms\Components\TextInput::make('price')
-                                                    ->numeric()
-                                                    ->required(),
-                                                Forms\Components\TextInput::make('old_price')
-                                                    ->label('Compare at price')
-                                                    ->numeric()
-                                                    ->required(),
-                                                Forms\Components\TextInput::make('cost')
-                                                    ->label('Cost per item')
-                                                    ->helperText('Customers won\'t see this price.')
-                                                    ->numeric()
-                                                    ->required(),
-                                            ]),
+                                        Forms\Components\TextInput::make('sku')
+                                            ->label('SKU (Stock Keeping Unit)')
+                                            ->required(),
+                                        Forms\Components\TextInput::make('barcode')
+                                            ->label('Barcode (ISBN, UPC, GTIN, etc.)')
+                                            ->required(),
+                                        Forms\Components\TextInput::make('qty')
+                                            ->label('Quantity')
+                                            ->required(),
+                                        Forms\Components\TextInput::make('security_stock')
+                                            ->helperText('The safety stock is the limit stock for your products which alerts you if the product stock will soon be out of stock.')
+                                            ->numeric()
+                                            ->required(),
                                     ]),
-                                Forms\Components\Card::make()
-                                    ->schema([
-                                        Forms\Components\Placeholder::make('Inventory'),
-                                        Forms\Components\Grid::make()
-                                            ->schema([
-                                                Forms\Components\TextInput::make('sku')
-                                                    ->label('SKU (Stock Keeping Unit)')
-                                                    ->required(),
-                                                Forms\Components\TextInput::make('barcode')
-                                                    ->label('Barcode (ISBN, UPC, GTIN, etc.)')
-                                                    ->required(),
-                                                Forms\Components\TextInput::make('qty')
-                                                    ->label('Quantity')
-                                                    ->required(),
-                                                Forms\Components\TextInput::make('security_stock')
-                                                    ->helperText('The safety stock is the limit stock for your products which alerts you if the product stock will soon be out of stock.')
-                                                    ->numeric()
-                                                    ->required(),
-                                            ]),
-                                    ]),
+                            ]),
 
-                                Forms\Components\Card::make()
-                                    ->schema([
-                                        Forms\Components\Placeholder::make('Shipping'),
-                                        Forms\Components\Checkbox::make('backorder')
-                                            ->label('This product can be returned')
-                                            ->inline(),
-                                        Forms\Components\Checkbox::make('requires_shipping')
-                                            ->label('This product will be shipped')
-                                            ->inline(),
-                                    ]),
-                            ])->columnSpan(2),
-                        Forms\Components\Group::make()
+                        Forms\Components\Card::make()
                             ->schema([
-                                Forms\Components\Card::make()
+                                Forms\Components\Placeholder::make('Shipping'),
+                                Forms\Components\Checkbox::make('backorder')
+                                    ->label('This product can be returned'),
+                                Forms\Components\Checkbox::make('requires_shipping')
+                                    ->label('This product will be shipped'),
+                            ]),
+                    ])->columnSpan(2),
+                Forms\Components\Group::make()
+                    ->schema([
+                        Forms\Components\Card::make()
+                            ->schema([
+                                Forms\Components\Placeholder::make('Status'),
+                                Forms\Components\Group::make()
                                     ->schema([
-                                        Forms\Components\Placeholder::make('Status'),
-                                        Forms\Components\Group::make()
-                                            ->schema([
-                                                Forms\Components\Toggle::make('is_visible')
-                                                    ->label('Visible')
-                                                    ->helperText('This product will be hidden from all sales channels.')
-                                                    ->default(true),
-                                            ]),
-                                        Forms\Components\DatePicker::make('published_at')
-                                            ->label('Availability')
-                                            ->default(now())
-                                            ->required()
+                                        Forms\Components\Toggle::make('is_visible')
+                                            ->label('Visible')
+                                            ->helperText('This product will be hidden from all sales channels.')
+                                            ->default(true),
                                     ]),
-                                Forms\Components\Card::make()
-                                    ->schema([
-                                        Forms\Components\Placeholder::make('Associations'),
-                                        Forms\Components\BelongsToSelect::make('shop_brand_id')
-                                            ->relationship('brand', 'name')
-                                            ->searchable()
-                                            ->required(),
-                                        Forms\Components\BelongsToManyMultiSelect::make('categories')
-                                            ->relationship('categories', 'name')
-                                            ->required()
-                                    ]),
-                            ])->columnSpan(1),
-                    ]),
-            ]);
+                                Forms\Components\DatePicker::make('published_at')
+                                    ->label('Availability')
+                                    ->default(now())
+                                    ->required()
+                            ]),
+                        Forms\Components\Card::make()
+                            ->schema([
+                                Forms\Components\Placeholder::make('Associations'),
+                                Forms\Components\BelongsToSelect::make('shop_brand_id')
+                                    ->relationship('brand', 'name')
+                                    ->searchable()
+                                    ->required(),
+                                Forms\Components\BelongsToManyMultiSelect::make('categories')
+                                    ->relationship('categories', 'name')
+                                    ->required()
+                            ]),
+                    ])
+                    ->columnSpan(1),
+            ])
+            ->columns(3);
     }
 
     public static function table(Table $table): Table
@@ -169,8 +166,6 @@ class ProductResource extends Resource
                     ->sortable(),
                 Tables\Columns\BooleanColumn::make('is_visible')
                     ->label('Visibility')
-                    ->trueIcon('heroicon-o-badge-check')
-                    ->falseIcon('heroicon-o-x-circle')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('published_at')
                     ->label('Publish Date')

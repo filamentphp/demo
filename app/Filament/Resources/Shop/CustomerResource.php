@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Shop;
 use App\Filament\Resources\Shop\CustomerResource\Pages;
 use App\Filament\Resources\Shop\CustomerResource\RelationManagers;
 use App\Forms\Components\AddressForm;
+use App\Models\Blog\Author;
 use App\Models\Shop\Customer;
 use Filament\Forms;
 use Filament\Resources\Form;
@@ -33,36 +34,34 @@ class CustomerResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Grid::make(3)
+                Forms\Components\Card::make()
                     ->schema([
-                        Forms\Components\Card::make()
+                        Forms\Components\Grid::make()
                             ->schema([
-                                Forms\Components\Grid::make()
-                                    ->schema([
-                                        Forms\Components\TextInput::make('name')
-                                            ->required(),
-                                        Forms\Components\TextInput::make('email')
-                                            ->required()
-                                            ->email()
-                                            ->unique(Customer::class, 'email', fn ($record) => $record),
-                                        Forms\Components\TextInput::make('phone'),
-                                        Forms\Components\DatePicker::make('birthday'),
-                                        AddressForm::make('address')->columnSpan(2),
-                                    ]),
-                            ])
-                            ->columnSpan(2),
-                        Forms\Components\Card::make()
-                            ->schema([
-                                Forms\Components\Placeholder::make('Summary')
-                                    ->helperText('No information saved yet.')
-                                    ->hidden(fn ($livewire) => $livewire instanceof EditRecord),
-                                Forms\Components\Placeholder::make('Summary')
-                                    ->helperText(fn ($record) => "This record was last modified {$record->updated_at->diffForHumans()}.")
-                                    ->hidden(fn ($livewire) => $livewire instanceof CreateRecord),
-                            ])
-                            ->columnSpan(1),
-                    ]),
-            ]);
+                                Forms\Components\TextInput::make('name')
+                                    ->required(),
+                                Forms\Components\TextInput::make('email')
+                                    ->required()
+                                    ->email()
+                                    ->unique(Customer::class, 'email', fn ($record) => $record),
+                                Forms\Components\TextInput::make('phone'),
+                                Forms\Components\DatePicker::make('birthday'),
+                                AddressForm::make('address')->columnSpan(2),
+                            ]),
+                    ])
+                    ->columnSpan(2),
+                Forms\Components\Card::make()
+                    ->schema([
+                        Forms\Components\Placeholder::make('created_at')
+                            ->label('Created at')
+                            ->content(fn (?Customer $record): string => $record ? $record->created_at->diffForHumans() : '-'),
+                        Forms\Components\Placeholder::make('updated_at')
+                            ->label('Last modified at')
+                            ->content(fn (?Customer $record): string => $record ? $record->updated_at->diffForHumans() : '-'),
+                    ])
+                    ->columnSpan(1),
+            ])
+            ->columns(3);
     }
 
     public static function table(Table $table): Table

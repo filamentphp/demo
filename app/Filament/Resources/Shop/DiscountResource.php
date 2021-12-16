@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Shop;
 
 use App\Filament\Resources\Shop\DiscountResource\Pages;
 use App\Filament\Resources\Shop\DiscountResource\RelationManagers;
+use App\Models\Blog\Author;
 use App\Models\Shop\Discount;
 use Filament\Forms;
 use Filament\Resources\Form;
@@ -31,77 +32,63 @@ class DiscountResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Grid::make(3)
+                Forms\Components\Card::make()
                     ->schema([
-                        Forms\Components\Card::make()
+                        Forms\Components\Grid::make()
                             ->schema([
-                                Forms\Components\Grid::make()
-                                    ->schema([
-                                        Forms\Components\TextInput::make('code')
-                                            ->helperText('Customers will enter this discount code at checkout.')
-                                            ->required()
-                                            ->unique(Discount::class, 'code', fn ($record) => $record)
-                                            ->columnSpan(2),
-                                        Forms\Components\Radio::make('type')
-                                            ->label('Type')
-                                            ->options([
-                                                'percentage' => 'Percentage',
-                                                'fixed' => 'Fixed',
-                                            ])
-                                            ->required(),
-                                        Forms\Components\TextInput::make('value')
-                                            ->numeric()
-                                            ->required(),
-                                        Forms\Components\Group::make()
-                                            ->schema([
-                                                Forms\Components\Placeholder::make('Visibility'),
-                                                Forms\Components\Toggle::make('is_visible')
-                                                    ->label('Setup discount visibility for the customers.')
-                                                    ->default(true)
-                                                    ->inline(),
-                                            ])->columnSpan(2),
-                                        Forms\Components\DatePicker::make('starts_at')
-                                            ->default(now()->addDays(1))
-                                            ->required(),
-                                        Forms\Components\DatePicker::make('ends_at')
-                                            ->required(),
-                                        Forms\Components\Group::make()
-                                            ->schema([
-                                                Forms\Components\Placeholder::make('Usage limits'),
-                                                Forms\Components\Checkbox::make('usage_limit_enabled')
-                                                    ->label('Limit number of times this discount can be used in total')
-                                                    ->inline()
-                                                    ->reactive()
-                                                    ->afterStateUpdated(fn (callable $set) => $set('usage_limit', '')),
-                                                Forms\Components\Grid::make()
-                                                    ->schema([
-                                                        Forms\Components\TextInput::make('usage_limit')
-                                                            ->numeric()
-                                                            ->required()
-                                                            ->disableLabel()
-                                                            ->required(fn (callable $get) => $get('usage_limit_enabled') === true)
-                                                    ])
-                                                    ->hidden(fn (callable $get) => $get('usage_limit_enabled') !== true),
-                                                Forms\Components\Checkbox::make('usage_limit_per_customer')
-                                                    ->label('Limit to one use per customer')
-                                                    ->inline(),
-                                            ])
-                                            ->columnSpan(2),
+                                Forms\Components\TextInput::make('code')
+                                    ->helperText('Customers will enter this discount code at checkout.')
+                                    ->required()
+                                    ->unique(Discount::class, 'code', fn ($record) => $record)
+                                    ->columnSpan(2),
+                                Forms\Components\Radio::make('type')
+                                    ->label('Type')
+                                    ->options([
+                                        'percentage' => 'Percentage',
+                                        'fixed' => 'Fixed',
                                     ])
+                                    ->required(),
+                                Forms\Components\TextInput::make('value')
+                                    ->numeric()
+                                    ->required(),
+                                Forms\Components\Toggle::make('is_visible')
+                                    ->label('Visible to customers.')
+                                    ->default(true)
+                                    ->columnSpan(2),
+                                Forms\Components\DatePicker::make('starts_at')
+                                    ->default(now()->addDays(1))
+                                    ->required(),
+                                Forms\Components\DatePicker::make('ends_at')
+                                    ->required(),
+                                Forms\Components\Checkbox::make('usage_limit_enabled')
+                                    ->label('Usage limits')
+                                    ->helperText('Limit number of times this discount can be used in total')
+                                    ->reactive()
+                                    ->afterStateUpdated(fn (callable $set) => $set('usage_limit', '')),
+                                Forms\Components\TextInput::make('usage_limit')
+                                    ->disableLabel()
+                                    ->helperText('Number of times this discount may be used')
+                                    ->numeric()
+                                    ->required(fn (callable $get) => $get('usage_limit_enabled') === true)
+                                    ->hidden(fn (callable $get) => $get('usage_limit_enabled') !== true),
+                                Forms\Components\Checkbox::make('usage_limit_per_customer')
+                                    ->label('Limit to one use per customer')
+                                    ->columnSpan('full'),
                             ])
-                            ->columnSpan(2),
-                        Forms\Components\Card::make()
-                            ->schema([
-                                Forms\Components\Placeholder::make('Summary')
-                                    ->helperText('No information saved yet.')
-                                    ->hidden(fn ($livewire) => $livewire instanceof EditRecord),
-                                Forms\Components\Placeholder::make('Summary')
-                                    ->helperText(fn ($record) => "This record was last modified {$record->updated_at->diffForHumans()}.")
-                                    ->hidden(fn ($livewire) => $livewire instanceof CreateRecord),
-                            ])
-                            ->columnSpan(1),
-                    ]),
-            ]);
+                    ])
+                    ->columnSpan(2),
+                Forms\Components\Card::make()
+                    ->schema([
+                        Forms\Components\Placeholder::make('created_at')
+                            ->label('Created at')
+                            ->content(fn (?Discount $record): string => $record ? $record->created_at->diffForHumans() : '-'),
+                        Forms\Components\Placeholder::make('updated_at')
+                            ->label('Last modified at')
+                            ->content(fn (?Discount $record): string => $record ? $record->updated_at->diffForHumans() : '-'),
+                    ])
+                    ->columnSpan(1),
+            ])
+            ->columns(3);
     }
 
     public static function table(Table $table): Table
@@ -128,8 +115,6 @@ class DiscountResource extends Resource
                     ->sortable(),
                 Tables\Columns\BooleanColumn::make('is_visible')
                     ->label('Approved')
-                    ->trueIcon('heroicon-o-badge-check')
-                    ->falseIcon('heroicon-o-x-circle')
                     ->sortable(),
             ])
             ->filters([

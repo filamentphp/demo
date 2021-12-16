@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Shop;
 
 use App\Filament\Resources\Shop\ReviewResource\Pages;
 use App\Filament\Resources\Shop\ReviewResource\RelationManagers;
+use App\Models\Blog\Author;
 use App\Models\Shop\Review;
 use Filament\Forms;
 use Filament\Resources\Form;
@@ -33,54 +34,48 @@ class ReviewResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Grid::make(3)
+                Forms\Components\Card::make()
                     ->schema([
-                        Forms\Components\Card::make()
+                        Forms\Components\Grid::make()
                             ->schema([
-                                Forms\Components\Grid::make()
-                                    ->schema([
-                                        Forms\Components\BelongsToSelect::make('blog_product_id')
-                                            ->relationship('product', 'name')
-                                            ->searchable()
-                                            ->required(),
-                                        Forms\Components\BelongsToSelect::make('blog_customer_id')
-                                            ->relationship('customer', 'name')
-                                            ->searchable()
-                                            ->required(),
-                                        Forms\Components\TextInput::make('title')
-                                            ->required(),
-                                        Forms\Components\TextInput::make('rating')
-                                            ->label('Rating (1-5)')
-                                            ->numeric()
-                                            ->minValue(1)
-                                            ->maxValue(5)
-                                            ->required(),
-                                        Forms\Components\Group::make()
-                                            ->schema([
-                                                Forms\Components\Placeholder::make('Visibility'),
-                                                Forms\Components\Toggle::make('is_visible')
-                                                    ->label('Setup review visibility for the customers.')
-                                                    ->default(true)
-                                                    ->inline(),
-                                            ])->columnSpan(2),
-                                        Forms\Components\MarkdownEditor::make('content')
-                                            ->label('Content')
-                                            ->columnSpan(2),
-                                    ])
+                                Forms\Components\BelongsToSelect::make('blog_product_id')
+                                    ->relationship('product', 'name')
+                                    ->searchable()
+                                    ->required(),
+                                Forms\Components\BelongsToSelect::make('blog_customer_id')
+                                    ->relationship('customer', 'name')
+                                    ->searchable()
+                                    ->required(),
+                                Forms\Components\TextInput::make('title')
+                                    ->required(),
+                                Forms\Components\TextInput::make('rating')
+                                    ->label('Rating (1-5)')
+                                    ->numeric()
+                                    ->minValue(1)
+                                    ->maxValue(5)
+                                    ->required(),
+                                Forms\Components\Toggle::make('is_visible')
+                                    ->label('Visible to customers.')
+                                    ->default(true)
+                                    ->columnSpan(2),
+                                Forms\Components\MarkdownEditor::make('content')
+                                    ->label('Content')
+                                    ->columnSpan(2),
                             ])
-                            ->columnSpan(2),
-                        Forms\Components\Card::make()
-                            ->schema([
-                                Forms\Components\Placeholder::make('Summary')
-                                    ->helperText('No information saved yet.')
-                                    ->hidden(fn ($livewire) => $livewire instanceof EditRecord),
-                                Forms\Components\Placeholder::make('Summary')
-                                    ->helperText(fn ($record) => "This record was last modified {$record->updated_at->diffForHumans()}.")
-                                    ->hidden(fn ($livewire) => $livewire instanceof CreateRecord),
-                            ])
-                            ->columnSpan(1),
-                    ]),
-            ]);
+                    ])
+                    ->columnSpan(2),
+                Forms\Components\Card::make()
+                    ->schema([
+                        Forms\Components\Placeholder::make('created_at')
+                            ->label('Created at')
+                            ->content(fn (?Review $record): string => $record ? $record->created_at->diffForHumans() : '-'),
+                        Forms\Components\Placeholder::make('updated_at')
+                            ->label('Last modified at')
+                            ->content(fn (?Review $record): string => $record ? $record->updated_at->diffForHumans() : '-'),
+                    ])
+                    ->columnSpan(1),
+            ])
+            ->columns(3);
     }
 
     public static function table(Table $table): Table
@@ -105,8 +100,6 @@ class ReviewResource extends Resource
                     ->sortable(),
                 Tables\Columns\BooleanColumn::make('is_visible')
                     ->label('Visibility')
-                    ->trueIcon('heroicon-o-badge-check')
-                    ->falseIcon('heroicon-o-x-circle')
                     ->sortable(),
             ])
             ->filters([

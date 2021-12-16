@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Shop;
 
 use App\Filament\Resources\Shop\OrderResource\Pages;
 use App\Filament\Resources\Shop\OrderResource\RelationManagers;
+use App\Models\Blog\Author;
 use App\Models\Shop\Customer;
 use App\Models\Shop\Order;
 use App\Models\Shop\Product;
@@ -36,93 +37,89 @@ class OrderResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Grid::make(3)
+                Forms\Components\Group::make()
                     ->schema([
-                        Forms\Components\Group::make()
+                        Forms\Components\Card::make()
                             ->schema([
-                                Forms\Components\Card::make()
+                                Forms\Components\Grid::make()
                                     ->schema([
-                                        Forms\Components\Grid::make()
-                                            ->schema([
-                                                Forms\Components\TextInput::make('number')
-                                                    ->default('OR-' . random_int(100000, 999999))
-                                                    ->disabled()
-                                                    ->required(),
-                                                Forms\Components\BelongsToSelect::make('shop_customer_id')
-                                                    ->relationship('customer', 'name')
-                                                    ->searchable()
-                                                    ->getSearchResultsUsing(fn (string $query) => Customer::where('name', 'like', "%{$query}%")->pluck('name', 'id'))
-                                                    ->getOptionLabelUsing(fn ($value): ?string => Customer::find($value)?->name)
-                                                    ->required(),
-                                                Forms\Components\Select::make('status')
-                                                    ->options([
-                                                        'new' => 'New',
-                                                        'processing' => 'Processing',
-                                                        'shipped' => 'Shipped',
-                                                        'delivered' => 'Delivered',
-                                                        'cancelled' => 'Cancelled',
-                                                    ])
-                                                    ->required(),
-                                                Forms\Components\Select::make('currency')
-                                                    ->searchable()
-                                                    ->getSearchResultsUsing(fn (string $query) => Currency::where('name', 'like', "%{$query}%")->pluck('name', 'id'))
-                                                    ->getOptionLabelUsing(fn ($value): ?string => Currency::find($value)?->name)
-                                                    ->required(),
-                                                Forms\Components\MarkdownEditor::make('notes')
-                                                    ->columnSpan(2),
-                                            ]),
-                                    ]),
-                                Forms\Components\Card::make()
-                                    ->schema([
-                                        Forms\Components\Placeholder::make('Items'),
-                                        Forms\Components\HasManyRepeater::make('items')
-                                            ->relationship('items')
-                                            ->schema([
-                                                Forms\Components\Grid::make(8)
-                                                    ->schema([
-                                                        Forms\Components\Select::make('shop_product_id')
-                                                            ->label('Product')
-                                                            ->options(Product::query()->pluck('name', 'id'))
-                                                            ->required()
-                                                            ->reactive()
-                                                            ->afterStateUpdated(fn ($state, callable $set) => $set('unit_price', Product::find($state)?->price ?? 0))
-                                                            ->columnSpan(5),
-                                                        Forms\Components\TextInput::make('qty')
-                                                            ->numeric()
-                                                            ->mask(
-                                                                fn (Forms\Components\TextInput\Mask $mask) => $mask
-                                                                    ->numeric()
-                                                                    ->integer()
-                                                            )
-                                                            ->default(1)
-                                                            ->required(),
-                                                        Forms\Components\TextInput::make('unit_price')
-                                                            ->label('Unit Price')
-                                                            ->disabled()
-                                                            ->numeric()
-                                                            ->required()
-                                                            ->columnSpan(2),
-                                                    ])
-                                            ])
-                                            ->dehydrated()
-                                            ->disableLabel()
+                                        Forms\Components\TextInput::make('number')
+                                            ->default('OR-' . random_int(100000, 999999))
+                                            ->disabled()
                                             ->required(),
+                                        Forms\Components\BelongsToSelect::make('shop_customer_id')
+                                            ->relationship('customer', 'name')
+                                            ->searchable()
+                                            ->getSearchResultsUsing(fn (string $query) => Customer::where('name', 'like', "%{$query}%")->pluck('name', 'id'))
+                                            ->getOptionLabelUsing(fn ($value): ?string => Customer::find($value)?->name)
+                                            ->required(),
+                                        Forms\Components\Select::make('status')
+                                            ->options([
+                                                'new' => 'New',
+                                                'processing' => 'Processing',
+                                                'shipped' => 'Shipped',
+                                                'delivered' => 'Delivered',
+                                                'cancelled' => 'Cancelled',
+                                            ])
+                                            ->required(),
+                                        Forms\Components\Select::make('currency')
+                                            ->searchable()
+                                            ->getSearchResultsUsing(fn (string $query) => Currency::where('name', 'like', "%{$query}%")->pluck('name', 'id'))
+                                            ->getOptionLabelUsing(fn ($value): ?string => Currency::find($value)?->name)
+                                            ->required(),
+                                        Forms\Components\MarkdownEditor::make('notes')
+                                            ->columnSpan(2),
                                     ]),
-                            ])->columnSpan(2),
-                        Forms\Components\Group::make()
+                            ]),
+                        Forms\Components\Card::make()
                             ->schema([
-                                Forms\Components\Card::make()
+                                Forms\Components\Placeholder::make('Items'),
+                                Forms\Components\HasManyRepeater::make('items')
+                                    ->relationship('items')
                                     ->schema([
-                                        Forms\Components\Placeholder::make('Summary')
-                                            ->helperText('No information saved yet.')
-                                            ->hidden(fn ($livewire) => $livewire instanceof EditRecord),
-                                        Forms\Components\Placeholder::make('Summary')
-                                            ->helperText(fn ($record) => "This record was last modified {$record->updated_at->diffForHumans()}.")
-                                            ->hidden(fn ($livewire) => $livewire instanceof CreateRecord),
-                                    ]),
-                            ])->columnSpan(1),
-                    ]),
-            ]);
+                                        Forms\Components\Grid::make(8)
+                                            ->schema([
+                                                Forms\Components\Select::make('shop_product_id')
+                                                    ->label('Product')
+                                                    ->options(Product::query()->pluck('name', 'id'))
+                                                    ->required()
+                                                    ->reactive()
+                                                    ->afterStateUpdated(fn ($state, callable $set) => $set('unit_price', Product::find($state)?->price ?? 0))
+                                                    ->columnSpan(5),
+                                                Forms\Components\TextInput::make('qty')
+                                                    ->numeric()
+                                                    ->mask(
+                                                        fn (Forms\Components\TextInput\Mask $mask) => $mask
+                                                            ->numeric()
+                                                            ->integer()
+                                                    )
+                                                    ->default(1)
+                                                    ->required(),
+                                                Forms\Components\TextInput::make('unit_price')
+                                                    ->label('Unit Price')
+                                                    ->disabled()
+                                                    ->numeric()
+                                                    ->required()
+                                                    ->columnSpan(2),
+                                            ])
+                                    ])
+                                    ->dehydrated()
+                                    ->disableLabel()
+                                    ->required(),
+                            ]),
+                    ])->columnSpan(2),
+                Forms\Components\Card::make()
+                    ->schema([
+                        Forms\Components\Placeholder::make('created_at')
+                            ->label('Created at')
+                            ->content(fn (?Order $record): string => $record ? $record->created_at->diffForHumans() : '-'),
+                        Forms\Components\Placeholder::make('updated_at')
+                            ->label('Last modified at')
+                            ->content(fn (?Order $record): string => $record ? $record->updated_at->diffForHumans() : '-'),
+                    ])
+                    ->columnSpan(1),
+            ])
+            ->columns(3);
     }
 
     public static function table(Table $table): Table
