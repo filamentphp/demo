@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Filament\Resources\Shop;
 
 use App\Filament\Resources\Shop\BrandResource\Pages;
@@ -15,7 +13,7 @@ use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
 
-final class BrandResource extends Resource
+class BrandResource extends Resource
 {
     protected static ?string $model = Brand::class;
 

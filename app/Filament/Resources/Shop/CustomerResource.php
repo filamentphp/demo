@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Filament\Resources\Shop;
 
 use App\Filament\Resources\Shop\CustomerResource\Pages;
@@ -17,7 +15,7 @@ use Filament\Resources\Table;
 use Filament\Tables;
 use Squire\Models\Country;
 
-final class CustomerResource extends Resource
+class CustomerResource extends Resource
 {
     protected static ?string $model = Customer::class;
 

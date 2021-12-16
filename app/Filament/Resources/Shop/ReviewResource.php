@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Filament\Resources\Shop;
 
 use App\Filament\Resources\Shop\ReviewResource\Pages;
@@ -17,7 +15,7 @@ use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
-final class ReviewResource extends Resource
+class ReviewResource extends Resource
 {
     protected static ?string $model = Review::class;
 

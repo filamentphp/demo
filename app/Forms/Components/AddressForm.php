@@ -1,14 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Forms\Components;
 
 use Filament\Forms;
 use Illuminate\Database\Eloquent\Model;
 use Squire\Models\Country;
 
-final class AddressForm extends Forms\Components\Field
+class AddressForm extends Forms\Components\Field
 {
     protected string $view = 'forms::components.group';
 

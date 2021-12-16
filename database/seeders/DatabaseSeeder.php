@@ -24,7 +24,7 @@ final class DatabaseSeeder extends Seeder
     {
         // Admin
         User::factory()->create([
-            'name' => 'Filament Admin',
+            'name' => 'Demo User',
             'email' => 'admin@filamentadmin.com',
         ]);
 

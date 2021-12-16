@@ -1,13 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Filament\Resources\Shop\OrderResource\Pages;
 
 use App\Filament\Resources\Shop\OrderResource;
 use Filament\Resources\Pages\CreateRecord;
 
-final class CreateOrder extends CreateRecord
+class CreateOrder extends CreateRecord
 {
     protected static string $resource = OrderResource::class;
 

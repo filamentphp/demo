@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Models\Blog;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\Tags\HasTags;
 
-final class Post extends Model
+class Post extends Model
 {
     use HasFactory;
     use HasTags;

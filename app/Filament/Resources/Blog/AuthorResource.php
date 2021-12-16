@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Filament\Resources\Blog;
 
 use App\Filament\Resources\Blog\AuthorResource\Pages;
@@ -15,7 +13,7 @@ use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
 
-final class AuthorResource extends Resource
+class AuthorResource extends Resource
 {
     protected static ?string $model = Author::class;
 

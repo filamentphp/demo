@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Filament\Resources\Shop;
 
 use App\Filament\Resources\Shop\ProductResource\Pages;
@@ -17,7 +15,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-final class ProductResource extends Resource
+class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
 

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Filament\Resources\Shop;
 
 use App\Filament\Resources\Shop\OrderResource\Pages;
@@ -20,7 +18,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Squire\Models\Currency;
 
-final class OrderResource extends Resource
+class OrderResource extends Resource
 {
     protected static ?string $model = Order::class;
 

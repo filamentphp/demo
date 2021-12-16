@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Filament\Resources\Shop;
 
 use App\Filament\Resources\Shop\CategoryResource\Pages;
@@ -16,7 +14,7 @@ use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 
-final class CategoryResource extends Resource
+class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
 

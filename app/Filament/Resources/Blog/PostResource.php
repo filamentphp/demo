@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Filament\Resources\Blog;
 
 use App\Filament\Resources\Blog\PostResource\Pages;
@@ -19,7 +17,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-final class PostResource extends Resource
+class PostResource extends Resource
 {
     protected static ?string $model = Post::class;
 
