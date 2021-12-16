@@ -131,7 +131,7 @@ class OrderResource extends Resource
                 Tables\Columns\BadgeColumn::make('status')
                     ->colors([
                         'secondary',
-                        'danger' => 'canceled',
+                        'danger' => 'cancelled',
                         'warning' => 'processing',
                         'success' => 'delivered',
                     ]),

@@ -18,7 +18,7 @@ class OrderFactory extends Factory
             'number' => 'OR' . $this->faker->unique()->randomNumber(6),
             'currency' => strtolower($this->faker->currencyCode()),
             'total_price' => $this->faker->randomFloat(2, 100, 2000),
-            'status' => $this->faker->randomElement(['new', 'processing', 'shipped', 'delivered', 'canceled']),
+            'status' => $this->faker->randomElement(['new', 'processing', 'shipped', 'delivered', 'cancelled']),
             'shipping_price' => $this->faker->randomFloat(2, 100, 500),
             'shipping_method' => $this->faker->randomElement(['free', 'flat', 'flat_rate', 'flat_rate_per_item']),
             'notes' => $this->faker->realText(100),
