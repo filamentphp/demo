@@ -22,6 +22,8 @@ final class AuthorFactory extends Factory
             'bio' => $this->faker->realTextBetween(),
             'github_handle' => $this->faker->userName(),
             'twitter_handle' => $this->faker->userName(),
+            'created_at' => $this->faker->dateTimeBetween('-1 year', '-6 month'),
+            'updated_at' => $this->faker->dateTimeBetween('-5 month', 'now'),
         ];
     }
 }

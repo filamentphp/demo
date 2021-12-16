@@ -22,9 +22,11 @@ final class DiscountFactory extends Factory
             'value' => $this->faker->randomFloat(2, 2, 10),
             'usage_limit' => $this->faker->numberBetween(10, 100),
             'usage_limit_per_customer' => $this->faker->numberBetween(1, 5),
-            'starts_at' => $this->faker->dateTimeBetween('today', '+1 month'),
+            'starts_at' => $this->faker->dateTimeBetween('-6 month', '+1 month'),
             'ends_at' => $this->faker->dateTimeBetween('+1 month', '+2 months'),
             'is_visible' => $this->faker->boolean(),
+            'created_at' => $this->faker->dateTimeBetween('-1 year', '-6 month'),
+            'updated_at' => $this->faker->dateTimeBetween('-5 month', 'now'),
         ];
     }
 }

@@ -23,6 +23,8 @@ final class CustomerFactory extends Factory
             'phone' => $this->faker->phoneNumber(),
             'birthday' => $this->faker->dateTimeBetween('-35 years', '-18 years'),
             'gender' => $this->faker->randomElement(['male', 'female']),
+            'created_at' => $this->faker->dateTimeBetween('-1 year', '-6 month'),
+            'updated_at' => $this->faker->dateTimeBetween('-5 month', 'now'),
         ];
     }
 
