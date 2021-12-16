@@ -9,6 +9,8 @@ use App\Filament\Resources\Shop\CategoryResource\RelationManagers;
 use App\Models\Shop\Category;
 use Filament\Forms;
 use Filament\Resources\Form;
+use Filament\Resources\Pages\CreateRecord;
+use Filament\Resources\Pages\EditRecord;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
@@ -62,7 +64,11 @@ final class CategoryResource extends Resource
                         Forms\Components\Card::make()
                             ->schema([
                                 Forms\Components\Placeholder::make('Summary')
-                                    ->helperText('No information entered yet.'),
+                                    ->helperText('No information saved yet.')
+                                    ->hidden(fn ($livewire) => $livewire instanceof EditRecord),
+                                Forms\Components\Placeholder::make('Summary')
+                                    ->helperText(fn ($record) => "This record was last modified {$record->updated_at->diffForHumans()}.")
+                                    ->hidden(fn ($livewire) => $livewire instanceof CreateRecord),
                             ])
                             ->columnSpan(1),
                     ]),
