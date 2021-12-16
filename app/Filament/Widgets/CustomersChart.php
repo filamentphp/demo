@@ -2,10 +2,7 @@
 
 namespace App\Filament\Widgets;
 
-use App\Models\Shop\Customer;
 use Filament\Widgets\LineChartWidget;
-use Flowframe\Trend\Trend;
-use Flowframe\Trend\TrendValue;
 
 class CustomersChart extends LineChartWidget
 {
