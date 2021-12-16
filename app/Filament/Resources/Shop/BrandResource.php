@@ -39,7 +39,7 @@ class BrandResource extends Resource
                                 Forms\Components\TextInput::make('slug')
                                     ->disabled()
                                     ->required()
-                                    ->unique(Category::class, 'slug', fn ($record) => $record),
+                                    ->unique(Brand::class, 'slug', fn ($record) => $record),
                             ]),
                         Forms\Components\TextInput::make('website')
                             ->required()
