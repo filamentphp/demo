@@ -14,7 +14,7 @@ return new class () extends Migration {
     {
         Schema::create('shop_orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('shop_customer_id')->nullable()->constrained();
+            $table->foreignId('shop_customer_id')->nullable()->constrained()->nullOnDelete();
             $table->string('number', 32)->unique();
             $table->decimal('total_price')->nullable();
             $table->enum('status', ['new', 'processing', 'shipped', 'delivered', 'canceled'])->default('new');
