@@ -41,11 +41,9 @@ class AuthorResource extends Resource
                                 Forms\Components\MarkdownEditor::make('bio')
                                     ->columnSpan(2),
                                 Forms\Components\TextInput::make('github_handle')
-                                    ->label('GitHub')
-                                    ->url(),
+                                    ->label('GitHub'),
                                 Forms\Components\TextInput::make('twitter_handle')
-                                    ->label('Twitter')
-                                    ->url(),
+                                    ->label('Twitter'),
                             ]),
                     ])
                     ->columnSpan(2),
