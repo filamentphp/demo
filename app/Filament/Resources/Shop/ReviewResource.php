@@ -31,33 +31,9 @@ class ReviewResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Card::make()
-                    ->schema([
-                        Forms\Components\Grid::make()
-                            ->schema([
-                                Forms\Components\BelongsToSelect::make('blog_product_id')
-                                    ->relationship('product', 'name')
-                                    ->searchable()
-                                    ->required(),
-                                Forms\Components\BelongsToSelect::make('blog_customer_id')
-                                    ->relationship('customer', 'name')
-                                    ->searchable()
-                                    ->required(),
-                                Forms\Components\TextInput::make('title')
-                                    ->required(),
-                                Forms\Components\TextInput::make('rating')
-                                    ->label('Rating (1-5)')
-                                    ->numeric()
-                                    ->minValue(1)
-                                    ->maxValue(5)
-                                    ->required(),
-                                Forms\Components\Toggle::make('is_visible')
-                                    ->label('Visible to customers.')
-                                    ->default(true)
-                                    ->columnSpan(2),
-                                Forms\Components\MarkdownEditor::make('content')
-                                    ->label('Content')
-                                    ->columnSpan(2),
-                            ]),
+                    ->schema(static::getFormSchema())
+                    ->columns([
+                        'sm' => 2,
                     ])
                     ->columnSpan(2),
                 Forms\Components\Card::make()
@@ -77,27 +53,7 @@ class ReviewResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->columns([
-                Tables\Columns\TextColumn::make('customer.name')
-                    ->label('Customer')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('product.name')
-                    ->label('Product')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('title')
-                    ->label('Title')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('rating')
-                    ->label('Rating')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\BooleanColumn::make('is_visible')
-                    ->label('Visibility')
-                    ->sortable(),
-            ])
+            ->columns(static::getTableColumns())
             ->filters([
                 //
             ]);
@@ -135,5 +91,63 @@ class ReviewResource extends Resource
     protected static function getGlobalSearchEloquentQuery(): Builder
     {
         return parent::getGlobalSearchEloquentQuery()->with(['customer', 'product']);
+    }
+
+    public static function getFormSchema(): array
+    {
+        return [
+            Forms\Components\BelongsToSelect::make('blog_product_id')
+                ->relationship('product', 'name')
+                ->searchable()
+                ->required(),
+            Forms\Components\BelongsToSelect::make('blog_customer_id')
+                ->relationship('customer', 'name')
+                ->searchable()
+                ->required(),
+            Forms\Components\TextInput::make('title')
+                ->required(),
+            Forms\Components\TextInput::make('rating')
+                ->label('Rating (1-5)')
+                ->numeric()
+                ->minValue(1)
+                ->maxValue(5)
+                ->required(),
+            Forms\Components\Toggle::make('is_visible')
+                ->label('Visible to customers.')
+                ->default(true)
+                ->columnSpan([
+                    'sm' => 2,
+                ]),
+            Forms\Components\MarkdownEditor::make('content')
+                ->label('Content')
+                ->columnSpan([
+                    'sm' => 2,
+                ]),
+        ];
+    }
+
+    public static function getTableColumns(): array
+    {
+        return [
+            Tables\Columns\TextColumn::make('customer.name')
+                ->label('Customer')
+                ->searchable()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('product.name')
+                ->label('Product')
+                ->searchable()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('title')
+                ->label('Title')
+                ->searchable()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('rating')
+                ->label('Rating')
+                ->searchable()
+                ->sortable(),
+            Tables\Columns\BooleanColumn::make('is_visible')
+                ->label('Visibility')
+                ->sortable(),
+        ];
     }
 }
