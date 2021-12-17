@@ -37,35 +37,36 @@ class OrderResource extends Resource
                     ->schema([
                         Forms\Components\Card::make()
                             ->schema([
-                                Forms\Components\Grid::make()
-                                    ->schema([
-                                        Forms\Components\TextInput::make('number')
-                                            ->default('OR-' . random_int(100000, 999999))
-                                            ->disabled()
-                                            ->required(),
-                                        Forms\Components\BelongsToSelect::make('shop_customer_id')
-                                            ->relationship('customer', 'name')
-                                            ->searchable()
-                                            ->getSearchResultsUsing(fn (string $query) => Customer::where('name', 'like', "%{$query}%")->pluck('name', 'id'))
-                                            ->getOptionLabelUsing(fn ($value): ?string => Customer::find($value)?->name)
-                                            ->required(),
-                                        Forms\Components\Select::make('status')
-                                            ->options([
-                                                'new' => 'New',
-                                                'processing' => 'Processing',
-                                                'shipped' => 'Shipped',
-                                                'delivered' => 'Delivered',
-                                                'cancelled' => 'Cancelled',
-                                            ])
-                                            ->required(),
-                                        Forms\Components\Select::make('currency')
-                                            ->searchable()
-                                            ->getSearchResultsUsing(fn (string $query) => Currency::where('name', 'like', "%{$query}%")->pluck('name', 'id'))
-                                            ->getOptionLabelUsing(fn ($value): ?string => Currency::find($value)?->name)
-                                            ->required(),
-                                        Forms\Components\MarkdownEditor::make('notes')
-                                            ->columnSpan(2),
+                                Forms\Components\TextInput::make('number')
+                                    ->default('OR-' . random_int(100000, 999999))
+                                    ->disabled()
+                                    ->required(),
+                                Forms\Components\BelongsToSelect::make('shop_customer_id')
+                                    ->relationship('customer', 'name')
+                                    ->searchable()
+                                    ->getSearchResultsUsing(fn (string $query) => Customer::where('name', 'like', "%{$query}%")->pluck('name', 'id'))
+                                    ->getOptionLabelUsing(fn ($value): ?string => Customer::find($value)?->name)
+                                    ->required(),
+                                Forms\Components\Select::make('status')
+                                    ->options([
+                                        'new' => 'New',
+                                        'processing' => 'Processing',
+                                        'shipped' => 'Shipped',
+                                        'delivered' => 'Delivered',
+                                        'cancelled' => 'Cancelled',
+                                    ])
+                                    ->required(),
+                                Forms\Components\Select::make('currency')
+                                    ->searchable()
+                                    ->getSearchResultsUsing(fn (string $query) => Currency::where('name', 'like', "%{$query}%")->pluck('name', 'id'))
+                                    ->getOptionLabelUsing(fn ($value): ?string => Currency::find($value)?->name)
+                                    ->required(),
+                                Forms\Components\MarkdownEditor::make('notes')
+                                    ->columnSpan([
+                                        'sm' => 2,
                                     ]),
+                            ])->columns([
+                                'sm' => 2,
                             ]),
                         Forms\Components\Card::make()
                             ->schema([
@@ -73,34 +74,42 @@ class OrderResource extends Resource
                                 Forms\Components\HasManyRepeater::make('items')
                                     ->relationship('items')
                                     ->schema([
-                                        Forms\Components\Grid::make(8)
-                                            ->schema([
-                                                Forms\Components\Select::make('shop_product_id')
-                                                    ->label('Product')
-                                                    ->options(Product::query()->pluck('name', 'id'))
-                                                    ->required()
-                                                    ->reactive()
-                                                    ->afterStateUpdated(fn ($state, callable $set) => $set('unit_price', Product::find($state)?->price ?? 0))
-                                                    ->columnSpan(5),
-                                                Forms\Components\TextInput::make('qty')
+                                        Forms\Components\Select::make('shop_product_id')
+                                            ->label('Product')
+                                            ->options(Product::query()->pluck('name', 'id'))
+                                            ->required()
+                                            ->reactive()
+                                            ->afterStateUpdated(fn ($state, callable $set) => $set('unit_price', Product::find($state)?->price ?? 0))
+                                            ->columnSpan([
+                                                'md' => 5
+                                            ]),
+                                        Forms\Components\TextInput::make('qty')
+                                            ->numeric()
+                                            ->mask(
+                                                fn (Forms\Components\TextInput\Mask $mask) => $mask
                                                     ->numeric()
-                                                    ->mask(
-                                                        fn (Forms\Components\TextInput\Mask $mask) => $mask
-                                                            ->numeric()
-                                                            ->integer()
-                                                    )
-                                                    ->default(1)
-                                                    ->required(),
-                                                Forms\Components\TextInput::make('unit_price')
-                                                    ->label('Unit Price')
-                                                    ->disabled()
-                                                    ->numeric()
-                                                    ->required()
-                                                    ->columnSpan(2),
+                                                    ->integer()
+                                            )
+                                            ->default(1)
+                                            ->columnSpan([
+                                                'md' => 2,
+                                            ])
+                                            ->required(),
+                                        Forms\Components\TextInput::make('unit_price')
+                                            ->label('Unit Price')
+                                            ->disabled()
+                                            ->numeric()
+                                            ->required()
+                                            ->columnSpan([
+                                                'md' => 3,
                                             ]),
                                     ])
                                     ->dehydrated()
+                                    ->defaultItems(1)
                                     ->disableLabel()
+                                    ->columns([
+                                        'md' => 10,
+                                    ])
                                     ->required(),
                             ]),
                     ])->columnSpan(2),
