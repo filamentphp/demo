@@ -99,7 +99,24 @@ class PostResource extends Resource
                     ->date(),
             ])
             ->filters([
-                //
+                Tables\Filters\Filter::make('published_at')
+                    ->form([
+                        Forms\Components\DatePicker::make('published_from')
+                            ->placeholder(fn ($state): string => 'Dec 18, ' . now()->subYear()->format('Y')),
+                        Forms\Components\DatePicker::make('published_until')
+                            ->placeholder(fn ($state): string => now()->format('M d, Y')),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['published_from'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('published_at', '>=', $date),
+                            )
+                            ->when(
+                                $data['published_until'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('published_at', '<=', $date),
+                            );
+                    }),
             ]);
     }
 
