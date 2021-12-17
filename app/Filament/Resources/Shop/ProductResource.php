@@ -36,19 +36,20 @@ class ProductResource extends Resource
                     ->schema([
                         Forms\Components\Card::make()
                             ->schema([
-                                Forms\Components\Grid::make()
-                                    ->schema([
-                                        Forms\Components\TextInput::make('name')
-                                            ->required()
-                                            ->reactive()
-                                            ->afterStateUpdated(fn ($state, callable $set) => $set('slug', Str::slug($state))),
-                                        Forms\Components\TextInput::make('slug')
-                                            ->disabled()
-                                            ->required()
-                                            ->unique(Product::class, 'slug', fn ($record) => $record),
-                                        Forms\Components\MarkdownEditor::make('description')
-                                            ->columnSpan(2),
+                                Forms\Components\TextInput::make('name')
+                                    ->required()
+                                    ->reactive()
+                                    ->afterStateUpdated(fn ($state, callable $set) => $set('slug', Str::slug($state))),
+                                Forms\Components\TextInput::make('slug')
+                                    ->disabled()
+                                    ->required()
+                                    ->unique(Product::class, 'slug', fn ($record) => $record),
+                                Forms\Components\MarkdownEditor::make('description')
+                                    ->columnSpan([
+                                        'sm' => 2,
                                     ]),
+                            ])->columns([
+                                'sm' => 2,
                             ]),
                         Forms\Components\Card::make()
                             ->schema([
