@@ -81,7 +81,7 @@ class OrderResource extends Resource
                                             ->reactive()
                                             ->afterStateUpdated(fn ($state, callable $set) => $set('unit_price', Product::find($state)?->price ?? 0))
                                             ->columnSpan([
-                                                'md' => 5
+                                                'md' => 5,
                                             ]),
                                         Forms\Components\TextInput::make('qty')
                                             ->numeric()
