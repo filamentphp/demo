@@ -18,6 +18,21 @@ Install PHP dependencies:
 ```sh
 composer install
 ```
+or using Docker for composer
+```sh
+docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v $(pwd):/var/www/html \
+    -w /var/www/html \
+    laravelsail/php80-composer:latest \
+    composer install --ignore-platform-reqs
+```
+
+Using [Sail](https://laravel.com/docs/sail)
+```sh
+./vendor/bin/sail up -d
+./vendor/bin/sail shell
+```
 
 Setup configuration:
 
