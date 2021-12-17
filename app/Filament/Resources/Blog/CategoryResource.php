@@ -41,14 +41,14 @@ class CategoryResource extends Resource
                             ->unique(Category::class, 'slug', fn ($record) => $record),
                         Forms\Components\MarkdownEditor::make('description')
                             ->columnSpan([
-                                'sm' => 2
+                                'sm' => 2,
                             ]),
                         Forms\Components\Toggle::make('is_visible')
                             ->label('Visible to customers.')
                             ->default(true),
                     ])
                     ->columns([
-                        'sm' => 2
+                        'sm' => 2,
                     ])
                     ->columnSpan(2),
                 Forms\Components\Card::make()
