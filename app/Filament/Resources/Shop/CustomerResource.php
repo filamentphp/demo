@@ -32,18 +32,20 @@ class CustomerResource extends Resource
             ->schema([
                 Forms\Components\Card::make()
                     ->schema([
-                        Forms\Components\Grid::make()
-                            ->schema([
-                                Forms\Components\TextInput::make('name')
-                                    ->required(),
-                                Forms\Components\TextInput::make('email')
-                                    ->required()
-                                    ->email()
-                                    ->unique(Customer::class, 'email', fn ($record) => $record),
-                                Forms\Components\TextInput::make('phone'),
-                                Forms\Components\DatePicker::make('birthday'),
-                                AddressForm::make('address')->columnSpan(2),
-                            ]),
+                        Forms\Components\TextInput::make('name')
+                            ->required(),
+                        Forms\Components\TextInput::make('email')
+                            ->required()
+                            ->email()
+                            ->unique(Customer::class, 'email', fn ($record) => $record),
+                        Forms\Components\TextInput::make('phone'),
+                        Forms\Components\DatePicker::make('birthday'),
+                        AddressForm::make('address')->columnSpan([
+                            'sm' => 2,
+                        ]),
+                    ])
+                    ->columns([
+                        'sm' => 2,
                     ])
                     ->columnSpan(2),
                 Forms\Components\Card::make()
