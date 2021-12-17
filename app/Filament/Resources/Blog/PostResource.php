@@ -34,33 +34,34 @@ class PostResource extends Resource
             ->schema([
                 Forms\Components\Card::make()
                     ->schema([
-                        Forms\Components\Grid::make()
-                            ->schema([
-                                Forms\Components\TextInput::make('title')
-                                    ->required()
-                                    ->reactive()
-                                    ->afterStateUpdated(fn ($state, callable $set) => $set('slug', Str::slug($state))),
-                                Forms\Components\TextInput::make('slug')
-                                    ->disabled()
-                                    ->required()
-                                    ->unique(Post::class, 'slug', fn ($record) => $record),
-                                Forms\Components\MarkdownEditor::make('content')
-                                    ->required()
-                                    ->columnSpan(2),
-                                Forms\Components\BelongsToSelect::make('blog_author_id')
-                                    ->relationship('author', 'name')
-                                    ->searchable()
-                                    ->required(),
-                                Forms\Components\BelongsToSelect::make('blog_category_id')
-                                    ->relationship('category', 'name')
-                                    ->searchable()
-                                    ->required(),
-                                Forms\Components\DatePicker::make('published_at')
-                                    ->label('Published Date'),
-                                SpatieTagsInput::make('tags')
-                                    ->required(),
+                        Forms\Components\TextInput::make('title')
+                            ->required()
+                            ->reactive()
+                            ->afterStateUpdated(fn ($state, callable $set) => $set('slug', Str::slug($state))),
+                        Forms\Components\TextInput::make('slug')
+                            ->disabled()
+                            ->required()
+                            ->unique(Post::class, 'slug', fn ($record) => $record),
+                        Forms\Components\MarkdownEditor::make('content')
+                            ->required()
+                            ->columnSpan([
+                                'sm' => 2,
                             ]),
-
+                        Forms\Components\BelongsToSelect::make('blog_author_id')
+                            ->relationship('author', 'name')
+                            ->searchable()
+                            ->required(),
+                        Forms\Components\BelongsToSelect::make('blog_category_id')
+                            ->relationship('category', 'name')
+                            ->searchable()
+                            ->required(),
+                        Forms\Components\DatePicker::make('published_at')
+                            ->label('Published Date'),
+                        SpatieTagsInput::make('tags')
+                            ->required(),
+                    ])
+                    ->columns([
+                        'sm' => 2,
                     ])
                     ->columnSpan(2),
                 Forms\Components\Card::make()
