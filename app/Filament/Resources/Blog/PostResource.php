@@ -148,9 +148,16 @@ class PostResource extends Resource
 
     public static function getGlobalSearchResultDetails(Model $record): array
     {
-        return [
-            'Author' => $record->author->name,
-            'Category' => $record->category->name,
-        ];
+        $details = [];
+
+        if ($record->author) {
+            $details['Author'] = $record->author->name;
+        }
+
+        if ($record->category) {
+            $details['Category'] = $record->category->name;
+        }
+
+        return $details;
     }
 }
