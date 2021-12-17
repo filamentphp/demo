@@ -31,7 +31,7 @@ class ProductResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema(static::getFormSchema())
+            ->schema(static::getFormSchema(Forms\Components\Card::class))
             ->columns(3);
     }
 
@@ -77,12 +77,12 @@ class ProductResource extends Resource
         return parent::getGlobalSearchEloquentQuery()->with(['brand']);
     }
 
-    public static function getFormSchema(): array
+    public static function getFormSchema(string $layout = Forms\Components\Grid::class): array
     {
         return [
             Forms\Components\Group::make()
                 ->schema([
-                    Forms\Components\Card::make()
+                    $layout::make()
                         ->schema([
                             Forms\Components\TextInput::make('name')
                                 ->required()
@@ -99,13 +99,14 @@ class ProductResource extends Resource
                         ])->columns([
                             'sm' => 2,
                         ]),
-                    Forms\Components\Card::make()
+                    $layout::make()
                         ->schema([
                             SpatieMediaLibraryMultipleFileUpload::make('media')
                                 ->collection('product-images')
                                 ->required(),
-                        ]),
-                    Forms\Components\Card::make()
+                        ])
+                        ->columns(1),
+                    $layout::make()
                         ->schema([
                             Forms\Components\Placeholder::make('Pricing'),
                             Forms\Components\Grid::make()
@@ -124,7 +125,7 @@ class ProductResource extends Resource
                                         ->required(),
                                 ]),
                         ]),
-                    Forms\Components\Card::make()
+                    $layout::make()
                         ->schema([
                             Forms\Components\Placeholder::make('Inventory'),
                             Forms\Components\Grid::make()
@@ -145,18 +146,19 @@ class ProductResource extends Resource
                                 ]),
                         ]),
 
-                    Forms\Components\Card::make()
+                    $layout::make()
                         ->schema([
                             Forms\Components\Placeholder::make('Shipping'),
                             Forms\Components\Checkbox::make('backorder')
                                 ->label('This product can be returned'),
                             Forms\Components\Checkbox::make('requires_shipping')
                                 ->label('This product will be shipped'),
-                        ]),
+                        ])
+                        ->columns(1),
                 ])->columnSpan(2),
             Forms\Components\Group::make()
                 ->schema([
-                    Forms\Components\Card::make()
+                    $layout::make()
                         ->schema([
                             Forms\Components\Placeholder::make('Status'),
                             Forms\Components\Group::make()
@@ -170,8 +172,9 @@ class ProductResource extends Resource
                                 ->label('Availability')
                                 ->default(now())
                                 ->required(),
-                        ]),
-                    Forms\Components\Card::make()
+                        ])
+                        ->columns(1),
+                    $layout::make()
                         ->schema([
                             Forms\Components\Placeholder::make('Associations'),
                             Forms\Components\BelongsToSelect::make('shop_brand_id')
@@ -181,7 +184,8 @@ class ProductResource extends Resource
                             Forms\Components\BelongsToManyMultiSelect::make('categories')
                                 ->relationship('categories', 'name')
                                 ->required(),
-                        ]),
+                        ])
+                        ->columns(1),
                 ])
                 ->columnSpan(1),
         ];
