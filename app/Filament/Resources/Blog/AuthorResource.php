@@ -30,21 +30,23 @@ class AuthorResource extends Resource
             ->schema([
                 Forms\Components\Card::make()
                     ->schema([
-                        Forms\Components\Grid::make()
-                            ->schema([
-                                Forms\Components\TextInput::make('name')
-                                    ->required(),
-                                Forms\Components\TextInput::make('email')
-                                    ->required()
-                                    ->email()
-                                    ->unique(Author::class, 'email', fn ($record) => $record),
-                                Forms\Components\MarkdownEditor::make('bio')
-                                    ->columnSpan(2),
-                                Forms\Components\TextInput::make('github_handle')
-                                    ->label('GitHub'),
-                                Forms\Components\TextInput::make('twitter_handle')
-                                    ->label('Twitter'),
+                        Forms\Components\TextInput::make('name')
+                            ->required(),
+                        Forms\Components\TextInput::make('email')
+                            ->required()
+                            ->email()
+                            ->unique(Author::class, 'email', fn ($record) => $record),
+                        Forms\Components\MarkdownEditor::make('bio')
+                            ->columnSpan([
+                                'sm' => 2,
                             ]),
+                        Forms\Components\TextInput::make('github_handle')
+                            ->label('GitHub'),
+                        Forms\Components\TextInput::make('twitter_handle')
+                            ->label('Twitter'),
+                    ])
+                    ->columns([
+                        'sm' => 2,
                     ])
                     ->columnSpan(2),
                 Forms\Components\Card::make()
