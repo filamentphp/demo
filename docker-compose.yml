@@ -1,0 +1,31 @@
+version: '3.7'
+
+services:
+    app:
+        build:
+            context: .
+            args:
+                - PHP_VERSION=${PHP_VERSION:-8.1}
+        restart: unless-stopped
+        volumes:
+            - .:/var/www/html:cached
+            - /var/www/html/vendor
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
+        networks:
+            - app-net
+    nginx:
+        image: nginx:alpine
+        ports:
+            - "${APP_PORT:-8004}:80"
+        volumes:
+            - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:cached
+            - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:cached
+        restart: unless-stopped
+        depends_on:
+            - app
+        networks:
+            - app-net
+networks:
+    app-net:
+        driver: bridge
