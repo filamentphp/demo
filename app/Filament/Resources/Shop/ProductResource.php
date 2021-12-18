@@ -31,147 +31,14 @@ class ProductResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                Forms\Components\Group::make()
-                    ->schema([
-                        Forms\Components\Card::make()
-                            ->schema([
-                                Forms\Components\TextInput::make('name')
-                                    ->required()
-                                    ->reactive()
-                                    ->afterStateUpdated(fn ($state, callable $set) => $set('slug', Str::slug($state))),
-                                Forms\Components\TextInput::make('slug')
-                                    ->disabled()
-                                    ->required()
-                                    ->unique(Product::class, 'slug', fn ($record) => $record),
-                                Forms\Components\MarkdownEditor::make('description')
-                                    ->columnSpan([
-                                        'sm' => 2,
-                                    ]),
-                            ])->columns([
-                                'sm' => 2,
-                            ]),
-                        Forms\Components\Card::make()
-                            ->schema([
-                                SpatieMediaLibraryMultipleFileUpload::make('media')
-                                    ->collection('product-images')
-                                    ->required(),
-                            ]),
-                        Forms\Components\Card::make()
-                            ->schema([
-                                Forms\Components\Placeholder::make('Pricing'),
-                                Forms\Components\Grid::make()
-                                    ->schema([
-                                        Forms\Components\TextInput::make('price')
-                                            ->numeric()
-                                            ->required(),
-                                        Forms\Components\TextInput::make('old_price')
-                                            ->label('Compare at price')
-                                            ->numeric()
-                                            ->required(),
-                                        Forms\Components\TextInput::make('cost')
-                                            ->label('Cost per item')
-                                            ->helperText('Customers won\'t see this price.')
-                                            ->numeric()
-                                            ->required(),
-                                    ]),
-                            ]),
-                        Forms\Components\Card::make()
-                            ->schema([
-                                Forms\Components\Placeholder::make('Inventory'),
-                                Forms\Components\Grid::make()
-                                    ->schema([
-                                        Forms\Components\TextInput::make('sku')
-                                            ->label('SKU (Stock Keeping Unit)')
-                                            ->required(),
-                                        Forms\Components\TextInput::make('barcode')
-                                            ->label('Barcode (ISBN, UPC, GTIN, etc.)')
-                                            ->required(),
-                                        Forms\Components\TextInput::make('qty')
-                                            ->label('Quantity')
-                                            ->required(),
-                                        Forms\Components\TextInput::make('security_stock')
-                                            ->helperText('The safety stock is the limit stock for your products which alerts you if the product stock will soon be out of stock.')
-                                            ->numeric()
-                                            ->required(),
-                                    ]),
-                            ]),
-
-                        Forms\Components\Card::make()
-                            ->schema([
-                                Forms\Components\Placeholder::make('Shipping'),
-                                Forms\Components\Checkbox::make('backorder')
-                                    ->label('This product can be returned'),
-                                Forms\Components\Checkbox::make('requires_shipping')
-                                    ->label('This product will be shipped'),
-                            ]),
-                    ])->columnSpan(2),
-                Forms\Components\Group::make()
-                    ->schema([
-                        Forms\Components\Card::make()
-                            ->schema([
-                                Forms\Components\Placeholder::make('Status'),
-                                Forms\Components\Group::make()
-                                    ->schema([
-                                        Forms\Components\Toggle::make('is_visible')
-                                            ->label('Visible')
-                                            ->helperText('This product will be hidden from all sales channels.')
-                                            ->default(true),
-                                    ]),
-                                Forms\Components\DatePicker::make('published_at')
-                                    ->label('Availability')
-                                    ->default(now())
-                                    ->required(),
-                            ]),
-                        Forms\Components\Card::make()
-                            ->schema([
-                                Forms\Components\Placeholder::make('Associations'),
-                                Forms\Components\BelongsToSelect::make('shop_brand_id')
-                                    ->relationship('brand', 'name')
-                                    ->searchable()
-                                    ->required(),
-                                Forms\Components\BelongsToManyMultiSelect::make('categories')
-                                    ->relationship('categories', 'name')
-                                    ->required(),
-                            ]),
-                    ])
-                    ->columnSpan(1),
-            ])
+            ->schema(static::getFormSchema(Forms\Components\Card::class))
             ->columns(3);
     }
 
     public static function table(Table $table): Table
     {
         return $table
-            ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->label('Name')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('brand.name')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('price')
-                    ->label('Price')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('sku')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('qty')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('security_stock')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\BooleanColumn::make('is_visible')
-                    ->label('Visibility')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('published_at')
-                    ->label('Publish Date')
-                    ->date()
-                    ->sortable(),
-            ])
+            ->columns(static::getTableColumns())
             ->filters([
                 //
             ]);
@@ -208,5 +75,152 @@ class ProductResource extends Resource
     protected static function getGlobalSearchEloquentQuery(): Builder
     {
         return parent::getGlobalSearchEloquentQuery()->with(['brand']);
+    }
+
+    public static function getFormSchema(string $layout = Forms\Components\Grid::class): array
+    {
+        return [
+            Forms\Components\Group::make()
+                ->schema([
+                    $layout::make()
+                        ->schema([
+                            Forms\Components\TextInput::make('name')
+                                ->required()
+                                ->reactive()
+                                ->afterStateUpdated(fn ($state, callable $set) => $set('slug', Str::slug($state))),
+                            Forms\Components\TextInput::make('slug')
+                                ->disabled()
+                                ->required()
+                                ->unique(Product::class, 'slug', fn ($record) => $record),
+                            Forms\Components\MarkdownEditor::make('description')
+                                ->columnSpan([
+                                    'sm' => 2,
+                                ]),
+                        ])->columns([
+                            'sm' => 2,
+                        ]),
+                    $layout::make()
+                        ->schema([
+                            SpatieMediaLibraryMultipleFileUpload::make('media')
+                                ->collection('product-images')
+                                ->required(),
+                        ])
+                        ->columns(1),
+                    $layout::make()
+                        ->schema([
+                            Forms\Components\Placeholder::make('Pricing'),
+                            Forms\Components\Grid::make()
+                                ->schema([
+                                    Forms\Components\TextInput::make('price')
+                                        ->numeric()
+                                        ->required(),
+                                    Forms\Components\TextInput::make('old_price')
+                                        ->label('Compare at price')
+                                        ->numeric()
+                                        ->required(),
+                                    Forms\Components\TextInput::make('cost')
+                                        ->label('Cost per item')
+                                        ->helperText('Customers won\'t see this price.')
+                                        ->numeric()
+                                        ->required(),
+                                ]),
+                        ]),
+                    $layout::make()
+                        ->schema([
+                            Forms\Components\Placeholder::make('Inventory'),
+                            Forms\Components\Grid::make()
+                                ->schema([
+                                    Forms\Components\TextInput::make('sku')
+                                        ->label('SKU (Stock Keeping Unit)')
+                                        ->required(),
+                                    Forms\Components\TextInput::make('barcode')
+                                        ->label('Barcode (ISBN, UPC, GTIN, etc.)')
+                                        ->required(),
+                                    Forms\Components\TextInput::make('qty')
+                                        ->label('Quantity')
+                                        ->required(),
+                                    Forms\Components\TextInput::make('security_stock')
+                                        ->helperText('The safety stock is the limit stock for your products which alerts you if the product stock will soon be out of stock.')
+                                        ->numeric()
+                                        ->required(),
+                                ]),
+                        ]),
+
+                    $layout::make()
+                        ->schema([
+                            Forms\Components\Placeholder::make('Shipping'),
+                            Forms\Components\Checkbox::make('backorder')
+                                ->label('This product can be returned'),
+                            Forms\Components\Checkbox::make('requires_shipping')
+                                ->label('This product will be shipped'),
+                        ])
+                        ->columns(1),
+                ])->columnSpan(2),
+            Forms\Components\Group::make()
+                ->schema([
+                    $layout::make()
+                        ->schema([
+                            Forms\Components\Placeholder::make('Status'),
+                            Forms\Components\Group::make()
+                                ->schema([
+                                    Forms\Components\Toggle::make('is_visible')
+                                        ->label('Visible')
+                                        ->helperText('This product will be hidden from all sales channels.')
+                                        ->default(true),
+                                ]),
+                            Forms\Components\DatePicker::make('published_at')
+                                ->label('Availability')
+                                ->default(now())
+                                ->required(),
+                        ])
+                        ->columns(1),
+                    $layout::make()
+                        ->schema([
+                            Forms\Components\Placeholder::make('Associations'),
+                            Forms\Components\BelongsToSelect::make('shop_brand_id')
+                                ->relationship('brand', 'name')
+                                ->searchable()
+                                ->required(),
+                            Forms\Components\BelongsToManyMultiSelect::make('categories')
+                                ->relationship('categories', 'name')
+                                ->required(),
+                        ])
+                        ->columns(1),
+                ])
+                ->columnSpan(1),
+        ];
+    }
+
+    public static function getTableColumns(): array
+    {
+        return [
+            Tables\Columns\TextColumn::make('name')
+                ->label('Name')
+                ->searchable()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('brand.name')
+                ->searchable()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('price')
+                ->label('Price')
+                ->searchable()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('sku')
+                ->searchable()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('qty')
+                ->searchable()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('security_stock')
+                ->searchable()
+                ->sortable(),
+            Tables\Columns\BooleanColumn::make('is_visible')
+                ->label('Visibility')
+                ->sortable(),
+            Tables\Columns\TextColumn::make('published_at')
+                ->label('Publish Date')
+                ->date()
+                ->sortable(),
+        ];
     }
 }
