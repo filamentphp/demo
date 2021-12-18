@@ -17,7 +17,7 @@ services:
     nginx:
         image: nginx:alpine
         ports:
-            - "${APP_PORT:-8004}:80"
+            - "${APP_PORT:-8000}:80"
         volumes:
             - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:cached
             - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:cached
