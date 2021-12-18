@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
+        "facade/ignition": "^2.17",
         "filament/filament": "^2.5",
         "filament/spatie-laravel-media-library-plugin": "^2.0",
         "filament/spatie-laravel-settings-plugin": "^2.0",
@@ -21,7 +22,6 @@
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.6",
-        "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.4",
