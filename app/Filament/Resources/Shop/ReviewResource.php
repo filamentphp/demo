@@ -106,7 +106,7 @@ class ReviewResource extends Resource
                 ->relationship('customer', 'name')
                 ->searchable()
                 ->required()
-                ->default(fn (Component $livewire) => $livewire->ownerRecord->id)
+                ->default(fn (Component $livewire) => $livewire->ownerRecord->id ?? null)
                 ->disabled(fn (Component $livewire): bool => $livewire instanceof ReviewsRelationManager),
             Forms\Components\TextInput::make('title')
                 ->required(),
