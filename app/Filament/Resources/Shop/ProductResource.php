@@ -68,7 +68,7 @@ class ProductResource extends Resource
     public static function getGlobalSearchResultDetails(Model $record): array
     {
         return [
-            'Brand' => $record->brand->name,
+            'Brand' => optional($record->brand)->name,
         ];
     }
 
