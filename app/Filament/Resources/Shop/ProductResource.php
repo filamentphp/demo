@@ -132,6 +132,7 @@ class ProductResource extends Resource
                                 ->schema([
                                     Forms\Components\TextInput::make('sku')
                                         ->label('SKU (Stock Keeping Unit)')
+                                        ->unique(Product::class, 'sku', fn ($record) => $record)
                                         ->required(),
                                     Forms\Components\TextInput::make('barcode')
                                         ->label('Barcode (ISBN, UPC, GTIN, etc.)')
