@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Shop;
 
+use App\Filament\Resources\Shop\CustomerResource\RelationManagers\ReviewsRelationManager;
 use App\Filament\Resources\Shop\ReviewResource\Pages;
 use App\Models\Shop\Review;
 use Filament\Forms;
@@ -11,6 +12,7 @@ use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Livewire\Component;
 
 class ReviewResource extends Resource
 {
@@ -103,7 +105,9 @@ class ReviewResource extends Resource
             Forms\Components\BelongsToSelect::make('blog_customer_id')
                 ->relationship('customer', 'name')
                 ->searchable()
-                ->required(),
+                ->required()
+                ->default(fn (Component $livewire) => $livewire->ownerRecord->id)
+                ->disabled(fn (Component $livewire): bool => $livewire instanceof ReviewsRelationManager),
             Forms\Components\TextInput::make('title')
                 ->required(),
             Forms\Components\TextInput::make('rating')
