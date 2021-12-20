@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Shop;
 
+use App\Filament\Resources\Shop\BrandResource\RelationManagers\ProductsRelationManager;
 use App\Filament\Resources\Shop\ProductResource\Pages;
 use App\Models\Shop\Product;
 use Filament\Forms;
@@ -13,6 +14,7 @@ use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Livewire\Component;
 
 class ProductResource extends Resource
 {
@@ -184,6 +186,8 @@ class ProductResource extends Resource
                             Forms\Components\BelongsToSelect::make('shop_brand_id')
                                 ->relationship('brand', 'name')
                                 ->searchable()
+                                ->default(fn (Component $livewire) => $livewire instanceof ProductsRelationManager ? $livewire->ownerRecord->id : null)
+                                ->disabled(fn (Component $livewire): bool => $livewire instanceof ProductsRelationManager)
                                 ->required(),
                             Forms\Components\BelongsToManyMultiSelect::make('categories')
                                 ->relationship('categories', 'name')
