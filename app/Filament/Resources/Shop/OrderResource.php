@@ -205,7 +205,7 @@ class OrderResource extends Resource
     public static function getGlobalSearchResultDetails(Model $record): array
     {
         return [
-            'Customer' => $record->customer->name,
+            'Customer' => optional($record->customer)->name,
         ];
     }
 
