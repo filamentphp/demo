@@ -98,11 +98,11 @@ class ReviewResource extends Resource
     public static function getFormSchema(): array
     {
         return [
-            Forms\Components\BelongsToSelect::make('blog_product_id')
+            Forms\Components\BelongsToSelect::make('shop_product_id')
                 ->relationship('product', 'name')
                 ->searchable()
                 ->required(),
-            Forms\Components\BelongsToSelect::make('blog_customer_id')
+            Forms\Components\BelongsToSelect::make('shop_customer_id')
                 ->relationship('customer', 'name')
                 ->searchable()
                 ->required()
