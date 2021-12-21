@@ -41,7 +41,7 @@ class DiscountResource extends Resource
                             ->label('Type')
                             ->options([
                                 'percentage' => 'Percentage',
-                                'fixed' => 'Fixed',
+                                'fixed_amount' => 'Fixed',
                             ])
                             ->required(),
                         Forms\Components\TextInput::make('value')
