@@ -144,10 +144,13 @@ class ProductResource extends Resource
                                         ->required(),
                                     Forms\Components\TextInput::make('qty')
                                         ->label('Quantity')
+                                        ->numeric()
+                                        ->rules(['integer', 'min:0'])
                                         ->required(),
                                     Forms\Components\TextInput::make('security_stock')
                                         ->helperText('The safety stock is the limit stock for your products which alerts you if the product stock will soon be out of stock.')
                                         ->numeric()
+                                        ->rules(['integer', 'min:0'])
                                         ->required(),
                                 ]),
                         ]),
