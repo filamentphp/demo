@@ -4,7 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class () extends Migration {
+return new class() extends Migration
+{
     /**
      * Run the migrations.
      *
@@ -16,7 +17,7 @@ return new class () extends Migration {
             $table->id();
             $table->foreignId('shop_customer_id')->nullable()->constrained()->nullOnDelete();
             $table->string('number', 32)->unique();
-            $table->decimal('total_price')->nullable();
+            $table->decimal('total_price', 10, 2)->nullable();
             $table->enum('status', ['new', 'processing', 'shipped', 'delivered', 'cancelled'])->default('new');
             $table->string('currency');
             $table->decimal('shipping_price')->nullable();
