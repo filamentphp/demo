@@ -9,8 +9,7 @@ A demo application to illustrate how Filament Admin works.
 Clone the repo locally:
 
 ```sh
-https://github.com/laravel-filament/demo.git filament-demo
-cd filament-demo
+git clone https://github.com/laravel-filament/demo.git filament-demo && filament-demo
 ```
 
 Install PHP dependencies:
