@@ -6,7 +6,7 @@ use App\Filament\Resources\Shop\BrandResource\RelationManagers\ProductsRelationM
 use App\Filament\Resources\Shop\ProductResource\Pages;
 use App\Models\Shop\Product;
 use Filament\Forms;
-use Filament\Forms\Components\SpatieMediaLibraryMultipleFileUpload;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
@@ -103,8 +103,11 @@ class ProductResource extends Resource
                         ]),
                     $layout::make()
                         ->schema([
-                            SpatieMediaLibraryMultipleFileUpload::make('media')
+                            SpatieMediaLibraryFileUpload::make('media')
                                 ->collection('product-images')
+                                ->multiple()
+                                ->minFiles(2)
+                                ->maxFiles(5)
                                 ->required(),
                         ])
                         ->columns(1),
