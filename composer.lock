@@ -1435,16 +1435,16 @@
         },
         {
             "name": "filament/filament",
-            "version": "v2.7.7",
+            "version": "v2.7.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel-filament/admin.git",
-                "reference": "bae47805fe1d13e3b32a6865af196a5168c341cd"
+                "reference": "eb2bae9139baa604891c5a7b21a63e58d37e4a5b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel-filament/admin/zipball/bae47805fe1d13e3b32a6865af196a5168c341cd",
-                "reference": "bae47805fe1d13e3b32a6865af196a5168c341cd",
+                "url": "https://api.github.com/repos/laravel-filament/admin/zipball/eb2bae9139baa604891c5a7b21a63e58d37e4a5b",
+                "reference": "eb2bae9139baa604891c5a7b21a63e58d37e4a5b",
                 "shasum": ""
             },
             "require": {
@@ -1491,11 +1491,11 @@
                 "issues": "https://github.com/laravel-filament/filament/issues",
                 "source": "https://github.com/laravel-filament/filament"
             },
-            "time": "2021-12-30T00:24:51+00:00"
+            "time": "2021-12-30T10:09:12+00:00"
         },
         {
             "name": "filament/forms",
-            "version": "v2.7.7",
+            "version": "v2.7.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel-filament/forms.git",
@@ -1551,7 +1551,7 @@
         },
         {
             "name": "filament/spatie-laravel-media-library-plugin",
-            "version": "v2.7.7",
+            "version": "v2.7.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel-filament/spatie-laravel-media-library-plugin.git",
@@ -1588,7 +1588,7 @@
         },
         {
             "name": "filament/spatie-laravel-settings-plugin",
-            "version": "v2.7.7",
+            "version": "v2.7.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel-filament/spatie-laravel-settings-plugin.git",
@@ -1632,7 +1632,7 @@
         },
         {
             "name": "filament/spatie-laravel-tags-plugin",
-            "version": "v2.7.7",
+            "version": "v2.7.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel-filament/spatie-laravel-tags-plugin.git",
@@ -1669,7 +1669,7 @@
         },
         {
             "name": "filament/spatie-laravel-translatable-plugin",
-            "version": "v2.7.7",
+            "version": "v2.7.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel-filament/spatie-laravel-translatable-plugin.git",
@@ -1713,7 +1713,7 @@
         },
         {
             "name": "filament/tables",
-            "version": "v2.7.7",
+            "version": "v2.7.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel-filament/tables.git",
