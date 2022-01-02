@@ -5,7 +5,7 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "php": "^7.3|^8.0",
+        "php": "^8.0",
         "facade/ignition": "^2.17",
         "filament/filament": "^2.5",
         "filament/spatie-laravel-media-library-plugin": "^2.0",
