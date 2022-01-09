@@ -144,6 +144,7 @@ class ProductResource extends Resource
                                         ->required(),
                                     Forms\Components\TextInput::make('barcode')
                                         ->label('Barcode (ISBN, UPC, GTIN, etc.)')
+                                        ->unique(Product::class, 'barcode', fn ($record) => $record)
                                         ->required(),
                                     Forms\Components\TextInput::make('qty')
                                         ->label('Quantity')
