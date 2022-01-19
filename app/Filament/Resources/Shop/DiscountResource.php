@@ -46,6 +46,7 @@ class DiscountResource extends Resource
                             ->required(),
                         Forms\Components\TextInput::make('value')
                             ->numeric()
+                            ->rules(['regex:/^\d{1,6}(\.\d{0,2})?$/'])
                             ->required(),
                         Forms\Components\Toggle::make('is_visible')
                             ->label('Visible to customers.')
