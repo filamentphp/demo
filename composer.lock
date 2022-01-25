@@ -1358,16 +1358,16 @@
         },
         {
             "name": "filament/filament",
-            "version": "v2.9.10",
+            "version": "v2.9.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel-filament/admin.git",
-                "reference": "09bd2661ccefc9af8a8023c8eb8d0a4c7a913177"
+                "reference": "5dba7e5da6e3bb2e1c2cb2b068bd2bea77e4371a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel-filament/admin/zipball/09bd2661ccefc9af8a8023c8eb8d0a4c7a913177",
-                "reference": "09bd2661ccefc9af8a8023c8eb8d0a4c7a913177",
+                "url": "https://api.github.com/repos/laravel-filament/admin/zipball/5dba7e5da6e3bb2e1c2cb2b068bd2bea77e4371a",
+                "reference": "5dba7e5da6e3bb2e1c2cb2b068bd2bea77e4371a",
                 "shasum": ""
             },
             "require": {
@@ -1414,20 +1414,20 @@
                 "issues": "https://github.com/laravel-filament/filament/issues",
                 "source": "https://github.com/laravel-filament/filament"
             },
-            "time": "2022-01-25T10:02:34+00:00"
+            "time": "2022-01-25T22:30:06+00:00"
         },
         {
             "name": "filament/forms",
-            "version": "v2.9.10",
+            "version": "v2.9.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel-filament/forms.git",
-                "reference": "66348e6543abde1ad9832878a8e5da808ce74266"
+                "reference": "3f5b1277656c35c1e0e74e3f9b5d94d0852d0508"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel-filament/forms/zipball/66348e6543abde1ad9832878a8e5da808ce74266",
-                "reference": "66348e6543abde1ad9832878a8e5da808ce74266",
+                "url": "https://api.github.com/repos/laravel-filament/forms/zipball/3f5b1277656c35c1e0e74e3f9b5d94d0852d0508",
+                "reference": "3f5b1277656c35c1e0e74e3f9b5d94d0852d0508",
                 "shasum": ""
             },
             "require": {
@@ -1470,11 +1470,11 @@
                 "issues": "https://github.com/laravel-filament/filament/issues",
                 "source": "https://github.com/laravel-filament/filament"
             },
-            "time": "2022-01-25T10:02:29+00:00"
+            "time": "2022-01-25T22:29:59+00:00"
         },
         {
             "name": "filament/spatie-laravel-media-library-plugin",
-            "version": "v2.9.10",
+            "version": "v2.9.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel-filament/spatie-laravel-media-library-plugin.git",
@@ -1511,16 +1511,16 @@
         },
         {
             "name": "filament/spatie-laravel-settings-plugin",
-            "version": "v2.9.10",
+            "version": "v2.9.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel-filament/spatie-laravel-settings-plugin.git",
-                "reference": "cbabac6bf6828bef61a8671afb3a84ba000d3a0b"
+                "reference": "97450401d4927154daecd9a3984e752f5f3ff1d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel-filament/spatie-laravel-settings-plugin/zipball/cbabac6bf6828bef61a8671afb3a84ba000d3a0b",
-                "reference": "cbabac6bf6828bef61a8671afb3a84ba000d3a0b",
+                "url": "https://api.github.com/repos/laravel-filament/spatie-laravel-settings-plugin/zipball/97450401d4927154daecd9a3984e752f5f3ff1d2",
+                "reference": "97450401d4927154daecd9a3984e752f5f3ff1d2",
                 "shasum": ""
             },
             "require": {
@@ -1554,11 +1554,11 @@
                 "issues": "https://github.com/laravel-filament/filament/issues",
                 "source": "https://github.com/laravel-filament/filament"
             },
-            "time": "2022-01-21T11:44:17+00:00"
+            "time": "2022-01-25T22:29:58+00:00"
         },
         {
             "name": "filament/spatie-laravel-tags-plugin",
-            "version": "v2.9.10",
+            "version": "v2.9.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel-filament/spatie-laravel-tags-plugin.git",
@@ -1595,7 +1595,7 @@
         },
         {
             "name": "filament/spatie-laravel-translatable-plugin",
-            "version": "v2.9.10",
+            "version": "v2.9.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel-filament/spatie-laravel-translatable-plugin.git",
@@ -1640,16 +1640,16 @@
         },
         {
             "name": "filament/tables",
-            "version": "v2.9.10",
+            "version": "v2.9.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel-filament/tables.git",
-                "reference": "d56986602f31054548a28ba483d7953dc4f76d4d"
+                "reference": "7040c25353866621ff4dd545bedc6267e86fdbc1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel-filament/tables/zipball/d56986602f31054548a28ba483d7953dc4f76d4d",
-                "reference": "d56986602f31054548a28ba483d7953dc4f76d4d",
+                "url": "https://api.github.com/repos/laravel-filament/tables/zipball/7040c25353866621ff4dd545bedc6267e86fdbc1",
+                "reference": "7040c25353866621ff4dd545bedc6267e86fdbc1",
                 "shasum": ""
             },
             "require": {
@@ -1689,7 +1689,7 @@
                 "issues": "https://github.com/laravel-filament/filament/issues",
                 "source": "https://github.com/laravel-filament/filament"
             },
-            "time": "2022-01-25T10:02:25+00:00"
+            "time": "2022-01-25T22:30:01+00:00"
         },
         {
             "name": "fruitcake/laravel-cors",
@@ -2243,16 +2243,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v8.80.0",
+            "version": "v8.81.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "8949a2e46b0f274f39c61eee8d5de1dc6a1f686b"
+                "reference": "9cc0efd724ce67a190b1695ba31a27bbb1ae9177"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/8949a2e46b0f274f39c61eee8d5de1dc6a1f686b",
-                "reference": "8949a2e46b0f274f39c61eee8d5de1dc6a1f686b",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/9cc0efd724ce67a190b1695ba31a27bbb1ae9177",
+                "reference": "9cc0efd724ce67a190b1695ba31a27bbb1ae9177",
                 "shasum": ""
             },
             "require": {
@@ -2285,7 +2285,7 @@
                 "symfony/var-dumper": "^5.4",
                 "tijsverkoyen/css-to-inline-styles": "^2.2.2",
                 "vlucas/phpdotenv": "^5.4.1",
-                "voku/portable-ascii": "^1.4.8"
+                "voku/portable-ascii": "^1.6.1"
             },
             "conflict": {
                 "tightenco/collect": "<5.5.33"
@@ -2412,7 +2412,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2022-01-18T15:51:42+00:00"
+            "time": "2022-01-25T16:41:46+00:00"
         },
         {
             "name": "laravel/sanctum",
@@ -2607,16 +2607,16 @@
         },
         {
             "name": "league/commonmark",
-            "version": "2.2.0",
+            "version": "2.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/commonmark.git",
-                "reference": "c5aadcc15548629787d02b86a7afef03b46271b5"
+                "reference": "f8afb78f087777b040e0ab8a6b6ca93f6fc3f18a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/c5aadcc15548629787d02b86a7afef03b46271b5",
-                "reference": "c5aadcc15548629787d02b86a7afef03b46271b5",
+                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/f8afb78f087777b040e0ab8a6b6ca93f6fc3f18a",
+                "reference": "f8afb78f087777b040e0ab8a6b6ca93f6fc3f18a",
                 "shasum": ""
             },
             "require": {
@@ -2624,7 +2624,7 @@
                 "league/config": "^1.1.1",
                 "php": "^7.4 || ^8.0",
                 "psr/event-dispatcher": "^1.0",
-                "symfony/deprecation-contracts": "^v2.1 || ^3.0",
+                "symfony/deprecation-contracts": "^2.1 || ^3.0",
                 "symfony/polyfill-php80": "^1.15"
             },
             "require-dev": {
@@ -2707,7 +2707,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-01-22T14:06:22+00:00"
+            "time": "2022-01-25T14:37:33+00:00"
         },
         {
             "name": "league/config",
