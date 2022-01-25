@@ -17,7 +17,10 @@ class ProductsRelationManager extends BelongsToManyRelationManager
     {
         return $form
             ->schema(ProductResource::getFormSchema())
-            ->columns(3);
+            ->columns([
+                'sm' => 3,
+                'lg' => null,
+            ]);
     }
 
     public static function table(Table $table): Table

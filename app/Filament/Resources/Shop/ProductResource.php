@@ -34,7 +34,10 @@ class ProductResource extends Resource
     {
         return $form
             ->schema(static::getFormSchema(Forms\Components\Card::class))
-            ->columns(3);
+            ->columns([
+                'sm' => 3,
+                'lg' => null,
+            ]);
     }
 
     public static function table(Table $table): Table
@@ -168,7 +171,9 @@ class ProductResource extends Resource
                                 ->label('This product will be shipped'),
                         ])
                         ->columns(1),
-                ])->columnSpan(2),
+                ])->columnSpan([
+                    'sm' => 2,
+                ]),
             Forms\Components\Group::make()
                 ->schema([
                     $layout::make()
