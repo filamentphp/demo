@@ -57,5 +57,5 @@ php artisan serve
 
 You're ready to go! Visit the url in your browser, and login with:
 
--   **Username:** admin@filamentadmin.com
+-   **Username:** admin@filamentphp.com
 -   **Password:** password

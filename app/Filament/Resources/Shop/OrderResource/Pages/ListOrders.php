@@ -10,9 +10,9 @@ class ListOrders extends ListRecords
 {
     protected static string $resource = OrderResource::class;
 
-    protected function getDeleteTableBulkAction(): Tables\Actions\BulkAction
+    protected function getDeleteBulkAction(): Tables\Actions\BulkAction
     {
-        return parent::getDeleteTableBulkAction()
+        return parent::getDeleteBulkAction()
             ->action(fn () => $this->notify(
                 'warning',
                 'Now, now, don’t be cheeky, leave some records for others to play with!',
