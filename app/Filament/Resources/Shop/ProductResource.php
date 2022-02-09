@@ -110,8 +110,7 @@ class ProductResource extends Resource
                                 ->collection('product-images')
                                 ->multiple()
                                 ->minFiles(2)
-                                ->maxFiles(5)
-                                ->required(),
+                                ->maxFiles(5),
                         ])
                         ->columns(1),
                     $layout::make()
