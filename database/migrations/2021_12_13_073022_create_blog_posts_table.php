@@ -4,7 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class () extends Migration {
+return new class() extends Migration
+{
     /**
      * Run the migrations.
      *
@@ -14,8 +15,8 @@ return new class () extends Migration {
     {
         Schema::create('blog_posts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('blog_author_id')->nullable()->constrained()->cascadeOnDelete();
-            $table->foreignId('blog_category_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('blog_author_id')->nullable()->cascadeOnDelete();
+            $table->foreignId('blog_category_id')->nullable()->nullOnDelete();
             $table->string('title');
             $table->string('slug')->unique();
             $table->longText('content');
@@ -33,6 +34,6 @@ return new class () extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('posts');
+        Schema::dropIfExists('blog_posts');
     }
 };
