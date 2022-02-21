@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Shop;
 
 use App\Filament\Resources\Shop\CustomerResource\Pages;
+use App\Filament\Resources\Shop\CustomerResource\RelationManagers;
 use App\Forms\Components\AddressForm;
 use App\Models\Shop\Customer;
 use Filament\Forms;
@@ -47,7 +48,9 @@ class CustomerResource extends Resource
                     ->columns([
                         'sm' => 2,
                     ])
-                    ->columnSpan(2),
+                    ->columnSpan([
+                        'sm' => 2,
+                    ]),
                 Forms\Components\Card::make()
                     ->schema([
                         Forms\Components\Placeholder::make('created_at')
@@ -59,7 +62,10 @@ class CustomerResource extends Resource
                     ])
                     ->columnSpan(1),
             ])
-            ->columns(3);
+            ->columns([
+                'sm' => 3,
+                'lg' => null,
+            ]);
     }
 
     public static function table(Table $table): Table
@@ -73,7 +79,7 @@ class CustomerResource extends Resource
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('country')
-                    ->getStateUsing(fn ($record): ?string => Country::find($record->address->country)?->name ?? null),
+                    ->getStateUsing(fn ($record): ?string => Country::find($record->address?->country)?->name ?? null),
                 Tables\Columns\TextColumn::make('phone')
                     ->searchable()
                     ->sortable(),
@@ -86,7 +92,7 @@ class CustomerResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\ReviewsRelationManager::class,
         ];
     }
 

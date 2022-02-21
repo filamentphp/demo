@@ -22,8 +22,8 @@ class AddressForm extends Forms\Components\Field
     public function saveRelationships(): void
     {
         $state = $this->getState();
-        $model = $this->getModel();
-        $relationship = $model->{$this->getRelationship()}();
+        $record = $this->getRecord();
+        $relationship = $record->{$this->getRelationship()}();
 
         if ($address = $relationship->first()) {
             $address->update($state);
@@ -31,7 +31,7 @@ class AddressForm extends Forms\Components\Field
             $relationship->updateOrCreate($state);
         }
 
-        $model->touch();
+        $record->touch();
     }
 
     public function getChildComponents(): array
@@ -61,10 +61,8 @@ class AddressForm extends Forms\Components\Field
     {
         parent::setUp();
 
-        $this->afterStateHydrated(function (AddressForm $component) {
-            $model = $component->getModel();
-
-            $address = $model instanceof Model ? $model->getRelationValue($this->getRelationship()) : null;
+        $this->afterStateHydrated(function (AddressForm $component, ?Model $record) {
+            $address = $record?->getRelationValue($this->getRelationship());
 
             $component->state($address ? $address->toArray() : [
                 'country' => null,

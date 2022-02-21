@@ -26,4 +26,10 @@ return new class () extends Migration {
             $table->unique(['tag_id', 'taggable_id', 'taggable_type']);
         });
     }
+
+    public function down()
+    {
+        Schema::dropIfExists('taggables');
+        Schema::dropIfExists('tags');
+    }
 };

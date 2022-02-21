@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Shop;
 
+use App\Filament\Resources\Shop\CustomerResource\RelationManagers\ReviewsRelationManager;
 use App\Filament\Resources\Shop\ReviewResource\Pages;
 use App\Models\Shop\Review;
 use Filament\Forms;
@@ -11,6 +12,7 @@ use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Livewire\Component;
 
 class ReviewResource extends Resource
 {
@@ -31,35 +33,13 @@ class ReviewResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Card::make()
-                    ->schema([
-                        Forms\Components\Grid::make()
-                            ->schema([
-                                Forms\Components\BelongsToSelect::make('blog_product_id')
-                                    ->relationship('product', 'name')
-                                    ->searchable()
-                                    ->required(),
-                                Forms\Components\BelongsToSelect::make('blog_customer_id')
-                                    ->relationship('customer', 'name')
-                                    ->searchable()
-                                    ->required(),
-                                Forms\Components\TextInput::make('title')
-                                    ->required(),
-                                Forms\Components\TextInput::make('rating')
-                                    ->label('Rating (1-5)')
-                                    ->numeric()
-                                    ->minValue(1)
-                                    ->maxValue(5)
-                                    ->required(),
-                                Forms\Components\Toggle::make('is_visible')
-                                    ->label('Visible to customers.')
-                                    ->default(true)
-                                    ->columnSpan(2),
-                                Forms\Components\MarkdownEditor::make('content')
-                                    ->label('Content')
-                                    ->columnSpan(2),
-                            ]),
+                    ->schema(static::getFormSchema())
+                    ->columns([
+                        'sm' => 2,
                     ])
-                    ->columnSpan(2),
+                    ->columnSpan([
+                        'sm' => 2,
+                    ]),
                 Forms\Components\Card::make()
                     ->schema([
                         Forms\Components\Placeholder::make('created_at')
@@ -71,33 +51,16 @@ class ReviewResource extends Resource
                     ])
                     ->columnSpan(1),
             ])
-            ->columns(3);
+            ->columns([
+                'sm' => 3,
+                'lg' => null,
+            ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
-            ->columns([
-                Tables\Columns\TextColumn::make('customer.name')
-                    ->label('Customer')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('product.name')
-                    ->label('Product')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('title')
-                    ->label('Title')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('rating')
-                    ->label('Rating')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\BooleanColumn::make('is_visible')
-                    ->label('Visibility')
-                    ->sortable(),
-            ])
+            ->columns(static::getTableColumns())
             ->filters([
                 //
             ]);
@@ -135,5 +98,65 @@ class ReviewResource extends Resource
     protected static function getGlobalSearchEloquentQuery(): Builder
     {
         return parent::getGlobalSearchEloquentQuery()->with(['customer', 'product']);
+    }
+
+    public static function getFormSchema(): array
+    {
+        return [
+            Forms\Components\BelongsToSelect::make('shop_product_id')
+                ->relationship('product', 'name')
+                ->searchable()
+                ->required(),
+            Forms\Components\BelongsToSelect::make('shop_customer_id')
+                ->relationship('customer', 'name')
+                ->searchable()
+                ->required()
+                ->default(fn (Component $livewire) => $livewire instanceof ReviewsRelationManager ? $livewire->ownerRecord->id : null)
+                ->disabled(fn (Component $livewire): bool => $livewire instanceof ReviewsRelationManager),
+            Forms\Components\TextInput::make('title')
+                ->required(),
+            Forms\Components\TextInput::make('rating')
+                ->label('Rating (1-5)')
+                ->numeric()
+                ->minValue(1)
+                ->maxValue(5)
+                ->required(),
+            Forms\Components\Toggle::make('is_visible')
+                ->label('Visible to customers.')
+                ->default(true)
+                ->columnSpan([
+                    'sm' => 2,
+                ]),
+            Forms\Components\MarkdownEditor::make('content')
+                ->label('Content')
+                ->columnSpan([
+                    'sm' => 2,
+                ]),
+        ];
+    }
+
+    public static function getTableColumns(): array
+    {
+        return [
+            Tables\Columns\TextColumn::make('customer.name')
+                ->label('Customer')
+                ->searchable()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('product.name')
+                ->label('Product')
+                ->searchable()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('title')
+                ->label('Title')
+                ->searchable()
+                ->sortable(),
+            Tables\Columns\TextColumn::make('rating')
+                ->label('Rating')
+                ->searchable()
+                ->sortable(),
+            Tables\Columns\BooleanColumn::make('is_visible')
+                ->label('Visibility')
+                ->sortable(),
+        ];
     }
 }

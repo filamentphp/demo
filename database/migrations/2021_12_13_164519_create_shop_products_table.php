@@ -24,32 +24,32 @@ return new class () extends Migration {
             $table->unsignedBigInteger('security_stock')->default(0);
             $table->boolean('featured')->default(false);
             $table->boolean('is_visible')->default(false);
-            $table->decimal('old_price')->nullable();
-            $table->decimal('price')->nullable();
-            $table->decimal('cost')->nullable();
+            $table->decimal('old_price', 10, 2)->nullable();
+            $table->decimal('price', 10, 2)->nullable();
+            $table->decimal('cost', 10, 2)->nullable();
             $table->enum('type', ['deliverable', 'downloadable'])->nullable();
             $table->boolean('backorder')->default(false);
             $table->boolean('requires_shipping')->default(false);
             $table->date('published_at')->nullable();
             $table->string('seo_title', 60)->nullable();
             $table->string('seo_description', 160)->nullable();
-            $table->decimal('weight_value')->nullable()
+            $table->decimal('weight_value', 10, 2)->nullable()
                 ->default(0.00)
                 ->unsigned();
             $table->string('weight_unit')->default('kg');
-            $table->decimal('height_value')->nullable()
+            $table->decimal('height_value', 10, 2)->nullable()
                 ->default(0.00)
                 ->unsigned();
             $table->string('height_unit')->default('cm');
-            $table->decimal('width_value')->nullable()
+            $table->decimal('width_value', 10, 2)->nullable()
                 ->default(0.00)
                 ->unsigned();
             $table->string('width_unit')->default('cm');
-            $table->decimal('depth_value')->nullable()
+            $table->decimal('depth_value', 10, 2)->nullable()
                 ->default(0.00)
                 ->unsigned();
             $table->string('depth_unit')->default('cm');
-            $table->decimal('volume_value')->nullable()
+            $table->decimal('volume_value', 10, 2)->nullable()
                 ->default(0.00)
                 ->unsigned();
             $table->string('volume_unit')->default('l');

@@ -14,16 +14,19 @@ class StatsOverviewWidget extends BaseWidget
         return [
             Card::make('Revenue', '$192.1k')
                 ->description('32k increase')
-                ->descriptionColor('success')
-                ->descriptionIcon('heroicon-s-trending-up'),
-            Card::make('New orders', '3543')
-                ->description('7% increase')
-                ->descriptionColor('success')
-                ->descriptionIcon('heroicon-s-trending-up'),
+                ->descriptionIcon('heroicon-s-trending-up')
+                ->chart([7, 2, 10, 3, 15, 4, 17])
+                ->color('success'),
             Card::make('New customers', '1340')
                 ->description('3% decrease')
-                ->descriptionColor('danger')
-                ->descriptionIcon('heroicon-s-trending-down'),
+                ->descriptionIcon('heroicon-s-trending-down')
+                ->chart([17, 16, 14, 15, 14, 13, 12])
+                ->color('danger'),
+            Card::make('New orders', '3543')
+                ->description('7% increase')
+                ->descriptionIcon('heroicon-s-trending-up')
+                ->chart([15, 4, 10, 2, 12, 4, 12])
+                ->color('success'),
         ];
     }
 }

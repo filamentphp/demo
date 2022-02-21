@@ -2,7 +2,7 @@
 
 A demo application to illustrate how Filament Admin works.
 
-![](https://user-images.githubusercontent.com/21066418/146419930-356e5ebd-9669-499c-94c0-666537ea118e.png)
+![Filament Demo](https://user-images.githubusercontent.com/21066418/153760666-8dfb0725-4a5f-4a62-abd7-af396e73ff5d.png)
 
 ## Installation
 
@@ -72,5 +72,5 @@ php artisan serve
 
 You're ready to go! Visit the url in your browser, and login with:
 
--   **Username:** admin@filamentadmin.com
+-   **Username:** admin@filamentphp.com
 -   **Password:** password

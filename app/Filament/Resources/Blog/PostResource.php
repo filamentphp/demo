@@ -63,7 +63,9 @@ class PostResource extends Resource
                     ->columns([
                         'sm' => 2,
                     ])
-                    ->columnSpan(2),
+                    ->columnSpan([
+                        'sm' => 2,
+                    ]),
                 Forms\Components\Card::make()
                     ->schema([
                         Forms\Components\Placeholder::make('created_at')
@@ -75,7 +77,10 @@ class PostResource extends Resource
                     ])
                     ->columnSpan(1),
             ])
-            ->columns(3);
+            ->columns([
+                'sm' => 3,
+                'lg' => null,
+            ]);
     }
 
     public static function table(Table $table): Table
@@ -148,9 +153,16 @@ class PostResource extends Resource
 
     public static function getGlobalSearchResultDetails(Model $record): array
     {
-        return [
-            'Author' => $record->author->name,
-            'Category' => $record->category->name,
-        ];
+        $details = [];
+
+        if ($record->author) {
+            $details['Author'] = $record->author->name;
+        }
+
+        if ($record->category) {
+            $details['Category'] = $record->category->name;
+        }
+
+        return $details;
     }
 }

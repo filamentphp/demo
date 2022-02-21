@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Shop;
 
 use App\Filament\Resources\Shop\BrandResource\Pages;
+use App\Filament\Resources\Shop\BrandResource\RelationManagers;
 use App\Models\Shop\Brand;
 use Filament\Forms;
 use Filament\Resources\Form;
@@ -51,7 +52,9 @@ class BrandResource extends Resource
                         Forms\Components\MarkdownEditor::make('description')
                             ->label('Description'),
                     ])
-                    ->columnSpan(2),
+                    ->columnSpan([
+                        'sm' => 2,
+                    ]),
                 Forms\Components\Card::make()
                     ->schema([
                         Forms\Components\Placeholder::make('created_at')
@@ -63,7 +66,10 @@ class BrandResource extends Resource
                     ])
                     ->columnSpan(1),
             ])
-            ->columns(3);
+            ->columns([
+                'sm' => 3,
+                'lg' => null,
+            ]);
     }
 
     public static function table(Table $table): Table
@@ -94,7 +100,7 @@ class BrandResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\ProductsRelationManager::class,
         ];
     }
 
