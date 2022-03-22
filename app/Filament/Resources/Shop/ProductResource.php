@@ -242,4 +242,9 @@ class ProductResource extends Resource
                 ->sortable(),
         ];
     }
+
+    protected static function getNavigationBadge(): ?string
+    {
+        return self::$model::whereColumn('qty', '<', 'security_stock')->count();
+    }
 }
