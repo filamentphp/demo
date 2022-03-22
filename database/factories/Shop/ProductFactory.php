@@ -38,7 +38,7 @@ class ProductFactory extends Factory
     public function configure(): ProductFactory
     {
         return $this->afterCreating(function (Product $product) {
-            $imageUrl = $this->faker->imageUrl(100,100, 'product', true);
+            $imageUrl = 'https://picsum.photos/200';
             $product->addMediaFromUrl($imageUrl)->toMediaCollection('product-images');
         });
     }
