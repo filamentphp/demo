@@ -8,6 +8,9 @@ use Filament\Tables;
 
 class ListCategories extends ListRecords
 {
+    use ListRecords\Concerns\CanCreateRecords;
+    use ListRecords\Concerns\CanEditRecords;
+
     protected static string $resource = CategoryResource::class;
 
     protected function getDeleteBulkAction(): Tables\Actions\BulkAction

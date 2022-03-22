@@ -8,6 +8,9 @@ use Filament\Tables;
 
 class ListAuthors extends ListRecords
 {
+    use ListRecords\Concerns\CanCreateRecords;
+    use ListRecords\Concerns\CanEditRecords;
+
     protected static string $resource = AuthorResource::class;
 
     protected function getDeleteBulkAction(): Tables\Actions\BulkAction
