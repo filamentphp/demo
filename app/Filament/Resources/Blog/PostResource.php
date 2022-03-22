@@ -68,6 +68,10 @@ class PostResource extends Resource
                     ]),
                 Forms\Components\Card::make()
                     ->schema([
+                        Forms\Components\FileUpload::make('image')
+                            ->label('Image')
+                            ->image(),
+
                         Forms\Components\Placeholder::make('created_at')
                             ->label('Created at')
                             ->content(fn (?Post $record): string => $record ? $record->created_at->diffForHumans() : '-'),
@@ -87,6 +91,9 @@ class PostResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\ImageColumn::make('image')
+                    ->label('Image'),
+
                 Tables\Columns\TextColumn::make('title')
                     ->searchable()
                     ->sortable(),

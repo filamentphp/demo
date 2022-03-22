@@ -19,6 +19,7 @@ class PostFactory extends Factory
             'title' => $title = $this->faker->unique()->sentence(4),
             'slug' => Str::slug($title),
             'content' => $this->faker->realText(),
+            'image' => $this->faker->image(storage_path('app/public'), 100, 100, null, null),
             'published_at' => $this->faker->dateTimeBetween('-6 month', '+1 month'),
             'created_at' => $this->faker->dateTimeBetween('-1 year', '-6 month'),
             'updated_at' => $this->faker->dateTimeBetween('-5 month', 'now'),
