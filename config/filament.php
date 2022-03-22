@@ -136,6 +136,9 @@ return [
 
     'layout' => [
         'max_content_width' => null,
+        'sidebar' => [
+            'is_collapsible_on_desktop' => true,
+        ],
         'forms' => [
             'actions' => [
                 'alignment' => 'left',
