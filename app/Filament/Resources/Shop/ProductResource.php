@@ -213,6 +213,10 @@ class ProductResource extends Resource
     public static function getTableColumns(): array
     {
         return [
+            Tables\Columns\ImageColumn::make('media')
+                ->label('Image')
+                ->getStateUsing(fn(Product $record) => $record->getFirstMediaUrl('product-images')),
+
             Tables\Columns\TextColumn::make('name')
                 ->label('Name')
                 ->searchable()

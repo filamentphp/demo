@@ -34,4 +34,12 @@ class ProductFactory extends Factory
             'updated_at' => $this->faker->dateTimeBetween('-5 month', 'now'),
         ];
     }
+
+    public function configure(): ProductFactory
+    {
+        return $this->afterCreating(function (Product $product) {
+            $imageUrl = $this->faker->imageUrl(100,100, 'product', true);
+            $product->addMediaFromUrl($imageUrl)->toMediaCollection('product-images');
+        });
+    }
 }
