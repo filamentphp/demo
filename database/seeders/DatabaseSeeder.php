@@ -37,7 +37,7 @@ class DatabaseSeeder extends Seeder
 
         Author::factory()->count(20)
             ->has(
-                Post::factory()->count(10)
+                Post::factory()->count(5)
                     ->state(fn (array $attributes, Author $author) => ['blog_category_id' => $blogCategories->random(1)->first()->id]),
                 'posts'
             )
