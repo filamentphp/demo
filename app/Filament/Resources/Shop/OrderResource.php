@@ -142,28 +142,31 @@ class OrderResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('customer.name')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(),
                 Tables\Columns\BadgeColumn::make('status')
                     ->colors([
-                        'secondary',
                         'danger' => 'cancelled',
                         'warning' => 'processing',
-                        'success' => 'delivered',
+                        'success' => fn ($state) => in_array($state, ['delivered', 'shipped']),
                     ]),
                 Tables\Columns\TextColumn::make('currency')
                     ->getStateUsing(fn ($record): ?string => Currency::find($record->currency)?->name ?? null)
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('total_price')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('shipping_price')
                     ->label('Shipping cost')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Order Date')
-                    ->date(),
+                    ->date()
+                    ->toggleable(),
             ])
             ->filters([
                 Tables\Filters\Filter::make('created_at')
@@ -218,5 +221,10 @@ class OrderResource extends Resource
     protected static function getGlobalSearchEloquentQuery(): Builder
     {
         return parent::getGlobalSearchEloquentQuery()->with(['customer', 'items']);
+    }
+
+    protected static function getNavigationBadge(): ?string
+    {
+        return static::$model::where('status', 'new')->count();
     }
 }

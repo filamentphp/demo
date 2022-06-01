@@ -219,27 +219,40 @@ class ProductResource extends Resource
                 ->sortable(),
             Tables\Columns\TextColumn::make('brand.name')
                 ->searchable()
-                ->sortable(),
+                ->sortable()
+                ->toggleable(),
             Tables\Columns\TextColumn::make('price')
                 ->label('Price')
                 ->searchable()
                 ->sortable(),
             Tables\Columns\TextColumn::make('sku')
                 ->searchable()
-                ->sortable(),
+                ->sortable()
+                ->toggleable(),
             Tables\Columns\TextColumn::make('qty')
                 ->searchable()
-                ->sortable(),
+                ->sortable()
+                ->toggleable(),
             Tables\Columns\TextColumn::make('security_stock')
                 ->searchable()
-                ->sortable(),
+                ->sortable()
+                ->toggleable()
+                ->toggledHiddenByDefault(),
             Tables\Columns\BooleanColumn::make('is_visible')
                 ->label('Visibility')
-                ->sortable(),
+                ->sortable()
+                ->toggleable(),
             Tables\Columns\TextColumn::make('published_at')
                 ->label('Publish Date')
                 ->date()
-                ->sortable(),
+                ->sortable()
+                ->toggleable()
+                ->toggledHiddenByDefault(),
         ];
+    }
+
+    protected static function getNavigationBadge(): ?string
+    {
+        return self::$model::whereColumn('qty', '<', 'security_stock')->count();
     }
 }
