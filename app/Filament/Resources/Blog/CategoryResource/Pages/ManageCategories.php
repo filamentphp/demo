@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\Blog\AuthorResource\Pages;
+namespace App\Filament\Resources\Blog\CategoryResource\Pages;
 
-use App\Filament\Resources\Blog\AuthorResource;
-use Filament\Resources\Pages\ListRecords;
+use App\Filament\Resources\Blog\CategoryResource;
+use Filament\Resources\Pages\ManageRecords;
 use Filament\Tables;
 
-class ListAuthors extends ListRecords
+class ManageCategories extends ManageRecords
 {
-    protected static string $resource = AuthorResource::class;
+    protected static string $resource = CategoryResource::class;
 
     protected function getDeleteBulkAction(): Tables\Actions\BulkAction
     {

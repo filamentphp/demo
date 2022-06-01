@@ -51,7 +51,7 @@ class CategoryResource extends Resource
                         'sm' => 2,
                     ])
                     ->columnSpan([
-                        'sm' => 2,
+                        'sm' => fn (?Category $record) => $record === null ? 3 : 2,
                     ]),
                 Forms\Components\Card::make()
                     ->schema([
@@ -62,7 +62,8 @@ class CategoryResource extends Resource
                             ->label('Last modified at')
                             ->content(fn (?Category $record): string => $record ? $record->updated_at->diffForHumans() : '-'),
                     ])
-                    ->columnSpan(1),
+                    ->columnSpan(1)
+                    ->hidden(fn (?Category $record) => $record === null),
             ])
             ->columns([
                 'sm' => 3,
@@ -101,7 +102,7 @@ class CategoryResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCategories::route('/'),
+            'index' => Pages\ManageCategories::route('/'),
             'create' => Pages\CreateCategory::route('/create'),
             'edit' => Pages\EditCategory::route('/{record}/edit'),
         ];

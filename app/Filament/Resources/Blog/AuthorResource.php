@@ -49,7 +49,7 @@ class AuthorResource extends Resource
                         'sm' => 2,
                     ])
                     ->columnSpan([
-                        'sm' => 2,
+                        'sm' => fn (?Author $record) => $record === null ? 3 : 2,
                     ]),
                 Forms\Components\Card::make()
                     ->schema([
@@ -60,7 +60,8 @@ class AuthorResource extends Resource
                             ->label('Last modified at')
                             ->content(fn (?Author $record): string => $record ? $record->updated_at->diffForHumans() : '-'),
                     ])
-                    ->columnSpan(1),
+                    ->columnSpan(1)
+                    ->hidden(fn (?Author $record) => $record === null),
             ])
             ->columns([
                 'sm' => 3,
@@ -98,7 +99,7 @@ class AuthorResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListAuthors::route('/'),
+            'index' => Pages\ManageAuthors::route('/'),
             'create' => Pages\CreateAuthor::route('/create'),
             'edit' => Pages\EditAuthor::route('/{record}/edit'),
         ];
