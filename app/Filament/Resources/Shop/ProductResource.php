@@ -213,9 +213,9 @@ class ProductResource extends Resource
     public static function getTableColumns(): array
     {
         return [
-            Tables\Columns\ImageColumn::make('media')
+            Tables\Columns\SpatieMediaLibraryImageColumn::make('product-image')
                 ->label('Image')
-                ->getStateUsing(fn(Product $record) => $record->getFirstMediaUrl('product-images')),
+                ->collection('product-images'),
 
             Tables\Columns\TextColumn::make('name')
                 ->label('Name')
