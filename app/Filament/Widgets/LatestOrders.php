@@ -3,7 +3,6 @@
 namespace App\Filament\Widgets;
 
 use App\Filament\Resources\Shop\OrderResource;
-use Closure;
 use Filament\Tables;
 use Filament\Widgets\TableWidget as BaseWidget;
 use Illuminate\Database\Eloquent\Builder;
