@@ -1158,16 +1158,16 @@
         },
         {
             "name": "filament/filament",
-            "version": "v2.12.23",
+            "version": "v2.12.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel-filament/admin.git",
-                "reference": "079ca897590d4806a2607b406ff53e68f9926990"
+                "reference": "a4f924c8501af66b7344ae51c693cda0c1056c9b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel-filament/admin/zipball/079ca897590d4806a2607b406ff53e68f9926990",
-                "reference": "079ca897590d4806a2607b406ff53e68f9926990",
+                "url": "https://api.github.com/repos/laravel-filament/admin/zipball/a4f924c8501af66b7344ae51c693cda0c1056c9b",
+                "reference": "a4f924c8501af66b7344ae51c693cda0c1056c9b",
                 "shasum": ""
             },
             "require": {
@@ -1215,20 +1215,20 @@
                 "issues": "https://github.com/laravel-filament/filament/issues",
                 "source": "https://github.com/laravel-filament/filament"
             },
-            "time": "2022-05-31T22:27:15+00:00"
+            "time": "2022-06-01T21:06:07+00:00"
         },
         {
             "name": "filament/forms",
-            "version": "v2.12.23",
+            "version": "v2.12.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel-filament/forms.git",
-                "reference": "237ebde6070b4d4fc83a868f94c38030259947bf"
+                "reference": "14d3465ebcd636157b9f72ea98846c3bb40d9e8b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel-filament/forms/zipball/237ebde6070b4d4fc83a868f94c38030259947bf",
-                "reference": "237ebde6070b4d4fc83a868f94c38030259947bf",
+                "url": "https://api.github.com/repos/laravel-filament/forms/zipball/14d3465ebcd636157b9f72ea98846c3bb40d9e8b",
+                "reference": "14d3465ebcd636157b9f72ea98846c3bb40d9e8b",
                 "shasum": ""
             },
             "require": {
@@ -1272,11 +1272,11 @@
                 "issues": "https://github.com/laravel-filament/filament/issues",
                 "source": "https://github.com/laravel-filament/filament"
             },
-            "time": "2022-05-31T22:27:09+00:00"
+            "time": "2022-06-01T21:06:01+00:00"
         },
         {
             "name": "filament/spatie-laravel-media-library-plugin",
-            "version": "v2.12.23",
+            "version": "v2.12.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel-filament/spatie-laravel-media-library-plugin.git",
@@ -1313,7 +1313,7 @@
         },
         {
             "name": "filament/spatie-laravel-settings-plugin",
-            "version": "v2.12.23",
+            "version": "v2.12.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel-filament/spatie-laravel-settings-plugin.git",
@@ -1360,7 +1360,7 @@
         },
         {
             "name": "filament/spatie-laravel-tags-plugin",
-            "version": "v2.12.23",
+            "version": "v2.12.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel-filament/spatie-laravel-tags-plugin.git",
@@ -1397,7 +1397,7 @@
         },
         {
             "name": "filament/spatie-laravel-translatable-plugin",
-            "version": "v2.12.23",
+            "version": "v2.12.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel-filament/spatie-laravel-translatable-plugin.git",
@@ -1443,7 +1443,7 @@
         },
         {
             "name": "filament/support",
-            "version": "v2.12.23",
+            "version": "v2.12.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel-filament/support.git",
@@ -1492,7 +1492,7 @@
         },
         {
             "name": "filament/tables",
-            "version": "v2.12.23",
+            "version": "v2.12.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel-filament/tables.git",
