@@ -106,6 +106,7 @@ class OrderResource extends Resource
                                             ]),
                                     ])
                                     ->dehydrated()
+                                    ->orderable()
                                     ->defaultItems(1)
                                     ->disableLabel()
                                     ->columns([
