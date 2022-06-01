@@ -142,7 +142,8 @@ class OrderResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('customer.name')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(),
                 Tables\Columns\BadgeColumn::make('status')
                     ->colors([
                         'danger' => 'cancelled',
@@ -152,17 +153,20 @@ class OrderResource extends Resource
                 Tables\Columns\TextColumn::make('currency')
                     ->getStateUsing(fn ($record): ?string => Currency::find($record->currency)?->name ?? null)
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('total_price')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('shipping_price')
                     ->label('Shipping cost')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Order Date')
-                    ->date(),
+                    ->date()
+                    ->toggleable(),
             ])
             ->filters([
                 Tables\Filters\Filter::make('created_at')
