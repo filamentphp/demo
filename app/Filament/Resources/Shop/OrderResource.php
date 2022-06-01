@@ -218,4 +218,9 @@ class OrderResource extends Resource
     {
         return parent::getGlobalSearchEloquentQuery()->with(['customer', 'items']);
     }
+
+    protected static function getNavigationBadge(): ?string
+    {
+        return static::$model::where('status', 'new')->count();
+    }
 }
