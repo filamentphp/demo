@@ -1162,16 +1162,16 @@
         },
         {
             "name": "filament/filament",
-            "version": "v2.10.33",
+            "version": "v2.10.32",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel-filament/admin.git",
-                "reference": "0e45d820a235d6a437f0da4300ded580e1693499"
+                "reference": "b4535aacf1fc2d2f26b0173affe40c5578dd8b8b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel-filament/admin/zipball/0e45d820a235d6a437f0da4300ded580e1693499",
-                "reference": "0e45d820a235d6a437f0da4300ded580e1693499",
+                "url": "https://api.github.com/repos/laravel-filament/admin/zipball/b4535aacf1fc2d2f26b0173affe40c5578dd8b8b",
+                "reference": "b4535aacf1fc2d2f26b0173affe40c5578dd8b8b",
                 "shasum": ""
             },
             "require": {
@@ -1218,20 +1218,20 @@
                 "issues": "https://github.com/laravel-filament/filament/issues",
                 "source": "https://github.com/laravel-filament/filament"
             },
-            "time": "2022-03-21T18:12:00+00:00"
+            "time": "2022-03-20T23:19:55+00:00"
         },
         {
             "name": "filament/forms",
-            "version": "v2.10.33",
+            "version": "v2.10.32",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel-filament/forms.git",
-                "reference": "f69dbd28b3f103edb69d9f1072213bd38365e766"
+                "reference": "bc80a60c0a5f87b74f6da31236e423f6aee8d814"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel-filament/forms/zipball/f69dbd28b3f103edb69d9f1072213bd38365e766",
-                "reference": "f69dbd28b3f103edb69d9f1072213bd38365e766",
+                "url": "https://api.github.com/repos/laravel-filament/forms/zipball/bc80a60c0a5f87b74f6da31236e423f6aee8d814",
+                "reference": "bc80a60c0a5f87b74f6da31236e423f6aee8d814",
                 "shasum": ""
             },
             "require": {
@@ -1274,11 +1274,11 @@
                 "issues": "https://github.com/laravel-filament/filament/issues",
                 "source": "https://github.com/laravel-filament/filament"
             },
-            "time": "2022-03-21T18:11:57+00:00"
+            "time": "2022-03-20T23:19:47+00:00"
         },
         {
             "name": "filament/spatie-laravel-media-library-plugin",
-            "version": "v2.10.33",
+            "version": "v2.10.32",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel-filament/spatie-laravel-media-library-plugin.git",
@@ -1315,7 +1315,7 @@
         },
         {
             "name": "filament/spatie-laravel-settings-plugin",
-            "version": "v2.10.33",
+            "version": "v2.10.32",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel-filament/spatie-laravel-settings-plugin.git",
@@ -1362,7 +1362,7 @@
         },
         {
             "name": "filament/spatie-laravel-tags-plugin",
-            "version": "v2.10.33",
+            "version": "v2.10.32",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel-filament/spatie-laravel-tags-plugin.git",
@@ -1399,7 +1399,7 @@
         },
         {
             "name": "filament/spatie-laravel-translatable-plugin",
-            "version": "v2.10.33",
+            "version": "v2.10.32",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel-filament/spatie-laravel-translatable-plugin.git",
@@ -1445,7 +1445,7 @@
         },
         {
             "name": "filament/tables",
-            "version": "v2.10.33",
+            "version": "v2.10.32",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel-filament/tables.git",
@@ -4798,16 +4798,16 @@
         },
         {
             "name": "spatie/laravel-settings",
-            "version": "2.4.0",
+            "version": "2.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-settings.git",
-                "reference": "2ed608b08fc8bb3358961482f06449fc0a9efcae"
+                "reference": "6ab54be56c7f39ed758daaa6044ee8b87ad77bfd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-settings/zipball/2ed608b08fc8bb3358961482f06449fc0a9efcae",
-                "reference": "2ed608b08fc8bb3358961482f06449fc0a9efcae",
+                "url": "https://api.github.com/repos/spatie/laravel-settings/zipball/6ab54be56c7f39ed758daaa6044ee8b87ad77bfd",
+                "reference": "6ab54be56c7f39ed758daaa6044ee8b87ad77bfd",
                 "shasum": ""
             },
             "require": {
@@ -4866,7 +4866,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-settings/issues",
-                "source": "https://github.com/spatie/laravel-settings/tree/2.4.0"
+                "source": "https://github.com/spatie/laravel-settings/tree/2.3.3"
             },
             "funding": [
                 {
@@ -4878,7 +4878,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-03-22T09:52:35+00:00"
+            "time": "2022-03-18T15:07:04+00:00"
         },
         {
             "name": "spatie/laravel-tags",
@@ -10378,16 +10378,16 @@
         },
         {
             "name": "spatie/laravel-ignition",
-            "version": "1.1.1",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-ignition.git",
-                "reference": "f3243fd99351e0a79df6886a5354d8dd88d6d0d2"
+                "reference": "5b8c360d1f6bcba339a6d593efa02816c06d17c3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-ignition/zipball/f3243fd99351e0a79df6886a5354d8dd88d6d0d2",
-                "reference": "f3243fd99351e0a79df6886a5354d8dd88d6d0d2",
+                "url": "https://api.github.com/repos/spatie/laravel-ignition/zipball/5b8c360d1f6bcba339a6d593efa02816c06d17c3",
+                "reference": "5b8c360d1f6bcba339a6d593efa02816c06d17c3",
                 "shasum": ""
             },
             "require": {
@@ -10461,7 +10461,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-03-21T07:13:26+00:00"
+            "time": "2022-03-19T17:03:56+00:00"
         },
         {
             "name": "symfony/debug",
