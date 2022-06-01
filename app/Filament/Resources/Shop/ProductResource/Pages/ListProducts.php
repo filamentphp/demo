@@ -18,4 +18,9 @@ class ListProducts extends ListRecords
                 'Now, now, don’t be cheeky, leave some records for others to play with!',
             ));
     }
+
+    protected function getHeaderWidgets(): array
+    {
+        return ProductResource::getWidgets();
+    }
 }

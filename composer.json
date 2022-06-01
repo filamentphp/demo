@@ -11,6 +11,7 @@
         "filament/spatie-laravel-settings-plugin": "^2.10",
         "filament/spatie-laravel-tags-plugin": "^2.10",
         "filament/spatie-laravel-translatable-plugin": "^2.10",
+        "flowframe/laravel-trend": "^0.1.1",
         "fruitcake/laravel-cors": "^2.0.5",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^9.0",
