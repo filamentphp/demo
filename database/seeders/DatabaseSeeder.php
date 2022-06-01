@@ -15,11 +15,15 @@ use App\Models\Shop\Product;
 use App\Models\Shop\Review;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Storage;
 
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
+        // Clear images
+        Storage::deleteDirectory('public');
+
         // Admin
         User::factory()->create([
             'name' => 'Demo User',
@@ -30,6 +34,7 @@ class DatabaseSeeder extends Seeder
         // Blog
         $blogCategories = BlogCategory::factory()->count(20)->create();
         $this->command->info('Blog categories created.');
+
         Author::factory()->count(20)
             ->has(
                 Post::factory()->count(10)
@@ -46,12 +51,16 @@ class DatabaseSeeder extends Seeder
                 'children'
             )->create();
         $this->command->info('Shop categories created.');
+
         $brands = Brand::factory()->count(20)->create();
         $this->command->info('Shop brands created.');
+
         $customers = Customer::factory()->count(1000)->create();
         $this->command->info('Shop customers created.');
+
         Discount::factory()->count(20)->create();
         $this->command->info('Shop discounts created.');
+
         $products = Product::factory()->count(50)
             ->sequence(fn ($sequence) => ['shop_brand_id' => $brands->random(1)->first()->id])
             ->hasAttached($categories->random(rand(3, 6)), ['created_at' => now(), 'updated_at' => now()])
@@ -62,6 +71,7 @@ class DatabaseSeeder extends Seeder
             )
             ->create();
         $this->command->info('Shop products created.');
+
         Order::factory()->count(1000)
             ->sequence(fn ($sequence) => ['shop_customer_id' => $customers->random(1)->first()->id])
             ->has(

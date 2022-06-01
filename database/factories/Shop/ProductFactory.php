@@ -39,7 +39,9 @@ class ProductFactory extends Factory
     {
         return $this->afterCreating(function (Product $product) {
             $imageUrl = 'https://picsum.photos/200';
-            $product->addMediaFromUrl($imageUrl)->toMediaCollection('product-images');
+            $product
+                ->addMediaFromUrl($imageUrl)
+                ->toMediaCollection('product-images');
         });
     }
 }
