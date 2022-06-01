@@ -221,6 +221,10 @@ class ProductResource extends Resource
     public static function getTableColumns(): array
     {
         return [
+            Tables\Columns\SpatieMediaLibraryImageColumn::make('product-image')
+                ->label('Image')
+                ->collection('product-images'),
+
             Tables\Columns\TextColumn::make('name')
                 ->label('Name')
                 ->searchable()
