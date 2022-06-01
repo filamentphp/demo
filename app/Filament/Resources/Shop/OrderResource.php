@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Shop;
 
+use App\Filament\Resources\OrderResource\Widgets\OrderStats;
 use App\Filament\Resources\Shop\OrderResource\Pages;
 use App\Models\Shop\Customer;
 use App\Models\Shop\Order;
@@ -194,6 +195,13 @@ class OrderResource extends Resource
     {
         return [
             //
+        ];
+    }
+
+    public static function getWidgets(): array
+    {
+        return [
+            OrderStats::class,
         ];
     }
 
