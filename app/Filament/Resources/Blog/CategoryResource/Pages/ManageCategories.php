@@ -3,14 +3,11 @@
 namespace App\Filament\Resources\Blog\CategoryResource\Pages;
 
 use App\Filament\Resources\Blog\CategoryResource;
-use Filament\Resources\Pages\ListRecords;
+use Filament\Resources\Pages\ManageRecords;
 use Filament\Tables;
 
-class ListCategories extends ListRecords
+class ManageCategories extends ManageRecords
 {
-    use ListRecords\Concerns\CanCreateRecords;
-    use ListRecords\Concerns\CanEditRecords;
-
     protected static string $resource = CategoryResource::class;
 
     protected function getDeleteBulkAction(): Tables\Actions\BulkAction
