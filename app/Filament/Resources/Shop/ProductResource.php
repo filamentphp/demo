@@ -205,8 +205,7 @@ class ProductResource extends Resource
                                 ->relationship('brand', 'name')
                                 ->searchable()
                                 ->default(fn (Component $livewire) => $livewire instanceof ProductsRelationManager ? $livewire->ownerRecord->id : null)
-                                ->disabled(fn (Component $livewire): bool => $livewire instanceof ProductsRelationManager)
-                                ->required(),
+                                ->disabled(fn (Component $livewire): bool => $livewire instanceof ProductsRelationManager),
                             Forms\Components\BelongsToManyMultiSelect::make('categories')
                                 ->relationship('categories', 'name')
                                 ->required(),
