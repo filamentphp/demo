@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Blog\Author;
 use App\Models\Blog\Category as BlogCategory;
 use App\Models\Blog\Post;
+use App\Models\Role;
 use App\Models\Shop\Brand;
 use App\Models\Shop\Category as ShopCategory;
 use App\Models\Shop\Customer;
@@ -24,12 +25,31 @@ class DatabaseSeeder extends Seeder
         // Clear images
         Storage::deleteDirectory('public');
 
+        // Roles
+        $admin = Role::create(['slug' => 'admin', 'title' => 'Admin']);
+        Role::create(['slug' => 'store_manager', 'title' => 'Store Manager']);
+        Role::create(['slug' => 'brand_manager', 'title' => 'Brand Manager']);
+        Role::create(['slug' => 'analyst', 'title' => 'Analyst']);
+        Role::create(['slug' => 'editor', 'title' => 'Editor']);
+
+        $this->command->info('Roles created.');
+
         // Admin
-        User::factory()->create([
-            'name' => 'Demo User',
-            'email' => 'admin@filamentphp.com',
-        ]);
+        User::factory()
+            ->hasAttached($admin)
+            ->create([
+                'name' => 'Demo User',
+                'email' => 'admin@filamentphp.com',
+            ]);
+
         $this->command->info('Admin user created.');
+
+        // Users
+        for ($i = 0; $i < 10; $i++) {
+            User::factory()
+                ->hasAttached(Role::query()->inRandomOrder()->limit(2)->get())
+                ->create();
+        }
 
         // Blog
         $blogCategories = BlogCategory::factory()->count(20)->create();
