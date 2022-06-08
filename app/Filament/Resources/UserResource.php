@@ -53,7 +53,8 @@ class UserResource extends Resource
                     ->required(fn ($livewire) => $livewire instanceof Pages\CreateUser)
                     ->maxLength(255)
                     ->dehydrated(fn ($state, $record) => filled($state) && $record->id !== 1)
-                    ->dehydrateStateUsing(fn ($state) => filled($state) ? Hash::make($state) : null),
+                    ->dehydrateStateUsing(fn ($state) => Hash::make($state))
+                    ->disableAutocomplete(),
             ]);
     }
 
