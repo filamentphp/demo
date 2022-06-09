@@ -25,7 +25,8 @@ class PaymentsRelationManager extends HasManyThroughRelationManager
                     ->columnSpan(2)
                     ->required(),
 
-                Forms\Components\TextInput::make('amount')
+                Forms\Components\TextInput ::make('amount')
+                    ->rules(['numeric'])
                     ->required(),
 
                 Forms\Components\Select::make('currency')

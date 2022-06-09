@@ -25,6 +25,7 @@ class PaymentsRelationManager extends HasManyRelationManager
                     ->required(),
 
                 Forms\Components\TextInput::make('amount')
+                    ->rules(['numeric'])
                     ->required(),
 
                 Forms\Components\Select::make('currency')
