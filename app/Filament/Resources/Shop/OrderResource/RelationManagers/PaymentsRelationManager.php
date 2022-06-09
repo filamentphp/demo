@@ -51,7 +51,7 @@ class PaymentsRelationManager extends HasManyRelationManager
 
                 Tables\Columns\TextColumn::make('amount')
                     ->sortable()
-                    ->money(fn ($record) => $record->currency),
+                    ->money(),
 
                 Tables\Columns\TextColumn::make('provider')
                     ->formatStateUsing(fn ($state) => Str::headline($state)),
