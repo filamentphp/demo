@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Shop\OrderResource\RelationManagers;
 
+use Akaunting\Money\Currency;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\RelationManagers\HasManyRelationManager;
@@ -20,9 +21,15 @@ class PaymentsRelationManager extends HasManyRelationManager
         return $form
             ->schema([
                 Forms\Components\TextInput::make('reference')
+                    ->columnSpan(2)
                     ->required(),
 
                 Forms\Components\TextInput::make('amount')
+                    ->required(),
+
+                Forms\Components\Select::make('currency')
+                    ->options(collect(Currency::getCurrencies())->mapWithKeys(fn ($item, $key) => [$key => data_get($item, 'name')]))
+                    ->searchable()
                     ->required(),
 
                 Forms\Components\Select::make('provider')
@@ -51,7 +58,7 @@ class PaymentsRelationManager extends HasManyRelationManager
 
                 Tables\Columns\TextColumn::make('amount')
                     ->sortable()
-                    ->money(),
+                    ->money(fn ($record) => $record->currency),
 
                 Tables\Columns\TextColumn::make('provider')
                     ->formatStateUsing(fn ($state) => Str::headline($state)),
