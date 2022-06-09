@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\ProductResource\Widgets;
+namespace App\Filament\Resources\Shop\ProductResource\Widgets;
 
 use App\Models\Shop\Product;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;

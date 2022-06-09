@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources\Shop;
 
-use App\Filament\Resources\OrderResource\Widgets\OrderStats;
 use App\Filament\Resources\Shop\OrderResource\Pages;
 use App\Filament\Resources\Shop\OrderResource\RelationManagers;
+use App\Filament\Resources\Shop\OrderResource\Widgets\OrderStats;
 use App\Forms\Components\AddressForm;
 use App\Models\Shop\Customer;
 use App\Models\Shop\Order;
