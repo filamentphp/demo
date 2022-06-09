@@ -79,9 +79,6 @@ class DatabaseSeeder extends Seeder
         $customers = Customer::factory()->count(1000)->create();
         $this->command->info('Shop customers created.');
 
-        Discount::factory()->count(20)->create();
-        $this->command->info('Shop discounts created.');
-
         $products = Product::factory()->count(50)
             ->sequence(fn ($sequence) => ['shop_brand_id' => $brands->random(1)->first()->id])
             ->hasAttached($categories->random(rand(3, 6)), ['created_at' => now(), 'updated_at' => now()])
