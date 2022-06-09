@@ -7,8 +7,8 @@ use App\Filament\Resources\Shop\OrderResource;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\RelationManagers\HasManyThroughRelationManager;
-use Filament\Tables;
 use Filament\Resources\Table;
+use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 
@@ -27,7 +27,7 @@ class PaymentsRelationManager extends HasManyThroughRelationManager
                     ->relationship(
                         'order',
                         'number',
-                        fn(Builder $query, HasManyThroughRelationManager $livewire) => $query->whereBelongsTo($livewire->ownerRecord)
+                        fn (Builder $query, HasManyThroughRelationManager $livewire) => $query->whereBelongsTo($livewire->ownerRecord)
                     )
                     ->searchable()
                     ->hidden(fn (HasManyThroughRelationManager $livewire) => $livewire->mountedTableAction === 'edit')
@@ -37,7 +37,7 @@ class PaymentsRelationManager extends HasManyThroughRelationManager
                     ->columnSpan(fn (HasManyThroughRelationManager $livewire) => $livewire->mountedTableAction === 'edit' ? 2 : 1)
                     ->required(),
 
-                Forms\Components\TextInput ::make('amount')
+                Forms\Components\TextInput::make('amount')
                     ->numeric()
                     ->required(),
 
