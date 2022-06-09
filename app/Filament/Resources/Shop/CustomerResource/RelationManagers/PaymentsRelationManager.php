@@ -30,9 +30,8 @@ class PaymentsRelationManager extends HasManyThroughRelationManager
 
                 Forms\Components\Select::make('currency')
                     ->options(collect(Currency::getCurrencies())->mapWithKeys(fn ($item, $key) => [$key => data_get($item, 'name')]))
-                    ->searchalbe()
+                    ->searchable()
                     ->required(),
-
 
                 Forms\Components\Select::make('provider')
                     ->options([
