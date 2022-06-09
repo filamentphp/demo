@@ -68,7 +68,7 @@ class PaymentsRelationManager extends HasManyThroughRelationManager
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('order.number')
-                    ->url(fn ($record) => OrderResource::getUrl('edit', [$record]))
+                    ->url(fn ($record) => OrderResource::getUrl('edit', [$record->order]))
                     ->searchable()
                     ->sortable(),
 
