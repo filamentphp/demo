@@ -3,10 +3,12 @@
 namespace App\Models\Shop;
 
 use App\Models\Address;
+use App\Models\Comment;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Customer extends Model
 {
@@ -36,13 +38,18 @@ class Customer extends Model
         'birthday' => 'date',
     ];
 
-    public function address(): MorphOne
+    public function addresses(): MorphToMany
     {
-        return $this->morphOne(Address::class, 'addressable');
+        return $this->morphToMany(Address::class, 'addressable');
     }
 
-    public function reviews(): HasMany
+    public function comments(): HasMany
     {
-        return $this->hasMany(Review::class, 'shop_customer_id');
+        return $this->hasMany(Comment::class);
+    }
+
+    public function payments(): HasManyThrough
+    {
+        return $this->hasManyThrough(Payment::class, Order::class, 'shop_customer_id');
     }
 }

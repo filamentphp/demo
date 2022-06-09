@@ -2,9 +2,10 @@
 
 namespace App\Filament\Resources\Shop;
 
-use App\Filament\Resources\ProductResource\Widgets\ProductStats;
 use App\Filament\Resources\Shop\BrandResource\RelationManagers\ProductsRelationManager;
 use App\Filament\Resources\Shop\ProductResource\Pages;
+use App\Filament\Resources\Shop\ProductResource\RelationManagers;
+use App\Filament\Resources\Shop\ProductResource\Widgets\ProductStats;
 use App\Models\Shop\Product;
 use Filament\Forms;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
@@ -53,7 +54,7 @@ class ProductResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\CommentsRelationManager::class,
         ];
     }
 
@@ -205,8 +206,7 @@ class ProductResource extends Resource
                                 ->relationship('brand', 'name')
                                 ->searchable()
                                 ->default(fn (Component $livewire) => $livewire instanceof ProductsRelationManager ? $livewire->ownerRecord->id : null)
-                                ->disabled(fn (Component $livewire): bool => $livewire instanceof ProductsRelationManager)
-                                ->required(),
+                                ->disabled(fn (Component $livewire): bool => $livewire instanceof ProductsRelationManager),
                             Forms\Components\BelongsToManyMultiSelect::make('categories')
                                 ->relationship('categories', 'name')
                                 ->required(),

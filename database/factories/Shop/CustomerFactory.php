@@ -3,7 +3,6 @@
 namespace Database\Factories\Shop;
 
 use App\Models\Shop\Customer;
-use Database\Factories\AddressFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CustomerFactory extends Factory
@@ -24,12 +23,5 @@ class CustomerFactory extends Factory
             'created_at' => $this->faker->dateTimeBetween('-1 year', '-6 month'),
             'updated_at' => $this->faker->dateTimeBetween('-5 month', 'now'),
         ];
-    }
-
-    public function configure(): Factory
-    {
-        return $this->afterCreating(function (Customer $customer) {
-            $customer->address()->save(AddressFactory::new()->make());
-        });
     }
 }
