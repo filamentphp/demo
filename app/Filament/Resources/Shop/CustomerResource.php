@@ -93,6 +93,7 @@ class CustomerResource extends Resource
     {
         return [
             RelationManagers\ReviewsRelationManager::class,
+            RelationManagers\PaymentsRelationManager::class,
         ];
     }
 

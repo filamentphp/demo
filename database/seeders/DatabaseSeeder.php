@@ -12,6 +12,7 @@ use App\Models\Shop\Customer;
 use App\Models\Shop\Discount;
 use App\Models\Shop\Order;
 use App\Models\Shop\OrderItem;
+use App\Models\Shop\Payment;
 use App\Models\Shop\Product;
 use App\Models\Shop\Review;
 use App\Models\User;
@@ -94,6 +95,7 @@ class DatabaseSeeder extends Seeder
 
         Order::factory()->count(1000)
             ->sequence(fn ($sequence) => ['shop_customer_id' => $customers->random(1)->first()->id])
+            ->has(Payment::factory()->count(rand(1, 3)))
             ->has(
                 OrderItem::factory()->count(rand(2, 5))
                     ->state(fn (array $attributes, Order $order) => ['shop_product_id' => $products->random(1)->first()->id]),
