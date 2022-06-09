@@ -2,11 +2,12 @@
 
 namespace App\Models\Shop;
 
+use App\Models\Comment;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
@@ -75,8 +76,8 @@ class Product extends Model implements HasMedia
         return $this->belongsToMany(Category::class, 'shop_category_product', 'shop_category_id', 'shop_product_id');
     }
 
-    public function reviews(): HasMany
+    public function comments(): MorphMany
     {
-        return $this->hasMany(Review::class, 'shop_product_id');
+        return $this->morphMany(Comment::class, 'commentable');
     }
 }

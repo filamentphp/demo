@@ -3,6 +3,7 @@
 namespace App\Models\Shop;
 
 use App\Models\Address;
+use App\Models\Comment;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -42,9 +43,9 @@ class Customer extends Model
         return $this->morphOne(Address::class, 'addressable');
     }
 
-    public function reviews(): HasMany
+    public function comments(): HasMany
     {
-        return $this->hasMany(Review::class, 'shop_customer_id');
+        return $this->hasMany(Comment::class);
     }
 
     public function payments(): HasManyThrough
