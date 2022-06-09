@@ -9,6 +9,7 @@ use Filament\Resources\Form;
 use Filament\Resources\RelationManagers\HasManyThroughRelationManager;
 use Filament\Tables;
 use Filament\Resources\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 
 class PaymentsRelationManager extends HasManyThroughRelationManager
@@ -21,8 +22,19 @@ class PaymentsRelationManager extends HasManyThroughRelationManager
     {
         return $form
             ->schema([
+                Forms\Components\BelongsToSelect::make('order_id')
+                    ->label('Order')
+                    ->relationship(
+                        'order',
+                        'number',
+                        fn(Builder $query, HasManyThroughRelationManager $livewire) => $query->whereBelongsTo($livewire->ownerRecord)
+                    )
+                    ->searchable()
+                    ->hidden(fn (HasManyThroughRelationManager $livewire) => $livewire->mountedTableAction === 'edit')
+                    ->required(),
+
                 Forms\Components\TextInput::make('reference')
-                    ->columnSpan(2)
+                    ->columnSpan(fn (HasManyThroughRelationManager $livewire) => $livewire->mountedTableAction === 'edit' ? 2 : 1)
                     ->required(),
 
                 Forms\Components\TextInput ::make('amount')
