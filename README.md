@@ -67,7 +67,6 @@ You're ready to go! Visit the url in your browser, and login with:
 - ProductResource
 - OrderResource
 - PostResource
-- ...
 
 #### BelongsToMany
 - CategoryResource\RelationManagers\ProductsRelationManager
