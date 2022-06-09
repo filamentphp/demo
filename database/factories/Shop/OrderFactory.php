@@ -26,4 +26,11 @@ class OrderFactory extends Factory
             'updated_at' => $this->faker->dateTimeBetween('-5 month', 'now'),
         ];
     }
+
+    public function configure(): Factory
+    {
+        return $this->afterCreating(function (Order $order) {
+            $order->address()->save(OrderAddressFactory::new()->make());
+        });
+    }
 }

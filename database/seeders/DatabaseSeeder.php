@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Address;
 use App\Models\Blog\Author;
 use App\Models\Blog\Category as BlogCategory;
 use App\Models\Blog\Post;
@@ -39,10 +40,14 @@ class DatabaseSeeder extends Seeder
             )->create();
         $this->command->info('Shop categories created.');
 
-        $brands = Brand::factory()->count(20)->create();
+        $brands = Brand::factory()->count(20)
+            ->has(Address::factory()->count(rand(1, 3)))
+            ->create();
         $this->command->info('Shop brands created.');
 
-        $customers = Customer::factory()->count(1000)->create();
+        $customers = Customer::factory()->count(1000)
+            ->has(Address::factory()->count(rand(1, 3)))
+            ->create();
         $this->command->info('Shop customers created.');
 
         $products = Product::factory()->count(50)

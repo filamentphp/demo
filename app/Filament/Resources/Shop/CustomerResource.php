@@ -4,10 +4,10 @@ namespace App\Filament\Resources\Shop;
 
 use App\Filament\Resources\Shop\CustomerResource\Pages;
 use App\Filament\Resources\Shop\CustomerResource\RelationManagers;
-use App\Forms\Components\AddressForm;
 use App\Models\Shop\Customer;
 use Filament\Forms;
 use Filament\Resources\Form;
+use Filament\Resources\RelationManagers\RelationGroup;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
@@ -41,9 +41,6 @@ class CustomerResource extends Resource
                             ->unique(Customer::class, 'email', fn ($record) => $record),
                         Forms\Components\TextInput::make('phone'),
                         Forms\Components\DatePicker::make('birthday'),
-                        AddressForm::make('address')->columnSpan([
-                            'sm' => 2,
-                        ]),
                     ])
                     ->columns([
                         'sm' => 2,
@@ -79,7 +76,7 @@ class CustomerResource extends Resource
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('country')
-                    ->getStateUsing(fn ($record): ?string => Country::find($record->address?->country)?->name ?? null),
+                    ->getStateUsing(fn ($record): ?string => Country::find($record->addresses->first()?->country)?->name ?? null),
                 Tables\Columns\TextColumn::make('phone')
                     ->searchable()
                     ->sortable(),
@@ -92,8 +89,15 @@ class CustomerResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\CommentsRelationManager::class,
-            RelationManagers\PaymentsRelationManager::class,
+            RelationGroup::make('Shop details', [
+                RelationManagers\AddressesRelationManager::class,
+                RelationManagers\PaymentsRelationManager::class,
+
+            ]),
+
+            RelationGroup::make('Comments', [
+                RelationManagers\CommentsRelationManager::class,
+            ]),
         ];
     }
 

@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Shop;
 use App\Filament\Resources\OrderResource\Widgets\OrderStats;
 use App\Filament\Resources\Shop\OrderResource\Pages;
 use App\Filament\Resources\Shop\OrderResource\RelationManagers;
+use App\Forms\Components\AddressForm;
 use App\Models\Shop\Customer;
 use App\Models\Shop\Order;
 use App\Models\Shop\Product;
@@ -63,6 +64,11 @@ class OrderResource extends Resource
                                     ->getSearchResultsUsing(fn (string $query) => Currency::where('name', 'like', "%{$query}%")->pluck('name', 'id'))
                                     ->getOptionLabelUsing(fn ($value): ?string => Currency::find($value)?->name)
                                     ->required(),
+
+                                AddressForm::make('address')->columnSpan([
+                                    'sm' => 2,
+                                ]),
+
                                 Forms\Components\MarkdownEditor::make('notes')
                                     ->columnSpan([
                                         'sm' => 2,

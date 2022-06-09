@@ -2,6 +2,7 @@
 
 namespace App\Models\Shop;
 
+use App\Models\Address;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -38,6 +39,11 @@ class Brand extends Model implements HasMedia
     protected $casts = [
         'is_visible' => 'boolean',
     ];
+
+    public function addresses()
+    {
+        return $this->morphToMany(Address::class, 'addressable', 'addressables');
+    }
 
     public function products(): HasMany
     {
