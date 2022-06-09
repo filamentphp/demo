@@ -22,7 +22,7 @@ class OrderFactory extends Factory
             'shipping_price' => $this->faker->randomFloat(2, 100, 500),
             'shipping_method' => $this->faker->randomElement(['free', 'flat', 'flat_rate', 'flat_rate_per_item']),
             'notes' => $this->faker->realText(100),
-            'created_at' => $this->faker->dateTimeBetween('-1 year', '-6 month'),
+            'created_at' => $this->faker->dateTimeBetween('-1 year', 'now'),
             'updated_at' => $this->faker->dateTimeBetween('-5 month', 'now'),
         ];
     }
