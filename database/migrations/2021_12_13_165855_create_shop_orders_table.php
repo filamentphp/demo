@@ -23,6 +23,7 @@ return new class () extends Migration {
             $table->string('shipping_method')->nullable();
             $table->text('notes')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
