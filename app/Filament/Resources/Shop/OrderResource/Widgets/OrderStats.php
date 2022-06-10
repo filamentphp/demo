@@ -10,8 +10,6 @@ use Flowframe\Trend\TrendValue;
 
 class OrderStats extends BaseWidget
 {
-    protected static ?string $pollingInterval = null;
-
     protected function getCards(): array
     {
         $orderData = Trend::model(Order::class)
@@ -31,6 +29,7 @@ class OrderStats extends BaseWidget
                 ),
             Card::make('Open orders', Order::whereIn('status', ['open', 'processing'])->count()),
             Card::make('Average price', number_format(Order::avg('total_price'), 2)),
+
         ];
     }
 }
