@@ -48,11 +48,11 @@ class PostResource extends Resource
                             ->columnSpan([
                                 'sm' => 2,
                             ]),
-                        Forms\Components\BelongsToSelect::make('blog_author_id')
+                        Forms\Components\Select::make('blog_author_id')
                             ->relationship('author', 'name')
                             ->searchable()
                             ->required(),
-                        Forms\Components\BelongsToSelect::make('blog_category_id')
+                        Forms\Components\Select::make('blog_category_id')
                             ->relationship('category', 'name')
                             ->searchable()
                             ->required(),

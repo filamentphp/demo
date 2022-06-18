@@ -44,7 +44,7 @@ class CategoryResource extends Resource
                                     ->required()
                                     ->unique(Category::class, 'slug', fn ($record) => $record),
                             ]),
-                        Forms\Components\BelongsToSelect::make('parent_id')
+                        Forms\Components\Select::make('parent_id')
                             ->label('Parent')
                             ->relationship('parent', 'name', fn (Builder $query) => $query->where('parent_id', null))
                             ->searchable()

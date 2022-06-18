@@ -202,7 +202,7 @@ class ProductResource extends Resource
                     $layout::make()
                         ->schema([
                             Forms\Components\Placeholder::make('Associations'),
-                            Forms\Components\BelongsToSelect::make('shop_brand_id')
+                            Forms\Components\Select::make('shop_brand_id')
                                 ->relationship('brand', 'name')
                                 ->searchable()
                                 ->default(fn (Component $livewire) => $livewire instanceof ProductsRelationManager ? $livewire->ownerRecord->id : null)

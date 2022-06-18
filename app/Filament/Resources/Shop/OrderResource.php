@@ -44,7 +44,7 @@ class OrderResource extends Resource
                                     ->default('OR-' . random_int(100000, 999999))
                                     ->disabled()
                                     ->required(),
-                                Forms\Components\BelongsToSelect::make('shop_customer_id')
+                                Forms\Components\Select::make('shop_customer_id')
                                     ->relationship('customer', 'name')
                                     ->searchable()
                                     ->getSearchResultsUsing(fn (string $query) => Customer::where('name', 'like', "%{$query}%")->pluck('name', 'id'))

@@ -22,7 +22,7 @@ class CommentsRelationManager extends MorphManyRelationManager
                 Forms\Components\TextInput::make('title')
                     ->required(),
 
-                Forms\Components\BelongsToSelect::make('customer_id')
+                Forms\Components\Select::make('customer_id')
                     ->relationship('customer', 'name')
                     ->searchable()
                     ->required(),
