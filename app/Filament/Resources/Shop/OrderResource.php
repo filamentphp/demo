@@ -79,8 +79,8 @@ class OrderResource extends Resource
                         Forms\Components\Card::make()
                             ->schema([
                                 Forms\Components\Placeholder::make('Items'),
-                                Forms\Components\HasManyRepeater::make('items')
-                                    ->relationship('items')
+                                Forms\Components\Repeater::make('items')
+                                    ->relationship()
                                     ->schema([
                                         Forms\Components\Select::make('shop_product_id')
                                             ->label('Product')
