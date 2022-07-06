@@ -30,11 +30,8 @@ Generate application key:
 php artisan key:generate
 ```
 
-Create an SQLite database. You can also use another database (MySQL, Postgres), simply update your configuration accordingly.
+Create an MySQL database. You can also use another database (MariaDB, Postgres), simply update your configuration accordingly.
 
-```sh
-touch database/database.sqlite
-```
 
 Run database migrations:
 
