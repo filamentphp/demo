@@ -14,16 +14,21 @@ return new class () extends Migration {
             $table->string('city')->nullable();
             $table->string('state')->nullable();
             $table->string('zip')->nullable();
-            $table->string('full_address')->virtualAs("CONCAT(street, ', ', zip, ' ', city)");
+            
+            if ( config('database.default') === 'sqlite' ) {
+                $table->string('full_address')->virtualAs("street  || ', ' || zip  || ' ' || city");
+            } else {
+                $table->string('full_address')->virtualAs("CONCAT(street, ', ', zip, ' ', city)");
+            }
             $table->timestamps();
         });
-
+        
         Schema::create('addressables', function (Blueprint $table) {
             $table->foreignId('address_id');
             $table->morphs('addressable');
         });
     }
-
+    
     public function down()
     {
         Schema::dropIfExists('addresses');
