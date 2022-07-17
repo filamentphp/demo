@@ -3,8 +3,8 @@
 namespace App\Filament\Resources\Shop\CustomerResource\Pages;
 
 use App\Filament\Resources\Shop\CustomerResource;
-use Filament\Resources\Pages\EditRecord;
 use Filament\Pages;
+use Filament\Resources\Pages\EditRecord;
 
 class EditCustomer extends EditRecord
 {
