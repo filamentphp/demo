@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Shop\OrderResource\Pages;
 
 use App\Filament\Resources\Shop\OrderResource;
+use Filament\Pages;
 use Filament\Resources\Pages\EditRecord;
 
 class EditOrder extends EditRecord
@@ -19,5 +20,14 @@ class EditOrder extends EditRecord
         $data['total_price'] = $total;
 
         return $data;
+    }
+
+    protected function getActions(): array
+    {
+        return [
+            Pages\Actions\DeleteAction::make(),
+            Pages\Actions\RestoreAction::make(),
+            Pages\Actions\ForceDeleteAction::make(),
+        ];
     }
 }
