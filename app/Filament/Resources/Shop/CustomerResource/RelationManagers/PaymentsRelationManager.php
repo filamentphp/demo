@@ -22,7 +22,7 @@ class PaymentsRelationManager extends HasManyThroughRelationManager
     {
         return $form
             ->schema([
-                Forms\Components\BelongsToSelect::make('order_id')
+                Forms\Components\Select::make('order_id')
                     ->label('Order')
                     ->relationship(
                         'order',

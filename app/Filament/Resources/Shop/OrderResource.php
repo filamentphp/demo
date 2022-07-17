@@ -45,7 +45,7 @@ class OrderResource extends Resource
                                     ->default('OR-' . random_int(100000, 999999))
                                     ->disabled()
                                     ->required(),
-                                Forms\Components\BelongsToSelect::make('shop_customer_id')
+                                Forms\Components\Select::make('shop_customer_id')
                                     ->relationship('customer', 'name')
                                     ->searchable()
                                     ->getSearchResultsUsing(fn (string $query) => Customer::where('name', 'like', "%{$query}%")->pluck('name', 'id'))
@@ -80,8 +80,8 @@ class OrderResource extends Resource
                         Forms\Components\Card::make()
                             ->schema([
                                 Forms\Components\Placeholder::make('Items'),
-                                Forms\Components\HasManyRepeater::make('items')
-                                    ->relationship('items')
+                                Forms\Components\Repeater::make('items')
+                                    ->relationship()
                                     ->schema([
                                         Forms\Components\Select::make('shop_product_id')
                                             ->label('Product')
