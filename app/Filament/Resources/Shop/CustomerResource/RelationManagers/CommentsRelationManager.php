@@ -29,7 +29,7 @@ class CommentsRelationManager extends HasManyRelationManager
                 Forms\Components\MarkdownEditor::make('content')
                     ->required()
                     ->label('Content'),
-        ]);
+            ]);
     }
 
     public static function table(Table $table): Table
