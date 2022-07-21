@@ -42,7 +42,8 @@ class CustomerResource extends Resource
                             ->email()
                             ->unique(Customer::class, 'email', fn ($record) => $record),
                         Forms\Components\TextInput::make('phone'),
-                        Forms\Components\DatePicker::make('birthday'),
+                        Forms\Components\DatePicker::make('birthday')
+                            ->maxDate('today'),
                     ])
                     ->columns([
                         'sm' => 2,
