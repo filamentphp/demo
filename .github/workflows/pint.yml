@@ -3,17 +3,17 @@ name: Check & fix styling
 on: [push]
 
 jobs:
-    php-cs-fixer:
+    pint:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout code
               uses: actions/checkout@v2
               with:
                   ref: ${{ github.head_ref }}
-            - name: Run PHP CS Fixer
-              uses: docker://oskarstark/php-cs-fixer-ga
-              with:
-                  args: --config=.php-cs-fixer.php --allow-risky=yes
+            - name: Install dependencies
+              run: composer install --no-interaction
+            - name: Run Pint
+              run: ./vendor/bin/pint
             - name: Commit changes
               uses: stefanzweifel/git-auto-commit-action@v4
               with:
