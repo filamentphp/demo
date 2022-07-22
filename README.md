@@ -2,7 +2,7 @@
 
 A demo application to illustrate how Filament Admin works.
 
-![Filament Demo](https://user-images.githubusercontent.com/21066418/153760666-8dfb0725-4a5f-4a62-abd7-af396e73ff5d.png)
+![Filament Demo](https://user-images.githubusercontent.com/21066418/180368112-cfccda8d-a442-43e3-8cf3-3ba04f42247d.png)
 
 ## Installation
 
