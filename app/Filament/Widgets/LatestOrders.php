@@ -38,18 +38,18 @@ class LatestOrders extends BaseWidget
     {
         return [
             Tables\Columns\TextColumn::make('created_at')
-                    ->label('Order Date')
-                    ->date()
-                    ->sortable(),
+                ->label('Order Date')
+                ->date()
+                ->sortable(),
             Tables\Columns\TextColumn::make('number')
-                    ->searchable()
-                    ->sortable(),
+                ->searchable()
+                ->sortable(),
             Tables\Columns\TextColumn::make('customer.name')
                 ->searchable()
                 ->sortable(),
             Tables\Columns\BadgeColumn::make('status')
                 ->colors([
-                    'secondary',
+                    'primary',
                     'danger' => 'cancelled',
                     'warning' => 'processing',
                     'success' => 'delivered',
