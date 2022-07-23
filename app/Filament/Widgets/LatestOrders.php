@@ -49,10 +49,9 @@ class LatestOrders extends BaseWidget
                 ->sortable(),
             Tables\Columns\BadgeColumn::make('status')
                 ->colors([
-                    'primary',
                     'danger' => 'cancelled',
                     'warning' => 'processing',
-                    'success' => 'delivered',
+                    'success' => fn ($state) => in_array($state, ['delivered', 'shipped']),
                 ]),
             Tables\Columns\TextColumn::make('currency')
                 ->getStateUsing(fn ($record): ?string => Currency::find($record->currency)?->name ?? null)
