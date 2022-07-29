@@ -18,4 +18,9 @@ class ListBrands extends ListRecords
                 'Now, now, don’t be cheeky, leave some records for others to play with!',
             ));
     }
+
+    protected function getTableReorderColumn(): ?string
+    {
+        return 'sort';
+    }
 }

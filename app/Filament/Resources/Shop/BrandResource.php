@@ -94,7 +94,8 @@ class BrandResource extends Resource
             ])
             ->filters([
                 //
-            ]);
+            ])
+            ->defaultSort('sort');
     }
 
     public static function getRelations(): array
