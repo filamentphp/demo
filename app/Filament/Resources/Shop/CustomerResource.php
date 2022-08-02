@@ -4,6 +4,8 @@ namespace App\Filament\Resources\Shop;
 
 use App\Filament\Resources\Shop\CustomerResource\Pages;
 use App\Filament\Resources\Shop\CustomerResource\RelationManagers;
+use App\Models\Blog\Category;
+use App\Models\Shop\Brand;
 use App\Models\Shop\Customer;
 use Filament\Forms;
 use Filament\Resources\Form;
@@ -37,35 +39,34 @@ class CustomerResource extends Resource
                     ->schema([
                         Forms\Components\TextInput::make('name')
                             ->required(),
+
                         Forms\Components\TextInput::make('email')
                             ->required()
                             ->email()
-                            ->unique(Customer::class, 'email', fn ($record) => $record),
+                            ->unique(Customer::class, 'email', ignoreRecord: true),
+
                         Forms\Components\TextInput::make('phone'),
+
                         Forms\Components\DatePicker::make('birthday')
                             ->maxDate('today'),
                     ])
-                    ->columns([
-                        'sm' => 2,
-                    ])
-                    ->columnSpan([
-                        'sm' => 2,
-                    ]),
+                    ->columns(2)
+                    ->columnSpan(['lg' => fn (?Customer $record) => $record === null ? 3 : 2]),
+
                 Forms\Components\Card::make()
                     ->schema([
                         Forms\Components\Placeholder::make('created_at')
                             ->label('Created at')
-                            ->content(fn (?Customer $record): string => $record ? $record->created_at->diffForHumans() : '-'),
+                            ->content(fn (Customer $record): string => $record->created_at->diffForHumans()),
+
                         Forms\Components\Placeholder::make('updated_at')
                             ->label('Last modified at')
-                            ->content(fn (?Customer $record): string => $record ? $record->updated_at->diffForHumans() : '-'),
+                            ->content(fn (Customer $record): string => $record->updated_at->diffForHumans()),
                     ])
-                    ->columnSpan(1),
+                    ->columnSpan(['lg' => 1])
+                    ->hidden(fn (?Customer $record) => $record === null),
             ])
-            ->columns([
-                'sm' => 3,
-                'lg' => null,
-            ]);
+            ->columns(3);
     }
 
     public static function table(Table $table): Table

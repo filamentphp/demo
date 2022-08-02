@@ -28,44 +28,22 @@ class AuthorResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Card::make()
-                    ->schema([
-                        Forms\Components\TextInput::make('name')
-                            ->required(),
-                        Forms\Components\TextInput::make('email')
-                            ->required()
-                            ->email()
-                            ->unique(Author::class, 'email', fn ($record) => $record),
-                        Forms\Components\MarkdownEditor::make('bio')
-                            ->columnSpan([
-                                'sm' => 2,
-                            ]),
-                        Forms\Components\TextInput::make('github_handle')
-                            ->label('GitHub'),
-                        Forms\Components\TextInput::make('twitter_handle')
-                            ->label('Twitter'),
-                    ])
-                    ->columns([
-                        'sm' => 2,
-                    ])
-                    ->columnSpan([
-                        'sm' => fn (?Author $record) => $record === null ? 3 : 2,
-                    ]),
-                Forms\Components\Card::make()
-                    ->schema([
-                        Forms\Components\Placeholder::make('created_at')
-                            ->label('Created at')
-                            ->content(fn (?Author $record): string => $record ? $record->created_at->diffForHumans() : '-'),
-                        Forms\Components\Placeholder::make('updated_at')
-                            ->label('Last modified at')
-                            ->content(fn (?Author $record): string => $record ? $record->updated_at->diffForHumans() : '-'),
-                    ])
-                    ->columnSpan(1)
-                    ->hidden(fn (?Author $record) => $record === null),
-            ])
-            ->columns([
-                'sm' => 3,
-                'lg' => null,
+                Forms\Components\TextInput::make('name')
+                    ->required(),
+
+                Forms\Components\TextInput::make('email')
+                    ->required()
+                    ->email()
+                    ->unique(Author::class, 'email', ignoreRecord: true),
+
+                Forms\Components\MarkdownEditor::make('bio')
+                    ->columnSpan('full'),
+
+                Forms\Components\TextInput::make('github_handle')
+                    ->label('GitHub'),
+
+                Forms\Components\TextInput::make('twitter_handle')
+                    ->label('Twitter'),
             ]);
     }
 

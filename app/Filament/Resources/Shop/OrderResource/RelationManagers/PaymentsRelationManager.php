@@ -21,7 +21,7 @@ class PaymentsRelationManager extends HasManyRelationManager
         return $form
             ->schema([
                 Forms\Components\TextInput::make('reference')
-                    ->columnSpan(2)
+                    ->columnSpan('full')
                     ->required(),
 
                 Forms\Components\TextInput::make('amount')

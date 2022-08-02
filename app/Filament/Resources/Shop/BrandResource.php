@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Shop;
 
 use App\Filament\Resources\Shop\BrandResource\Pages;
 use App\Filament\Resources\Shop\BrandResource\RelationManagers;
+use App\Models\Blog\Category;
 use App\Models\Shop\Brand;
 use Filament\Forms;
 use Filament\Resources\Form;
@@ -38,38 +39,38 @@ class BrandResource extends Resource
                                     ->required()
                                     ->reactive()
                                     ->afterStateUpdated(fn ($state, callable $set) => $set('slug', Str::slug($state))),
+
                                 Forms\Components\TextInput::make('slug')
                                     ->disabled()
                                     ->required()
-                                    ->unique(Brand::class, 'slug', fn ($record) => $record),
+                                    ->unique(Brand::class, 'slug', ignoreRecord: true),
                             ]),
                         Forms\Components\TextInput::make('website')
                             ->required()
                             ->url(),
+
                         Forms\Components\Toggle::make('is_visible')
                             ->label('Visible to customers.')
                             ->default(true),
+
                         Forms\Components\MarkdownEditor::make('description')
                             ->label('Description'),
                     ])
-                    ->columnSpan([
-                        'sm' => 2,
-                    ]),
+                    ->columnSpan(['lg' => fn (?Brand $record) => $record === null ? 3 : 2]),
                 Forms\Components\Card::make()
                     ->schema([
                         Forms\Components\Placeholder::make('created_at')
                             ->label('Created at')
-                            ->content(fn (?Brand $record): string => $record ? $record->created_at->diffForHumans() : '-'),
+                            ->content(fn (Brand $record): string => $record->created_at->diffForHumans()),
+
                         Forms\Components\Placeholder::make('updated_at')
                             ->label('Last modified at')
-                            ->content(fn (?Brand $record): string => $record ? $record->updated_at->diffForHumans() : '-'),
+                            ->content(fn (Brand $record): string => $record->updated_at->diffForHumans()),
                     ])
-                    ->columnSpan(1),
+                    ->columnSpan(['lg' => 1])
+                    ->hidden(fn (?Brand $record) => $record === null),
             ])
-            ->columns([
-                'sm' => 3,
-                'lg' => null,
-            ]);
+            ->columns(3);
     }
 
     public static function table(Table $table): Table

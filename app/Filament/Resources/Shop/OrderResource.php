@@ -6,6 +6,8 @@ use App\Filament\Resources\Shop\OrderResource\Pages;
 use App\Filament\Resources\Shop\OrderResource\RelationManagers;
 use App\Filament\Resources\Shop\OrderResource\Widgets\OrderStats;
 use App\Forms\Components\AddressForm;
+use App\Models\Blog\Category;
+use App\Models\Shop\Brand;
 use App\Models\Shop\Customer;
 use App\Models\Shop\Order;
 use App\Models\Shop\Product;
@@ -45,12 +47,14 @@ class OrderResource extends Resource
                                     ->default('OR-' . random_int(100000, 999999))
                                     ->disabled()
                                     ->required(),
+
                                 Forms\Components\Select::make('shop_customer_id')
                                     ->relationship('customer', 'name')
                                     ->searchable()
                                     ->getSearchResultsUsing(fn (string $query) => Customer::where('name', 'like', "%{$query}%")->pluck('name', 'id'))
                                     ->getOptionLabelUsing(fn ($value): ?string => Customer::find($value)?->name)
                                     ->required(),
+
                                 Forms\Components\Select::make('status')
                                     ->options([
                                         'new' => 'New',
@@ -60,26 +64,23 @@ class OrderResource extends Resource
                                         'cancelled' => 'Cancelled',
                                     ])
                                     ->required(),
+
                                 Forms\Components\Select::make('currency')
                                     ->searchable()
                                     ->getSearchResultsUsing(fn (string $query) => Currency::where('name', 'like', "%{$query}%")->pluck('name', 'id'))
                                     ->getOptionLabelUsing(fn ($value): ?string => Currency::find($value)?->name)
                                     ->required(),
 
-                                AddressForm::make('address')->columnSpan([
-                                    'sm' => 2,
-                                ]),
+                                AddressForm::make('address')
+                                    ->columnSpan('full'),
 
                                 Forms\Components\MarkdownEditor::make('notes')
-                                    ->columnSpan([
-                                        'sm' => 2,
-                                    ]),
-                            ])->columns([
-                                'sm' => 2,
-                            ]),
-                        Forms\Components\Card::make()
+                                    ->columnSpan('full'),
+                            ])
+                            ->columns(2),
+
+                        Forms\Components\Section::make('Order items')
                             ->schema([
-                                Forms\Components\Placeholder::make('Items'),
                                 Forms\Components\Repeater::make('items')
                                     ->relationship()
                                     ->schema([
@@ -92,18 +93,15 @@ class OrderResource extends Resource
                                             ->columnSpan([
                                                 'md' => 5,
                                             ]),
+
                                         Forms\Components\TextInput::make('qty')
                                             ->numeric()
-                                            ->mask(
-                                                fn (Forms\Components\TextInput\Mask $mask) => $mask
-                                                    ->numeric()
-                                                    ->integer()
-                                            )
                                             ->default(1)
                                             ->columnSpan([
                                                 'md' => 2,
                                             ])
                                             ->required(),
+
                                         Forms\Components\TextInput::make('unit_price')
                                             ->label('Unit Price')
                                             ->disabled()
@@ -123,24 +121,22 @@ class OrderResource extends Resource
                                     ->required(),
                             ]),
                     ])
-                    ->columnSpan([
-                        'sm' => 2,
-                    ]),
+                    ->columnSpan(['lg' => fn (?Order $record) => $record === null ? 3 : 2]),
+
                 Forms\Components\Card::make()
                     ->schema([
                         Forms\Components\Placeholder::make('created_at')
                             ->label('Created at')
-                            ->content(fn (?Order $record): string => $record ? $record->created_at->diffForHumans() : '-'),
+                            ->content(fn (Order $record): string => $record->created_at->diffForHumans()),
+
                         Forms\Components\Placeholder::make('updated_at')
                             ->label('Last modified at')
-                            ->content(fn (?Order $record): string => $record ? $record->updated_at->diffForHumans() : '-'),
+                            ->content(fn (Order $record): string => $record->updated_at->diffForHumans()),
                     ])
-                    ->columnSpan(1),
+                    ->columnSpan(['lg' => 1])
+                    ->hidden(fn (?Order $record) => $record === null),
             ])
-            ->columns([
-                'sm' => 3,
-                'lg' => null,
-            ]);
+            ->columns(3);
     }
 
     public static function table(Table $table): Table

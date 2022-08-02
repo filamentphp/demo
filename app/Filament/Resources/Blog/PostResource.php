@@ -4,8 +4,11 @@ namespace App\Filament\Resources\Blog;
 
 use App\Filament\Resources\Blog\PostResource\Pages;
 use App\Filament\Resources\Blog\PostResource\RelationManagers;
+use App\Models\Blog\Category;
 use App\Models\Blog\Post;
+use App\Models\Shop\Brand;
 use Filament\Forms;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\SpatieTagsInput;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -33,54 +36,65 @@ class PostResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Card::make()
+                Forms\Components\Group::make()
                     ->schema([
-                        Forms\Components\TextInput::make('title')
-                            ->required()
-                            ->reactive()
-                            ->afterStateUpdated(fn ($state, callable $set) => $set('slug', Str::slug($state))),
-                        Forms\Components\TextInput::make('slug')
-                            ->disabled()
-                            ->required()
-                            ->unique(Post::class, 'slug', fn ($record) => $record),
-                        Forms\Components\MarkdownEditor::make('content')
-                            ->required()
-                            ->columnSpan([
-                                'sm' => 2,
-                            ]),
-                        Forms\Components\Select::make('blog_author_id')
-                            ->relationship('author', 'name')
-                            ->searchable()
-                            ->required(),
-                        Forms\Components\Select::make('blog_category_id')
-                            ->relationship('category', 'name')
-                            ->searchable()
-                            ->required(),
-                        Forms\Components\DatePicker::make('published_at')
-                            ->label('Published Date'),
-                        SpatieTagsInput::make('tags')
-                            ->required(),
-                    ])
-                    ->columns([
-                        'sm' => 2,
-                    ])
-                    ->columnSpan([
-                        'sm' => 2,
-                    ]),
-                Forms\Components\Card::make()
-                    ->schema([
-                        Forms\Components\FileUpload::make('image')
-                            ->label('Image')
-                            ->image(),
+                        Forms\Components\Card::make()
+                            ->schema([
+                                Forms\Components\TextInput::make('title')
+                                    ->required()
+                                    ->reactive()
+                                    ->afterStateUpdated(fn ($state, callable $set) => $set('slug', Str::slug($state))),
 
+                                Forms\Components\TextInput::make('slug')
+                                    ->disabled()
+                                    ->required()
+                                    ->unique(Post::class, 'slug', ignoreRecord: true),
+
+                                Forms\Components\MarkdownEditor::make('content')
+                                    ->required()
+                                    ->columnSpan('full'),
+
+                                Forms\Components\Select::make('blog_author_id')
+                                    ->relationship('author', 'name')
+                                    ->searchable()
+                                    ->required(),
+
+                                Forms\Components\Select::make('blog_category_id')
+                                    ->relationship('category', 'name')
+                                    ->searchable()
+                                    ->required(),
+
+                                Forms\Components\DatePicker::make('published_at')
+                                    ->label('Published Date'),
+
+                                SpatieTagsInput::make('tags')
+                                    ->required(),
+                            ])
+                            ->columns(2),
+
+                        Forms\Components\Section::make('Image')
+                            ->schema([
+                                Forms\Components\FileUpload::make('image')
+                                    ->label('Image')
+                                    ->image()
+                                    ->disableLabel(),
+                            ])
+                            ->collapsible(),
+                    ])
+                    ->columnSpan(['lg' => fn (?Post $record) => $record === null ? 3 : 2]),
+
+                Forms\Components\Card::make()
+                    ->schema([
                         Forms\Components\Placeholder::make('created_at')
                             ->label('Created at')
-                            ->content(fn (?Post $record): string => $record ? $record->created_at->diffForHumans() : '-'),
+                            ->content(fn (Post $record): string => $record->created_at->diffForHumans()),
+
                         Forms\Components\Placeholder::make('updated_at')
                             ->label('Last modified at')
-                            ->content(fn (?Post $record): string => $record ? $record->updated_at->diffForHumans() : '-'),
+                            ->content(fn (Post $record): string => $record->updated_at->diffForHumans()),
                     ])
-                    ->columnSpan(1),
+                    ->columnSpan(['lg' => 1])
+                    ->hidden(fn (?Post $record) => $record === null),
             ])
             ->columns([
                 'sm' => 3,

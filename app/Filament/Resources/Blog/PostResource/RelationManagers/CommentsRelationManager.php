@@ -17,7 +17,6 @@ class CommentsRelationManager extends MorphManyRelationManager
     public static function form(Form $form): Form
     {
         return $form
-            ->columns(1)
             ->schema([
                 Forms\Components\TextInput::make('title')
                     ->required(),
@@ -34,7 +33,8 @@ class CommentsRelationManager extends MorphManyRelationManager
                 Forms\Components\MarkdownEditor::make('content')
                     ->required()
                     ->label('Content'),
-            ]);
+            ])
+            ->columns(1);
     }
 
     public static function table(Table $table): Table
