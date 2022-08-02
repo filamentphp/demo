@@ -42,8 +42,8 @@ class PostResource extends Resource
                             ->schema([
                                 Forms\Components\TextInput::make('title')
                                     ->required()
-                                    ->reactive()
-                                    ->afterStateUpdated(fn ($state, callable $set) => $set('slug', Str::slug($state))),
+                                    ->lazy()
+                                    ->afterStateUpdated(fn (string $context, $state, callable $set) => $context === 'create' ? $set('slug', Str::slug($state)) : null),
 
                                 Forms\Components\TextInput::make('slug')
                                     ->disabled()
@@ -67,8 +67,7 @@ class PostResource extends Resource
                                 Forms\Components\DatePicker::make('published_at')
                                     ->label('Published Date'),
 
-                                SpatieTagsInput::make('tags')
-                                    ->required(),
+                                SpatieTagsInput::make('tags'),
                             ])
                             ->columns(2),
 
