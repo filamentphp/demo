@@ -6,6 +6,7 @@ use App\Models\Blog\Post;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Throwable;
 
 class PostFactory extends Factory
 {
@@ -29,11 +30,15 @@ class PostFactory extends Factory
 
     public function createImage()
     {
-        $image = file_get_contents('https://picsum.photos/200');
-        $filename = Str::uuid() . '.jpg';
+        try {
+            $image = file_get_contents('https://picsum.photos/200');
+            $filename = Str::uuid() . '.jpg';
 
-        Storage::disk('public')->put($filename, $image);
+            Storage::disk('public')->put($filename, $image);
 
-        return $filename;
+            return $filename;
+        } catch (Throwable $exception) {
+            return null;
+        }
     }
 }
