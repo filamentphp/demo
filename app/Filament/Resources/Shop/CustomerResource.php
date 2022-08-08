@@ -41,7 +41,7 @@ class CustomerResource extends Resource
                         Forms\Components\TextInput::make('email')
                             ->required()
                             ->email()
-                            ->unique(Customer::class, 'email', ignoreRecord: true),
+                            ->unique(ignoreRecord: true),
 
                         Forms\Components\TextInput::make('phone'),
 

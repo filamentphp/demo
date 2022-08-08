@@ -49,9 +49,18 @@ class OrderResource extends Resource
                                 Forms\Components\Select::make('shop_customer_id')
                                     ->relationship('customer', 'name')
                                     ->searchable()
-                                    ->getSearchResultsUsing(fn (string $query) => Customer::where('name', 'like', "%{$query}%")->pluck('name', 'id'))
-                                    ->getOptionLabelUsing(fn ($value): ?string => Customer::find($value)?->name)
-                                    ->required(),
+                                    ->required()
+                                    ->createOptionForm([
+                                        Forms\Components\TextInput::make('name')
+                                            ->required(),
+
+                                        Forms\Components\TextInput::make('email')
+                                            ->required()
+                                            ->email()
+                                            ->unique(),
+
+                                        Forms\Components\TextInput::make('phone'),
+                                    ]),
 
                                 Forms\Components\Select::make('status')
                                     ->options([
