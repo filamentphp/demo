@@ -60,7 +60,13 @@ class OrderResource extends Resource
                                             ->unique(),
 
                                         Forms\Components\TextInput::make('phone'),
-                                    ]),
+                                    ])
+                                    ->createOptionAction(function (Forms\Components\Actions\Action $action) {
+                                        return $action
+                                            ->modalHeading('Create customer')
+                                            ->modalButton('Create customer')
+                                            ->modalWidth('lg');
+                                    }),
 
                                 Forms\Components\Select::make('status')
                                     ->options([
