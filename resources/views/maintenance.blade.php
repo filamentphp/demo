@@ -1,5 +1,5 @@
 @extends('errors::minimal')
 
 @section('title', 'Be right back')
-@section('code', '503')
+@section('code', 'Be right back')
 @section('message', 'Demo is being refreshed.')
