@@ -124,7 +124,6 @@ class OrderResource extends Resource
                                                 'md' => 3,
                                             ]),
                                     ])
-                                    ->dehydrated()
                                     ->orderable()
                                     ->defaultItems(1)
                                     ->disableLabel()
