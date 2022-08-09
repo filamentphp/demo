@@ -8,7 +8,6 @@ use App\Models\Shop\Customer;
 use Filament\Forms;
 use Filament\Notifications\Notification;
 use Filament\Resources\Form;
-use Filament\Resources\RelationManagers\RelationGroup;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
