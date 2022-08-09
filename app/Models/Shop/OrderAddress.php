@@ -12,17 +12,6 @@ class OrderAddress extends Model
 
     protected $table = 'shop_order_addresses';
 
-    /**
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'country',
-        'street',
-        'city',
-        'state',
-        'zip',
-    ];
-
     public function addressable(): MorphTo
     {
         return $this->morphTo();

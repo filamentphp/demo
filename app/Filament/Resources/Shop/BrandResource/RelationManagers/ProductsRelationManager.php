@@ -5,9 +5,11 @@ namespace App\Filament\Resources\Shop\BrandResource\RelationManagers;
 use App\Filament\Resources\Shop\ProductResource;
 use Filament\Resources\Form;
 use Filament\Resources\RelationManagers\HasManyRelationManager;
+use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Table;
+use Filament\Tables;
 
-class ProductsRelationManager extends HasManyRelationManager
+class ProductsRelationManager extends RelationManager
 {
     protected static string $relationship = 'products';
 
@@ -20,10 +22,16 @@ class ProductsRelationManager extends HasManyRelationManager
 
     public static function table(Table $table): Table
     {
-        return $table
-            ->columns(ProductResource::getTableColumns())
-            ->filters([
-                //
+        return ProductResource::table($table)
+            ->headerActions([
+                Tables\Actions\CreateAction::make(),
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 }

@@ -22,18 +22,6 @@ class Customer extends Model
     protected $table = 'shop_customers';
 
     /**
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'name',
-        'email',
-        'photo',
-        'gender',
-        'phone',
-        'birthday',
-    ];
-
-    /**
      * @var array<string, string>
      */
     protected $casts = [

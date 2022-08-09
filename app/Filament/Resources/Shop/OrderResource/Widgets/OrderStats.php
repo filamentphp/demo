@@ -29,7 +29,6 @@ class OrderStats extends BaseWidget
                 ),
             Card::make('Open orders', Order::whereIn('status', ['open', 'processing'])->count()),
             Card::make('Average price', number_format(Order::avg('total_price'), 2)),
-
         ];
     }
 }

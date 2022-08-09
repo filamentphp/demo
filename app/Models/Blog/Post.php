@@ -20,18 +20,6 @@ class Post extends Model
     protected $table = 'blog_posts';
 
     /**
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'title',
-        'slug',
-        'content',
-        'published_at',
-        'seo_title',
-        'seo_description',
-    ];
-
-    /**
      * @var array<string, string>
      */
     protected $casts = [

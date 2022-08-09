@@ -16,16 +16,6 @@ class Category extends Model
     protected $table = 'blog_categories';
 
     /**
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'name',
-        'slug',
-        'description',
-        'is_visible',
-    ];
-
-    /**
      * @var array<string, string>
      */
     protected $casts = [

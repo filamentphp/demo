@@ -5,11 +5,12 @@ namespace App\Filament\Resources\Shop\CustomerResource\RelationManagers;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\RelationManagers\MorphToManyRelationManager;
+use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Table;
 use Filament\Tables;
 use Squire\Models\Country;
 
-class AddressesRelationManager extends MorphToManyRelationManager
+class AddressesRelationManager extends RelationManager
 {
     protected static string $relationship = 'addresses';
 
@@ -30,7 +31,7 @@ class AddressesRelationManager extends MorphToManyRelationManager
                 Forms\Components\Select::make('country')
                     ->searchable()
                     ->getSearchResultsUsing(fn (string $query) => Country::where('name', 'like', "%{$query}%")->pluck('name', 'id'))
-                    ->getOptionLabelUsing(fn ($value): ?string => Country::find($value)?->name),
+                    ->getOptionLabelUsing(fn ($value): ?string => Country::find($value)?->getAttribute('name')),
             ]);
     }
 
@@ -49,6 +50,19 @@ class AddressesRelationManager extends MorphToManyRelationManager
             ])
             ->filters([
                 //
+            ])
+            ->headerActions([
+                Tables\Actions\AttachAction::make(),
+                Tables\Actions\CreateAction::make(),
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DetachAction::make(),
+                Tables\Actions\DeleteAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\DetachBulkAction::make(),
+                Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 }

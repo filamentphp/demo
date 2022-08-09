@@ -6,11 +6,12 @@ use Akaunting\Money\Currency;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\RelationManagers\HasManyRelationManager;
+use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Support\Str;
 
-class PaymentsRelationManager extends HasManyRelationManager
+class PaymentsRelationManager extends RelationManager
 {
     protected static string $relationship = 'payments';
 
@@ -69,6 +70,16 @@ class PaymentsRelationManager extends HasManyRelationManager
             ])
             ->filters([
                 //
+            ])
+            ->headerActions([
+                Tables\Actions\CreateAction::make(),
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 }

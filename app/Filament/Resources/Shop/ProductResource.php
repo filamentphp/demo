@@ -9,6 +9,7 @@ use App\Filament\Resources\Shop\ProductResource\Widgets\ProductStats;
 use App\Models\Shop\Product;
 use Filament\Forms;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
+use Filament\Notifications\Notification;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
@@ -40,6 +41,13 @@ class ProductResource extends Resource
                     ->schema([
                         Forms\Components\Card::make()
                             ->schema([
+                                Forms\Components\TextInput::make('amount')
+                                    ->mask(
+                                        fn (Forms\Components\TextInput\Mask $mask) => $mask
+                                            ->numeric()
+                                            ->padFractionalZeros()
+                                    ),
+
                                 Forms\Components\TextInput::make('name')
                                     ->required()
                                     ->lazy()
@@ -144,8 +152,7 @@ class ProductResource extends Resource
                                 Forms\Components\Select::make('shop_brand_id')
                                     ->relationship('brand', 'name')
                                     ->searchable()
-                                    ->default(fn (Component $livewire) => $livewire instanceof ProductsRelationManager ? $livewire->ownerRecord->id : null)
-                                    ->disabled(fn (Component $livewire): bool => $livewire instanceof ProductsRelationManager),
+                                    ->hiddenOn(ProductsRelationManager::class),
 
                                 Forms\Components\MultiSelect::make('categories')
                                     ->relationship('categories', 'name')
@@ -160,9 +167,68 @@ class ProductResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->columns(static::getTableColumns())
+            ->columns([
+                Tables\Columns\SpatieMediaLibraryImageColumn::make('product-image')
+                    ->label('Image')
+                    ->collection('product-images'),
+
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Name')
+                    ->searchable()
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('brand.name')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(),
+
+                Tables\Columns\TextColumn::make('price')
+                    ->label('Price')
+                    ->searchable()
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('sku')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(),
+
+                Tables\Columns\TextColumn::make('qty')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(),
+
+                Tables\Columns\TextColumn::make('security_stock')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable()
+                    ->toggledHiddenByDefault(),
+
+                Tables\Columns\BooleanColumn::make('is_visible')
+                    ->label('Visibility')
+                    ->sortable()
+                    ->toggleable(),
+
+                Tables\Columns\TextColumn::make('published_at')
+                    ->label('Publish Date')
+                    ->date()
+                    ->sortable()
+                    ->toggleable()
+                    ->toggledHiddenByDefault(),
+            ])
             ->filters([
                 //
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\DeleteBulkAction::make()
+                    ->action(function () {
+                        Notification::make()
+                            ->title('Now, now, don\'t be cheeky, leave some records for others to play with!')
+                            ->warning()
+                            ->send();
+                    }),
             ]);
     }
 
@@ -196,6 +262,8 @@ class ProductResource extends Resource
 
     public static function getGlobalSearchResultDetails(Model $record): array
     {
+        /** @var Product $record */
+
         return [
             'Brand' => optional($record->brand)->name,
         ];
@@ -204,51 +272,6 @@ class ProductResource extends Resource
     protected static function getGlobalSearchEloquentQuery(): Builder
     {
         return parent::getGlobalSearchEloquentQuery()->with(['brand']);
-    }
-
-    public static function getTableColumns(): array
-    {
-        return [
-            Tables\Columns\SpatieMediaLibraryImageColumn::make('product-image')
-                ->label('Image')
-                ->collection('product-images'),
-
-            Tables\Columns\TextColumn::make('name')
-                ->label('Name')
-                ->searchable()
-                ->sortable(),
-            Tables\Columns\TextColumn::make('brand.name')
-                ->searchable()
-                ->sortable()
-                ->toggleable(),
-            Tables\Columns\TextColumn::make('price')
-                ->label('Price')
-                ->searchable()
-                ->sortable(),
-            Tables\Columns\TextColumn::make('sku')
-                ->searchable()
-                ->sortable()
-                ->toggleable(),
-            Tables\Columns\TextColumn::make('qty')
-                ->searchable()
-                ->sortable()
-                ->toggleable(),
-            Tables\Columns\TextColumn::make('security_stock')
-                ->searchable()
-                ->sortable()
-                ->toggleable()
-                ->toggledHiddenByDefault(),
-            Tables\Columns\BooleanColumn::make('is_visible')
-                ->label('Visibility')
-                ->sortable()
-                ->toggleable(),
-            Tables\Columns\TextColumn::make('published_at')
-                ->label('Publish Date')
-                ->date()
-                ->sortable()
-                ->toggleable()
-                ->toggledHiddenByDefault(),
-        ];
     }
 
     protected static function getNavigationBadge(): ?string

@@ -7,12 +7,13 @@ use App\Filament\Resources\Shop\OrderResource;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\RelationManagers\HasManyThroughRelationManager;
+use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 
-class PaymentsRelationManager extends HasManyThroughRelationManager
+class PaymentsRelationManager extends RelationManager
 {
     protected static string $relationship = 'payments';
 
@@ -27,14 +28,14 @@ class PaymentsRelationManager extends HasManyThroughRelationManager
                     ->relationship(
                         'order',
                         'number',
-                        fn (Builder $query, HasManyThroughRelationManager $livewire) => $query->whereBelongsTo($livewire->ownerRecord)
+                        fn (Builder $query, RelationManager $livewire) => $query->whereBelongsTo($livewire->ownerRecord)
                     )
                     ->searchable()
-                    ->hidden(fn (HasManyThroughRelationManager $livewire) => $livewire->mountedTableAction === 'edit')
+                    ->hiddenOn('edit')
                     ->required(),
 
                 Forms\Components\TextInput::make('reference')
-                    ->columnSpan(fn (HasManyThroughRelationManager $livewire) => $livewire->mountedTableAction === 'edit' ? 2 : 1)
+                    ->columnSpan(fn (string $context) => $context === 'edit' ? 2 : 1)
                     ->required(),
 
                 Forms\Components\TextInput::make('amount')
@@ -89,6 +90,16 @@ class PaymentsRelationManager extends HasManyThroughRelationManager
             ])
             ->filters([
                 //
+            ])
+            ->headerActions([
+                Tables\Actions\CreateAction::make(),
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 }

@@ -7,6 +7,7 @@ use App\Filament\Resources\Blog\PostResource\RelationManagers;
 use App\Models\Blog\Post;
 use Filament\Forms;
 use Filament\Forms\Components\SpatieTagsInput;
+use Filament\Notifications\Notification;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
@@ -140,6 +141,18 @@ class PostResource extends Resource
                                 fn (Builder $query, $date): Builder => $query->whereDate('published_at', '<=', $date),
                             );
                     }),
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\DeleteBulkAction::make()
+                    ->action(function () {
+                        Notification::make()
+                            ->title('Now, now, don\'t be cheeky, leave some records for others to play with!')
+                            ->warning()
+                            ->send();
+                    }),
             ]);
     }
 
@@ -171,6 +184,8 @@ class PostResource extends Resource
 
     public static function getGlobalSearchResultDetails(Model $record): array
     {
+        /** @var Post $record */
+
         $details = [];
 
         if ($record->author) {

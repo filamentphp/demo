@@ -13,14 +13,4 @@ class OrderItem extends Model
      * @var string
      */
     protected $table = 'shop_order_items';
-
-    /**
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'sort',
-        'shop_product_id',
-        'qty',
-        'unit_price',
-    ];
 }

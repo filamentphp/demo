@@ -5,10 +5,11 @@ namespace App\Filament\Resources\Shop\ProductResource\RelationManagers;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\RelationManagers\MorphManyRelationManager;
+use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Table;
 use Filament\Tables;
 
-class CommentsRelationManager extends MorphManyRelationManager
+class CommentsRelationManager extends RelationManager
 {
     protected static string $relationship = 'comments';
 
@@ -57,6 +58,16 @@ class CommentsRelationManager extends MorphManyRelationManager
             ])
             ->filters([
                 //
+            ])
+            ->headerActions([
+                Tables\Actions\CreateAction::make(),
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 }

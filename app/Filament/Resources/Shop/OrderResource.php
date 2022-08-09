@@ -9,6 +9,7 @@ use App\Forms\Components\AddressForm;
 use App\Models\Shop\Order;
 use App\Models\Shop\Product;
 use Filament\Forms;
+use Filament\Notifications\Notification;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
@@ -80,7 +81,7 @@ class OrderResource extends Resource
                                 Forms\Components\Select::make('currency')
                                     ->searchable()
                                     ->getSearchResultsUsing(fn (string $query) => Currency::where('name', 'like', "%{$query}%")->pluck('name', 'id'))
-                                    ->getOptionLabelUsing(fn ($value): ?string => Currency::find($value)?->name)
+                                    ->getOptionLabelUsing(fn ($value): ?string => Currency::find($value)?->getAttribute('name'))
                                     ->required(),
 
                                 AddressForm::make('address')
@@ -207,6 +208,18 @@ class OrderResource extends Resource
                                 fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
                             );
                     }),
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\DeleteBulkAction::make()
+                    ->action(function () {
+                        Notification::make()
+                            ->title('Now, now, don\'t be cheeky, leave some records for others to play with!')
+                            ->warning()
+                            ->send();
+                    }),
             ]);
     }
 
@@ -245,6 +258,8 @@ class OrderResource extends Resource
 
     public static function getGlobalSearchResultDetails(Model $record): array
     {
+        /** @var Order $record */
+
         return [
             'Customer' => optional($record->customer)->name,
         ];
