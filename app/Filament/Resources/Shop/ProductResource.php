@@ -17,7 +17,6 @@ use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
-use Livewire\Component;
 
 class ProductResource extends Resource
 {

@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\Shop\OrderResource\Pages;
 
 use App\Filament\Resources\Shop\OrderResource;
-use Filament\Pages;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\EditRecord;
 

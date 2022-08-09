@@ -5,7 +5,6 @@ namespace App\Filament\Resources\Blog\AuthorResource\Pages;
 use App\Filament\Resources\Blog\AuthorResource;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\ManageRecords;
-use Filament\Tables;
 
 class ManageAuthors extends ManageRecords
 {

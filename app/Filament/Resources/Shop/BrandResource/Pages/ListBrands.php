@@ -5,7 +5,6 @@ namespace App\Filament\Resources\Shop\BrandResource\Pages;
 use App\Filament\Resources\Shop\BrandResource;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\ListRecords;
-use Filament\Tables;
 
 class ListBrands extends ListRecords
 {

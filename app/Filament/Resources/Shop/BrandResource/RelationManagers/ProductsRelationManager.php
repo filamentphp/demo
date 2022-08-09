@@ -4,7 +4,6 @@ namespace App\Filament\Resources\Shop\BrandResource\RelationManagers;
 
 use App\Filament\Resources\Shop\ProductResource;
 use Filament\Resources\Form;
-use Filament\Resources\RelationManagers\HasManyRelationManager;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Table;
 use Filament\Tables;

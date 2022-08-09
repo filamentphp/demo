@@ -5,7 +5,6 @@ namespace App\Filament\Resources\Shop\OrderResource\RelationManagers;
 use Akaunting\Money\Currency;
 use Filament\Forms;
 use Filament\Resources\Form;
-use Filament\Resources\RelationManagers\HasManyRelationManager;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Table;
 use Filament\Tables;

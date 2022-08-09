@@ -6,7 +6,6 @@ use Akaunting\Money\Currency;
 use App\Filament\Resources\Shop\OrderResource;
 use Filament\Forms;
 use Filament\Resources\Form;
-use Filament\Resources\RelationManagers\HasManyThroughRelationManager;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Table;
 use Filament\Tables;

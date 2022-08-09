@@ -5,7 +5,6 @@ namespace App\Filament\Resources\Shop\CustomerResource\Pages;
 use App\Filament\Resources\Shop\CustomerResource;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\ListRecords;
-use Filament\Tables;
 
 class ListCustomers extends ListRecords
 {
