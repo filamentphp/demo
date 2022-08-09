@@ -40,13 +40,6 @@ class ProductResource extends Resource
                     ->schema([
                         Forms\Components\Card::make()
                             ->schema([
-                                Forms\Components\TextInput::make('amount')
-                                    ->mask(
-                                        fn (Forms\Components\TextInput\Mask $mask) => $mask
-                                            ->numeric()
-                                            ->padFractionalZeros()
-                                    ),
-
                                 Forms\Components\TextInput::make('name')
                                     ->required()
                                     ->lazy()
