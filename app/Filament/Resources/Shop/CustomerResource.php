@@ -109,15 +109,8 @@ class CustomerResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationGroup::make('Shop details', [
-                RelationManagers\AddressesRelationManager::class,
-                RelationManagers\PaymentsRelationManager::class,
-
-            ]),
-
-            RelationGroup::make('Comments', [
-                RelationManagers\CommentsRelationManager::class,
-            ]),
+            RelationManagers\AddressesRelationManager::class,
+            RelationManagers\PaymentsRelationManager::class,
         ];
     }
 
