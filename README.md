@@ -48,6 +48,12 @@ Run database seeder:
 php artisan db:seed
 ```
 
+Create a symlink to the storage:
+
+```sh
+php artisan storage:link
+```
+
 Run the dev server (the output will give the address):
 
 ```sh
