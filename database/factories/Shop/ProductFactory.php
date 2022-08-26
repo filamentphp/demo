@@ -6,7 +6,6 @@ use App\Models\Shop\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\UnreachableUrl;
-use Throwable;
 
 class ProductFactory extends Factory
 {
