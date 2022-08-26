@@ -5,6 +5,7 @@ namespace Database\Factories\Shop;
 use App\Models\Shop\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\UnreachableUrl;
 use Throwable;
 
 class ProductFactory extends Factory
@@ -38,15 +39,14 @@ class ProductFactory extends Factory
 
     public function configure(): ProductFactory
     {
-        try {
-            return $this->afterCreating(function (Product $product) {
-                $imageUrl = 'https://picsum.photos/200';
+        return $this->afterCreating(function (Product $product) {
+            try {
                 $product
-                    ->addMediaFromUrl($imageUrl)
+                    ->addMediaFromUrl('https://picsum.photos/200')
                     ->toMediaCollection('product-images');
-            });
-        } catch (Throwable $exception) {
-            return $this;
-        }
+            } catch (UnreachableUrl $exception) {
+                return;
+            }
+        });
     }
 }

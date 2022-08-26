@@ -32,13 +32,14 @@ class PostFactory extends Factory
     {
         try {
             $image = file_get_contents('https://picsum.photos/200');
-            $filename = Str::uuid() . '.jpg';
-
-            Storage::disk('public')->put($filename, $image);
-
-            return $filename;
         } catch (Throwable $exception) {
             return null;
         }
+
+        $filename = Str::uuid() . '.jpg';
+
+        Storage::disk('public')->put($filename, $image);
+
+        return $filename;
     }
 }
