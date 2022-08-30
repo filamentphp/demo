@@ -110,15 +110,28 @@ class PostResource extends Resource
                 Tables\Columns\TextColumn::make('title')
                     ->searchable()
                     ->sortable(),
+
                 Tables\Columns\TextColumn::make('slug')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+
                 Tables\Columns\TextColumn::make('author.name')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(),
+
+                Tables\Columns\BadgeColumn::make('status')
+                    ->getStateUsing(fn (Post $record): string => $record->published_at->isPast() ? 'Published' : 'Draft')
+                    ->colors([
+                        'success' => 'Published',
+                    ]),
+
                 Tables\Columns\TextColumn::make('category.name')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+
                 Tables\Columns\TextColumn::make('published_at')
                     ->label('Published Date')
                     ->date(),
@@ -156,6 +169,8 @@ class PostResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make()
