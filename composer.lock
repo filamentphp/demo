@@ -1151,7 +1151,7 @@
         },
         {
             "name": "filament/filament",
-            "version": "v2.15.41",
+            "version": "v2.15.42",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/admin.git",
@@ -1214,7 +1214,7 @@
         },
         {
             "name": "filament/forms",
-            "version": "v2.15.41",
+            "version": "v2.15.42",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/forms.git",
@@ -1272,7 +1272,7 @@
         },
         {
             "name": "filament/notifications",
-            "version": "v2.15.41",
+            "version": "v2.15.42",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/notifications.git",
@@ -1321,7 +1321,7 @@
         },
         {
             "name": "filament/spatie-laravel-media-library-plugin",
-            "version": "v2.15.41",
+            "version": "v2.15.42",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/spatie-laravel-media-library-plugin.git",
@@ -1358,7 +1358,7 @@
         },
         {
             "name": "filament/spatie-laravel-settings-plugin",
-            "version": "v2.15.41",
+            "version": "v2.15.42",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/spatie-laravel-settings-plugin.git",
@@ -1405,7 +1405,7 @@
         },
         {
             "name": "filament/spatie-laravel-tags-plugin",
-            "version": "v2.15.41",
+            "version": "v2.15.42",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/spatie-laravel-tags-plugin.git",
@@ -1442,7 +1442,7 @@
         },
         {
             "name": "filament/spatie-laravel-translatable-plugin",
-            "version": "v2.15.41",
+            "version": "v2.15.42",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/spatie-laravel-translatable-plugin.git",
@@ -1488,7 +1488,7 @@
         },
         {
             "name": "filament/support",
-            "version": "v2.15.41",
+            "version": "v2.15.42",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/support.git",
@@ -1538,7 +1538,7 @@
         },
         {
             "name": "filament/tables",
-            "version": "v2.15.41",
+            "version": "v2.15.42",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/tables.git",
