@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Filament\Resources\Shop\OrderResource;
 use App\Models\Address;
 use App\Models\Blog\Author;
 use App\Models\Blog\Category as BlogCategory;
@@ -15,6 +16,8 @@ use App\Models\Shop\OrderItem;
 use App\Models\Shop\Payment;
 use App\Models\Shop\Product;
 use App\Models\User;
+use Filament\Notifications\Actions\Action;
+use Filament\Notifications\Notification;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage;
 
@@ -26,7 +29,7 @@ class DatabaseSeeder extends Seeder
         Storage::deleteDirectory('public');
 
         // Admin
-        User::factory()->create([
+        $user = User::factory()->create([
             'name' => 'Demo User',
             'email' => 'admin@filamentphp.com',
         ]);
@@ -60,7 +63,7 @@ class DatabaseSeeder extends Seeder
             ->create();
         $this->command->info('Shop products created.');
 
-        Order::factory()->count(1000)
+        $orders = Order::factory()->count(1000)
             ->sequence(fn ($sequence) => ['shop_customer_id' => $customers->random(1)->first()->id])
             ->has(Payment::factory()->count(rand(1, 3)))
             ->has(
@@ -69,6 +72,18 @@ class DatabaseSeeder extends Seeder
                 'items'
             )
             ->create();
+
+        foreach ($orders->random(rand(5, 8)) as $order) {
+            Notification::make()
+                ->title('New order')
+                ->icon('heroicon-o-shopping-bag')
+                ->body("**{$order->customer->name} ordered {$order->items->count()} products.**")
+                ->actions([
+                    Action::make('View')
+                        ->url(OrderResource::getUrl('edit', ['record' => $order])),
+                ])
+                ->sendToDatabase($user);
+        }
         $this->command->info('Shop orders created.');
 
         // Blog
