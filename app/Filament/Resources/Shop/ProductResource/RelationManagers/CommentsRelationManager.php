@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Shop\ProductResource\RelationManagers;
 
 use Filament\Forms;
+use Filament\Notifications\Notification;
 use Filament\Resources\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Table;
@@ -59,7 +60,14 @@ class CommentsRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                Tables\Actions\CreateAction::make()
+                    ->after(function ($record) {
+                        Notification::make()
+                            ->title('New comment')
+                            ->icon('heroicon-o-annotation')
+                            ->body("**{$record->customer->name} commented on product ({$record->commentable->name}).**")
+                            ->sendToDatabase(auth()->user());
+                    }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
