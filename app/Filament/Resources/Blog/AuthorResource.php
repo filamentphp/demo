@@ -52,16 +52,30 @@ class AuthorResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('email')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('github_handle')
-                    ->label('GitHub'),
-                Tables\Columns\TextColumn::make('twitter_handle')
-                    ->label('Twitter'),
+                Tables\Columns\Layout\Split::make([
+                    Tables\Columns\Layout\Stack::make([
+                        Tables\Columns\TextColumn::make('name')
+                            ->searchable()
+                            ->sortable()
+                            ->weight('medium'),
+    
+                        Tables\Columns\TextColumn::make('email')
+                            ->searchable()
+                            ->sortable()
+                            ->color('secondary'),
+                    ]),
+
+                    Tables\Columns\Layout\Stack::make([
+                        Tables\Columns\TextColumn::make('github_handle')
+                            ->icon('icons.github')
+                            ->label('GitHub'),
+    
+                        Tables\Columns\TextColumn::make('twitter_handle')
+                            ->icon('icons.twitter')
+                            ->label('Twitter'),
+                    ]),
+                ])->from('md'),
+
             ])
             ->filters([
                 //
