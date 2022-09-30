@@ -58,7 +58,7 @@ class AuthorResource extends Resource
                             ->searchable()
                             ->sortable()
                             ->weight('medium'),
-    
+
                         Tables\Columns\TextColumn::make('email')
                             ->searchable()
                             ->sortable()
@@ -69,7 +69,7 @@ class AuthorResource extends Resource
                         Tables\Columns\TextColumn::make('github_handle')
                             ->icon('icons.github')
                             ->label('GitHub'),
-    
+
                         Tables\Columns\TextColumn::make('twitter_handle')
                             ->icon('icons.twitter')
                             ->label('Twitter'),
