@@ -2,8 +2,8 @@
 
 namespace Database\Factories\Blog;
 
-use App\Enums\ImageSource;
 use App\Models\Blog\Post;
+use Database\Seeders\DatabaseSeeder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -32,7 +32,7 @@ class PostFactory extends Factory
     public function createImage(): string
     {
         try {
-            $image = file_get_contents(ImageSource::URL->value);
+            $image = file_get_contents(DatabaseSeeder::IMAGE_URL);
         } catch (Throwable $exception) {
             return null;
         }
