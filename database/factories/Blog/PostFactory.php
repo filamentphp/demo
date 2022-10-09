@@ -2,6 +2,7 @@
 
 namespace Database\Factories\Blog;
 
+use App\Enums\ImageSource;
 use App\Models\Blog\Post;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Storage;
@@ -28,10 +29,10 @@ class PostFactory extends Factory
         ];
     }
 
-    public function createImage()
+    public function createImage(): string
     {
         try {
-            $image = file_get_contents('https://picsum.photos/200');
+            $image = file_get_contents(ImageSource::URL->value);
         } catch (Throwable $exception) {
             return null;
         }

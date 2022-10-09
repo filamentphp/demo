@@ -2,6 +2,7 @@
 
 namespace Database\Factories\Shop;
 
+use App\Enums\ImageSource;
 use App\Models\Shop\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -41,7 +42,7 @@ class ProductFactory extends Factory
         return $this->afterCreating(function (Product $product) {
             try {
                 $product
-                    ->addMediaFromUrl('https://picsum.photos/200')
+                    ->addMediaFromUrl(ImageSource::URL->value)
                     ->toMediaCollection('product-images');
             } catch (UnreachableUrl $exception) {
                 return;
