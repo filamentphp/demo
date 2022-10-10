@@ -57,22 +57,26 @@ class AuthorResource extends Resource
                         Tables\Columns\TextColumn::make('name')
                             ->searchable()
                             ->sortable()
-                            ->weight('medium'),
+                            ->weight('medium')
+                            ->alignLeft(),
 
                         Tables\Columns\TextColumn::make('email')
                             ->searchable()
                             ->sortable()
-                            ->color('secondary'),
+                            ->color('secondary')
+                            ->alignLeft(),
                     ]),
 
                     Tables\Columns\Layout\Stack::make([
                         Tables\Columns\TextColumn::make('github_handle')
                             ->icon('icons.github')
-                            ->label('GitHub'),
+                            ->label('GitHub')
+                            ->alignLeft(),
 
                         Tables\Columns\TextColumn::make('twitter_handle')
                             ->icon('icons.twitter')
-                            ->label('Twitter'),
+                            ->label('Twitter')
+                            ->alignLeft(),
                     ]),
                 ])->from('md'),
 
