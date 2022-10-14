@@ -25,26 +25,15 @@ class Form extends Component implements HasForms
 
     public function mount()
     {
-        $this->form->fill(Arr::only(Comment::first()->attributesToArray(), ['commentable_type', 'commentable_id']));
+        $this->form->fill();
     }
 
     protected function getFormSchema(): array
     {
         return [
-            Forms\Components\MorphToSelect::make('commentable')
-                ->types([
-                    Forms\Components\MorphToSelect\Type::make(Product::class)
-                        ->titleColumnName('name'),
-                    Forms\Components\MorphToSelect\Type::make(Post::class)
-                        ->titleColumnName('title'),
-                ])
-                ->searchable(),
+            Forms\Components\RichEditor::make('content'),
+            Forms\Components\RichEditor::make('content2'),
         ];
-    }
-
-    protected function getFormModel(): Model | string | null
-    {
-        return Comment::first();
     }
 
     public function submit()
