@@ -29,7 +29,7 @@ class PostFactory extends Factory
         ];
     }
 
-    public function createImage(): string
+    public function createImage(): ?string
     {
         try {
             $image = file_get_contents(DatabaseSeeder::IMAGE_URL);
