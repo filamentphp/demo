@@ -5,8 +5,8 @@ namespace App\Filament\Resources\Blog;
 use App\Filament\Resources\Blog\AuthorResource\Pages;
 use App\Models\Blog\Author;
 use Filament\Forms;
+use Filament\Forms\Form;
 use Filament\Notifications\Notification;
-use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
@@ -69,12 +69,12 @@ class AuthorResource extends Resource
 
                     Tables\Columns\Layout\Stack::make([
                         Tables\Columns\TextColumn::make('github_handle')
-                            ->icon('icons.github')
+                            ->icon('icon-github')
                             ->label('GitHub')
                             ->alignLeft(),
 
                         Tables\Columns\TextColumn::make('twitter_handle')
-                            ->icon('icons.twitter')
+                            ->icon('icon-twitter')
                             ->label('Twitter')
                             ->alignLeft(),
                     ]),
