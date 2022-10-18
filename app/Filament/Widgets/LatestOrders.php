@@ -5,6 +5,7 @@ namespace App\Filament\Widgets;
 use App\Filament\Resources\Shop\OrderResource;
 use App\Models\Shop\Order;
 use Filament\Tables;
+use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
 use Illuminate\Database\Eloquent\Builder;
 use Squire\Models\Currency;
@@ -15,64 +16,44 @@ class LatestOrders extends BaseWidget
 
     protected static ?int $sort = 2;
 
-    public function getDefaultTableRecordsPerPageSelectOption(): int
+    public function table(Table $table): Table
     {
-        return 5;
-    }
-
-    protected function getDefaultTableSortColumn(): ?string
-    {
-        return 'created_at';
-    }
-
-    protected function getDefaultTableSortDirection(): ?string
-    {
-        return 'desc';
-    }
-
-    protected function getTableQuery(): Builder
-    {
-        return OrderResource::getEloquentQuery();
-    }
-
-    protected function getTableColumns(): array
-    {
-        return [
-            Tables\Columns\TextColumn::make('created_at')
-                ->label('Order Date')
-                ->date()
-                ->sortable(),
-            Tables\Columns\TextColumn::make('number')
-                ->searchable()
-                ->sortable(),
-            Tables\Columns\TextColumn::make('customer.name')
-                ->searchable()
-                ->sortable(),
-            Tables\Columns\BadgeColumn::make('status')
-                ->colors([
-                    'danger' => 'cancelled',
-                    'warning' => 'processing',
-                    'success' => fn ($state) => in_array($state, ['delivered', 'shipped']),
-                ]),
-            Tables\Columns\TextColumn::make('currency')
-                ->getStateUsing(fn ($record): ?string => Currency::find($record->currency)?->name ?? null)
-                ->searchable()
-                ->sortable(),
-            Tables\Columns\TextColumn::make('total_price')
-                ->searchable()
-                ->sortable(),
-            Tables\Columns\TextColumn::make('shipping_price')
-                ->label('Shipping cost')
-                ->searchable()
-                ->sortable(),
-        ];
-    }
-
-    protected function getTableActions(): array
-    {
-        return [
-            Tables\Actions\Action::make('open')
-                ->url(fn (Order $record): string => OrderResource::getUrl('edit', ['record' => $record])),
-        ];
+        return $table
+            ->query(OrderResource::getEloquentQuery())
+            ->defaultPaginationPageOption(5)
+            ->defaultSort('created_at', 'desc')
+            ->columns([
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Order Date')
+                    ->date()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('number')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('customer.name')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\BadgeColumn::make('status')
+                    ->colors([
+                        'danger' => 'cancelled',
+                        'warning' => 'processing',
+                        'success' => fn ($state) => in_array($state, ['delivered', 'shipped']),
+                    ]),
+                Tables\Columns\TextColumn::make('currency')
+                    ->getStateUsing(fn ($record): ?string => Currency::find($record->currency)?->name ?? null)
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('total_price')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('shipping_price')
+                    ->label('Shipping cost')
+                    ->searchable()
+                    ->sortable(),
+            ])
+            ->actions([
+                Tables\Actions\Action::make('open')
+                    ->url(fn (Order $record): string => OrderResource::getUrl('edit', ['record' => $record])),
+            ]);
     }
 }

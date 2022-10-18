@@ -5,8 +5,8 @@ namespace App\Filament\Resources\Shop\CustomerResource\RelationManagers;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Table;
 use Squire\Models\Country;
 
 class AddressesRelationManager extends RelationManager
@@ -34,7 +34,7 @@ class AddressesRelationManager extends RelationManager
             ]);
     }
 
-    public static function table(Table $table): Table
+    public function table(Table $table): Table
     {
         return $table
             ->columns([

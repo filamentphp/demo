@@ -5,8 +5,8 @@ namespace App\Filament\Resources\Blog\PostResource\RelationManagers;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Table;
 
 class CommentsRelationManager extends RelationManager
 {
@@ -37,7 +37,7 @@ class CommentsRelationManager extends RelationManager
             ->columns(1);
     }
 
-    public static function table(Table $table): Table
+    public function table(Table $table): Table
     {
         return $table
             ->columns([

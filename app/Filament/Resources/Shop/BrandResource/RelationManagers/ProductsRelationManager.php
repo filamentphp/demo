@@ -5,8 +5,8 @@ namespace App\Filament\Resources\Shop\BrandResource\RelationManagers;
 use App\Filament\Resources\Shop\ProductResource;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Table;
 
 class ProductsRelationManager extends RelationManager
 {
@@ -19,7 +19,7 @@ class ProductsRelationManager extends RelationManager
         return ProductResource::form($form);
     }
 
-    public static function table(Table $table): Table
+    public function table(Table $table): Table
     {
         return ProductResource::table($table)
             ->headerActions([
