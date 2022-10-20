@@ -42,6 +42,7 @@ class BrandResource extends Resource
 
                                 Forms\Components\TextInput::make('slug')
                                     ->disabled()
+                                    ->dehydrated()
                                     ->required()
                                     ->unique(Brand::class, 'slug', ignoreRecord: true),
                             ]),

@@ -43,6 +43,7 @@ class CategoryResource extends Resource
 
                                 Forms\Components\TextInput::make('slug')
                                     ->disabled()
+                                    ->dehydrated()
                                     ->required()
                                     ->unique(Category::class, 'slug', ignoreRecord: true),
                             ]),

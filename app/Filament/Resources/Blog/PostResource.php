@@ -46,6 +46,7 @@ class PostResource extends Resource
 
                                 Forms\Components\TextInput::make('slug')
                                     ->disabled()
+                                    ->dehydrated()
                                     ->required()
                                     ->unique(Post::class, 'slug', ignoreRecord: true),
 

@@ -227,6 +227,7 @@ class OrderResource extends Resource
                         Forms\Components\TextInput::make('unit_price')
                             ->label('Unit Price')
                             ->disabled()
+                            ->dehydrated()
                             ->numeric()
                             ->required()
                             ->columnSpan([
@@ -247,6 +248,7 @@ class OrderResource extends Resource
             Forms\Components\TextInput::make('number')
                 ->default('OR-' . random_int(100000, 999999))
                 ->disabled()
+                ->dehydrated()
                 ->required(),
 
             Forms\Components\Select::make('shop_customer_id')
