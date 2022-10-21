@@ -4,7 +4,6 @@ use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Http\Middleware\MirrorConfigToSubpackages;
 use Filament\Pages;
-use Filament\Resources;
 use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -30,6 +29,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Filament Core Path
+    |--------------------------------------------------------------------------
+    |
+    | This is the path which Filament will use to load its core routes and assets.
+    | You may change it if it conflicts with your other routes.
+    |
+    */
+
+    'core_path' => env('FILAMENT_CORE_PATH', 'filament'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Filament Domain
     |--------------------------------------------------------------------------
     |
@@ -39,6 +50,29 @@ return [
     */
 
     'domain' => env('FILAMENT_DOMAIN'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Homepage URL
+    |--------------------------------------------------------------------------
+    |
+    | This is the URL that Filament will redirect the user to when they click
+    | on the sidebar's header.
+    |
+    */
+
+    'home_url' => '/',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Brand Name
+    |--------------------------------------------------------------------------
+    |
+    | This will be displayed on the login page and in the sidebar's header.
+    |
+    */
+
+    'brand' => env('APP_NAME'),
 
     /*
     |--------------------------------------------------------------------------
@@ -112,6 +146,21 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Livewire
+    |--------------------------------------------------------------------------
+    |
+    | This is the namespace and directory that Filament will automatically
+    | register Livewire components inside.
+    |
+    */
+
+    'livewire' => [
+        'namespace' => 'App\\Filament',
+        'path' => app_path('Filament'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Dark mode
     |--------------------------------------------------------------------------
     |
@@ -123,14 +172,14 @@ return [
     'dark_mode' => true,
 
     /*
-     |--------------------------------------------------------------------------
-     | Database notifications
-     |--------------------------------------------------------------------------
-     |
-     | By enabling this feature, your users are able to open a slide-over within
-     | the admin panel to view their database notifications.
-     |
-     */
+    |--------------------------------------------------------------------------
+    | Database notifications
+    |--------------------------------------------------------------------------
+    |
+    | By enabling this feature, your users are able to open a slide-over within
+    | the admin panel to view their database notifications.
+    |
+    */
 
     'database_notifications' => [
         'enabled' => true,
@@ -165,7 +214,7 @@ return [
     | Layout
     |--------------------------------------------------------------------------
     |
-    | This is the configuration for the general appearance of the admin panel.
+    | This is the configuration for the general layout of the admin panel.
     |
     | You may configure the max content width from `xl` to `7xl`, or `full`
     | for no max width.
@@ -173,16 +222,47 @@ return [
     */
 
     'layout' => [
-        'max_content_width' => null,
-        'sidebar' => [
-            'is_collapsible_on_desktop' => true,
+        'actions' => [
+            'modal' => [
+                'actions' => [
+                    'alignment' => 'left',
+                ],
+            ],
         ],
         'forms' => [
             'actions' => [
                 'alignment' => 'left',
             ],
+            'have_inline_labels' => false,
+        ],
+        'footer' => [
+            'should_show_logo' => true,
+        ],
+        'max_content_width' => null,
+        'notifications' => [
+            'vertical_alignment' => 'top',
+            'alignment' => 'right',
+        ],
+        'sidebar' => [
+            'is_collapsible_on_desktop' => true,
+            'groups' => [
+                'are_collapsible' => true,
+            ],
+            'width' => null,
+            'collapsed_width' => null,
         ],
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Favicon
+    |--------------------------------------------------------------------------
+    |
+    | This is the path to the favicon used for pages in the admin panel.
+    |
+    */
+
+    'favicon' => null,
 
     /*
     |--------------------------------------------------------------------------
@@ -206,14 +286,29 @@ return [
     |
     */
 
-    'default_filesystem_disk' => env('FILAMENT_FILESYSTEM_DRIVER', 'public'),
+    'default_filesystem_disk' => env('FILAMENT_FILESYSTEM_DISK', 'public'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Google Fonts
+    |--------------------------------------------------------------------------
+    |
+    | This is the URL for Google Fonts that should be loaded. You may use any
+    | font, or set to `null` to prevent any Google Fonts from loading.
+    |
+    | When using a custom font, you should also set the font family in your
+    | custom theme's `tailwind.config.js` file.
+    |
+    */
+
+    'google_fonts' => 'https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap',
 
     /*
     |--------------------------------------------------------------------------
     | Middleware
     |--------------------------------------------------------------------------
     |
-    | You may customise the middleware stack that Filament uses to handle
+    | You may customize the middleware stack that Filament uses to handle
     | requests.
     |
     */
