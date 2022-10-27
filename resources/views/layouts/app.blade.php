@@ -16,7 +16,8 @@
 
         <!-- Scripts -->
         @livewireScripts
-        @vite('resources/js/app.js')
+        @filamentScripts
+        <script src="//unpkg.com/alpinejs" defer></script>
         @stack('scripts')
     </head>
 

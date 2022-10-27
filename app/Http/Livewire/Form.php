@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Forms\Components\MarkdownEditor;
+use Closure;
 use Filament\Forms;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -22,8 +23,14 @@ class Form extends Component implements HasForms
     protected function getFormSchema(): array
     {
         return [
-            Forms\Components\RichEditor::make('content'),
-            Forms\Components\RichEditor::make('content2'),
+            Forms\Components\Select::make('unit')
+                ->reactive()
+                ->options([
+                    'hour' => 'Hour(s)',
+                    'day' => 'Day(s)'
+                ]),
+            Forms\Components\TextInput::make('rate')
+                ->disabled(fn (Closure $get) => blank($get('unit')))
         ];
     }
 
