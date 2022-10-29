@@ -4,13 +4,13 @@ namespace App\Providers\Filament;
 
 use App\Models\User;
 use Filament\Context;
-use Filament\ContextServiceProvider;
+use Filament\ContextProvider;
 
-class CommentsContextProvider extends ContextServiceProvider
+class CommentsContextProvider extends ContextProvider
 {
-    public function configureContext(Context $context): void
+    public function context(Context $context): Context
     {
-        $context
+        return $context
             ->id('comments')
             ->path('comments')
             ->tenant(User::class)
