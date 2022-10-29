@@ -8,7 +8,7 @@ use Squire\Models\Country;
 
 class AddressForm extends Forms\Components\Field
 {
-    protected string $view = 'forms::components.group';
+    protected string $view = 'filament-forms::components.group';
 
     public $relationship = null;
 
