@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Teams\Pages;
+namespace App\Filament\App\Pages;
 
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;

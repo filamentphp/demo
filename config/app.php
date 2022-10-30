@@ -173,10 +173,10 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
+        App\Providers\Filament\AdminFilamentProvider::class,
+        App\Providers\Filament\AppFilamentProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\FilamentServiceProvider::class,
-        App\Providers\Filament\CommentsContextProvider::class,
-        App\Providers\Filament\TeamsContextProvider::class,
 
     ],
 
