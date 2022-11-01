@@ -33,7 +33,6 @@ class AppFilamentProvider extends ContextProvider
             ->passwordReset()
             ->emailVerification()
             ->tenant(Team::class)
-            ->tenantBillingProvider(app(SparkBillingProvider::class))
             ->tenantRegistration(RegisterTeam::class)
             ->discoverResources(in: app_path('Filament/App/Resources'), for: 'App\\Filament\\App\\Resources')
             ->discoverPages(in: app_path('Filament/App/Pages'), for: 'App\\Filament\\App\\Pages')
