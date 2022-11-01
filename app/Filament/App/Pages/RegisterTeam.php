@@ -4,7 +4,7 @@ namespace App\Filament\App\Pages;
 
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
-use Filament\Pages\RegisterTenant;
+use Filament\Pages\Tenancy\RegisterTenant;
 
 class RegisterTeam extends RegisterTenant
 {

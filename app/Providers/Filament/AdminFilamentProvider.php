@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\Pages\Auth\Login;
 use App\Http\Middleware\Authenticate;
+use App\Models\Team;
 use Filament\Context;
 use Filament\ContextProvider;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -25,7 +26,7 @@ class AdminFilamentProvider extends ContextProvider
         return $context
             ->default()
             ->id('admin')
-            ->loginPage(Login::class)
+            ->login(Login::class)
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
@@ -35,6 +36,10 @@ class AdminFilamentProvider extends ContextProvider
             ->widgets([
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
+            ])
+            ->navigationGroups([
+                'Shop',
+                'Blog',
             ])
             ->databaseNotifications()
             ->middleware([

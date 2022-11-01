@@ -12,6 +12,7 @@ use Filament\ContextProvider;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Http\Middleware\MirrorConfigToSubpackages;
+use Filament\Pages\Auth\Register;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -27,10 +28,13 @@ class AppFilamentProvider extends ContextProvider
         return $context
             ->id('app')
             ->path('app')
-            ->loginPage(Login::class)
+            ->login(Login::class)
+            ->registration()
+            ->passwordReset()
+            ->emailVerification()
             ->tenant(Team::class)
             ->tenantBillingProvider(app(SparkBillingProvider::class))
-            ->tenantRegistrationPage(RegisterTeam::class)
+            ->tenantRegistration(RegisterTeam::class)
             ->discoverResources(in: app_path('Filament/App/Resources'), for: 'App\\Filament\\App\\Resources')
             ->discoverPages(in: app_path('Filament/App/Pages'), for: 'App\\Filament\\App\\Pages')
             ->discoverWidgets(in: app_path('Filament/App/Widgets'), for: 'App\\Filament\\App\\Widgets')

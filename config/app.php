@@ -176,7 +176,6 @@ return [
         App\Providers\Filament\AdminFilamentProvider::class,
         App\Providers\Filament\AppFilamentProvider::class,
         App\Providers\RouteServiceProvider::class,
-        App\Providers\FilamentServiceProvider::class,
 
     ],
 
