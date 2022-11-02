@@ -35,7 +35,7 @@ class User extends Authenticatable implements FilamentUser, HasTenants, MustVeri
         'email_verified_at' => 'datetime',
     ];
 
-    public function canAccessFilament(): bool
+    public function canAccessFilament(Context $context): bool
     {
         return true;
     }
