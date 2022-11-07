@@ -36,6 +36,7 @@ class CustomerResource extends Resource
                 Forms\Components\Card::make()
                     ->schema([
                         Forms\Components\TextInput::make('name')
+                            ->maxValue(50)
                             ->required(),
 
                         Forms\Components\TextInput::make('email')
@@ -43,7 +44,8 @@ class CustomerResource extends Resource
                             ->email()
                             ->unique(ignoreRecord: true),
 
-                        Forms\Components\TextInput::make('phone'),
+                        Forms\Components\TextInput::make('phone')
+                            ->maxValue(50),
 
                         Forms\Components\DatePicker::make('birthday')
                             ->maxDate('today'),
