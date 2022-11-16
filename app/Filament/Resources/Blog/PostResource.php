@@ -86,11 +86,11 @@ class PostResource extends Resource
                     ->schema([
                         Forms\Components\Placeholder::make('created_at')
                             ->label('Created at')
-                            ->content(fn (Post $record): string => $record->created_at->diffForHumans()),
+                            ->content(fn (Post $record): string => $record->created_at?->diffForHumans()),
 
                         Forms\Components\Placeholder::make('updated_at')
                             ->label('Last modified at')
-                            ->content(fn (Post $record): string => $record->updated_at->diffForHumans()),
+                            ->content(fn (Post $record): string => $record->updated_at?->diffForHumans()),
                     ])
                     ->columnSpan(['lg' => 1])
                     ->hidden(fn (?Post $record) => $record === null),
@@ -123,7 +123,7 @@ class PostResource extends Resource
                     ->toggleable(),
 
                 Tables\Columns\BadgeColumn::make('status')
-                    ->getStateUsing(fn (Post $record): string => $record->published_at->isPast() ? 'Published' : 'Draft')
+                    ->getStateUsing(fn (Post $record): string => $record->published_at?->isPast() ? 'Published' : 'Draft')
                     ->colors([
                         'success' => 'Published',
                     ]),

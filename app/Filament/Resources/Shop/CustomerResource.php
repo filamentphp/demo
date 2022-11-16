@@ -36,6 +36,7 @@ class CustomerResource extends Resource
                 Forms\Components\Card::make()
                     ->schema([
                         Forms\Components\TextInput::make('name')
+                            ->maxValue(50)
                             ->required(),
 
                         Forms\Components\TextInput::make('email')
@@ -43,7 +44,8 @@ class CustomerResource extends Resource
                             ->email()
                             ->unique(ignoreRecord: true),
 
-                        Forms\Components\TextInput::make('phone'),
+                        Forms\Components\TextInput::make('phone')
+                            ->maxValue(50),
 
                         Forms\Components\DatePicker::make('birthday')
                             ->maxDate('today'),
@@ -55,11 +57,11 @@ class CustomerResource extends Resource
                     ->schema([
                         Forms\Components\Placeholder::make('created_at')
                             ->label('Created at')
-                            ->content(fn (Customer $record): string => $record->created_at->diffForHumans()),
+                            ->content(fn (Customer $record): string => $record->created_at?->diffForHumans()),
 
                         Forms\Components\Placeholder::make('updated_at')
                             ->label('Last modified at')
-                            ->content(fn (Customer $record): string => $record->updated_at->diffForHumans()),
+                            ->content(fn (Customer $record): string => $record->updated_at?->diffForHumans()),
                     ])
                     ->columnSpan(['lg' => 1])
                     ->hidden(fn (?Customer $record) => $record === null),
