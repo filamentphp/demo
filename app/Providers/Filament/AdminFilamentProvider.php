@@ -4,7 +4,6 @@ namespace App\Providers\Filament;
 
 use App\Filament\Pages\Auth\Login;
 use App\Http\Middleware\Authenticate;
-use App\Models\Team;
 use Filament\Context;
 use Filament\ContextProvider;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;

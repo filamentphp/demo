@@ -7,7 +7,6 @@ use App\Models\Shop\Order;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
-use Illuminate\Database\Eloquent\Builder;
 use Squire\Models\Currency;
 
 class LatestOrders extends BaseWidget
