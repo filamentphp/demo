@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire;
 
-use App\Forms\Components\MarkdownEditor;
 use Closure;
 use Filament\Forms;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -27,10 +26,10 @@ class Form extends Component implements HasForms
                 ->reactive()
                 ->options([
                     'hour' => 'Hour(s)',
-                    'day' => 'Day(s)'
+                    'day' => 'Day(s)',
                 ]),
             Forms\Components\TextInput::make('rate')
-                ->disabled(fn (Closure $get) => blank($get('unit')))
+                ->disabled(fn (Closure $get) => blank($get('unit'))),
         ];
     }
 
