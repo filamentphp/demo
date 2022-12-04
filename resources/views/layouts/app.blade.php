@@ -12,13 +12,15 @@
         <!-- Styles -->
         <style>[x-cloak] { display: none !important; }</style>
         @livewireStyles
+        @filamentStyles
         @vite('resources/css/app.css')
 
         <!-- Scripts -->
         @livewireScripts
         @filamentScripts
+        <script src="//unpkg.com/@alpinejs/focus" defer></script>
         <script src="//unpkg.com/alpinejs" defer></script>
-        @stack('scripts')
+        @vite('resources/js/app.js')
     </head>
 
     <body class="antialiased">
