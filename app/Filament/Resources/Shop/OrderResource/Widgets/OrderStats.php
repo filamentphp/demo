@@ -10,6 +10,8 @@ use Flowframe\Trend\TrendValue;
 
 class OrderStats extends BaseWidget
 {
+    protected static ?string $pollingInterval = null;
+
     protected function getCards(): array
     {
         $orderData = Trend::model(Order::class)
