@@ -8,6 +8,8 @@ use App\Models\Blog\Post;
 use Filament\Forms;
 use Filament\Forms\Components\SpatieTagsInput;
 use Filament\Forms\Form;
+use Filament\Infolists\Components;
+use Filament\Infolists\Infolist;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -169,6 +171,8 @@ class PostResource extends Resource
                     }),
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
+
                 Tables\Actions\EditAction::make(),
 
                 Tables\Actions\DeleteAction::make(),
@@ -181,6 +185,52 @@ class PostResource extends Resource
                             ->warning()
                             ->send();
                     }),
+            ]);
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                Components\Card::make([
+                    Components\Split::make([
+                        Components\Grid::make(2)
+                            ->schema([
+                                Components\Group::make([
+                                    Components\TextEntry::make('title'),
+                                    Components\TextEntry::make('slug'),
+                                    Components\BadgeEntry::make('published_at')
+                                        ->date()
+                                        ->color('danger'),
+                                    Components\IconEntry::make('test')
+                                        ->boolean()
+                                        ->getStateUsing(fn () => rand(0, 1))
+                                ]),
+                                Components\Group::make([
+                                    Components\TextEntry::make('author.name'),
+                                    Components\TextEntry::make('category.name'),
+                                    Components\TagsEntry::make('tags')
+                                        ->getStateUsing(fn () => ['one', 'two', 'three', 'four']),
+                                ]),
+                            ]),
+                        Components\ImageEntry::make('image')
+                            ->hiddenLabel()
+                            ->height('100%')
+                            ->grow(false),
+                    ])->from('lg'),
+                ]),
+                Components\Section::make('Content')
+                    ->schema([
+                        Components\ProseEntry::make('content')
+                            ->markdown()
+                            ->hiddenLabel(),
+                    ])
+                    ->collapsible(),
+                Components\RepeatableEntry::make('comments')
+                    ->schema([
+                        Components\TextEntry::make('title'),
+                        Components\TextEntry::make('customer.name'),
+                    ]),
             ]);
     }
 
@@ -197,6 +247,7 @@ class PostResource extends Resource
             'index' => Pages\ListPosts::route('/'),
             'create' => Pages\CreatePost::route('/create'),
             'edit' => Pages\EditPost::route('/{record}/edit'),
+            'view' => Pages\ViewPost::route('/{record}'),
         ];
     }
 

@@ -63,7 +63,7 @@ class AuthorResource extends Resource
                         Tables\Columns\TextColumn::make('email')
                             ->searchable()
                             ->sortable()
-                            ->color('secondary')
+                            ->color('gray')
                             ->alignLeft(),
                     ]),
 
@@ -77,7 +77,7 @@ class AuthorResource extends Resource
                             ->icon('icon-twitter')
                             ->label('Twitter')
                             ->alignLeft(),
-                    ]),
+                    ])->space(),
                 ])->from('md'),
 
             ])

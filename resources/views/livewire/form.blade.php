@@ -1,9 +1,7 @@
-<form wire:submit.prevent="submit" class="max-w-xl mx-auto p-8">
+<form wire:submit.prevent="submit" class="max-w-3xl mx-auto w-full p-8 space-y-6">
     {{ $this->form }}
 
-    <x-filament::button class="mt-2" type="submit">
+    <x-filament::button>
         Submit
     </x-filament::button>
-
-    {{ var_dump($data) }}
 </form>

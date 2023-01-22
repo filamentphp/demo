@@ -6,6 +6,9 @@ use App\Filament\Resources\Blog\CategoryResource\Pages;
 use App\Models\Blog\Category;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\IconEntry;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -70,6 +73,7 @@ class CategoryResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
@@ -82,6 +86,22 @@ class CategoryResource extends Resource
                             ->send();
                     }),
             ]);
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                TextEntry::make('name'),
+                TextEntry::make('slug'),
+                TextEntry::make('description'),
+                IconEntry::make('is_visible')
+                    ->boolean(),
+                TextEntry::make('updated_at')
+                    ->dateTime(),
+            ])
+            ->columns(1)
+            ->inlineLabel();
     }
 
     public static function getRelations(): array

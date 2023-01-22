@@ -22,14 +22,7 @@ class Form extends Component implements HasForms
     protected function getFormSchema(): array
     {
         return [
-            Forms\Components\Select::make('unit')
-                ->reactive()
-                ->options([
-                    'hour' => 'Hour(s)',
-                    'day' => 'Day(s)',
-                ]),
-            Forms\Components\TextInput::make('rate')
-                ->disabled(fn (Closure $get) => blank($get('unit'))),
+            Forms\Components\DateTimePicker::make('date')->native(false),
         ];
     }
 
