@@ -19,6 +19,7 @@ use App\Models\User;
 use Filament\Notifications\Actions\Action;
 use Filament\Notifications\Notification;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class DatabaseSeeder extends Seeder
@@ -42,17 +43,23 @@ class DatabaseSeeder extends Seeder
             ->has(
                 ShopCategory::factory()->count(3),
                 'children'
-            )->create();
+            )->make();
+        ShopCategory::insert($categories->toArray());
+        $categories = ShopCategory::all();
         $this->command->info('Shop categories created.');
 
         $brands = Brand::factory()->count(20)
             ->has(Address::factory()->count(rand(1, 3)))
-            ->create();
+            ->make();
+        Brand::insert($brands->toArray());
+        $brands = Brand::all();
         $this->command->info('Shop brands created.');
 
         $customers = Customer::factory()->count(1000)
             ->has(Address::factory()->count(rand(1, 3)))
-            ->create();
+            ->make();
+        Customer::insert($customers->toArray());
+        $customers = Customer::all();
         $this->command->info('Shop customers created.');
 
         $products = Product::factory()->count(50)
@@ -62,7 +69,9 @@ class DatabaseSeeder extends Seeder
                 Comment::factory()->count(rand(10, 20))
                     ->state(fn (array $attributes, Product $product) => ['customer_id' => $customers->random(1)->first()->id]),
             )
-            ->create();
+            ->make();
+        Product::insert($products->toArray());
+        $products = Product::all();
         $this->command->info('Shop products created.');
 
         $orders = Order::factory()->count(1000)
@@ -73,7 +82,9 @@ class DatabaseSeeder extends Seeder
                     ->state(fn (array $attributes, Order $order) => ['shop_product_id' => $products->random(1)->first()->id]),
                 'items'
             )
-            ->create();
+            ->make();
+        Order::insert($orders->toArray());
+        $orders = Order::all();
 
         foreach ($orders->random(rand(5, 8)) as $order) {
             Notification::make()
@@ -89,10 +100,11 @@ class DatabaseSeeder extends Seeder
         $this->command->info('Shop orders created.');
 
         // Blog
-        $blogCategories = BlogCategory::factory()->count(20)->create();
+        $blogCategories = BlogCategory::factory()->count(20)->make();
+        BlogCategory::insert($blogCategories->toArray());
         $this->command->info('Blog categories created.');
 
-        Author::factory()->count(20)
+        $authors = Author::factory()->count(20)
             ->has(
                 Post::factory()->count(5)
                     ->has(
@@ -102,7 +114,8 @@ class DatabaseSeeder extends Seeder
                     ->state(fn (array $attributes, Author $author) => ['blog_category_id' => $blogCategories->random(1)->first()->id]),
                 'posts'
             )
-            ->create();
+            ->make();
+        Author::insert($authors->toArray());
         $this->command->info('Blog authors and posts created.');
     }
 }
