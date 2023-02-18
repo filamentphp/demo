@@ -6,6 +6,7 @@ use App\Filament\Pages\Auth\Login;
 use App\Http\Middleware\Authenticate;
 use Filament\Context;
 use Filament\ContextProvider;
+use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Http\Middleware\MirrorConfigToSubpackages;
 use Filament\Pages;
@@ -49,8 +50,8 @@ class AdminContextProvider extends ContextProvider
                 ShareErrorsFromSession::class,
                 VerifyCsrfToken::class,
                 SubstituteBindings::class,
+                DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
-                MirrorConfigToSubpackages::class,
             ])
             ->authMiddleware([
                 Authenticate::class,

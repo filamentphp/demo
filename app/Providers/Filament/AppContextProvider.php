@@ -8,6 +8,7 @@ use App\Models\Team;
 use Filament\Context;
 use Filament\ContextProvider;
 use Filament\Http\Middleware\Authenticate;
+use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Http\Middleware\MirrorConfigToSubpackages;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -42,8 +43,8 @@ class AppContextProvider extends ContextProvider
                 ShareErrorsFromSession::class,
                 VerifyCsrfToken::class,
                 SubstituteBindings::class,
+                DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
-                MirrorConfigToSubpackages::class,
             ])
             ->authMiddleware([
                 Authenticate::class,
