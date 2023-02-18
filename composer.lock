@@ -1702,16 +1702,16 @@
         },
         {
             "name": "filament/filament",
-            "version": "v2.17.2",
+            "version": "v2.17.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/app.git",
-                "reference": "3eaee759d1d8f51a46db4a54f5bd8bee757de443"
+                "reference": "cb5654772125da73c3327b59e777195e1c0ea74a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/app/zipball/3eaee759d1d8f51a46db4a54f5bd8bee757de443",
-                "reference": "3eaee759d1d8f51a46db4a54f5bd8bee757de443",
+                "url": "https://api.github.com/repos/filamentphp/app/zipball/cb5654772125da73c3327b59e777195e1c0ea74a",
+                "reference": "cb5654772125da73c3327b59e777195e1c0ea74a",
                 "shasum": ""
             },
             "require": {
@@ -1761,20 +1761,20 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2023-02-16T08:47:00+00:00"
+            "time": "2023-02-18T12:33:47+00:00"
         },
         {
             "name": "filament/forms",
-            "version": "v2.17.2",
+            "version": "v2.17.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/forms.git",
-                "reference": "c3e34acd359c9d719d857e6ce8a73713454f7361"
+                "reference": "0b8406996117673e25817259cf0acfeafe6f9a26"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/forms/zipball/c3e34acd359c9d719d857e6ce8a73713454f7361",
-                "reference": "c3e34acd359c9d719d857e6ce8a73713454f7361",
+                "url": "https://api.github.com/repos/filamentphp/forms/zipball/0b8406996117673e25817259cf0acfeafe6f9a26",
+                "reference": "0b8406996117673e25817259cf0acfeafe6f9a26",
                 "shasum": ""
             },
             "require": {
@@ -1819,11 +1819,11 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2023-02-16T08:46:30+00:00"
+            "time": "2023-02-18T12:33:49+00:00"
         },
         {
             "name": "filament/notifications",
-            "version": "v2.17.2",
+            "version": "v2.17.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/notifications.git",
@@ -1876,7 +1876,7 @@
         },
         {
             "name": "filament/spatie-laravel-media-library-plugin",
-            "version": "v2.17.2",
+            "version": "v2.17.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/spatie-laravel-media-library-plugin.git",
@@ -1913,7 +1913,7 @@
         },
         {
             "name": "filament/spatie-laravel-settings-plugin",
-            "version": "v2.17.2",
+            "version": "v2.17.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/spatie-laravel-settings-plugin.git",
@@ -1960,7 +1960,7 @@
         },
         {
             "name": "filament/spatie-laravel-tags-plugin",
-            "version": "v2.17.2",
+            "version": "v2.17.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/spatie-laravel-tags-plugin.git",
@@ -1997,7 +1997,7 @@
         },
         {
             "name": "filament/spatie-laravel-translatable-plugin",
-            "version": "v2.17.2",
+            "version": "v2.17.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/spatie-laravel-translatable-plugin.git",
@@ -2043,7 +2043,7 @@
         },
         {
             "name": "filament/support",
-            "version": "v2.17.2",
+            "version": "v2.17.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/support.git",
@@ -2093,16 +2093,16 @@
         },
         {
             "name": "filament/tables",
-            "version": "v2.17.2",
+            "version": "v2.17.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/tables.git",
-                "reference": "20773016c8f3d176de23c9f0eb900a6fc95b9611"
+                "reference": "ceea1a644c649f205f355e2a3bc9534592e8af1e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/tables/zipball/20773016c8f3d176de23c9f0eb900a6fc95b9611",
-                "reference": "20773016c8f3d176de23c9f0eb900a6fc95b9611",
+                "url": "https://api.github.com/repos/filamentphp/tables/zipball/ceea1a644c649f205f355e2a3bc9534592e8af1e",
+                "reference": "ceea1a644c649f205f355e2a3bc9534592e8af1e",
                 "shasum": ""
             },
             "require": {
@@ -2145,7 +2145,7 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2023-02-16T08:46:53+00:00"
+            "time": "2023-02-18T12:34:09+00:00"
         },
         {
             "name": "flowframe/laravel-trend",
@@ -5813,16 +5813,16 @@
         },
         {
             "name": "spatie/laravel-medialibrary",
-            "version": "10.7.10",
+            "version": "10.7.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-medialibrary.git",
-                "reference": "5c9fb62f8d4019e7fc2741d9812849661d78ed15"
+                "reference": "a6d562d2226c2b339db8299a3a02bacd031edabf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-medialibrary/zipball/5c9fb62f8d4019e7fc2741d9812849661d78ed15",
-                "reference": "5c9fb62f8d4019e7fc2741d9812849661d78ed15",
+                "url": "https://api.github.com/repos/spatie/laravel-medialibrary/zipball/a6d562d2226c2b339db8299a3a02bacd031edabf",
+                "reference": "a6d562d2226c2b339db8299a3a02bacd031edabf",
                 "shasum": ""
             },
             "require": {
@@ -5905,7 +5905,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-medialibrary/issues",
-                "source": "https://github.com/spatie/laravel-medialibrary/tree/10.7.10"
+                "source": "https://github.com/spatie/laravel-medialibrary/tree/10.7.11"
             },
             "funding": [
                 {
@@ -5917,7 +5917,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-01-19T07:58:23+00:00"
+            "time": "2023-02-17T08:44:20+00:00"
         },
         {
             "name": "spatie/laravel-package-tools",
@@ -6362,20 +6362,20 @@
         },
         {
             "name": "squirephp/countries",
-            "version": "v3.3.1",
+            "version": "v3.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squirephp/countries.git",
-                "reference": "ff4c7751e7e4a21a5fd0636217c1f057b1ebf25d"
+                "reference": "7dd92f46dc67ef0c03da4171f7d987f1886074a6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squirephp/countries/zipball/ff4c7751e7e4a21a5fd0636217c1f057b1ebf25d",
-                "reference": "ff4c7751e7e4a21a5fd0636217c1f057b1ebf25d",
+                "url": "https://api.github.com/repos/squirephp/countries/zipball/7dd92f46dc67ef0c03da4171f7d987f1886074a6",
+                "reference": "7dd92f46dc67ef0c03da4171f7d987f1886074a6",
                 "shasum": ""
             },
             "require": {
-                "illuminate/support": "^8.0|^9.0",
+                "illuminate/support": "^8.0|^9.0|^10.0",
                 "php": "^8.0",
                 "squirephp/model": "self.version",
                 "squirephp/rule": "self.version"
@@ -6412,24 +6412,24 @@
                 "issues": "https://github.com/squirephp/squire/issues",
                 "source": "https://github.com/squirephp/squire"
             },
-            "time": "2022-02-08T08:50:36+00:00"
+            "time": "2023-02-18T12:44:15+00:00"
         },
         {
             "name": "squirephp/countries-en",
-            "version": "v3.3.1",
+            "version": "v3.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squirephp/countries-en.git",
-                "reference": "b2522ca47e9bf99449e7b0db5a067ce3a14a6b80"
+                "reference": "831f343a2ee484aaa8b9b659c0915df46c887d3c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squirephp/countries-en/zipball/b2522ca47e9bf99449e7b0db5a067ce3a14a6b80",
-                "reference": "b2522ca47e9bf99449e7b0db5a067ce3a14a6b80",
+                "url": "https://api.github.com/repos/squirephp/countries-en/zipball/831f343a2ee484aaa8b9b659c0915df46c887d3c",
+                "reference": "831f343a2ee484aaa8b9b659c0915df46c887d3c",
                 "shasum": ""
             },
             "require": {
-                "illuminate/support": "^8.0|^9.0",
+                "illuminate/support": "^8.0|^9.0|^10.0",
                 "php": "^8.0",
                 "squirephp/countries": "self.version",
                 "squirephp/repository": "self.version"
@@ -6466,25 +6466,25 @@
                 "issues": "https://github.com/squirephp/squire/issues",
                 "source": "https://github.com/squirephp/squire"
             },
-            "time": "2022-02-08T08:50:36+00:00"
+            "time": "2023-02-18T12:44:18+00:00"
         },
         {
             "name": "squirephp/currencies",
-            "version": "v3.3.1",
+            "version": "v3.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squirephp/currencies.git",
-                "reference": "2fb078ad7fe9b6acf284d8c509b39c8ee8885438"
+                "reference": "69f71ff2163fdc80b1f9496a46c165b87b5f150f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squirephp/currencies/zipball/2fb078ad7fe9b6acf284d8c509b39c8ee8885438",
-                "reference": "2fb078ad7fe9b6acf284d8c509b39c8ee8885438",
+                "url": "https://api.github.com/repos/squirephp/currencies/zipball/69f71ff2163fdc80b1f9496a46c165b87b5f150f",
+                "reference": "69f71ff2163fdc80b1f9496a46c165b87b5f150f",
                 "shasum": ""
             },
             "require": {
                 "akaunting/laravel-money": "^1.2|^2.1",
-                "illuminate/support": "^8.0|^9.0",
+                "illuminate/support": "^8.0|^9.0|^10.0",
                 "php": "^8.0",
                 "squirephp/model": "self.version",
                 "squirephp/rule": "self.version"
@@ -6521,24 +6521,24 @@
                 "issues": "https://github.com/squirephp/squire/issues",
                 "source": "https://github.com/squirephp/squire"
             },
-            "time": "2022-04-21T09:00:13+00:00"
+            "time": "2023-02-18T12:44:15+00:00"
         },
         {
             "name": "squirephp/currencies-en",
-            "version": "v3.3.1",
+            "version": "v3.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squirephp/currencies-en.git",
-                "reference": "65884a0bb7aa736edc85ba73c2d5cd9199aab632"
+                "reference": "a4b347d73a0bd6a9e5ed93c14b24e4ae2d44c26d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squirephp/currencies-en/zipball/65884a0bb7aa736edc85ba73c2d5cd9199aab632",
-                "reference": "65884a0bb7aa736edc85ba73c2d5cd9199aab632",
+                "url": "https://api.github.com/repos/squirephp/currencies-en/zipball/a4b347d73a0bd6a9e5ed93c14b24e4ae2d44c26d",
+                "reference": "a4b347d73a0bd6a9e5ed93c14b24e4ae2d44c26d",
                 "shasum": ""
             },
             "require": {
-                "illuminate/support": "^8.0|^9.0",
+                "illuminate/support": "^8.0|^9.0|^10.0",
                 "php": "^8.0",
                 "squirephp/currencies": "self.version",
                 "squirephp/repository": "self.version"
@@ -6575,26 +6575,26 @@
                 "issues": "https://github.com/squirephp/squire/issues",
                 "source": "https://github.com/squirephp/squire"
             },
-            "time": "2022-02-08T08:50:36+00:00"
+            "time": "2023-02-18T12:44:16+00:00"
         },
         {
             "name": "squirephp/model",
-            "version": "v3.3.1",
+            "version": "v3.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squirephp/model.git",
-                "reference": "2ef9669c10dd17e44b22575a2796f25b788a99f0"
+                "reference": "dbd3cd2fb74c36f6aabd9294de40a8f64c82518d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squirephp/model/zipball/2ef9669c10dd17e44b22575a2796f25b788a99f0",
-                "reference": "2ef9669c10dd17e44b22575a2796f25b788a99f0",
+                "url": "https://api.github.com/repos/squirephp/model/zipball/dbd3cd2fb74c36f6aabd9294de40a8f64c82518d",
+                "reference": "dbd3cd2fb74c36f6aabd9294de40a8f64c82518d",
                 "shasum": ""
             },
             "require": {
                 "ext-pdo_sqlite": "*",
-                "illuminate/database": "^8.40|^9.0",
-                "illuminate/support": "^8.0|^9.0",
+                "illuminate/database": "^8.40|^9.0|^10.0",
+                "illuminate/support": "^8.0|^9.0|^10.0",
                 "php": "^8.0"
             },
             "type": "library",
@@ -6629,24 +6629,24 @@
                 "issues": "https://github.com/squirephp/squire/issues",
                 "source": "https://github.com/squirephp/squire"
             },
-            "time": "2022-02-08T08:50:39+00:00"
+            "time": "2023-02-18T12:44:15+00:00"
         },
         {
             "name": "squirephp/repository",
-            "version": "v3.3.1",
+            "version": "v3.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squirephp/repository.git",
-                "reference": "1778190fea82ac6b4d3c2eacbf43ba2d3efe9dd5"
+                "reference": "dffe543ee093cdad29c776ae901eb5aa43ac371a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squirephp/repository/zipball/1778190fea82ac6b4d3c2eacbf43ba2d3efe9dd5",
-                "reference": "1778190fea82ac6b4d3c2eacbf43ba2d3efe9dd5",
+                "url": "https://api.github.com/repos/squirephp/repository/zipball/dffe543ee093cdad29c776ae901eb5aa43ac371a",
+                "reference": "dffe543ee093cdad29c776ae901eb5aa43ac371a",
                 "shasum": ""
             },
             "require": {
-                "illuminate/support": "^8.0|^9.0",
+                "illuminate/support": "^8.0|^9.0|^10.0",
                 "php": "^8.0"
             },
             "type": "library",
@@ -6684,26 +6684,26 @@
                 "issues": "https://github.com/squirephp/squire/issues",
                 "source": "https://github.com/squirephp/squire"
             },
-            "time": "2022-02-08T08:51:10+00:00"
+            "time": "2023-02-18T12:44:39+00:00"
         },
         {
             "name": "squirephp/rule",
-            "version": "v3.3.1",
+            "version": "v3.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squirephp/rule.git",
-                "reference": "a1650e38aedcc1a7ce51e47340f17a9a4848ad9b"
+                "reference": "2a3d11385140e325dcfbcf48c864e1a02fa0c342"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squirephp/rule/zipball/a1650e38aedcc1a7ce51e47340f17a9a4848ad9b",
-                "reference": "a1650e38aedcc1a7ce51e47340f17a9a4848ad9b",
+                "url": "https://api.github.com/repos/squirephp/rule/zipball/2a3d11385140e325dcfbcf48c864e1a02fa0c342",
+                "reference": "2a3d11385140e325dcfbcf48c864e1a02fa0c342",
                 "shasum": ""
             },
             "require": {
-                "illuminate/contracts": "^8.0|^9.0",
-                "illuminate/database": "^8.40|^9.0",
-                "illuminate/support": "^8.0|^9.0",
+                "illuminate/contracts": "^8.0|^9.0|^10.0",
+                "illuminate/database": "^8.40|^9.0|^10.0",
+                "illuminate/support": "^8.0|^9.0|^10.0",
                 "php": "^8.0"
             },
             "type": "library",
@@ -6731,7 +6731,7 @@
                 "issues": "https://github.com/squirephp/squire/issues",
                 "source": "https://github.com/squirephp/squire"
             },
-            "time": "2022-02-08T08:51:11+00:00"
+            "time": "2023-02-18T12:44:38+00:00"
         },
         {
             "name": "symfony/console",
@@ -10006,16 +10006,16 @@
         },
         {
             "name": "nunomaduro/larastan",
-            "version": "2.4.0",
+            "version": "2.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nunomaduro/larastan.git",
-                "reference": "14f631348ead3e245651606931863b4f218d1f78"
+                "reference": "238fdbfba3aae133cdec73e99826c9b0232141f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nunomaduro/larastan/zipball/14f631348ead3e245651606931863b4f218d1f78",
-                "reference": "14f631348ead3e245651606931863b4f218d1f78",
+                "url": "https://api.github.com/repos/nunomaduro/larastan/zipball/238fdbfba3aae133cdec73e99826c9b0232141f7",
+                "reference": "238fdbfba3aae133cdec73e99826c9b0232141f7",
                 "shasum": ""
             },
             "require": {
@@ -10078,7 +10078,7 @@
             ],
             "support": {
                 "issues": "https://github.com/nunomaduro/larastan/issues",
-                "source": "https://github.com/nunomaduro/larastan/tree/2.4.0"
+                "source": "https://github.com/nunomaduro/larastan/tree/2.4.1"
             },
             "funding": [
                 {
@@ -10098,7 +10098,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2023-01-11T11:57:44+00:00"
+            "time": "2023-02-05T12:19:17+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -10300,16 +10300,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.9.17",
+            "version": "1.9.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "204e459e7822f2c586463029f5ecec31bb45a1f2"
+                "reference": "f2d5cf71be91172a57c649770b73c20ebcffb0bf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/204e459e7822f2c586463029f5ecec31bb45a1f2",
-                "reference": "204e459e7822f2c586463029f5ecec31bb45a1f2",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/f2d5cf71be91172a57c649770b73c20ebcffb0bf",
+                "reference": "f2d5cf71be91172a57c649770b73c20ebcffb0bf",
                 "shasum": ""
             },
             "require": {
@@ -10339,7 +10339,7 @@
             ],
             "support": {
                 "issues": "https://github.com/phpstan/phpstan/issues",
-                "source": "https://github.com/phpstan/phpstan/tree/1.9.17"
+                "source": "https://github.com/phpstan/phpstan/tree/1.9.18"
             },
             "funding": [
                 {
@@ -10355,7 +10355,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-02-08T12:25:00+00:00"
+            "time": "2023-02-17T15:01:27+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
