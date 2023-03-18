@@ -199,7 +199,8 @@ class PostResource extends Resource
                                 Components\Group::make([
                                     Components\TextEntry::make('title'),
                                     Components\TextEntry::make('slug'),
-                                    Components\BadgeEntry::make('published_at')
+                                    Components\TextEntry::make('published_at')
+                                        ->badge()
                                         ->date()
                                         ->color('danger'),
                                     Components\IconEntry::make('test')
@@ -209,7 +210,8 @@ class PostResource extends Resource
                                 Components\Group::make([
                                     Components\TextEntry::make('author.name'),
                                     Components\TextEntry::make('category.name'),
-                                    Components\TagsEntry::make('tags')
+                                    Components\TextEntry::make('tags')
+                                        ->badge()
                                         ->getStateUsing(fn () => ['one', 'two', 'three', 'four']),
                                 ]),
                             ]),
@@ -221,7 +223,8 @@ class PostResource extends Resource
                 ]),
                 Components\Section::make('Content')
                     ->schema([
-                        Components\ProseEntry::make('content')
+                        Components\TextEntry::make('content')
+                            ->prose()
                             ->markdown()
                             ->hiddenLabel(),
                     ])
