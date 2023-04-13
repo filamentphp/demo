@@ -16,10 +16,13 @@ use App\Models\Shop\OrderItem;
 use App\Models\Shop\Payment;
 use App\Models\Shop\Product;
 use App\Models\User;
+use Closure;
 use Filament\Notifications\Actions\Action;
 use Filament\Notifications\Notification;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\Console\Helper\ProgressBar;
 
 class DatabaseSeeder extends Seeder
 {
@@ -38,11 +41,12 @@ class DatabaseSeeder extends Seeder
         $this->command->info('Admin user created.');
 
         // Shop
-        $categories = ShopCategory::factory()->count(20)
+        $categories = $this->withProgressBar(20, fn() => ShopCategory::factory(1)
             ->has(
                 ShopCategory::factory()->count(3),
                 'children'
-            )->create();
+            )->create()
+        );
         $this->command->info('Shop categories created.');
 
         $brands = Brand::factory()->count(20)
@@ -50,30 +54,37 @@ class DatabaseSeeder extends Seeder
             ->create();
         $this->command->info('Shop brands created.');
 
-        $customers = Customer::factory()->count(1000)
+        $this->command->warn("Creating shop customers...");
+        $customers = $this->withProgressBar(1000, fn() => Customer::factory(1)
             ->has(Address::factory()->count(rand(1, 3)))
-            ->create();
+            ->create()
+        );
         $this->command->info('Shop customers created.');
 
-        $products = Product::factory()->count(50)
-            ->sequence(fn ($sequence) => ['shop_brand_id' => $brands->random(1)->first()->id])
+        $this->command->warn("Creating shop products...");
+        $products = $this->withProgressBar(50, fn() => Product::factory(1)
+            ->sequence(fn($sequence) => ['shop_brand_id' => $brands->random(1)->first()->id])
             ->hasAttached($categories->random(rand(3, 6)), ['created_at' => now(), 'updated_at' => now()])
             ->has(
                 Comment::factory()->count(rand(10, 20))
-                    ->state(fn (array $attributes, Product $product) => ['customer_id' => $customers->random(1)->first()->id]),
+                    ->state(fn(array $attributes, Product $product) => ['customer_id' => $customers->random(1)->first()->id]),
             )
-            ->create();
+            ->create()
+        );
         $this->command->info('Shop products created.');
 
-        $orders = Order::factory()->count(1000)
-            ->sequence(fn ($sequence) => ['shop_customer_id' => $customers->random(1)->first()->id])
+
+        $this->command->warn("Creating orders...");
+        $orders = $this->withProgressBar(1000, fn() => Order::factory(1)
+            ->sequence(fn($sequence) => ['shop_customer_id' => $customers->random(1)->first()->id])
             ->has(Payment::factory()->count(rand(1, 3)))
             ->has(
                 OrderItem::factory()->count(rand(2, 5))
-                    ->state(fn (array $attributes, Order $order) => ['shop_product_id' => $products->random(1)->first()->id]),
+                    ->state(fn(array $attributes, Order $order) => ['shop_product_id' => $products->random(1)->first()->id]),
                 'items'
             )
-            ->create();
+            ->create()
+        );
 
         foreach ($orders->random(rand(5, 8)) as $order) {
             Notification::make()
@@ -92,17 +103,45 @@ class DatabaseSeeder extends Seeder
         $blogCategories = BlogCategory::factory()->count(20)->create();
         $this->command->info('Blog categories created.');
 
-        Author::factory()->count(20)
+        $this->command->warn("Creating blog authors and posts...");
+        $this->withProgressBar(20, fn() => Author::factory(1)
             ->has(
                 Post::factory()->count(5)
                     ->has(
                         Comment::factory()->count(rand(5, 10))
-                            ->state(fn (array $attributes, Post $post) => ['customer_id' => $customers->random(1)->first()->id]),
+                            ->state(fn(array $attributes, Post $post) => ['customer_id' => $customers->random(1)->first()->id]),
                     )
-                    ->state(fn (array $attributes, Author $author) => ['blog_category_id' => $blogCategories->random(1)->first()->id]),
+                    ->state(fn(array $attributes, Author $author) => ['blog_category_id' => $blogCategories->random(1)->first()->id]),
                 'posts'
             )
-            ->create();
+            ->create()
+        );
         $this->command->info('Blog authors and posts created.');
+    }
+
+    /**
+     * Created an Implementation so we can return the results.
+     *
+     */
+    protected function withProgressBar($amount, Closure $createCollectionOfOne): Collection
+    {
+        $progressBar = new ProgressBar($this->command->getOutput(), $amount);
+
+        $progressBar->start();
+
+        $items = new Collection();
+
+        foreach (range(1, $amount) as $i) {
+            $items = $items->merge(
+                $createCollectionOfOne()
+            );
+            $progressBar->advance();
+        }
+
+        $progressBar->finish();
+
+        $this->command->getOutput()->writeln('');
+
+        return $items;
     }
 }
