@@ -34,16 +34,19 @@ class DatabaseSeeder extends Seeder
         Storage::deleteDirectory('public');
 
         // Admin
-        $user = User::factory()->create([
+        $this->command->warn(PHP_EOL . "Creating admin user...");
+        $user = $this->withProgressBar(1, fn() => User::factory(1)->create([
             'name' => 'Demo User',
             'email' => 'admin@filamentphp.com',
-        ]);
+        ]));
         $this->command->info('Admin user created.');
 
         // Shop
-        $brands = Brand::factory()->count(20)
+        $this->command->warn(PHP_EOL . "Creating shop brands...");
+        $brands = $this->withProgressBar(20, fn() => Brand::factory()->count(20)
             ->has(Address::factory()->count(rand(1, 3)))
-            ->create();
+            ->create()
+        );
         $this->command->info('Shop brands created.');
 
         $this->command->warn(PHP_EOL . "Creating shop categories...");
@@ -101,7 +104,11 @@ class DatabaseSeeder extends Seeder
         $this->command->info('Shop orders created.');
 
         // Blog
-        $blogCategories = BlogCategory::factory()->count(20)->create();
+        $this->command->warn(PHP_EOL . "Creating blog categories...");
+        $blogCategories = $this->withProgressBar(20, fn() => BlogCategory::factory(1)
+            ->count(20)
+            ->create()
+        );
         $this->command->info('Blog categories created.');
 
         $this->command->warn(PHP_EOL . "Creating blog authors and posts...");
