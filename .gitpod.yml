@@ -2,7 +2,7 @@ tasks:
   - name: Setup environment and launch
     init: |
       cp .env.example .env &&
-      sed -i "s#APP_URL=http://127.0.0.1:8000#APP_URL=$(gp url 80)#g" .env
+      sed -i "s#APP_URL=http://127.0.0.1:8000#APP_URL=$(gp url 8000)#g" .env
       composer install --ignore-platform-reqs
       php artisan key:generate
       php artisan storage:link
