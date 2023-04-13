@@ -35,7 +35,7 @@ class DatabaseSeeder extends Seeder
 
         // Admin
         $this->command->warn(PHP_EOL . "Creating admin user...");
-        $user = $this->withProgressBar(1, fn() => User::factory(1)->create([
+        $user = $this->withProgressBar(1, fn () => User::factory(1)->create([
             'name' => 'Demo User',
             'email' => 'admin@filamentphp.com',
         ]));
@@ -43,43 +43,39 @@ class DatabaseSeeder extends Seeder
 
         // Shop
         $this->command->warn(PHP_EOL . "Creating shop brands...");
-        $brands = $this->withProgressBar(20, fn() => Brand::factory()->count(20)
+        $brands = $this->withProgressBar(20, fn () => Brand::factory()->count(20)
             ->has(Address::factory()->count(rand(1, 3)))
-            ->create()
-        );
+            ->create());
         $this->command->info('Shop brands created.');
 
         $this->command->warn(PHP_EOL . "Creating shop categories...");
-        $categories = $this->withProgressBar(20, fn() => ShopCategory::factory(1)
+        $categories = $this->withProgressBar(20, fn () => ShopCategory::factory(1)
             ->has(
                 ShopCategory::factory()->count(3),
                 'children'
-            )->create()
-        );
+            )->create());
         $this->command->info('Shop categories created.');
 
         $this->command->warn(PHP_EOL . "Creating shop customers...");
-        $customers = $this->withProgressBar(1000, fn() => Customer::factory(1)
+        $customers = $this->withProgressBar(1000, fn () => Customer::factory(1)
             ->has(Address::factory()->count(rand(1, 3)))
-            ->create()
-        );
+            ->create());
         $this->command->info('Shop customers created.');
 
         $this->command->warn(PHP_EOL . "Creating shop products...");
-        $products = $this->withProgressBar(50, fn() => Product::factory(1)
+        $products = $this->withProgressBar(50, fn () => Product::factory(1)
             ->sequence(fn($sequence) => ['shop_brand_id' => $brands->random(1)->first()->id])
             ->hasAttached($categories->random(rand(3, 6)), ['created_at' => now(), 'updated_at' => now()])
             ->has(
                 Comment::factory()->count(rand(10, 20))
                     ->state(fn(array $attributes, Product $product) => ['customer_id' => $customers->random(1)->first()->id]),
             )
-            ->create()
-        );
+            ->create());
         $this->command->info('Shop products created.');
 
 
         $this->command->warn(PHP_EOL . "Creating orders...");
-        $orders = $this->withProgressBar(1000, fn() => Order::factory(1)
+        $orders = $this->withProgressBar(1000, fn () => Order::factory(1)
             ->sequence(fn($sequence) => ['shop_customer_id' => $customers->random(1)->first()->id])
             ->has(Payment::factory()->count(rand(1, 3)))
             ->has(
@@ -87,8 +83,7 @@ class DatabaseSeeder extends Seeder
                     ->state(fn(array $attributes, Order $order) => ['shop_product_id' => $products->random(1)->first()->id]),
                 'items'
             )
-            ->create()
-        );
+            ->create());
 
         foreach ($orders->random(rand(5, 8)) as $order) {
             Notification::make()
@@ -105,14 +100,13 @@ class DatabaseSeeder extends Seeder
 
         // Blog
         $this->command->warn(PHP_EOL . "Creating blog categories...");
-        $blogCategories = $this->withProgressBar(20, fn() => BlogCategory::factory(1)
+        $blogCategories = $this->withProgressBar(20, fn () => BlogCategory::factory(1)
             ->count(20)
-            ->create()
-        );
+            ->create());
         $this->command->info('Blog categories created.');
 
         $this->command->warn(PHP_EOL . "Creating blog authors and posts...");
-        $this->withProgressBar(20, fn() => Author::factory(1)
+        $this->withProgressBar(20, fn () => Author::factory(1)
             ->has(
                 Post::factory()->count(5)
                     ->has(
@@ -122,16 +116,11 @@ class DatabaseSeeder extends Seeder
                     ->state(fn(array $attributes, Author $author) => ['blog_category_id' => $blogCategories->random(1)->first()->id]),
                 'posts'
             )
-            ->create()
-        );
+            ->create());
         $this->command->info('Blog authors and posts created.');
     }
 
-    /**
-     * Created an Implementation so we can return the results.
-     *
-     */
-    protected function withProgressBar($amount, Closure $createCollectionOfOne): Collection
+    protected function withProgressBar(int $amount, Closure $createCollectionOfOne): Collection
     {
         $progressBar = new ProgressBar($this->command->getOutput(), $amount);
 
