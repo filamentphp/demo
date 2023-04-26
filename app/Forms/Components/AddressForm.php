@@ -23,9 +23,11 @@ class AddressForm extends Forms\Components\Field
     {
         $state = $this->getState();
         $record = $this->getRecord();
-        $relationship = $record->{$this->getRelationship()}();
+        $relationship = $record?->{$this->getRelationship()}();
 
-        if ($address = $relationship->first()) {
+        if ($relationship === null) {
+            return;
+        } elseif ($address = $relationship->first()) {
             $address->update($state);
         } else {
             $relationship->updateOrCreate($state);
