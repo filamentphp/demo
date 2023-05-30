@@ -2,15 +2,15 @@
 
 namespace App\Providers\Filament;
 
-use App\Filament\App\Pages\RegisterTeam;
 use App\Filament\Pages\Auth\Login;
-use App\Models\Team;
-use Filament\Context;
-use Filament\ContextProvider;
-use Filament\Http\Middleware\Authenticate;
+use App\Http\Middleware\Authenticate;
+use Filament\Panel;
+use Filament\PanelProvider;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Http\Middleware\MirrorConfigToSubpackages;
+use Filament\Pages;
+use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -19,22 +19,29 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
-class AppContextProvider extends ContextProvider
+class AdminPanelProvider extends PanelProvider
 {
-    public function context(Context $context): Context
+    public function panel(Panel $panel): Panel
     {
-        return $context
-            ->id('app')
-            ->path('app')
+        return $panel
+            ->default()
+            ->id('admin')
             ->login(Login::class)
-            ->registration()
-            ->passwordReset()
-            ->emailVerification()
-            ->tenant(Team::class)
-            ->tenantRegistration(RegisterTeam::class)
-            ->discoverResources(in: app_path('Filament/App/Resources'), for: 'App\\Filament\\App\\Resources')
-            ->discoverPages(in: app_path('Filament/App/Pages'), for: 'App\\Filament\\App\\Pages')
-            ->discoverWidgets(in: app_path('Filament/App/Widgets'), for: 'App\\Filament\\App\\Widgets')
+            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
+            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
+            ->pages([
+                Pages\Dashboard::class,
+            ])
+            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
+            ->widgets([
+                Widgets\AccountWidget::class,
+                Widgets\FilamentInfoWidget::class,
+            ])
+            ->navigationGroups([
+                'Shop',
+                'Blog',
+            ])
+            ->databaseNotifications()
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

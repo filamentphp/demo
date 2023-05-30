@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Filament\Context;
+use Filament\Panel;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasTenants;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -34,7 +34,7 @@ class User extends Authenticatable implements FilamentUser, HasTenants, MustVeri
         'email_verified_at' => 'datetime',
     ];
 
-    public function canAccessFilament(Context $context): bool
+    public function canAccessFilament(Panel $panel): bool
     {
         return true;
     }
@@ -44,7 +44,7 @@ class User extends Authenticatable implements FilamentUser, HasTenants, MustVeri
         return true;
     }
 
-    public function getTenants(Context $context): array | Collection
+    public function getTenants(Panel $panel): array | Collection
     {
         return Team::all();
     }
