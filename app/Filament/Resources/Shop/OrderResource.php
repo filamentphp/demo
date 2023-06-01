@@ -89,12 +89,20 @@ class OrderResource extends Resource
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('total_price')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->summarize([
+                        Tables\Columns\Summarizers\Sum::make()
+                            ->money(),
+                    ]),
                 Tables\Columns\TextColumn::make('shipping_price')
                     ->label('Shipping cost')
                     ->searchable()
                     ->sortable()
-                    ->toggleable(),
+                    ->toggleable()
+                    ->summarize([
+                        Tables\Columns\Summarizers\Sum::make()
+                            ->money(),
+                    ]),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Order Date')
                     ->date()
@@ -144,6 +152,12 @@ class OrderResource extends Resource
                             ->warning()
                             ->send();
                     }),
+            ])
+            ->groups([
+                Tables\Grouping\Group::make('created_at')
+                    ->label('Order Date')
+                    ->getTitleFromRecordUsing(fn ($record) => Carbon::parse(data_get($record, 'created_at', ))->format(Tables\Table::$defaultDateDisplayFormat))
+                    ->collapsible(),
             ]);
     }
 
