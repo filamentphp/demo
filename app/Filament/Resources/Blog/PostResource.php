@@ -138,6 +138,10 @@ class PostResource extends Resource
                 Tables\Columns\TextColumn::make('published_at')
                     ->label('Published Date')
                     ->date(),
+
+                Tables\Columns\TextColumn::make('comments.customer.name')
+                    ->label('Comment Authors')
+                    ->listWithLineBreaks(),
             ])
             ->filters([
                 Tables\Filters\Filter::make('published_at')
