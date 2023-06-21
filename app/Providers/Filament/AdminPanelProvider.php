@@ -4,12 +4,11 @@ namespace App\Providers\Filament;
 
 use App\Filament\Pages\Auth\Login;
 use App\Http\Middleware\Authenticate;
-use Filament\Panel;
-use Filament\PanelProvider;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Http\Middleware\MirrorConfigToSubpackages;
 use Filament\Pages;
+use Filament\Panel;
+use Filament\PanelProvider;
 use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;

@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire;
 
-use Closure;
 use Filament\Forms;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;

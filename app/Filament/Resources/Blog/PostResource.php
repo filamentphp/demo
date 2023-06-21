@@ -209,7 +209,7 @@ class PostResource extends Resource
                                         ->color('danger'),
                                     Components\IconEntry::make('test')
                                         ->boolean()
-                                        ->getStateUsing(fn () => rand(0, 1))
+                                        ->getStateUsing(fn () => rand(0, 1)),
                                 ]),
                                 Components\Group::make([
                                     Components\TextEntry::make('author.name'),
