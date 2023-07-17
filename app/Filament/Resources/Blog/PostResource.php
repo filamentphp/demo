@@ -221,7 +221,6 @@ class PostResource extends Resource
                             ]),
                         Components\ImageEntry::make('image')
                             ->hiddenLabel()
-                            ->height('100%')
                             ->grow(false),
                     ])->from('lg'),
                 ]),
