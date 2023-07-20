@@ -29,7 +29,7 @@ class PostResource extends Resource
 
     protected static ?string $navigationGroup = 'Blog';
 
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    protected static ?string $navigationIcon = 'heroicon-m-document-text';
 
     protected static ?int $navigationSort = 0;
 

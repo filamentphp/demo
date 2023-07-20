@@ -30,7 +30,7 @@ class OrderResource extends Resource
 
     protected static ?string $navigationGroup = 'Shop';
 
-    protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
+    protected static ?string $navigationIcon = 'heroicon-m-shopping-bag';
 
     protected static ?int $navigationSort = 2;
 
@@ -213,7 +213,7 @@ class OrderResource extends Resource
         return static::$model::where('status', 'new')->count();
     }
 
-    public static function getFormSchema(?string $section = null): array
+    public static function getFormSchema(string $section = null): array
     {
         if ($section === 'items') {
             return [
