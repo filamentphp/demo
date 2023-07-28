@@ -64,7 +64,7 @@ class CommentsRelationManager extends RelationManager
                     ->after(function ($record) {
                         Notification::make()
                             ->title('New comment')
-                            ->icon('heroicon-m-chat-bubble-bottom-center-text')
+                            ->icon('heroicon-o-chat-bubble-bottom-center-text')
                             ->body("**{$record->customer->name} commented on product ({$record->commentable->name}).**")
                             ->sendToDatabase(auth()->user());
                     }),
