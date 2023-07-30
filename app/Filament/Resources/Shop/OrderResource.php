@@ -199,7 +199,7 @@ class OrderResource extends Resource
         return static::$model::where('status', 'new')->count();
     }
 
-    public static function getFormSchema(?string $section = null): array
+    public static function getFormSchema(string $section = null): array
     {
         if ($section === 'items') {
             return [
