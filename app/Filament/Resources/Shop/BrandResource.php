@@ -86,8 +86,9 @@ class BrandResource extends Resource
                     ->label('Website')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\BooleanColumn::make('is_visible')
+                Tables\Columns\IconColumn::make('is_visible')
                     ->label('Visibility')
+                    ->boolean()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('Updated Date')

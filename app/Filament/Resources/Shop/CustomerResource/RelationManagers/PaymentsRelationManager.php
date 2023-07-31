@@ -52,7 +52,8 @@ class PaymentsRelationManager extends RelationManager
                         'stripe' => 'Stripe',
                         'paypal' => 'PayPal',
                     ])
-                    ->required(),
+                    ->required()
+                    ->native(false),
 
                 Forms\Components\Select::make('method')
                     ->options([
@@ -60,7 +61,8 @@ class PaymentsRelationManager extends RelationManager
                         'bank_transfer' => 'Bank transfer',
                         'paypal' => 'PayPal',
                     ])
-                    ->required(),
+                    ->required()
+                    ->native(false),
             ]);
     }
 

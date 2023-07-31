@@ -33,6 +33,7 @@ class AuthorResource extends Resource
                     ->required(),
 
                 Forms\Components\TextInput::make('email')
+                    ->label('Email address')
                     ->required()
                     ->email()
                     ->unique(Author::class, 'email', ignoreRecord: true),
@@ -61,6 +62,7 @@ class AuthorResource extends Resource
                             ->alignLeft(),
 
                         Tables\Columns\TextColumn::make('email')
+                            ->label('Email address')
                             ->searchable()
                             ->sortable()
                             ->color('gray')

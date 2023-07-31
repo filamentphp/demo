@@ -2,18 +2,30 @@
 
 namespace App\Filament\Resources\Shop\ProductResource\Widgets;
 
+use App\Filament\Resources\Blog\PostResource\Pages\ListPosts;
+use App\Filament\Resources\Shop\ProductResource\Pages\ListProducts;
 use App\Models\Shop\Product;
+use Filament\Widgets\Concerns\InteractsWithPageTable;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Card;
 
 class ProductStats extends BaseWidget
 {
+    use InteractsWithPageTable;
+
+    protected static ?string $pollingInterval = null;
+
+    protected function getTablePage(): string
+    {
+        return ListProducts::class;
+    }
+
     protected function getCards(): array
     {
         return [
-            Card::make('Total Products', Product::count()),
-            Card::make('Product Inventory', Product::sum('qty')),
-            Card::make('Average price', number_format(Product::avg('price'), 2)),
+            Card::make('Total Products', $this->getPageTableQuery()->count()),
+            Card::make('Product Inventory', $this->getPageTableQuery()->sum('qty')),
+            Card::make('Average price', number_format($this->getPageTableQuery()->avg('price'), 2)),
         ];
     }
 }

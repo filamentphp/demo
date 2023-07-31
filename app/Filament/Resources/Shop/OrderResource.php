@@ -121,11 +121,11 @@ class OrderResource extends Resource
                     ->query(function (Builder $query, array $data): Builder {
                         return $query
                             ->when(
-                                $data['created_from'],
+                                $data['created_from'] ?? null,
                                 fn (Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
                             )
                             ->when(
-                                $data['created_until'],
+                                $data['created_until'] ?? null,
                                 fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
                             );
                     })
@@ -228,9 +228,11 @@ class OrderResource extends Resource
                             ->afterStateUpdated(fn ($state, callable $set) => $set('unit_price', Product::find($state)?->price ?? 0))
                             ->columnSpan([
                                 'md' => 5,
-                            ]),
+                            ])
+                            ->searchable(),
 
                         Forms\Components\TextInput::make('qty')
+                            ->label('Quantity')
                             ->numeric()
                             ->default(1)
                             ->columnSpan([
@@ -274,6 +276,7 @@ class OrderResource extends Resource
                         ->required(),
 
                     Forms\Components\TextInput::make('email')
+                        ->label('Email address')
                         ->required()
                         ->email()
                         ->unique(),
@@ -286,7 +289,8 @@ class OrderResource extends Resource
                             'male' => 'Male',
                             'female' => 'Female',
                         ])
-                        ->required(),
+                        ->required()
+                        ->native(false),
                 ])
                 ->createOptionAction(function (Forms\Components\Actions\Action $action) {
                     return $action
@@ -303,7 +307,8 @@ class OrderResource extends Resource
                     'delivered' => 'Delivered',
                     'cancelled' => 'Cancelled',
                 ])
-                ->required(),
+                ->required()
+                ->native(false),
 
             Forms\Components\Select::make('currency')
                 ->searchable()

@@ -4,10 +4,13 @@ namespace App\Filament\Resources\Shop\OrderResource\Pages;
 
 use App\Filament\Resources\Shop\OrderResource;
 use Filament\Pages\Actions;
+use Filament\Pages\Concerns\ExposesTableToWidgets;
 use Filament\Resources\Pages\ListRecords;
 
 class ListOrders extends ListRecords
 {
+    use ExposesTableToWidgets;
+
     protected static string $resource = OrderResource::class;
 
     protected function getActions(): array

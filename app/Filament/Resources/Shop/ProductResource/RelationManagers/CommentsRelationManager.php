@@ -4,6 +4,9 @@ namespace App\Filament\Resources\Shop\ProductResource\RelationManagers;
 
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\IconEntry;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
 use Filament\Notifications\Notification;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
@@ -38,6 +41,21 @@ class CommentsRelationManager extends RelationManager
             ]);
     }
 
+    public function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->columns(1)
+            ->schema([
+                TextEntry::make('title'),
+                TextEntry::make('customer.name'),
+                IconEntry::make('is_visible')
+                    ->label('Visibility')
+                    ->boolean(),
+                TextEntry::make('content')
+                    ->markdown(),
+            ]);
+    }
+
     public function table(Table $table): Table
     {
         return $table
@@ -52,8 +70,9 @@ class CommentsRelationManager extends RelationManager
                     ->searchable()
                     ->sortable(),
 
-                Tables\Columns\BooleanColumn::make('is_visible')
+                Tables\Columns\IconColumn::make('is_visible')
                     ->label('Visibility')
+                    ->boolean()
                     ->sortable(),
             ])
             ->filters([
@@ -70,6 +89,7 @@ class CommentsRelationManager extends RelationManager
                     }),
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])

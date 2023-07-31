@@ -64,8 +64,9 @@ class CategoryResource extends Resource
                 Tables\Columns\TextColumn::make('slug')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\BooleanColumn::make('is_visible')
-                    ->label('Visibility'),
+                Tables\Columns\IconColumn::make('is_visible')
+                    ->label('Visibility')
+                    ->boolean(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('Last Updated')
                     ->date(),
@@ -97,6 +98,7 @@ class CategoryResource extends Resource
                 TextEntry::make('slug'),
                 TextEntry::make('description'),
                 IconEntry::make('is_visible')
+                    ->label('Visibility')
                     ->boolean(),
                 TextEntry::make('updated_at')
                     ->dateTime(),

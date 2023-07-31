@@ -40,6 +40,7 @@ class CustomerResource extends Resource
                             ->required(),
 
                         Forms\Components\TextInput::make('email')
+                            ->label('Email address')
                             ->required()
                             ->email()
                             ->unique(ignoreRecord: true),
@@ -77,6 +78,7 @@ class CustomerResource extends Resource
                     ->searchable(isIndividual: true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('email')
+                    ->label('Email address')
                     ->searchable(isIndividual: true, isGlobal: false)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('country')

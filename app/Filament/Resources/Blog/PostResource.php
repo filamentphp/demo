@@ -12,6 +12,7 @@ use Filament\Infolists\Components;
 use Filament\Infolists\Infolist;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
+use Filament\Support\Colors\Color;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -141,7 +142,8 @@ class PostResource extends Resource
 
                 Tables\Columns\TextColumn::make('comments.customer.name')
                     ->label('Comment Authors')
-                    ->listWithLineBreaks(),
+                    ->listWithLineBreaks()
+                    ->limitList(2),
             ])
             ->filters([
                 Tables\Filters\Filter::make('published_at')
@@ -154,11 +156,11 @@ class PostResource extends Resource
                     ->query(function (Builder $query, array $data): Builder {
                         return $query
                             ->when(
-                                $data['published_from'],
+                                $data['published_from'] ?? null,
                                 fn (Builder $query, $date): Builder => $query->whereDate('published_at', '>=', $date),
                             )
                             ->when(
-                                $data['published_until'],
+                                $data['published_until'] ?? null,
                                 fn (Builder $query, $date): Builder => $query->whereDate('published_at', '<=', $date),
                             );
                     })
@@ -206,10 +208,7 @@ class PostResource extends Resource
                                     Components\TextEntry::make('published_at')
                                         ->badge()
                                         ->date()
-                                        ->color('danger'),
-                                    Components\IconEntry::make('test')
-                                        ->boolean()
-                                        ->getStateUsing(fn () => rand(0, 1)),
+                                        ->color('success'),
                                 ]),
                                 Components\Group::make([
                                     Components\TextEntry::make('author.name'),
@@ -232,11 +231,6 @@ class PostResource extends Resource
                             ->hiddenLabel(),
                     ])
                     ->collapsible(),
-                Components\RepeatableEntry::make('comments')
-                    ->schema([
-                        Components\TextEntry::make('title'),
-                        Components\TextEntry::make('customer.name'),
-                    ]),
             ]);
     }
 

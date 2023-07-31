@@ -149,8 +149,9 @@ class ProductResource extends Resource
                                     ->searchable()
                                     ->hiddenOn(ProductsRelationManager::class),
 
-                                Forms\Components\MultiSelect::make('categories')
+                                Forms\Components\Select::make('categories')
                                     ->relationship('categories', 'name')
+                                    ->multiple()
                                     ->required(),
                             ]),
                     ])
@@ -177,17 +178,25 @@ class ProductResource extends Resource
                     ->sortable()
                     ->toggleable(),
 
+                Tables\Columns\IconColumn::make('is_visible')
+                    ->label('Visibility')
+                    ->boolean()
+                    ->sortable()
+                    ->toggleable(),
+
                 Tables\Columns\TextColumn::make('price')
                     ->label('Price')
                     ->searchable()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('sku')
+                    ->label('SKU')
                     ->searchable()
                     ->sortable()
                     ->toggleable(),
 
                 Tables\Columns\TextColumn::make('qty')
+                    ->label('Quantity')
                     ->searchable()
                     ->sortable()
                     ->toggleable(),
@@ -197,11 +206,6 @@ class ProductResource extends Resource
                     ->sortable()
                     ->toggleable()
                     ->toggledHiddenByDefault(),
-
-                Tables\Columns\BooleanColumn::make('is_visible')
-                    ->label('Visibility')
-                    ->sortable()
-                    ->toggleable(),
 
                 Tables\Columns\TextColumn::make('published_at')
                     ->label('Publish Date')
@@ -216,6 +220,13 @@ class ProductResource extends Resource
                     ->preload()
                     ->multiple()
                     ->searchable(),
+
+                Tables\Filters\TernaryFilter::make('is_visible')
+                    ->label('Visibility')
+                    ->boolean()
+                    ->trueLabel('Only visible')
+                    ->falseLabel('Only hidden')
+                    ->native(false),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
