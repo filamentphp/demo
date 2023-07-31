@@ -2,9 +2,7 @@
 
 namespace App\Filament\Resources\Shop\ProductResource\Widgets;
 
-use App\Filament\Resources\Blog\PostResource\Pages\ListPosts;
 use App\Filament\Resources\Shop\ProductResource\Pages\ListProducts;
-use App\Models\Shop\Product;
 use Filament\Widgets\Concerns\InteractsWithPageTable;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Card;

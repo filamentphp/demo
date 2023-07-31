@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\Blog\PostResource\RelationManagers;
 
-use Filament\Actions\ViewAction;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\IconEntry;
