@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\Shop\OrderResource\Pages;
 
 use App\Filament\Resources\Shop\OrderResource;
-use Filament\Forms\Components\Card;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Wizard\Step;
 use Filament\Notifications\Actions\Action;
 use Filament\Notifications\Notification;
@@ -36,12 +36,12 @@ class CreateOrder extends CreateRecord
         return [
             Step::make('Order Details')
                 ->schema([
-                    Card::make(OrderResource::getFormSchema())->columns(),
+                    Section::make()->schema(OrderResource::getFormSchema())->columns(),
                 ]),
 
             Step::make('Order Items')
                 ->schema([
-                    Card::make(OrderResource::getFormSchema('items')),
+                    Section::make()->schema(OrderResource::getFormSchema('items')),
                 ]),
         ];
     }

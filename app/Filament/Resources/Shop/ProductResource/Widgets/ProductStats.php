@@ -5,7 +5,7 @@ namespace App\Filament\Resources\Shop\ProductResource\Widgets;
 use App\Filament\Resources\Shop\ProductResource\Pages\ListProducts;
 use Filament\Widgets\Concerns\InteractsWithPageTable;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
-use Filament\Widgets\StatsOverviewWidget\Card;
+use Filament\Widgets\StatsOverviewWidget\Stat;
 
 class ProductStats extends BaseWidget
 {
@@ -18,12 +18,12 @@ class ProductStats extends BaseWidget
         return ListProducts::class;
     }
 
-    protected function getCards(): array
+    protected function getStats(): array
     {
         return [
-            Card::make('Total Products', $this->getPageTableQuery()->count()),
-            Card::make('Product Inventory', $this->getPageTableQuery()->sum('qty')),
-            Card::make('Average price', number_format($this->getPageTableQuery()->avg('price'), 2)),
+            Stat::make('Total Products', $this->getPageTableQuery()->count()),
+            Stat::make('Product Inventory', $this->getPageTableQuery()->sum('qty')),
+            Stat::make('Average price', number_format($this->getPageTableQuery()->avg('price'), 2)),
         ];
     }
 }

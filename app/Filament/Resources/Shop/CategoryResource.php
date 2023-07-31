@@ -32,7 +32,7 @@ class CategoryResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Card::make()
+                Forms\Components\Section::make()
                     ->schema([
                         Forms\Components\Grid::make()
                             ->schema([
@@ -63,7 +63,7 @@ class CategoryResource extends Resource
                             ->label('Description'),
                     ])
                     ->columnSpan(['lg' => fn (?Category $record) => $record === null ? 3 : 2]),
-                Forms\Components\Card::make()
+                Forms\Components\Section::make()
                     ->schema([
                         Forms\Components\Placeholder::make('created_at')
                             ->label('Created at')

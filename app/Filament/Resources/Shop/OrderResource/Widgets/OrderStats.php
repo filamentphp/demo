@@ -6,7 +6,7 @@ use App\Filament\Resources\Shop\OrderResource\Pages\ListOrders;
 use App\Models\Shop\Order;
 use Filament\Widgets\Concerns\InteractsWithPageTable;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
-use Filament\Widgets\StatsOverviewWidget\Card;
+use Filament\Widgets\StatsOverviewWidget\Stat;
 use Flowframe\Trend\Trend;
 use Flowframe\Trend\TrendValue;
 
@@ -21,7 +21,7 @@ class OrderStats extends BaseWidget
         return ListOrders::class;
     }
 
-    protected function getCards(): array
+    protected function getStats(): array
     {
         $orderData = Trend::model(Order::class)
             ->between(
@@ -32,14 +32,14 @@ class OrderStats extends BaseWidget
             ->count();
 
         return [
-            Card::make('Orders', $this->getPageTableQuery()->count())
+            Stat::make('Orders', $this->getPageTableQuery()->count())
                 ->chart(
                     $orderData
                         ->map(fn (TrendValue $value) => $value->aggregate)
                         ->toArray()
                 ),
-            Card::make('Open orders', $this->getPageTableQuery()->whereIn('status', ['open', 'processing'])->count()),
-            Card::make('Average price', number_format($this->getPageTableQuery()->avg('total_price'), 2)),
+            Stat::make('Open orders', $this->getPageTableQuery()->whereIn('status', ['open', 'processing'])->count()),
+            Stat::make('Average price', number_format($this->getPageTableQuery()->avg('total_price'), 2)),
         ];
     }
 }

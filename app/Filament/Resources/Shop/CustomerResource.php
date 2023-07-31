@@ -33,7 +33,7 @@ class CustomerResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Card::make()
+                Forms\Components\Section::make()
                     ->schema([
                         Forms\Components\TextInput::make('name')
                             ->maxValue(50)
@@ -54,7 +54,7 @@ class CustomerResource extends Resource
                     ->columns(2)
                     ->columnSpan(['lg' => fn (?Customer $record) => $record === null ? 3 : 2]),
 
-                Forms\Components\Card::make()
+                Forms\Components\Section::make()
                     ->schema([
                         Forms\Components\Placeholder::make('created_at')
                             ->label('Created at')

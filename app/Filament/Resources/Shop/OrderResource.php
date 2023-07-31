@@ -40,7 +40,7 @@ class OrderResource extends Resource
             ->schema([
                 Forms\Components\Group::make()
                     ->schema([
-                        Forms\Components\Card::make()
+                        Forms\Components\Section::make()
                             ->schema(static::getFormSchema())
                             ->columns(2),
 
@@ -49,7 +49,7 @@ class OrderResource extends Resource
                     ])
                     ->columnSpan(['lg' => fn (?Order $record) => $record === null ? 3 : 2]),
 
-                Forms\Components\Card::make()
+                Forms\Components\Section::make()
                     ->schema([
                         Forms\Components\Placeholder::make('created_at')
                             ->label('Created at')
