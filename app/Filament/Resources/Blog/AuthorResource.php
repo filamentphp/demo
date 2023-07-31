@@ -67,7 +67,7 @@ class AuthorResource extends Resource
                             ->sortable()
                             ->color('gray')
                             ->alignLeft(),
-                    ]),
+                    ])->space(),
 
                     Tables\Columns\Layout\Stack::make([
                         Tables\Columns\TextColumn::make('github_handle')
@@ -79,9 +79,8 @@ class AuthorResource extends Resource
                             ->icon('icon-twitter')
                             ->label('Twitter')
                             ->alignLeft(),
-                    ])->space(),
+                    ])->space(2),
                 ])->from('md'),
-
             ])
             ->filters([
                 //
