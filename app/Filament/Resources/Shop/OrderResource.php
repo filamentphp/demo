@@ -279,6 +279,14 @@ class OrderResource extends Resource
                         ->unique(),
 
                     Forms\Components\TextInput::make('phone'),
+
+                    Forms\Components\Select::make('gender')
+                        ->placeholder('Select gender')
+                        ->options([
+                            'male' => 'Male',
+                            'female' => 'Female',
+                        ])
+                        ->required(),
                 ])
                 ->createOptionAction(function (Forms\Components\Actions\Action $action) {
                     return $action

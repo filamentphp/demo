@@ -1,0 +1,22 @@
+tasks:
+  - name: Setup environment and launch
+    init: |
+      cp .env.example .env
+      sed -i "s#APP_URL=http://127.0.0.1:8000#APP_URL=$(gp url 8000)#g" .env
+      composer install --ignore-platform-reqs
+      php artisan key:generate
+      php artisan storage:link
+      touch database/database.sqlite
+      php artisan migrate:fresh --seed
+      php artisan serve
+
+# Configure vscode
+vscode:
+  extensions:
+    - bmewburn.vscode-intelephense-client
+    - ms-azuretools.vscode-docker
+    - ecmel.vscode-html-css
+    - MehediDracula.php-namespace-resolver
+    - Equinusocio.vsc-community-material-theme
+    - EditorConfig.EditorConfig
+    - streetsidesoftware.code-spell-checker
