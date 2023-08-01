@@ -89,7 +89,7 @@ class AuthorResource extends Resource
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
-            ->bulkActions([
+            ->groupedBulkActions([
                 Tables\Actions\DeleteBulkAction::make()
                     ->action(function () {
                         Notification::make()

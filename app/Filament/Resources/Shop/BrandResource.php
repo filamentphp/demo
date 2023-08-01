@@ -101,7 +101,7 @@ class BrandResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
-            ->bulkActions([
+            ->groupedBulkActions([
                 Tables\Actions\DeleteBulkAction::make()
                     ->action(function () {
                         Notification::make()
