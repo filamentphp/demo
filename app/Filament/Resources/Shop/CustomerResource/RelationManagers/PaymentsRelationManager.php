@@ -34,7 +34,7 @@ class PaymentsRelationManager extends RelationManager
                     ->required(),
 
                 Forms\Components\TextInput::make('reference')
-                    ->columnSpan(fn (string $context) => $context === 'edit' ? 2 : 1)
+                    ->columnSpan(fn (string $operation) => $operation === 'edit' ? 2 : 1)
                     ->required(),
 
                 Forms\Components\TextInput::make('amount')
