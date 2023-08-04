@@ -45,7 +45,13 @@ class ProductResource extends Resource
                                 Forms\Components\TextInput::make('name')
                                     ->required()
                                     ->lazy()
-                                    ->afterStateUpdated(fn (string $operation, $state, callable $set) => $operation === 'create' ? $set('slug', Str::slug($state)) : null),
+                                    ->afterStateUpdated(function (string $operation, $state, Forms\Set $set) {
+                                        if ($operation !== 'create') {
+                                            return;
+                                        }
+
+                                        $set('slug', Str::slug($state));
+                                    }),
 
                                 Forms\Components\TextInput::make('slug')
                                     ->disabled()

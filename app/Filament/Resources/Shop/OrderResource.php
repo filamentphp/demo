@@ -225,7 +225,7 @@ class OrderResource extends Resource
                             ->options(Product::query()->pluck('name', 'id'))
                             ->required()
                             ->reactive()
-                            ->afterStateUpdated(fn ($state, callable $set) => $set('unit_price', Product::find($state)?->price ?? 0))
+                            ->afterStateUpdated(fn ($state, Forms\Set $set) => $set('unit_price', Product::find($state)?->price ?? 0))
                             ->columnSpan([
                                 'md' => 5,
                             ])
