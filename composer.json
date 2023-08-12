@@ -16,11 +16,14 @@
         "filament/spatie-laravel-translatable-plugin": "^3.0",
         "flowframe/laravel-trend": "^0.1.1",
         "guzzlehttp/guzzle": "^7.2",
+        "inertiajs/inertia-laravel": "^0.6.9",
+        "intervention/image": "^2.7",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.8",
         "squirephp/countries-en": "^3.3",
-        "squirephp/currencies-en": "^3.3"
+        "squirephp/currencies-en": "^3.3",
+        "tightenco/ziggy": "^1.6"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.6",

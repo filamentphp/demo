@@ -15,5 +15,21 @@
         "tailwindcss": "^3.3.2",
         "tippy.js": "^6.3.7",
         "vite": "^3.0.0"
+    },
+    "dependencies": {
+        "@headlessui/vue": "^1.7.15",
+        "@inertiajs/inertia": "^0.11.1",
+        "@inertiajs/inertia-vue3": "^0.6.0",
+        "@inertiajs/progress": "^0.2.7",
+        "@inertiajs/vue3": "^1.0.10",
+        "@vitejs/plugin-vue": "^4.2.3",
+        "circletype": "^2.3.0",
+        "flowbite": "^1.8.1",
+        "flowbite-vue": "^0.0.17-next.0",
+        "pinia": "^2.1.6",
+        "sass": "^1.65.1",
+        "swiper": "^10.1.0",
+        "vue": "^3.3.4",
+        "vue-toastification": "^2.0.0-rc.5"
     }
 }
