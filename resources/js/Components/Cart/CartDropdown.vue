@@ -19,7 +19,7 @@
                         </div>
                         <div class="shopping-cart-title">
                             <h4>
-                                <Link :href="item.slug"> {{ item.name }} </Link>
+                                <Link :href="route('view.product', item.slug)"> {{ item.name }} </Link>
                             </h4>
                             <!-- <h6>Qty: 1</h6> -->
                             <span>{{ currencyFormat(item.price) }}</span>
@@ -46,13 +46,16 @@
   import { ref } from 'vue';
   import { useCartStore } from '@/stores/cart';
   import { Head, Link } from "@inertiajs/inertia-vue3";
-  
+  import { useToast } from 'vue-toastification';
+
+  const toast = useToast();
   const cart = useCartStore();
     cart.loadFromLocalStorage();
     const isOpen = ref(false);
 
     const removeFromCart = (index) => {
       cart.removeFromCart(index);
+      toast.error('Item removed from the cart');
     };
     const currencyFormat = (value) => {
         return "Kes " + new Intl.NumberFormat("en-US").format(Math.round(value));
