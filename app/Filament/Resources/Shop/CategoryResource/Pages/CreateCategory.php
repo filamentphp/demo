@@ -17,4 +17,9 @@ class CreateCategory extends CreateRecord
             ->title('Succès')
             ->body('La catégorie a été crée avec Succès.');
     }
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

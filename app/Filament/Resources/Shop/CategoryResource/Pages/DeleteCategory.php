@@ -3,7 +3,8 @@
 namespace App\Filament\Resources\Shop\CategoryResource\Pages;
 
 use App\Filament\Resources\Shop\CategoryResource;
-use Filament\Pages\Actions;
+use Filament\Actions\DeleteAction;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 
 class DeleteCategory extends EditRecord
@@ -13,14 +14,14 @@ class DeleteCategory extends EditRecord
     protected function getActions(): array
     {
         return [
-            Actions\DeleteAction::make()->successNotificationTitle('La catégorie a été supprimée avec Succès.'),
+            DeleteAction::make()
         ];
     }
 
-    protected function getRemoveedNotification(): ?Notification
+    protected function getSavedNotification(): ?Notification
     {
         return Notification::make()
             ->success()
-            ->body('La catégorie a été supprimée avec Succès.');
+            ->body('La catégorie a été supprimée avec Succès :(');
     }
 }

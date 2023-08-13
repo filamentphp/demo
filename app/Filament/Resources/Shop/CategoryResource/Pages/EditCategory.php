@@ -21,4 +21,9 @@ class EditCategory extends EditRecord
     {
         return 'La catégorie a été modifiée avec Succès.';
     }
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }
