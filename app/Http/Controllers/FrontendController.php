@@ -136,4 +136,19 @@ class FrontendController extends Controller
 
         return $orderNumber;
     }
+
+
+    public function storeContact(Request $request)
+    {
+        $validatedData = $request->validate([
+            'name' => 'required|string',
+            'subject' => 'required|string',
+            'email' => 'required|email',
+            'message' => 'required|string',
+        ]);
+        $validatedData['status'] = 'created';
+        $contactForm = DB::table('contacts')->create($validatedData);
+
+        return response()->json(['success' => true]);
+    }
 }

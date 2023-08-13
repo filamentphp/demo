@@ -109,7 +109,6 @@ const submitForm = async () => {
     </div>
     <section id="confirmed" class="my-16">
         <div class="mx-auto max-w-3xl">
-                <h3 class="text-3xl mb-6">Send us a Message</h3>
                 <form @submit.prevent="submitForm" class="max-w-md mx-auto p-6 bg-white shadow-md rounded-md">
                     <div class="mb-4">
                     <label for="name" class="block mb-2 text-sm font-medium text-gray-700">Name:</label>
@@ -117,7 +116,7 @@ const submitForm = async () => {
                     </div>
 
                     <div class="mb-4">
-                    <label for="subject" class="block mb-2 text-sm font-medium text-gray-700">Subject:</label>
+                    <label for="subject" class="block mb-2 text-sm font-medium text-gray-700">Subject/Order Number:</label>
                     <input type="text" id="subject" v-model="formData.subject" class="w-full px-3 py-2 border rounded-md focus:ring focus:ring-eastwest-300" />
                     </div>
 
