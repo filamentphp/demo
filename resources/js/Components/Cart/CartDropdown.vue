@@ -39,8 +39,8 @@
                     <span class="shop-total">{{ currencyFormat(cartStore.totalAmount.toFixed(2)) }}</span>
                 </div>
                 <div class="shopping-cart-btn btn-hover text-center" v-if="cart.totalItems > 0">
-                    <a class="default-btn" href="/cart">view cart</a>
-                    <a class="default-btn" href="/checkout">checkout</a>
+                    <Link class="default-btn" :href="route('cart')">view cart</Link>
+                    <Link class="default-btn" :href="route('checkout')">checkout</Link>
                 </div>
                 <div v-if="cart.totalItems === 0" class="block px-4 py-2 text-sm text-gray-700">
                 Your cart is empty

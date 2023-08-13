@@ -3,11 +3,12 @@ import { Head, Link } from "@inertiajs/inertia-vue3";
 import FrontLayout from "@/Layouts/GuestLayout.vue";
 import ProductGallery from "@/Components/Products/ProductGallery.vue";
 import { ref, onMounted, computed } from "vue";
-import { Input, Tabs, Tab } from "flowbite-vue";
+import { Input, Tabs, Tab, Select } from "flowbite-vue";
 import axios from 'axios';
 import CurveText from '@/Components/Products/Curve.vue';
 import { useToast } from 'vue-toastification';
 import { useCartStore } from '@/stores/cart';
+
 
 
 const cart = useCartStore();
@@ -27,8 +28,68 @@ const addToCart = (product) => {
     }
   }
 };
+const addCustomCart = (product) => {
+    const cart = useCartStore();
+
+    if (isCustomizing.value === true) {
+        let includedPatch = null;
+        let CustNames = null;
+        if (ownCustom.value === 'myown' && (textHolder !== null || numberHolder !== null)) {
+            CustNames = {
+                customName: textHolder,
+                customNumber: numberHolder,
+                type: ownCustom.value,
+                jerseySize: selectedSize,
+                price: 200
+            };
+
+            if (patchSelected.value !== null) {
+                includedPatch = {
+                    MyPatch: patchSelected.value,
+                    price: 200
+                };
+            }
+        } else {
+            CustNames = {
+                customName: selectedPlayer.value.name,
+                customNumber: selectedPlayer.value.number,
+                type: ownCustom.value,
+                jerseySize: selectedSize,
+                price: 200
+            };
+
+            if (patchSelected.value !== null) {
+                includedPatch = {
+                    MyPatch: patchSelected.value,
+                    price: 200
+                };
+            }
+        }
+
+        if (!cart.isItemInCart(product)) {
+            cart.addToCart(product, includedPatch, CustNames);
+            toast.success('Customized Item added to cart');
+        } else {
+            const existingItem = cart.items.find((item) => item.id === product.id);
+
+            if (existingItem) {
+                existingItem.quantity++;
+                cart.saveToLocalStorage();
+                toast.success('Customized Item quantity added to cart');
+            }
+        }
+    }
+};
 
 
+const ownCustom = ref(null);
+const customType=(typeString)=> {
+    if (typeString==='myown') {
+        ownCustom.value = typeString;
+    } else {
+        ownCustom.value = typeString;
+    }
+}
 const props = defineProps({
   product: Object,
 });
@@ -48,9 +109,11 @@ const personalization = {
   number: "",
   patchSelected: "",
 };
+const selectedPlayer = ref(null);
 const textHolder = ref(null);
-  const numberHolder = ref(null);
-  const patchSelected = ref(null)
+const numberHolder = ref(null);
+const patchSelected = ref(null);
+
 const patches = ref([
   {
     id: 1,
@@ -214,11 +277,11 @@ const makePlayer=()=> {
                         <h4 class="pb-3 text-2xl font-bold">Customize this product</h4>
                         <hr class="mb-4 pb-3">
                         <div class="block space-x-6">
-                            <button class="py-2.5 px-6 rounded text-white bg-eastwest-500 hover:bg-eastwest-600">Add your Own Name and Number</button>
-                            <button class="py-2.5 px-6 rounded text-white bg-slate-500 hover:bg-slate-600">Pick a Squad Player</button>
+                            <button class="py-2.5 px-6 rounded text-white bg-eastwest-500 hover:bg-eastwest-600 active:bg-eastwest-500" @click.prevent="customType('myown')">Add your Own Name and Number</button>
+                            <button class="py-2.5 px-6 rounded text-white bg-slate-500 hover:bg-slate-600 active:bg-eastwest-500" @click.prevent="customType('squad')">Pick a Squad Player</button>
                         </div>
                     </div>
-                    <div class="border py-6 px-6 mb-4">
+                    <div class="border py-6 px-6 mb-4" v-if="ownCustom==='myown'">
                         <h4 class="pb-3 text-2xl font-bold">Enter personalisation</h4>
                         <hr class="mb-4 pb-3">
                         <p class="mb-4">Add a name or number to personalise your item or to create the perfect gift!</p>
@@ -229,6 +292,29 @@ const makePlayer=()=> {
                             <div>
                                 <Input v-model="numberHolder" placeholder="enter a number to add to the jersey" label="Jersey Number" />
                             </div>
+                        </div>
+                    </div>
+                    <div class="border py-6 px-6 mb-4" v-if="ownCustom ==='squad'">
+                        <h4 class="pb-3 text-2xl font-bold">Select a Player Below</h4>
+                        <hr class="mb-4 pb-3">
+                        <p class="mb-4">Add a name or number to personalise your item or to create the perfect gift!</p>
+                        <div class="my-2" v-if="selectedPlayer">
+                            <h4 class="font-bold text-2xl">Selected Player</h4>
+                            <div class="flex justify-between">
+                                <span>Name: <div class="text-eastwest-500">{{ selectedPlayer.name }}</div></span>
+                                <span>Number/Position: <div class="text-eastwest-500">{{ selectedPlayer.number }}</div></span>
+                            </div>
+                        </div>
+                        <div class="form__personalization bg-gray-100 rounded p-6">
+                            <div class="mb-3">
+                                <label for="players" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select a Player</label>
+                                <select id="players" v-model="selectedPlayer" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-eastwest-500 focus:border-eastwest-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-eastwest-500 dark:focus:border-eastwest-500">
+                                    <option selected>Choose a player</option>
+                                    <option :value="person" v-for="person in product.team.players" :key="person.id">{{ person.name }}</option>
+                                </select>
+
+                            </div>
+
                         </div>
                     </div>
                     <div class="border py-6 px-6 mb-4">
@@ -253,9 +339,10 @@ const makePlayer=()=> {
                             </div>
                             <span>{{ patch.title }}</span>
                             </label>
-
-                            <button @click="makePlayer">Update</button>
                         </div>
+                    </div>
+                    <div class="border py-6 px-6 mb-4">
+                        <button @click.prevent="addCustomCart(product)" class="w-full bg-eastwest-500 py-2.5 px-6 rounded text-white animate-pulse">Add to Cart</button>
                     </div>
                 </div>
             </div>

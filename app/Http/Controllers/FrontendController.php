@@ -4,8 +4,13 @@ namespace App\Http\Controllers;
 
 use Inertia\Inertia;
 use App\Models\Slider;
+use App\Models\Shop\Order;
 use App\Models\Shop\Product;
 use Illuminate\Http\Request;
+use App\Models\Shop\Customer;
+use App\Models\Shop\OrderAddress;
+use App\Models\Shop\OrderItem;
+use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image;
 
 class FrontendController extends Controller
@@ -22,87 +27,108 @@ class FrontendController extends Controller
 
     public function viewProduct($slug)
     {
-        $pageContent = Product::with('media', 'categories', 'brand')->where('slug', $slug)->first();
+        $pageContent = Product::with('media', 'categories', 'brand', 'team.players')->where('slug', $slug)->first();
 
         return Inertia::render('Products/Product', [
             'product' => $pageContent
         ]);
     }
 
+    public function cart()
+    {
+        return Inertia::render('Cart');
+    }
 
-    public function addTextToImage(Request $request)
+    public function checkout()
+    {
+        return Inertia::render('Checkout');
+    }
+
+    public function orderConfirmation()
+    {
+        return Inertia::render('OrderConfirmation');
+    }
+
+    public function createOrder(Request $request)
     {
 
-        // $image = public_path('/storage/' . $request->image);
+        $orderNumber = $this->generateOrderNumber();
+        $validatedData = $request->validate([
+            'name' => 'required|string',
+            'phone' => 'required|string',
+            'email' => 'required|email',
+            'town' => 'required|string',
+            'county' => 'required|string',// Adjust options as needed
+            'delivery_instruction' => 'nullable|string',
+            'order' => 'required|array',
+            'gender' => 'required',
+            'delivery' => 'required',
+            'total' => 'required',
+            'deliverylocation' => 'nullable'
+        ]);
 
-        // // Define the text to be added
-        // $text = $request->name;
+        $customer = $this->createOrUpdateCustomer($validatedData);
 
-        // // Open the image using Intervention Image
-        // $img = Image::make($image);
-        // $fontSize = 170;
-        // $fonted = public_path('images/Arsenal-Regular.ttf');
+        $order = $this->createOrderRecord($validatedData, $customer->id,  $orderNumber);
 
-        // // Calculate curve radius and angle
-        // $radius = 250;
-        // $angle = 90; // Angle in degrees
+        return response()->json(['message' => 'Order created successfully', 'data' => $order]);
+    }
 
-        // // Calculate the position along the curve
-        // $positionX = $radius * cos(deg2rad($angle));
-        // $positionY = $radius * sin(deg2rad($angle));
-        // // Add the text to the image
+    private function createOrUpdateCustomer($data)
+    {
+        $customer = Customer::where('email', $data['email'])->first();
 
-        // $img->text($text, $positionX, $positionY, function($font) use ($fonted, $fontSize) {
-        //     $font->file($fonted); // Use the loaded font
-        //     $font->size($fontSize);
-        //     $font->color('#000'); // Text color
-        //     $font->align('center'); // Text alignment
-        // });
-        // // Save the modified image
-        // $img->save(public_path('images/Arsenali.jpg'));
+        if (!$customer) {
+            $customer = Customer::create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'phone' => $data['phone'],
+                'gender' => $data['gender'] ?? null, // Provide a default value or remove if not used
+            ]);
+        }
+
+        return $customer;
+    }
+
+    private function createOrderRecord($data, $customerId,  $orderNumber)
+    {
+
+        $order = Order::create([
+            'shop_customer_id' => $customerId,
+            'number' => $orderNumber,
+            'town' => $data['town'],
+            'county' => $data['county'],
+            'delivery' => $data['delivery'],
+            'delivery_instruction' => $data['delivery_instruction'],
+            'deliverylocation' => $data['deliverylocation'],
+            'currency' => 'KES',
+            'shipping_method' => $data['delivery'],
+            'notes' => $data['delivery_instruction'],
+            'total_price' => $data['total']
+        ]);
+
+        foreach($data['order'] as $cartItem)
+        {
+            $orderItems = OrderItem::create([
+                'shop_order_id' => $order->id,
+                'shop_product_id' => $cartItem['id'],
+                'qty' => $cartItem['quantity'],
+                'unit_price' => $cartItem['price']
+            ]);
+        }
 
 
+        // Handle order items here if present in $data['order']
 
-        $width = 800;
-$height = 600;
-$image = imagecreatetruecolor($width, $height);
-$backgroundColor = imagecolorallocate($image, 255, 255, 255);
-imagefill($image, 0, 0, $backgroundColor);
+        return $order;
+    }
 
-// Load a font
-$font = public_path('images/Arsenal-Regular.ttf');
+    private function generateOrderNumber()
+    {
+        $datePrefix = now()->format('Ymd'); // Get the current date as YYYYMMDD
+        $count = Order::whereDate('created_at', now())->count() + 1;
+        $orderNumber = $datePrefix . str_pad($count, 4, '0', STR_PAD_LEFT); // Format: YYYYMMDD0001
 
-// Define the text and font size
-$text = 'Curved Text';
-$fontSize = 36;
-
-$circleCenterX = $width / 4;
-$circleCenterY = $height;
-$circleRadius = 200;
-
-// Angle increment for the curve
-$angleStep = 180 / (strlen($text) - 50);
-
-// Text color (white in this case)
-$textColor = imagecolorallocate($image, 0, 0, 0);
-
-// Loop through each character and position them along the semicircle
-for ($i = 0; $i < strlen($text); $i++) {
-    $character = $text[$i];
-    $angle = deg2rad(90 - $i * $angleStep);
-
-    // Calculate the position along the semicircle
-    $x = $circleCenterX + $circleRadius * cos($angle);
-    $y = $circleCenterY - $circleRadius * sin($angle);
-
-    imagettftext($image, $fontSize, 0, $x, $y, $textColor, $font, $character);
-}
-
-// Output the image to the browser
-header('Content-Type: image/png');
-dd(imagepng($image));
-public_path('images/' . imagepng($image));
-
-        return response()->json(['message' => 'Text added to image', 'myimage' => imagepng($image)]);
+        return $orderNumber;
     }
 }

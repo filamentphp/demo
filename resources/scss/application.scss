@@ -3300,3 +3300,68 @@ a, button, img, input, span {
         display: block;
     }
 }
+//checkout
+.your-order-area {
+    h4 {
+        color: #000;
+        font-size: 20px;
+        font-weight: 500;
+        margin: 0 0 20px;
+    }
+    ul {
+        display: flex;
+        justify-content: space-between;
+        li {
+            font-size: 16px;
+            font-weight: 500;
+            list-style: none outside none;
+        }
+    }
+    .your-order-middle {
+        border-bottom: 1px solid #dee0e4;
+        border-top: 1px solid #dee0e4;
+        margin: 29px 0;
+        padding: 19px 0 18px;
+        ul {
+            display: block;
+            li {
+                div {
+                    display: flex;
+                justify-content: space-between;
+                margin: 0 0 10px;
+                }
+            }
+        }
+    }
+    .your-order-bottom {
+        ul {
+            align-items: center;
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+    .your-order-total {
+        border-bottom: 1px solid #dee0e4;
+        border-top: 1px solid #dee0e4;
+        margin: 18px 0 33px;
+        padding: 17px 0 19px;
+
+        ul {
+            align-items: center;
+            display: flex;
+            justify-content: space-between;
+            li {
+                color: #03B2AD;
+                font-size: 16px;
+                font-weight: 500;
+                list-style: none outside none;
+                .order-total {
+                    color: #212121;
+                    font-size: 18px;
+                    font-weight: 500;
+                }
+            }
+
+        }
+    }
+}
