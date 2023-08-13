@@ -12,6 +12,7 @@ use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Notifications\Notification;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\RichEditor;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\Shop\ProductResource\Pages;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
@@ -60,7 +61,9 @@ class ProductResource extends Resource
                                     ->required()
                                     ->unique(Product::class, 'slug', ignoreRecord: true),
 
-                                Forms\Components\MarkdownEditor::make('description')
+                                RichEditor::make('short_desc')->label('Short Product Description')
+                                    ->columnSpan('full'),
+                                RichEditor::make('description')->label('Full Product Description')
                                     ->columnSpan('full'),
                             ])
                             ->columns(2),

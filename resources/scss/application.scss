@@ -3178,7 +3178,9 @@ a, button, img, input, span {
 .single-image {
     overflow: hidden;
     img {
-        width: 100%;
+        width: 50%;
+        margin-left: auto;
+        margin-right: auto;
     }
 }
 .product__details_content {
@@ -3216,3 +3218,85 @@ a, button, img, input, span {
       }
   }
 
+#description__area {
+   article {
+    margin-bottom: 3rem;
+    ul {
+        list-style: none;
+        padding-left: 0;
+        margin-top: 2rem;
+        li {
+            padding-left: 1.5em;
+            margin-bottom: 0.5em;
+            position: relative;
+            &:before {
+                content: '';
+                position: absolute;
+                display: inline-block;
+                color: #03b2ad;
+                left: 0;
+                top: 6px;
+                width: 1em;
+                height: 1em;
+                background-repeat: no-repeat;
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='currentColor' class='w-6 h-6'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z' /%3E%3C/svg%3E%0A");
+            }
+        }
+    }
+   }
+
+}
+.pro-details-list {
+    border-bottom: 1px solid #e5e5e5;
+    margin: 20px 0 34px;
+    padding: 0 0 37px;
+}
+.pro-details-meta {
+    display: flex;
+    margin: 10px 0 10px;
+    span {
+        color: #676767;
+        font-size: 15px;
+        margin-right: 5px;
+    }
+    ul {
+        li {
+            display: inline-block;
+            margin: 0 10px 0 0;
+             a {
+                color: #676767;
+                font-size: 15px;
+            }
+        }
+    }
+}
+.custom-r-buttons {
+    background-color: #f1f2f6;
+    color: #000;
+    display: inline-block;
+    font-size: 12px;
+    line-height: 1;
+    margin: 0 5px 0 0;
+    position: relative;
+    text-transform: uppercase;
+    input {
+        cursor: pointer;
+        height: 100%;
+        left: 0;
+        opacity: 0;
+        position: absolute;
+        top: 0;
+        &checked~.size-name {
+            background-color: #03B2AD;
+            color: #fff;
+        }
+    }
+    .size-name {
+        font-size: 12px;
+        font-weight: 400;
+        margin-bottom: 0;
+        padding: 8px;
+        width: 100%;
+        display: block;
+    }
+}

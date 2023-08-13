@@ -3,7 +3,7 @@ import { Head, Link } from "@inertiajs/inertia-vue3";
 import FrontLayout from "@/Layouts/GuestLayout.vue";
 import ProductGallery from "@/Components/Products/ProductGallery.vue";
 import { ref, onMounted, computed } from "vue";
-import { Input } from "flowbite-vue";
+import { Input, Tabs, Tab } from "flowbite-vue";
 import axios from 'axios';
 import CurveText from '@/Components/Products/Curve.vue';
 import { useToast } from 'vue-toastification';
@@ -39,6 +39,10 @@ const isCustomizing = ref(false);
 const startCustomization = () => {
   isCustomizing.value = true;
 };
+
+const sizes = ['S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
+const selectedSize = ref('M');
+
 const personalization = {
   name: "",
   number: "",
@@ -60,7 +64,7 @@ const patches = ref([
   },
 ]);
 
-
+const activeTab = ref('description')
 
 const makePlayer=()=> {
     let Payload = {
@@ -86,7 +90,7 @@ const makePlayer=()=> {
             <li class="inline-flex items-center">
               <a
                 href="/"
-                class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white"
+                class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-eastwest-600 dark:text-gray-400 dark:hover:text-white"
               >
                 <svg
                   class="w-3 h-3 mr-2.5"
@@ -131,32 +135,61 @@ const makePlayer=()=> {
       </div>
     </div>
     <section class="product__area">
-        <div class="flex flex-wrap justify-between items-center mx-auto max-w-6xl" v-if="isCustomizing ===false">
+        <div class="flex flex-wrap justify-between mx-auto max-w-6xl" v-if="isCustomizing ===false">
             <div class="w-1/2">
                 <ProductGallery :Productimages="product.media" />
             </div>
             <div class="w-1/2">
-                <div class="product-details-content ml-12">
+                <div class="product-details-content ml-12 py-12">
                     <h2 class="font-bold text-2xl">{{ product.name }}</h2>
                     <div class="product__details_content">
                         <div class="product-price block">
                             <span class="font-medium">{{ currencyFormat(product.price) }} </span>
                             <span class="old">{{ currencyFormat(product.old_price) }}</span>
                         </div>
+
                     </div>
-                    <div class="product__actions space-x-8">
-                        <button class="bg-eastwest-500 py-2 px-6 rounded text-white" @click.prevent="startCustomization">
+                    <div class="pro-details-list">
+                            <div v-html="product.short_desc"></div>
+                        </div>
+
+                    <div class="p-2  my-6">
+                        <form class="flex items-center space-x-4">
+                        <h2 class="text-lg font-semibold">Sizes:</h2>
+                        <ul class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                            <li v-for="size in sizes" :key="size" class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                <div class="flex items-center pl-3">
+                                    <input :id="size" type="radio" v-model="selectedSize" :value="size" name="list-radio" class="w-4 h-4 text-eastwest-600 bg-gray-100 border-gray-300 focus:ring-eastwest-500 dark:focus:ring-eastwest-500 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                    <label :for="size" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300 pr-2">{{ size }} </label>
+                                </div>
+                            </li>
+
+                        </ul>
+
+                        </form>
+                    </div>
+                    <hr class="pb-12">
+                    <div class="product__actions space-x-8 flex justify-between">
+                        <button class="bg-eastwest-500 py-2.5 hover:bg-eastwest-600 px-6 w-1/2 rounded text-white" @click.prevent="startCustomization">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="inline-flex w-6 h-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 13.5V3.75m0 9.75a1.5 1.5 0 010 3m0-3a1.5 1.5 0 000 3m0 3.75V16.5m12-3V3.75m0 9.75a1.5 1.5 0 010 3m0-3a1.5 1.5 0 000 3m0 3.75V16.5m-6-9V3.75m0 3.75a1.5 1.5 0 010 3m0-3a1.5 1.5 0 000 3m0 9.75V10.5" />
                             </svg>
 
                             Personalize your Kit</button>
-                        <button class="bg-black py-2 rounded px-6 text-white" @click="addToCart(product)">
+                        <button class="bg-gray-800 hover:bg-gray-500 py-2.5 rounded w-1/2 px-6 text-white" @click="addToCart(product)">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="inline-flex w-6 h-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
                             </svg>
                             Add to Cart</button>
                     </div>
+                    <div class="pro-details-meta">
+                        <span>Categories :</span>
+                        <ul>
+                            <li v-for="(category, index) in product.categories" :key="index">
+                                <a href="/shop-grid-standard">{{ category.name }}</a>
+                            </li>
+                        </ul>
+                        </div>
                 </div>
             </div>
         </div>
@@ -225,6 +258,20 @@ const makePlayer=()=> {
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+    <section id="description__area">
+        <div class="flex flex-wrap justify-between items-center mx-auto max-w-6xl">
+            <div class="w-full">
+                <tabs variant="underline" v-model="activeTab" class="py-5" id="desc__tabs"> <!-- class appends to content DIV for all tabs -->
+                    <tab name="description" title="Description" id="desc__tabnames">
+                        <article v-html="product.description"></article>
+                    </tab>
+                    <tab name="second" title="Reviews">
+                    Lorem...
+                    </tab>
+                </tabs>
             </div>
         </div>
     </section>

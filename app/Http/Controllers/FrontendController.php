@@ -13,7 +13,7 @@ class FrontendController extends Controller
     public function index()
     {
         $slider = Slider::where('status', 1)->get();
-        $products = Product::with('media')->where('is_visible', 1)->get();
+        $products = Product::with('media', 'categories', 'brand')->where('is_visible', 1)->get();
         return Inertia::render('Index',[
             'slider' =>  $slider,
             'products' => $products
@@ -22,7 +22,7 @@ class FrontendController extends Controller
 
     public function viewProduct($slug)
     {
-        $pageContent = Product::with('media')->where('slug', $slug)->first();
+        $pageContent = Product::with('media', 'categories', 'brand')->where('slug', $slug)->first();
 
         return Inertia::render('Products/Product', [
             'product' => $pageContent
