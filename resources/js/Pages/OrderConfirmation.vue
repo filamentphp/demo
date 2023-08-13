@@ -2,7 +2,11 @@
 import { Head, Link } from "@inertiajs/inertia-vue3";
 import FrontLayout from "@/Layouts/GuestLayout.vue";
 
-$route.query
+// $route.query
+
+const params = new URLSearchParams(window.location.search);
+const orderNumber = params.get("order_number")
+console.log(orderNumber)
 </script>
 
 <template>
@@ -61,5 +65,25 @@ $route.query
         </nav>
       </div>
     </div>
+    <section id="confirmed" class="my-16">
+        <div class="mx-auto max-w-lg">
+                <h3 class="text-3xl mb-6 text-center">Thank you for your Order</h3>
+
+                <div class="block mx-auto">
+                    <div class="mx-auto text-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 text-green-400 inline-flex">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div class="mx-auto text-center">
+                        <p class="mb-4">We have emailed you a copy of the Invoice with this Order Number, use this order number below to track your order status whenever you contact us</p>
+                        <h4 class="text-xl mb-6">Your Order number: <strong>{{ orderNumber }}</strong></h4>
+
+                        <Link href="/" class="bg-eastwest-500 px-6 mr-3 py-2.5 hover:bg-eastwest-600 text-white">Go to Products</Link>
+                        <Link :href="route('contacts')" class="bg-gray-500 px-6 py-2.5 hover:bg-eastwest-600 text-white">Contact Us</Link>
+                    </div>
+                </div>
+        </div>
+    </section>
   </FrontLayout>
 </template>

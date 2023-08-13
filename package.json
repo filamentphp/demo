@@ -24,6 +24,7 @@
         "@inertiajs/progress": "^0.2.7",
         "@inertiajs/vue3": "^1.0.10",
         "@vitejs/plugin-vue": "^4.2.3",
+        "axios": "^1.4.0",
         "circletype": "^2.3.0",
         "flowbite": "^1.8.1",
         "flowbite-vue": "^0.0.17-next.0",
@@ -31,6 +32,7 @@
         "sass": "^1.65.1",
         "swiper": "^10.1.0",
         "vue": "^3.3.4",
+        "vue-recaptcha": "^3.0.0-alpha.6",
         "vue-toastification": "^2.0.0-rc.5"
     }
 }

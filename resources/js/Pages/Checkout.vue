@@ -5,6 +5,7 @@ import { Input, Textarea, Spinner } from "flowbite-vue";
 import { ref } from "vue";
 import { useCartStore } from "@/stores/cart";
 import { useToast } from "vue-toastification";
+import axios from "axios";
 
 const Toast = useToast();
 const cart = useCartStore();
@@ -48,7 +49,7 @@ const submitForm = async () => {
     loading.value = true;
   try {
     // Prepare form data
-    const formData = {
+    let formData = {
       name: name.value,
       phone: phone.value,
       email: email.value,
@@ -62,41 +63,37 @@ const submitForm = async () => {
       total: cartStore.totalAmount
     };
 
-    console.log(formData);
+
 
     // Perform API submission and validation
-    const response = await fetch(route('make.order'), {
-      method: 'POST',
-      body: JSON.stringify(formData),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    const response = await axios.post(route('make.order'), formData)
+        .then(function (res) {
+            if (res.data.status ===200) {
+                Toast.success('Order created successfully!', toastOptions);
+                // Reset form fields after successful submission
+                name.value = '';
+                phone.value = '';
+                email.value = '';
+                town.value = '';
+                county.value = '';
+                delivery_instruction.value = '';
+                loading.value = false;
+                const params = {
+                    order_number: res.data.order_number,
+                };
 
-    if (response.status ===200) {
-      Toast.success('Order created successfully!', toastOptions);
-      // Reset form fields after successful submission
-      name.value = '';
-      phone.value = '';
-      email.value = '';
-      town.value = '';
-      county.value = '';
-      deliveryType.value = [];
-      delivery_instruction.value = '';
-      loading.value = false;
-      const params = {
-        param1: response.data.order_number,
-      };
-      const queryString = new URLSearchParams(params).toString();
-      const url = `/orders/confirmation?${queryString}`;
+                const queryString = new URLSearchParams(params).toString();
 
-      window.location.href = url;
-    } else {
-      Toast.error('Order submission failed!', toastOptions);
+                const url = `/orders/confirmation?${queryString}`;
+                console.log(url)
+                window.location.href = url;
+                } else {
+                Toast.error('Order submission failed!', toastOptions);
+                }
+        });
+    } catch (error) {
+        Toast.error('An error occurred during submission.', toastOptions);
     }
-  } catch (error) {
-    Toast.error('An error occurred during submission.', toastOptions);
-  }
 };
 </script>
 

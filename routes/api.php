@@ -19,3 +19,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::post('/orders/create',[FrontendController::class, 'createOrder'])->name('make.order');
+Route::post('/orders/inquiry',[FrontendController::class, 'inquireOrder'])->name('inquire.order');

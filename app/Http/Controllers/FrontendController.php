@@ -49,6 +49,11 @@ class FrontendController extends Controller
         return Inertia::render('OrderConfirmation');
     }
 
+    public function contact()
+    {
+        return Inertia::render('Contact');
+    }
+
     public function createOrder(Request $request)
     {
 
@@ -71,7 +76,7 @@ class FrontendController extends Controller
 
         $order = $this->createOrderRecord($validatedData, $customer->id,  $orderNumber);
 
-        return response()->json(['message' => 'Order created successfully', 'data' => $order]);
+        return response()->json(['message' => 'Order created successfully', 'order_number' => $order->number, 'status' =>200]);
     }
 
     private function createOrUpdateCustomer($data)
