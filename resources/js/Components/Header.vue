@@ -67,11 +67,11 @@ import CartDropdown from '@/Components/Cart/CartDropdown.vue';
             class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0"
           >
             <li>
-              <a
-                href="#"
+              <Link
+                href="/"
                 class="block py-2 px-4 text-gray-700 rounded hover:text-eastwest-500 lg:bg-transparent  lg:p-0 dark:text-white"
                 aria-current="page"
-                >Home</a
+                >Home</Link
               >
             </li>
             <li>

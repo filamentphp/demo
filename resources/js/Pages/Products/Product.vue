@@ -18,9 +18,16 @@ const addToCart = (product) => {
     cart.addToCart(product);
     toast.success('Item added to cart');
   } else {
-    toast.warning('Item already in cart');
+    const existingItem = cart.items.find((item) => item.id === product.id);
+
+    if (existingItem) {
+      existingItem.quantity++;
+      cart.saveToLocalStorage(); // Save the updated quantity to localStorage
+      toast.success('Item quantity added to cart');
+    }
   }
-}
+};
+
 
 const props = defineProps({
   product: Object,

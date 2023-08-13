@@ -17,12 +17,12 @@
                                 <img :src="'/storage/' + item.featured_image" class="img-fluid">
                             </a>
                         </div>
-                        <div class="shopping-cart-title">
+                        <div class="shopping-cart-title" v-if="cartStore.isItemInCart">
                             <h4>
                                 <Link :href="route('view.product', item.slug)"> {{ item.name }} </Link>
                             </h4>
-                            <!-- <h6>Qty: 1</h6> -->
-                            <span>{{ currencyFormat(item.price) }}</span>
+                            <h6>Qty: {{ item.quantity }}</h6>
+                            <span>{{ currencyFormat(item.price) }} x {{ item.quantity }}</span>
                         </div>
                         <div class="shopping-cart-delete">
                             <button @click="removeFromCart(index)">
@@ -34,8 +34,16 @@
                         </div>
                     </li>
                 </ul>
+                <div class="shopping-cart-total flex justify-between" v-if="cart.totalItems > 0">
+                    <h4>Total : </h4>
+                    <span class="shop-total">{{ currencyFormat(cartStore.totalAmount.toFixed(2)) }}</span>
+                </div>
+                <div class="shopping-cart-btn btn-hover text-center" v-if="cart.totalItems > 0">
+                    <a class="default-btn" href="/cart">view cart</a>
+                    <a class="default-btn" href="/checkout">checkout</a>
+                </div>
                 <div v-if="cart.totalItems === 0" class="block px-4 py-2 text-sm text-gray-700">
-                Your cart is empty.
+                Your cart is empty
                 </div>
             </div>
         </div>
@@ -43,13 +51,14 @@
   </template>
 
   <script setup>
-  import { ref } from 'vue';
+  import { ref, computed } from 'vue';
   import { useCartStore } from '@/stores/cart';
   import { Head, Link } from "@inertiajs/inertia-vue3";
   import { useToast } from 'vue-toastification';
 
   const toast = useToast();
   const cart = useCartStore();
+  const cartStore = useCartStore();
     cart.loadFromLocalStorage();
     const isOpen = ref(false);
 
@@ -57,7 +66,16 @@
       cart.removeFromCart(index);
       toast.error('Item removed from the cart');
     };
+    const itemTotal = (item) => {
+        return item.price * item.quantity;
+    };
+    const cartTotal = computed(() => {
+      return cart.items.reduce((total, item) => total + item.price, 0);
+    });
     const currencyFormat = (value) => {
         return "Kes " + new Intl.NumberFormat("en-US").format(Math.round(value));
+    };
+    const formatCurrency = (value) => {
+      return Number(value).toFixed(2);
     };
   </script>
