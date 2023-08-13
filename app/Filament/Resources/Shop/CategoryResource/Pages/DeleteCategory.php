@@ -6,19 +6,21 @@ use App\Filament\Resources\Shop\CategoryResource;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditCategory extends EditRecord
+class DeleteCategory extends EditRecord
 {
     protected static string $resource = CategoryResource::class;
 
     protected function getActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\DeleteAction::make()->successNotificationTitle('La catégorie a été supprimée avec Succès.'),
         ];
     }
 
-    protected function getSavedNotificationTitle(): ?string
+    protected function getRemoveedNotification(): ?Notification
     {
-        return 'La catégorie a été modifiée avec Succès.';
+        return Notification::make()
+            ->success()
+            ->body('La catégorie a été supprimée avec Succès.');
     }
 }

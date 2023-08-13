@@ -105,6 +105,9 @@ class CategoryResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->successNotificationTitle('La catégorie a été supprimée avec Succès.'),
+                Tables\Actions\ViewAction::make(),
             ])
             ->groupedBulkActions([
                 Tables\Actions\DeleteBulkAction::make()
@@ -130,6 +133,7 @@ class CategoryResource extends Resource
             'index' => Pages\ListCategories::route('/'),
             'create' => Pages\CreateCategory::route('/create'),
             'edit' => Pages\EditCategory::route('/{record}/edit'),
+            'delete' => Pages\DeleteCategory::route('/{record}/delete'),
         ];
     }
 }
