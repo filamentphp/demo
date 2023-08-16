@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Shop;
 use App\Filament\Resources\Shop\OrderResource\Pages;
 use App\Filament\Resources\Shop\OrderResource\RelationManagers;
 use App\Filament\Resources\Shop\OrderResource\Widgets\OrderStats;
+use App\Filament\Resources\Shop\OrderResource\Widgets\OrderStatsChart;
 use App\Forms\Components\AddressForm;
 use App\Models\Shop\Order;
 use App\Models\Shop\Product;
@@ -17,6 +18,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Models\Scopes\CurrentYearOrdersScope;
 use Illuminate\Support\Carbon;
 use Squire\Models\Currency;
 
@@ -172,6 +174,7 @@ class OrderResource extends Resource
     {
         return [
             OrderStats::class,
+            OrderStatsChart::class
         ];
     }
 
@@ -186,7 +189,7 @@ class OrderResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->withoutGlobalScope(SoftDeletingScope::class);
+        return parent::getEloquentQuery()->withoutGlobalScopes([SoftDeletingScope::class]);
     }
 
     public static function getGloballySearchableAttributes(): array

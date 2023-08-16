@@ -8,6 +8,7 @@ use Illuminate\Support\ServiceProvider;
 use Filament\Facades\Filament;
 use Filament\Navigation\NavigationItem;
 use Illuminate\Support\Facades\Auth;
+use App\Filament\Resources\UserResource;
 
 class NavigationConfigurationProvider extends ServiceProvider
 {
@@ -26,6 +27,12 @@ class NavigationConfigurationProvider extends ServiceProvider
                     ->activeIcon('heroicon-s-presentation-chart-line')
                     ->group('Reports')
                     ->sort(3),
+                // NavigationItem::make('Statistiques')
+                //     ->url(UserResource::getUrl('statistique'), shouldOpenInNewTab: true)
+                //     ->icon('heroicon-o-presentation-chart-line')
+                //     ->activeIcon('heroicon-s-presentation-chart-line')
+                //     ->group('Reports')
+                //     ->sort(3),
             ]);
        });
     }

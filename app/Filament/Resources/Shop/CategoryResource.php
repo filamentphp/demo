@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Shop;
 use App\Filament\Resources\Shop\CategoryResource\Pages;
 use App\Filament\Resources\Shop\CategoryResource\RelationManagers;
 use App\Models\Shop\Category;
+use App\Exports\CategoryExport;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
@@ -13,6 +14,8 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
+use Filament\Tables\Actions\BulkAction;
+use Illuminate\Database\Eloquent\Collection;
 
 class CategoryResource extends Resource
 {
@@ -28,7 +31,7 @@ class CategoryResource extends Resource
 
     protected static ?int $navigationSort = 3;
 
-    protected static ?string $navigationLabel = 'Catégorie';
+    protected static ?string $navigationLabel = 'Catégories';
 
     public static function form(Form $form): Form
     {
@@ -112,13 +115,18 @@ class CategoryResource extends Resource
                 Tables\Actions\ViewAction::make(),
             ])
             ->groupedBulkActions([
-                Tables\Actions\DeleteBulkAction::make()
-                    ->action(function () {
-                        Notification::make()
-                            ->title('Now, now, don\'t be cheeky, leave some records for others to play with!')
-                            ->warning()
-                            ->send();
-                    }),
+                // Tables\Actions\DeleteBulkAction::make()
+                //     ->action(function () {
+                //         Notification::make()
+                //             ->title('Now, now, don\'t be cheeky, leave some records for others to play with!')
+                //             ->warning()
+                //             ->send();
+                //     }),
+                BulkAction::make("Exporter la liste en pdf")
+                    ->action(fn (Collection $records) => (new CategoryExport($records))->downloadAll())
+                    ->deselectRecordsAfterCompletion()
+                    ->color('danger')
+                    ->icon('heroicon-o-document')
             ]);
     }
 

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Scopes\CurrentYearOrdersScope;
 
 class Order extends Model
 {
@@ -50,5 +51,10 @@ class Order extends Model
     public function payments(): HasMany
     {
         return $this->hasMany(Payment::class);
+    }
+
+    public static function booted(): void
+    {
+        static::addGlobalScope(new CurrentYearOrdersScope);
     }
 }
