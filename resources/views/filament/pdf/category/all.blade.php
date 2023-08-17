@@ -6,11 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>PDF Example</title>
 
-    <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{ public_path('css/bootstrap.min.css') }}">
     <style>
         body, html {
             font-family: 'Inter', sans-serif;
-            font-family: 'Orbitron', sans-serif;
         }
         table,
         table thead tr,
@@ -24,12 +23,12 @@
     </style>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Orbitron&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700');
     </style>
 </head>
 <body>
     <div class="text-center" style="margin-left: auto; margin-right: auto;">
-        <img src="{{asset('images/logo.png')}}" height="50" width="50"/>
+        <img src="{{ public_path('images/logo.png') }}" height="50" width="50"/>
         <div class="text-center mt-2">Un logo d'exemple, samantha.johns@example.com, Prof. Destini Emmerich I</div>
     </div>
 
@@ -59,5 +58,21 @@
             @endforeach
         </tbody>
     </table>
+
+    <script type="text/php">
+        if (isset($pdf)) {
+            $x = 480;
+            $y = 810;
+            $text = "Page {PAGE_NUM} sur {PAGE_COUNT}";
+            $font = null;
+            $size = 12;
+            $color = array(0, 0, 0);
+            $word_space = 0.0;  //  default
+            $char_space = 0.0;  //  default
+            $angle = 0.0;   //  default
+            $pdf->page_text($x, $y, $text, $font, $size, $color, $word_space, $char_space, $angle);
+        }
+    </script>
+
 </body>
 </html>
