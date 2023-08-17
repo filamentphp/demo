@@ -16,6 +16,8 @@ class OrderStats extends BaseWidget
 
     protected static ?string $pollingInterval = null;
 
+    protected static ?int $sort = 2;
+
     protected function getTablePage(): string
     {
         return ListOrders::class;

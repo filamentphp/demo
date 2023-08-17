@@ -13,7 +13,26 @@ class ListCategories extends ListRecords
     protected function getActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\Action::make('impersonate')
+                ->action('impersonate')
+                ->label('Exporter tous en PDF')
+                ->url(route('export.categories.all'), shouldOpenInNewTab: false)
+                ->color('danger')
+                ->icon('heroicon-o-document'),
+            Actions\Action::make('impersonate')
+                ->action('impersonate')
+                ->label('Exporter par catégorie en PDF')
+                ->url(route('export.categories.all'), shouldOpenInNewTab: false)
+                ->color('danger')
+                ->icon('heroicon-o-document'),
+            Actions\CreateAction::make()
+                ->label('Ajouter')
+                ->icon('heroicon-o-plus'),
         ];
     }
+
+        public function impersonate(): void
+        {
+            // ...
+        }
 }
