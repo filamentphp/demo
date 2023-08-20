@@ -7,6 +7,9 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Livewire\Component;
 
+/**
+ * @property-read Forms\Form $form
+ */
 class Form extends Component implements HasForms
 {
     use InteractsWithForms;

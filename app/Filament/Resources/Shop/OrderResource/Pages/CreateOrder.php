@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Shop\OrderResource\Pages;
 
 use App\Filament\Resources\Shop\OrderResource;
+use App\Models\Shop\Order;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Wizard\Step;
 use Filament\Notifications\Actions\Action;
@@ -18,6 +19,7 @@ class CreateOrder extends CreateRecord
 
     protected function afterCreate(): void
     {
+        /** @var Order $order */
         $order = $this->record;
 
         Notification::make()
