@@ -76,7 +76,8 @@ class OrderResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->toggleable(),
-                Tables\Columns\BadgeColumn::make('status')
+                Tables\Columns\TextColumn::make('status')
+                    ->badge()
                     ->colors([
                         'danger' => 'cancelled',
                         'warning' => 'processing',
@@ -250,9 +251,9 @@ class OrderResource extends Resource
                                 'md' => 3,
                             ]),
                     ])
-                    ->orderable()
+                    ->orderColumn()
                     ->defaultItems(1)
-                    ->disableLabel()
+                    ->hiddenLabel()
                     ->columns([
                         'md' => 10,
                     ])
@@ -295,7 +296,7 @@ class OrderResource extends Resource
                 ->createOptionAction(function (Forms\Components\Actions\Action $action) {
                     return $action
                         ->modalHeading('Create customer')
-                        ->modalButton('Create customer')
+                        ->modalSubmitActionLabel('Create customer')
                         ->modalWidth('lg');
                 }),
 

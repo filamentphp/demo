@@ -70,7 +70,7 @@ class ProductResource extends Resource
                                     ->collection('product-images')
                                     ->multiple()
                                     ->maxFiles(5)
-                                    ->disableLabel(),
+                                    ->hiddenLabel(),
                             ])
                             ->collapsible(),
 

@@ -32,7 +32,8 @@ class LatestOrders extends BaseWidget
                 Tables\Columns\TextColumn::make('customer.name')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\BadgeColumn::make('status')
+                Tables\Columns\TextColumn::make('status')
+                    ->badge()
                     ->colors([
                         'danger' => 'cancelled',
                         'warning' => 'processing',

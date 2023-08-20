@@ -78,7 +78,7 @@ class PostResource extends Resource
                                 Forms\Components\FileUpload::make('image')
                                     ->label('Image')
                                     ->image()
-                                    ->disableLabel(),
+                                    ->hiddenLabel(),
                             ])
                             ->collapsible(),
                     ])
@@ -124,7 +124,8 @@ class PostResource extends Resource
                     ->sortable()
                     ->toggleable(),
 
-                Tables\Columns\BadgeColumn::make('status')
+                Tables\Columns\TextColumn::make('status')
+                    ->badge()
                     ->getStateUsing(fn (Post $record): string => $record->published_at?->isPast() ? 'Published' : 'Draft')
                     ->colors([
                         'success' => 'Published',
