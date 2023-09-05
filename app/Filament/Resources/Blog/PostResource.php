@@ -78,7 +78,7 @@ class PostResource extends Resource
                                 Forms\Components\FileUpload::make('image')
                                     ->label('Image')
                                     ->image()
-                                    ->disableLabel(),
+                                    ->hiddenLabel(),
                             ])
                             ->collapsible(),
                     ])
