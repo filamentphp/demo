@@ -156,7 +156,7 @@ class OrderResource extends Resource
             ->groups([
                 Tables\Grouping\Group::make('created_at')
                     ->label('Order Date')
-                    ->getTitleFromRecordUsing(fn ($record) => Carbon::parse(data_get($record, 'created_at'))->format(Tables\Table::$defaultDateDisplayFormat))
+                    ->date()
                     ->collapsible(),
             ]);
     }
