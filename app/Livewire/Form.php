@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Livewire;
 
 use Filament\Forms;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -12,6 +12,8 @@ class Form extends Component implements HasForms
     use InteractsWithForms;
 
     public $data = [];
+
+    public $foo = null;
 
     public function mount()
     {
