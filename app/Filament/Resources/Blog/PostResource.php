@@ -213,9 +213,7 @@ class PostResource extends Resource
                                     Components\Group::make([
                                         Components\TextEntry::make('author.name'),
                                         Components\TextEntry::make('category.name'),
-                                        Components\TextEntry::make('tags')
-                                            ->badge()
-                                            ->getStateUsing(fn () => ['one', 'two', 'three', 'four']),
+                                        Components\SpatieTagsEntry::make('tags'),
                                     ]),
                                 ]),
                             Components\ImageEntry::make('image')
