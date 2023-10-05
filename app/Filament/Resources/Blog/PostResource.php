@@ -213,7 +213,7 @@ class PostResource extends Resource
                                     Components\Group::make([
                                         Components\TextEntry::make('author.name'),
                                         Components\TextEntry::make('category.name'),
-                                        SpatieTagsEntry::make('tags')
+                                        Components\SpatieTagsEntry::make('tags')
                                     ]),
                                 ]),
                             Components\ImageEntry::make('image')
