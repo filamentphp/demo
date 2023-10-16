@@ -5,7 +5,7 @@ namespace App\Enums;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 
-enum OrderStatus: string implements HasLabel, HasColor
+enum OrderStatus: string implements HasColor, HasLabel
 {
     case New = 'new';
 
@@ -28,7 +28,7 @@ enum OrderStatus: string implements HasLabel, HasColor
         };
     }
 
-    public function getColor(): string|array|null
+    public function getColor(): string | array | null
     {
         return match ($this) {
             self::New => 'gray',
