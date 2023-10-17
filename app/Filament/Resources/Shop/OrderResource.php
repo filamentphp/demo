@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Shop;
 
+use App\Enums\OrderStatus;
 use App\Filament\Resources\Shop\OrderResource\Pages;
 use App\Filament\Resources\Shop\OrderResource\RelationManagers;
 use App\Filament\Resources\Shop\OrderResource\Widgets\OrderStats;
@@ -76,12 +77,8 @@ class OrderResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->toggleable(),
-                Tables\Columns\BadgeColumn::make('status')
-                    ->colors([
-                        'danger' => 'cancelled',
-                        'warning' => 'processing',
-                        'success' => fn ($state) => in_array($state, ['delivered', 'shipped']),
-                    ]),
+                Tables\Columns\TextColumn::make('status')
+                    ->badge(),
                 Tables\Columns\TextColumn::make('currency')
                     ->getStateUsing(fn ($record): ?string => Currency::find($record->currency)?->name ?? null)
                     ->searchable()
@@ -300,13 +297,7 @@ class OrderResource extends Resource
                 }),
 
             Forms\Components\Select::make('status')
-                ->options([
-                    'new' => 'New',
-                    'processing' => 'Processing',
-                    'shipped' => 'Shipped',
-                    'delivered' => 'Delivered',
-                    'cancelled' => 'Cancelled',
-                ])
+                ->options(OrderStatus::class)
                 ->required()
                 ->native(false),
 
