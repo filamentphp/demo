@@ -16,6 +16,10 @@ class Comment extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'is_visible' => 'boolean',
+    ];
+
     public function customer(): BelongsTo
     {
         return $this->belongsTo(Customer::class);

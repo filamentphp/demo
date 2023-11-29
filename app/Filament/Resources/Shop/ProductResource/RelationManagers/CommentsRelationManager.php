@@ -49,8 +49,7 @@ class CommentsRelationManager extends RelationManager
                 TextEntry::make('title'),
                 TextEntry::make('customer.name'),
                 IconEntry::make('is_visible')
-                    ->label('Visibility')
-                    ->boolean(),
+                    ->label('Visibility'),
                 TextEntry::make('content')
                     ->markdown(),
             ]);
@@ -72,7 +71,6 @@ class CommentsRelationManager extends RelationManager
 
                 Tables\Columns\IconColumn::make('is_visible')
                     ->label('Visibility')
-                    ->boolean()
                     ->sortable(),
             ])
             ->filters([

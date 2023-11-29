@@ -26,6 +26,8 @@ class CategoryResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-tag';
 
+    protected static ?string $navigationParentItem = 'Products';
+
     protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
@@ -38,7 +40,7 @@ class CategoryResource extends Resource
                             ->schema([
                                 Forms\Components\TextInput::make('name')
                                     ->required()
-                                    ->maxValue(50)
+                                    ->maxLength(255)
                                     ->live(onBlur: true)
                                     ->afterStateUpdated(fn (string $operation, $state, Forms\Set $set) => $operation === 'create' ? $set('slug', Str::slug($state)) : null),
 
@@ -46,6 +48,7 @@ class CategoryResource extends Resource
                                     ->disabled()
                                     ->dehydrated()
                                     ->required()
+                                    ->maxLength(255)
                                     ->unique(Category::class, 'slug', ignoreRecord: true),
                             ]),
 
@@ -93,7 +96,6 @@ class CategoryResource extends Resource
                     ->sortable(),
                 Tables\Columns\IconColumn::make('is_visible')
                     ->label('Visibility')
-                    ->boolean()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('Updated Date')

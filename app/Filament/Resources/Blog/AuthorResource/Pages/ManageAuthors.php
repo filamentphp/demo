@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\Blog\AuthorResource\Pages;
 
 use App\Filament\Resources\Blog\AuthorResource;
-use Filament\Pages\Actions;
+use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
 
 class ManageAuthors extends ManageRecords

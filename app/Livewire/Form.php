@@ -17,6 +17,10 @@ class Form extends Component implements HasForms
 
     public function mount()
     {
+        if (! app()->environment('local')) {
+            abort(404);
+        }
+
         $this->form->fill();
     }
 

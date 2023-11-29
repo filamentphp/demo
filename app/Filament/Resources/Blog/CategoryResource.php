@@ -35,7 +35,7 @@ class CategoryResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
-                    ->maxValue(50)
+                    ->maxLength(255)
                     ->live(onBlur: true)
                     ->afterStateUpdated(fn (string $operation, $state, Forms\Set $set) => $operation === 'create' ? $set('slug', Str::slug($state)) : null),
 
@@ -43,6 +43,7 @@ class CategoryResource extends Resource
                     ->disabled()
                     ->dehydrated()
                     ->required()
+                    ->maxLength(255)
                     ->unique(Category::class, 'slug', ignoreRecord: true),
 
                 Forms\Components\MarkdownEditor::make('description')
@@ -65,8 +66,7 @@ class CategoryResource extends Resource
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\IconColumn::make('is_visible')
-                    ->label('Visibility')
-                    ->boolean(),
+                    ->label('Visibility'),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('Last Updated')
                     ->date(),
@@ -98,8 +98,7 @@ class CategoryResource extends Resource
                 TextEntry::make('slug'),
                 TextEntry::make('description'),
                 IconEntry::make('is_visible')
-                    ->label('Visibility')
-                    ->boolean(),
+                    ->label('Visibility'),
                 TextEntry::make('updated_at')
                     ->dateTime(),
             ])

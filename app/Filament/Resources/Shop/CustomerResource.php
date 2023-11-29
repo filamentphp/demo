@@ -36,17 +36,18 @@ class CustomerResource extends Resource
                 Forms\Components\Section::make()
                     ->schema([
                         Forms\Components\TextInput::make('name')
-                            ->maxValue(50)
+                            ->maxLength(255)
                             ->required(),
 
                         Forms\Components\TextInput::make('email')
                             ->label('Email address')
                             ->required()
                             ->email()
+                            ->maxLength(255)
                             ->unique(ignoreRecord: true),
 
                         Forms\Components\TextInput::make('phone')
-                            ->maxValue(50),
+                            ->maxLength(255),
 
                         Forms\Components\DatePicker::make('birthday')
                             ->maxDate('today'),

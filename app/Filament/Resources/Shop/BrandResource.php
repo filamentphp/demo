@@ -25,6 +25,8 @@ class BrandResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-bookmark-square';
 
+    protected static ?string $navigationParentItem = 'Products';
+
     protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
@@ -37,6 +39,7 @@ class BrandResource extends Resource
                             ->schema([
                                 Forms\Components\TextInput::make('name')
                                     ->required()
+                                    ->maxLength(255)
                                     ->live(onBlur: true)
                                     ->afterStateUpdated(fn (string $operation, $state, Forms\Set $set) => $operation === 'create' ? $set('slug', Str::slug($state)) : null),
 
@@ -44,10 +47,12 @@ class BrandResource extends Resource
                                     ->disabled()
                                     ->dehydrated()
                                     ->required()
+                                    ->maxLength(255)
                                     ->unique(Brand::class, 'slug', ignoreRecord: true),
                             ]),
                         Forms\Components\TextInput::make('website')
                             ->required()
+                            ->maxLength(255)
                             ->url(),
 
                         Forms\Components\Toggle::make('is_visible')
@@ -88,7 +93,6 @@ class BrandResource extends Resource
                     ->sortable(),
                 Tables\Columns\IconColumn::make('is_visible')
                     ->label('Visibility')
-                    ->boolean()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('Updated Date')

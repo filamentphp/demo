@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\Shop\BrandResource\Pages;
 
 use App\Filament\Resources\Shop\BrandResource;
-use Filament\Pages\Actions;
+use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
 class EditBrand extends EditRecord

@@ -30,11 +30,13 @@ class AuthorResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->required(),
+                    ->required()
+                    ->maxLength(255),
 
                 Forms\Components\TextInput::make('email')
                     ->label('Email address')
                     ->required()
+                    ->maxLength(255)
                     ->email()
                     ->unique(Author::class, 'email', ignoreRecord: true),
 
@@ -42,10 +44,12 @@ class AuthorResource extends Resource
                     ->columnSpan('full'),
 
                 Forms\Components\TextInput::make('github_handle')
-                    ->label('GitHub'),
+                    ->label('GitHub')
+                    ->maxLength(255),
 
                 Forms\Components\TextInput::make('twitter_handle')
-                    ->label('Twitter'),
+                    ->label('Twitter')
+                    ->maxLength(255),
             ]);
     }
 
