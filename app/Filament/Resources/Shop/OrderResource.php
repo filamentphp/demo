@@ -342,7 +342,7 @@ class OrderResource extends Resource
                     }, shouldOpenInNewTab: true)
                     ->hidden(fn (array $arguments, Repeater $component): bool => blank($component->getRawItemState($arguments['item'])['shop_product_id'])),
             ])
-            ->reorderable()
+            ->orderColumn('sort')
             ->defaultItems(1)
             ->hiddenLabel()
             ->columns([
