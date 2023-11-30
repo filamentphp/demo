@@ -13,8 +13,6 @@ class Form extends Component implements HasForms
 
     public $data = [];
 
-    public $foo = null;
-
     public function mount()
     {
         if (! app()->environment('local')) {
@@ -27,7 +25,17 @@ class Form extends Component implements HasForms
     protected function getFormSchema(): array
     {
         return [
-            Forms\Components\DateTimePicker::make('date')->native(false),
+            Forms\Components\Builder::make('test')
+                ->blocks([
+                    Forms\Components\Builder\Block::make('one')
+                        ->schema([
+                            Forms\Components\TextInput::make('one'),
+                        ]),
+                    Forms\Components\Builder\Block::make('two')
+                        ->schema([
+                            Forms\Components\TextInput::make('two'),
+                        ]),
+                ])
         ];
     }
 
