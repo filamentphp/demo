@@ -4,7 +4,8 @@ A demo application to illustrate how Filament Admin works.
 
 ![Filament Demo](https://github.com/filamentphp/demo/assets/171715/899161a9-3c85-4dc9-9599-13928d3a4412)
 
-[Open in Gitpod](https://gitpod.io/#https://github.com/filamentphp/demo) to edit it and preview your changes with no setup required.
+[Open in Gitpod](https://gitpod.io/#https://github.com/filamentphp/demo) to edit it and preview your changes with no
+setup required.
 
 ## Installation
 
@@ -32,7 +33,8 @@ Generate application key:
 php artisan key:generate
 ```
 
-Create an SQLite database. You can also use another database (MySQL, Postgres), simply update your configuration accordingly.
+Create an SQLite database. You can also use another database (MySQL, Postgres), simply update your configuration
+accordingly.
 
 ```sh
 touch database/database.sqlite
@@ -51,7 +53,8 @@ php artisan db:seed
 ```
 
 > **Note**  
-> If you get an "Invalid datetime format (1292)" error, this is probably related to the timezone setting of your database.  
+> If you get an "Invalid datetime format (1292)" error, this is probably related to the timezone setting of your
+> database.  
 > Please see https://dba.stackexchange.com/questions/234270/incorrect-datetime-value-mysql
 
 
@@ -69,34 +72,41 @@ php artisan serve
 
 You're ready to go! Visit the url in your browser, and login with:
 
--   **Username:** admin@filamentphp.com
--   **Password:** password
+- **Username:** admin@filamentphp.com
+- **Password:** password
 
 ## Features to explore
 
 ### Relations
 
 #### BelongsTo
+
 - ProductResource
 - OrderResource
 - PostResource
 
 #### BelongsToMany
+
 - CategoryResource\RelationManagers\ProductsRelationManager
 
 #### HasMany
+
 - OrderResource\RelationManagers\PaymentsRelationManager
 
 #### HasManyThrough
+
 - CustomerResource\RelationManagers\PaymentsRelationManager
 
 #### MorphOne
+
 - OrderResource -> Address
 
 #### MorphMany
+
 - ProductResource\RelationManagers\CommentsRelationManager
 - PostResource\RelationManagers\CommentsRelationManager
 
 #### MorphToMany
+
 - BrandResource\RelationManagers\AddressRelationManager
 - CustomerResource\RelationManagers\AddressRelationManager

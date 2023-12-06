@@ -7,7 +7,6 @@ use App\Filament\Resources\Shop\OrderResource\Pages;
 use App\Filament\Resources\Shop\OrderResource\RelationManagers;
 use App\Filament\Resources\Shop\OrderResource\Widgets\OrderStats;
 use App\Forms\Components\AddressForm;
-use App\Models\Blog\Category;
 use App\Models\Shop\Order;
 use App\Models\Shop\Product;
 use Filament\Forms;
@@ -37,47 +36,6 @@ class OrderResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
 
     protected static ?int $navigationSort = 2;
-
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Forms\Components\Group::make()
-                    ->schema([
-                        Forms\Components\Section::make()
-                            ->schema(static::getDetailsFormSchema())
-                            ->columns(2),
-
-                        Forms\Components\Section::make('Order items')
-                            ->headerActions([
-                                Action::make('reset')
-                                    ->modalHeading('Are you sure?')
-                                    ->modalDescription('All existing items will be removed from the order.')
-                                    ->requiresConfirmation()
-                                    ->color('danger')
-                                    ->action(fn (Forms\Set $set) => $set('items', [])),
-                            ])
-                            ->schema([
-                                static::getItemsRepeater(),
-                            ]),
-                    ])
-                    ->columnSpan(['lg' => fn (?Order $record) => $record === null ? 3 : 2]),
-
-                Forms\Components\Section::make()
-                    ->schema([
-                        Forms\Components\Placeholder::make('created_at')
-                            ->label('Created at')
-                            ->content(fn (Order $record): ?string => $record->created_at?->diffForHumans()),
-
-                        Forms\Components\Placeholder::make('updated_at')
-                            ->label('Last modified at')
-                            ->content(fn (Order $record): ?string => $record->updated_at?->diffForHumans()),
-                    ])
-                    ->columnSpan(['lg' => 1])
-                    ->hidden(fn (?Order $record) => $record === null),
-            ])
-            ->columns(3);
-    }
 
     public static function table(Table $table): Table
     {
@@ -171,56 +129,45 @@ class OrderResource extends Resource
             ]);
     }
 
-    public static function getRelations(): array
+    public static function form(Form $form): Form
     {
-        return [
-            RelationManagers\PaymentsRelationManager::class,
-        ];
-    }
+        return $form
+            ->schema([
+                Forms\Components\Group::make()
+                    ->schema([
+                        Forms\Components\Section::make()
+                            ->schema(static::getDetailsFormSchema())
+                            ->columns(2),
 
-    public static function getWidgets(): array
-    {
-        return [
-            OrderStats::class,
-        ];
-    }
+                        Forms\Components\Section::make('Order items')
+                            ->headerActions([
+                                Action::make('reset')
+                                    ->modalHeading('Are you sure?')
+                                    ->modalDescription('All existing items will be removed from the order.')
+                                    ->requiresConfirmation()
+                                    ->color('danger')
+                                    ->action(fn (Forms\Set $set) => $set('items', [])),
+                            ])
+                            ->schema([
+                                static::getItemsRepeater(),
+                            ]),
+                    ])
+                    ->columnSpan(['lg' => fn (?Order $record) => $record === null ? 3 : 2]),
 
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListOrders::route('/'),
-            'create' => Pages\CreateOrder::route('/create'),
-            'edit' => Pages\EditOrder::route('/{record}/edit'),
-        ];
-    }
+                Forms\Components\Section::make()
+                    ->schema([
+                        Forms\Components\Placeholder::make('created_at')
+                            ->label('Created at')
+                            ->content(fn (Order $record): ?string => $record->created_at?->diffForHumans()),
 
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()->withoutGlobalScope(SoftDeletingScope::class);
-    }
-
-    public static function getGloballySearchableAttributes(): array
-    {
-        return ['number', 'customer.name'];
-    }
-
-    public static function getGlobalSearchResultDetails(Model $record): array
-    {
-        /** @var Order $record */
-
-        return [
-            'Customer' => optional($record->customer)->name,
-        ];
-    }
-
-    public static function getGlobalSearchEloquentQuery(): Builder
-    {
-        return parent::getGlobalSearchEloquentQuery()->with(['customer', 'items']);
-    }
-
-    public static function getNavigationBadge(): ?string
-    {
-        return static::$model::where('status', 'new')->count();
+                        Forms\Components\Placeholder::make('updated_at')
+                            ->label('Last modified at')
+                            ->content(fn (Order $record): ?string => $record->updated_at?->diffForHumans()),
+                    ])
+                    ->columnSpan(['lg' => 1])
+                    ->hidden(fn (?Order $record) => $record === null),
+            ])
+            ->columns(3);
     }
 
     public static function getDetailsFormSchema(): array
@@ -349,5 +296,57 @@ class OrderResource extends Resource
                 'md' => 10,
             ])
             ->required();
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            RelationManagers\PaymentsRelationManager::class,
+        ];
+    }
+
+    public static function getWidgets(): array
+    {
+        return [
+            OrderStats::class,
+        ];
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListOrders::route('/'),
+            'create' => Pages\CreateOrder::route('/create'),
+            'edit' => Pages\EditOrder::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->withoutGlobalScope(SoftDeletingScope::class);
+    }
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['number', 'customer.name'];
+    }
+
+    public static function getGlobalSearchResultDetails(Model $record): array
+    {
+        /** @var Order $record */
+
+        return [
+            'Customer' => optional($record->customer)->name,
+        ];
+    }
+
+    public static function getGlobalSearchEloquentQuery(): Builder
+    {
+        return parent::getGlobalSearchEloquentQuery()->with(['customer', 'items']);
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::$model::where('status', 'new')->count();
     }
 }

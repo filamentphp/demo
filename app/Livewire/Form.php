@@ -22,6 +22,16 @@ class Form extends Component implements HasForms
         $this->form->fill();
     }
 
+    public function submit()
+    {
+        dd($this->form->getState());
+    }
+
+    public function render()
+    {
+        return view('livewire.form');
+    }
+
     protected function getFormSchema(): array
     {
         return [
@@ -35,22 +45,12 @@ class Form extends Component implements HasForms
                         ->schema([
                             Forms\Components\TextInput::make('two'),
                         ]),
-                ])
+                ]),
         ];
-    }
-
-    public function submit()
-    {
-        dd($this->form->getState());
     }
 
     protected function getFormStatePath(): ?string
     {
         return 'data';
-    }
-
-    public function render()
-    {
-        return view('livewire.form');
     }
 }

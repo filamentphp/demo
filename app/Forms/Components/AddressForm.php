@@ -8,9 +8,9 @@ use Squire\Models\Country;
 
 class AddressForm extends Forms\Components\Field
 {
-    protected string $view = 'filament-forms::components.group';
-
     public $relationship = null;
+
+    protected string $view = 'filament-forms::components.group';
 
     public function relationship(string | callable $relationship): static
     {
@@ -34,6 +34,11 @@ class AddressForm extends Forms\Components\Field
         }
 
         $record->touch();
+    }
+
+    public function getRelationship(): string
+    {
+        return $this->evaluate($this->relationship) ?? $this->getName();
     }
 
     public function getChildComponents(): array
@@ -80,10 +85,5 @@ class AddressForm extends Forms\Components\Field
         });
 
         $this->dehydrated(false);
-    }
-
-    public function getRelationship(): string
-    {
-        return $this->evaluate($this->relationship) ?? $this->getName();
     }
 }

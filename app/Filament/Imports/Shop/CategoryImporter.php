@@ -49,13 +49,6 @@ class CategoryImporter extends Importer
         ];
     }
 
-    public function resolveRecord(): ?Category
-    {
-        return Category::firstOrNew([
-            'slug' => $this->data['slug'],
-        ]);
-    }
-
     public static function getCompletedNotificationBody(Import $import): string
     {
         $body = 'Your shop category import has completed and ' . number_format($import->successful_rows) . ' ' . str('row')->plural($import->successful_rows) . ' imported.';
@@ -65,5 +58,12 @@ class CategoryImporter extends Importer
         }
 
         return $body;
+    }
+
+    public function resolveRecord(): ?Category
+    {
+        return Category::firstOrNew([
+            'slug' => $this->data['slug'],
+        ]);
     }
 }
