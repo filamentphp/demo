@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 
 trait CanCreateImages
 {
-    public function createImage(string $url): ?string
+    public function createImage(?string $url = null): ?string
     {
         try {
             $image = file_get_contents($url ?? DatabaseSeeder::IMAGE_URL);
