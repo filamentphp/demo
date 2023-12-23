@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\Blog;
 
 use App\Filament\Resources\Blog\LinkResource\Pages;
-use App\Filament\Resources\Blog\LinkResource\RelationManagers;
 use App\Models\Blog\Link;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -17,8 +16,6 @@ use Filament\Resources\Resource;
 use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class LinkResource extends Resource
 {

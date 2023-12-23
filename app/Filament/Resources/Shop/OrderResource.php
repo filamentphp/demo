@@ -7,7 +7,6 @@ use App\Filament\Resources\Shop\OrderResource\Pages;
 use App\Filament\Resources\Shop\OrderResource\RelationManagers;
 use App\Filament\Resources\Shop\OrderResource\Widgets\OrderStats;
 use App\Forms\Components\AddressForm;
-use App\Models\Blog\Category;
 use App\Models\Shop\Order;
 use App\Models\Shop\Product;
 use Filament\Forms;
