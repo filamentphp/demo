@@ -26,6 +26,11 @@ class ManagePostComments extends ManageRelatedRecords
         return "Manage {$this->getRecordTitle()} Comments";
     }
 
+    public function getBreadcrumb(): string
+    {
+        return 'Comments';
+    }
+
     public static function getNavigationLabel(): string
     {
         return 'Manage Comments';
