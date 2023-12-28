@@ -3,9 +3,7 @@
 namespace Database\Factories\Blog;
 
 use Database\Factories\Concerns\CanCreateImages;
-use Database\Seeders\DatabaseSeeder;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 /**
