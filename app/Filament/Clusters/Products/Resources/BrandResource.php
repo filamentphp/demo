@@ -3,8 +3,6 @@
 namespace App\Filament\Clusters\Products\Resources;
 
 use App\Filament\Clusters\Products;
-use App\Filament\Resources\Shop\BrandResource\Pages;
-use App\Filament\Resources\Shop\BrandResource\RelationManagers;
 use App\Models\Shop\Brand;
 use Filament\Forms;
 use Filament\Forms\Form;

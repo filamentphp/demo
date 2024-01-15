@@ -5,8 +5,6 @@ namespace App\Filament\Clusters\Products\Resources;
 use App\Filament\Clusters\Products;
 use App\Filament\Clusters\Products\Resources\BrandResource\RelationManagers\ProductsRelationManager;
 use App\Filament\Clusters\Products\Resources\ProductResource\Widgets\ProductStats;
-use App\Filament\Resources\Shop\ProductResource\Pages;
-use App\Filament\Resources\Shop\ProductResource\RelationManagers;
 use App\Models\Shop\Product;
 use Filament\Forms;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
