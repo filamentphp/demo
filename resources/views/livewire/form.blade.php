@@ -1,9 +1,9 @@
-<form wire:submit.prevent="submit" class="max-w-3xl mx-auto w-full p-8 space-y-6">
+<form wire:submit="submit" class="max-w-3xl mx-auto w-full p-8 space-y-6">
     {{ $this->form }}
 
-    {{ json_encode($data) }}
+    {{ json_encode($this->data) }}
 
-    <x-filament::button>
+    <x-filament::button type="submit">
         Submit
     </x-filament::button>
 </form>
