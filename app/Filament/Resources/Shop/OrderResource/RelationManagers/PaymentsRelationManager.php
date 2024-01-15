@@ -58,18 +58,26 @@ class PaymentsRelationManager extends RelationManager
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('reference')
-                    ->searchable(),
+                Tables\Columns\ColumnGroup::make('Details')
+                    ->columns([
+                        Tables\Columns\TextColumn::make('reference')
+                            ->searchable(),
 
-                Tables\Columns\TextColumn::make('amount')
-                    ->sortable()
-                    ->money(fn ($record) => $record->currency),
+                        Tables\Columns\TextColumn::make('amount')
+                            ->sortable()
+                            ->money(fn ($record) => $record->currency),
+                    ]),
 
-                Tables\Columns\TextColumn::make('provider')
-                    ->formatStateUsing(fn ($state) => Str::headline($state)),
+                Tables\Columns\ColumnGroup::make('Context')
+                    ->columns([
+                        Tables\Columns\TextColumn::make('provider')
+                            ->formatStateUsing(fn ($state) => Str::headline($state))
+                            ->sortable(),
 
-                Tables\Columns\TextColumn::make('method')
-                    ->formatStateUsing(fn ($state) => Str::headline($state)),
+                        Tables\Columns\TextColumn::make('method')
+                            ->formatStateUsing(fn ($state) => Str::headline($state))
+                            ->sortable(),
+                    ]),
             ])
             ->filters([
                 //
