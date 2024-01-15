@@ -44,11 +44,11 @@ class AuthorResource extends Resource
                     ->columnSpan('full'),
 
                 Forms\Components\TextInput::make('github_handle')
-                    ->label('GitHub')
+                    ->label('GitHub handle')
                     ->maxLength(255),
 
                 Forms\Components\TextInput::make('twitter_handle')
-                    ->label('Twitter')
+                    ->label('Twitter handle')
                     ->maxLength(255),
             ]);
     }
