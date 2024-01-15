@@ -269,10 +269,10 @@ class OrderResource extends Resource
                         ->modalWidth('lg');
                 }),
 
-            Forms\Components\Select::make('status')
+            Forms\Components\ToggleButtons::make('status')
+                ->inline()
                 ->options(OrderStatus::class)
-                ->required()
-                ->native(false),
+                ->required(),
 
             Forms\Components\Select::make('currency')
                 ->searchable()

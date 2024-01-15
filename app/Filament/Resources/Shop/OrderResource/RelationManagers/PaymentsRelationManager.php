@@ -34,22 +34,23 @@ class PaymentsRelationManager extends RelationManager
                     ->searchable()
                     ->required(),
 
-                Forms\Components\Select::make('provider')
+                Forms\Components\ToggleButtons::make('provider')
+                    ->inline()
+                    ->grouped()
                     ->options([
                         'stripe' => 'Stripe',
                         'paypal' => 'PayPal',
                     ])
-                    ->required()
-                    ->native(false),
+                    ->required(),
 
-                Forms\Components\Select::make('method')
+                Forms\Components\ToggleButtons::make('method')
+                    ->inline()
                     ->options([
                         'credit_card' => 'Credit card',
                         'bank_transfer' => 'Bank transfer',
                         'paypal' => 'PayPal',
                     ])
-                    ->required()
-                    ->native(false),
+                    ->required(),
             ]);
     }
 
