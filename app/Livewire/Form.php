@@ -35,7 +35,7 @@ class Form extends Component implements HasForms
                         ->schema([
                             Forms\Components\TextInput::make('two'),
                         ]),
-                ])
+                ]),
         ];
     }
 

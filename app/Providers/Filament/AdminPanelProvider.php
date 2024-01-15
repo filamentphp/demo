@@ -7,7 +7,6 @@ use App\Filament\Pages\Dashboard;
 use App\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\SpatieLaravelTranslatablePlugin;
@@ -38,6 +37,8 @@ class AdminPanelProvider extends PanelProvider
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
             ])
+            ->brandLogo(fn () => view('filament.app.logo'))
+            ->brandLogoHeight('1.25rem')
             ->navigationGroups([
                 'Shop',
                 'Blog',
