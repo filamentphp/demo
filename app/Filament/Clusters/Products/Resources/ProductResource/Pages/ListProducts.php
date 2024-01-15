@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\Shop\ProductResource\Pages;
+namespace App\Filament\Clusters\Products\Resources\ProductResource\Pages;
 
-use App\Filament\Resources\Shop\ProductResource;
+use App\Filament\Clusters\Products\Resources\ProductResource;
 use Filament\Actions;
 use Filament\Pages\Concerns\ExposesTableToWidgets;
 use Filament\Resources\Pages\ListRecords;

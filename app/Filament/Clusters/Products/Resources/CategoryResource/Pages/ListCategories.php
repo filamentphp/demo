@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Filament\Resources\Shop\CategoryResource\Pages;
+namespace App\Filament\Clusters\Products\Resources\CategoryResource\Pages;
 
+use App\Filament\Clusters\Products\Resources\CategoryResource;
 use App\Filament\Imports\Shop\CategoryImporter;
-use App\Filament\Resources\Shop\CategoryResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 

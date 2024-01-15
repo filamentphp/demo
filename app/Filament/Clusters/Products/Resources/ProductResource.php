@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Filament\Resources\Shop;
+namespace App\Filament\Clusters\Products\Resources;
 
-use App\Filament\Resources\Shop\BrandResource\RelationManagers\ProductsRelationManager;
+use App\Filament\Clusters\Products;
+use App\Filament\Clusters\Products\Resources\BrandResource\RelationManagers\ProductsRelationManager;
+use App\Filament\Clusters\Products\Resources\ProductResource\Widgets\ProductStats;
 use App\Filament\Resources\Shop\ProductResource\Pages;
 use App\Filament\Resources\Shop\ProductResource\RelationManagers;
-use App\Filament\Resources\Shop\ProductResource\Widgets\ProductStats;
 use App\Models\Shop\Product;
 use Filament\Forms;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
@@ -27,11 +28,9 @@ class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
 
-    protected static ?string $slug = 'shop/products';
+    protected static ?string $cluster = Products::class;
 
     protected static ?string $recordTitleAttribute = 'name';
-
-    protected static ?string $navigationGroup = 'Shop';
 
     protected static ?string $navigationIcon = 'heroicon-o-bolt';
 
@@ -259,6 +258,7 @@ class ProductResource extends Resource
                     ])
                     ->constraintPickerColumns(2),
             ], layout: Tables\Enums\FiltersLayout::AboveContentCollapsible)
+            ->deferFilters()
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
@@ -276,7 +276,7 @@ class ProductResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\CommentsRelationManager::class,
+            \App\Filament\Clusters\Products\Resources\ProductResource\RelationManagers\CommentsRelationManager::class,
         ];
     }
 
@@ -290,9 +290,9 @@ class ProductResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListProducts::route('/'),
-            'create' => Pages\CreateProduct::route('/create'),
-            'edit' => Pages\EditProduct::route('/{record}/edit'),
+            'index' => \App\Filament\Clusters\Products\Resources\ProductResource\Pages\ListProducts::route('/'),
+            'create' => \App\Filament\Clusters\Products\Resources\ProductResource\Pages\CreateProduct::route('/create'),
+            'edit' => \App\Filament\Clusters\Products\Resources\ProductResource\Pages\EditProduct::route('/{record}/edit'),
         ];
     }
 

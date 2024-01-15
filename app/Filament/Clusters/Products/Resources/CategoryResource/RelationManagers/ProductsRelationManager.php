@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\Shop\CategoryResource\RelationManagers;
+namespace App\Filament\Clusters\Products\Resources\CategoryResource\RelationManagers;
 
-use App\Filament\Resources\Shop\ProductResource;
+use App\Filament\Clusters\Products\Resources\ProductResource;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;

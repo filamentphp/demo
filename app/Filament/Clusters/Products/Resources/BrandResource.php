@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\Shop;
+namespace App\Filament\Clusters\Products\Resources;
 
+use App\Filament\Clusters\Products;
 use App\Filament\Resources\Shop\BrandResource\Pages;
 use App\Filament\Resources\Shop\BrandResource\RelationManagers;
 use App\Models\Shop\Brand;
@@ -17,17 +18,15 @@ class BrandResource extends Resource
 {
     protected static ?string $model = Brand::class;
 
-    protected static ?string $slug = 'shop/brands';
+    protected static ?string $cluster = Products::class;
 
     protected static ?string $recordTitleAttribute = 'name';
-
-    protected static ?string $navigationGroup = 'Shop';
 
     protected static ?string $navigationIcon = 'heroicon-o-bookmark-square';
 
     protected static ?string $navigationParentItem = 'Products';
 
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {
@@ -121,17 +120,17 @@ class BrandResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\ProductsRelationManager::class,
-            RelationManagers\AddressesRelationManager::class,
+            \App\Filament\Clusters\Products\Resources\BrandResource\RelationManagers\ProductsRelationManager::class,
+            \App\Filament\Clusters\Products\Resources\BrandResource\RelationManagers\AddressesRelationManager::class,
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListBrands::route('/'),
-            'create' => Pages\CreateBrand::route('/create'),
-            'edit' => Pages\EditBrand::route('/{record}/edit'),
+            'index' => \App\Filament\Clusters\Products\Resources\BrandResource\Pages\ListBrands::route('/'),
+            'create' => \App\Filament\Clusters\Products\Resources\BrandResource\Pages\CreateBrand::route('/create'),
+            'edit' => \App\Filament\Clusters\Products\Resources\BrandResource\Pages\EditBrand::route('/{record}/edit'),
         ];
     }
 }

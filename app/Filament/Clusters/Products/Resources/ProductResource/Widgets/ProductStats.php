@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\Shop\ProductResource\Widgets;
+namespace App\Filament\Clusters\Products\Resources\ProductResource\Widgets;
 
-use App\Filament\Resources\Shop\ProductResource\Pages\ListProducts;
+use App\Filament\Clusters\Products\Resources\ProductResource\Pages\ListProducts;
 use Filament\Widgets\Concerns\InteractsWithPageTable;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;

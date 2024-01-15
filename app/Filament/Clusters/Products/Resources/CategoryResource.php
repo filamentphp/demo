@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\Shop;
+namespace App\Filament\Clusters\Products\Resources;
 
+use App\Filament\Clusters\Products;
 use App\Filament\Resources\Shop\CategoryResource\Pages;
 use App\Filament\Resources\Shop\CategoryResource\RelationManagers;
 use App\Models\Shop\Category;
@@ -18,17 +19,15 @@ class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
 
-    protected static ?string $slug = 'shop/categories';
+    protected static ?string $cluster = Products::class;
 
     protected static ?string $recordTitleAttribute = 'name';
-
-    protected static ?string $navigationGroup = 'Shop';
 
     protected static ?string $navigationIcon = 'heroicon-o-tag';
 
     protected static ?string $navigationParentItem = 'Products';
 
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {
@@ -122,16 +121,16 @@ class CategoryResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\ProductsRelationManager::class,
+            \App\Filament\Clusters\Products\Resources\CategoryResource\RelationManagers\ProductsRelationManager::class,
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCategories::route('/'),
-            'create' => Pages\CreateCategory::route('/create'),
-            'edit' => Pages\EditCategory::route('/{record}/edit'),
+            'index' => \App\Filament\Clusters\Products\Resources\CategoryResource\Pages\ListCategories::route('/'),
+            'create' => \App\Filament\Clusters\Products\Resources\CategoryResource\Pages\CreateCategory::route('/create'),
+            'edit' => \App\Filament\Clusters\Products\Resources\CategoryResource\Pages\EditCategory::route('/{record}/edit'),
         ];
     }
 }
