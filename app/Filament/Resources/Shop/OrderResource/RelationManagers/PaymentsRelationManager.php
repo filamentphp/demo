@@ -34,22 +34,23 @@ class PaymentsRelationManager extends RelationManager
                     ->searchable()
                     ->required(),
 
-                Forms\Components\Select::make('provider')
+                Forms\Components\ToggleButtons::make('provider')
+                    ->inline()
+                    ->grouped()
                     ->options([
                         'stripe' => 'Stripe',
                         'paypal' => 'PayPal',
                     ])
-                    ->required()
-                    ->native(false),
+                    ->required(),
 
-                Forms\Components\Select::make('method')
+                Forms\Components\ToggleButtons::make('method')
+                    ->inline()
                     ->options([
                         'credit_card' => 'Credit card',
                         'bank_transfer' => 'Bank transfer',
                         'paypal' => 'PayPal',
                     ])
-                    ->required()
-                    ->native(false),
+                    ->required(),
             ]);
     }
 
@@ -57,18 +58,26 @@ class PaymentsRelationManager extends RelationManager
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('reference')
-                    ->searchable(),
+                Tables\Columns\ColumnGroup::make('Details')
+                    ->columns([
+                        Tables\Columns\TextColumn::make('reference')
+                            ->searchable(),
 
-                Tables\Columns\TextColumn::make('amount')
-                    ->sortable()
-                    ->money(fn ($record) => $record->currency),
+                        Tables\Columns\TextColumn::make('amount')
+                            ->sortable()
+                            ->money(fn ($record) => $record->currency),
+                    ]),
 
-                Tables\Columns\TextColumn::make('provider')
-                    ->formatStateUsing(fn ($state) => Str::headline($state)),
+                Tables\Columns\ColumnGroup::make('Context')
+                    ->columns([
+                        Tables\Columns\TextColumn::make('provider')
+                            ->formatStateUsing(fn ($state) => Str::headline($state))
+                            ->sortable(),
 
-                Tables\Columns\TextColumn::make('method')
-                    ->formatStateUsing(fn ($state) => Str::headline($state)),
+                        Tables\Columns\TextColumn::make('method')
+                            ->formatStateUsing(fn ($state) => Str::headline($state))
+                            ->sortable(),
+                    ]),
             ])
             ->filters([
                 //

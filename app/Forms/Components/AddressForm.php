@@ -47,14 +47,18 @@ class AddressForm extends Forms\Components\Field
                         ->getOptionLabelUsing(fn ($value): ?string => Country::find($value)?->getAttribute('name')),
                 ]),
             Forms\Components\TextInput::make('street')
-                ->label('Street address'),
+                ->label('Street address')
+                ->maxLength(255),
             Forms\Components\Grid::make(3)
                 ->schema([
-                    Forms\Components\TextInput::make('city'),
+                    Forms\Components\TextInput::make('city')
+                        ->maxLength(255),
                     Forms\Components\TextInput::make('state')
-                        ->label('State / Province'),
+                        ->label('State / Province')
+                        ->maxLength(255),
                     Forms\Components\TextInput::make('zip')
-                        ->label('Zip / Postal code'),
+                        ->label('Zip / Postal code')
+                        ->maxLength(255),
                 ]),
         ];
     }

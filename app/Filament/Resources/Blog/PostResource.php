@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\Blog;
 
 use App\Filament\Resources\Blog\PostResource\Pages;
-use App\Filament\Resources\Blog\PostResource\RelationManagers;
 use App\Models\Blog\Post;
 use Filament\Forms;
 use Filament\Forms\Components\SpatieTagsInput;
@@ -11,6 +10,8 @@ use Filament\Forms\Form;
 use Filament\Infolists\Components;
 use Filament\Infolists\Infolist;
 use Filament\Notifications\Notification;
+use Filament\Pages\SubNavigationPosition;
+use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -33,73 +34,55 @@ class PostResource extends Resource
 
     protected static ?int $navigationSort = 0;
 
+    protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Group::make()
-                    ->schema([
-                        Forms\Components\Section::make()
-                            ->schema([
-                                Forms\Components\TextInput::make('title')
-                                    ->required()
-                                    ->live(onBlur: true)
-                                    ->afterStateUpdated(fn (string $operation, $state, Forms\Set $set) => $operation === 'create' ? $set('slug', Str::slug($state)) : null),
-
-                                Forms\Components\TextInput::make('slug')
-                                    ->disabled()
-                                    ->dehydrated()
-                                    ->required()
-                                    ->unique(Post::class, 'slug', ignoreRecord: true),
-
-                                Forms\Components\MarkdownEditor::make('content')
-                                    ->required()
-                                    ->columnSpan('full'),
-
-                                Forms\Components\Select::make('blog_author_id')
-                                    ->relationship('author', 'name')
-                                    ->searchable()
-                                    ->required(),
-
-                                Forms\Components\Select::make('blog_category_id')
-                                    ->relationship('category', 'name')
-                                    ->searchable()
-                                    ->required(),
-
-                                Forms\Components\DatePicker::make('published_at')
-                                    ->label('Published Date'),
-
-                                SpatieTagsInput::make('tags'),
-                            ])
-                            ->columns(2),
-
-                        Forms\Components\Section::make('Image')
-                            ->schema([
-                                Forms\Components\FileUpload::make('image')
-                                    ->label('Image')
-                                    ->image()
-                                    ->hiddenLabel(),
-                            ])
-                            ->collapsible(),
-                    ])
-                    ->columnSpan(['lg' => fn (?Post $record) => $record === null ? 3 : 2]),
-
                 Forms\Components\Section::make()
                     ->schema([
-                        Forms\Components\Placeholder::make('created_at')
-                            ->label('Created at')
-                            ->content(fn (Post $record): ?string => $record->created_at?->diffForHumans()),
+                        Forms\Components\TextInput::make('title')
+                            ->required()
+                            ->live(onBlur: true)
+                            ->maxLength(255)
+                            ->afterStateUpdated(fn (string $operation, $state, Forms\Set $set) => $operation === 'create' ? $set('slug', Str::slug($state)) : null),
 
-                        Forms\Components\Placeholder::make('updated_at')
-                            ->label('Last modified at')
-                            ->content(fn (Post $record): ?string => $record->updated_at?->diffForHumans()),
+                        Forms\Components\TextInput::make('slug')
+                            ->disabled()
+                            ->dehydrated()
+                            ->required()
+                            ->maxLength(255)
+                            ->unique(Post::class, 'slug', ignoreRecord: true),
+
+                        Forms\Components\MarkdownEditor::make('content')
+                            ->required()
+                            ->columnSpan('full'),
+
+                        Forms\Components\Select::make('blog_author_id')
+                            ->relationship('author', 'name')
+                            ->searchable()
+                            ->required(),
+
+                        Forms\Components\Select::make('blog_category_id')
+                            ->relationship('category', 'name')
+                            ->searchable()
+                            ->required(),
+
+                        Forms\Components\DatePicker::make('published_at')
+                            ->label('Published Date'),
+
+                        SpatieTagsInput::make('tags'),
                     ])
-                    ->columnSpan(['lg' => 1])
-                    ->hidden(fn (?Post $record) => $record === null),
-            ])
-            ->columns([
-                'sm' => 3,
-                'lg' => null,
+                    ->columns(2),
+
+                Forms\Components\Section::make('Image')
+                    ->schema([
+                        Forms\Components\FileUpload::make('image')
+                            ->image()
+                            ->hiddenLabel(),
+                    ])
+                    ->collapsible(),
             ]);
     }
 
@@ -143,7 +126,8 @@ class PostResource extends Resource
                 Tables\Columns\TextColumn::make('comments.customer.name')
                     ->label('Comment Authors')
                     ->listWithLineBreaks()
-                    ->limitList(2),
+                    ->limitList(2)
+                    ->expandableLimitedList(),
             ])
             ->filters([
                 Tables\Filters\Filter::make('published_at')
@@ -214,9 +198,7 @@ class PostResource extends Resource
                                     Components\Group::make([
                                         Components\TextEntry::make('author.name'),
                                         Components\TextEntry::make('category.name'),
-                                        Components\TextEntry::make('tags')
-                                            ->badge()
-                                            ->getStateUsing(fn () => ['one', 'two', 'three', 'four']),
+                                        Components\SpatieTagsEntry::make('tags'),
                                     ]),
                                 ]),
                             Components\ImageEntry::make('image')
@@ -235,11 +217,18 @@ class PostResource extends Resource
             ]);
     }
 
+    public static function getRecordSubNavigation(Page $page): array
+    {
+        return $page->generateNavigationItems([
+            Pages\ViewPost::class,
+            Pages\EditPost::class,
+            Pages\ManagePostComments::class,
+        ]);
+    }
+
     public static function getRelations(): array
     {
-        return [
-            RelationManagers\CommentsRelationManager::class,
-        ];
+        return [];
     }
 
     public static function getPages(): array
@@ -247,6 +236,7 @@ class PostResource extends Resource
         return [
             'index' => Pages\ListPosts::route('/'),
             'create' => Pages\CreatePost::route('/create'),
+            'comments' => Pages\ManagePostComments::route('/{record}/comments'),
             'edit' => Pages\EditPost::route('/{record}/edit'),
             'view' => Pages\ViewPost::route('/{record}'),
         ];
