@@ -44,7 +44,8 @@ class User extends Authenticatable implements FilamentUser, HasTenants, MustVeri
         return true;
     }
 
-    public function getTenants(Panel $panel): array | Collection
+    /** @return Collection<int,Team> */
+    public function getTenants(Panel $panel): Collection
     {
         return Team::all();
     }

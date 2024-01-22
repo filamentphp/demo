@@ -32,16 +32,19 @@ class Product extends Model implements HasMedia
         'published_at' => 'date',
     ];
 
+    /** @return BelongsTo<Brand,self> */
     public function brand(): BelongsTo
     {
         return $this->belongsTo(Brand::class, 'shop_brand_id');
     }
 
+    /** @return BelongsToMany<Category> */
     public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Category::class, 'shop_category_product', 'shop_product_id', 'shop_category_id')->withTimestamps();
     }
 
+    /** @return MorphMany<Comment> */
     public function comments(): MorphMany
     {
         return $this->morphMany(Comment::class, 'commentable');

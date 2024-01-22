@@ -22,6 +22,7 @@ class Category extends Model
         'is_visible' => 'boolean',
     ];
 
+    /** @return HasMany<Post> */
     public function posts(): HasMany
     {
         return $this->hasMany(Post::class, 'blog_category_id');

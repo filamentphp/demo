@@ -194,6 +194,7 @@ class OrderResource extends Resource
         ];
     }
 
+    /** @return Builder<Order> */
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()->withoutGlobalScope(SoftDeletingScope::class);
@@ -213,6 +214,7 @@ class OrderResource extends Resource
         ];
     }
 
+    /** @return Builder<Order> */
     public static function getGlobalSearchEloquentQuery(): Builder
     {
         return parent::getGlobalSearchEloquentQuery()->with(['customer', 'items']);
@@ -223,6 +225,7 @@ class OrderResource extends Resource
         return static::$model::where('status', 'new')->count();
     }
 
+    /** @return Forms\Components\Component[] */
     public static function getDetailsFormSchema(): array
     {
         return [

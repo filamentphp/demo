@@ -12,6 +12,7 @@ class OrderAddress extends Model
 
     protected $table = 'shop_order_addresses';
 
+    /** @return MorphTo<Model,self> */
     public function addressable(): MorphTo
     {
         return $this->morphTo();

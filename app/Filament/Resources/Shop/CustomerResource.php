@@ -105,6 +105,7 @@ class CustomerResource extends Resource
             ]);
     }
 
+    /** @return Builder<Customer> */
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()->with('addresses')->withoutGlobalScope(SoftDeletingScope::class);

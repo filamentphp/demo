@@ -242,6 +242,7 @@ class PostResource extends Resource
         ];
     }
 
+    /** @return Builder<Post> */
     public static function getGlobalSearchEloquentQuery(): Builder
     {
         return parent::getGlobalSearchEloquentQuery()->with(['author', 'category']);

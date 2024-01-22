@@ -5,6 +5,7 @@ namespace App\Livewire;
 use Filament\Forms;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Illuminate\View\View;
 use Livewire\Component;
 
 /**
@@ -14,9 +15,10 @@ class Form extends Component implements HasForms
 {
     use InteractsWithForms;
 
+    /** @var array<string, mixed> */
     public $data = [];
 
-    public function mount()
+    public function mount(): void
     {
         if (! app()->environment('local')) {
             abort(404);
@@ -25,6 +27,7 @@ class Form extends Component implements HasForms
         $this->form->fill();
     }
 
+    /** @return Forms\Components\Component[] */
     protected function getFormSchema(): array
     {
         return [
@@ -42,7 +45,7 @@ class Form extends Component implements HasForms
         ];
     }
 
-    public function submit()
+    public function submit(): never
     {
         dd($this->form->getState());
     }
@@ -52,7 +55,7 @@ class Form extends Component implements HasForms
         return 'data';
     }
 
-    public function render()
+    public function render(): View
     {
         return view('livewire.form');
     }

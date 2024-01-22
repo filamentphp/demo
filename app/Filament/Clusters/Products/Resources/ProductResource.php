@@ -308,6 +308,7 @@ class ProductResource extends Resource
         ];
     }
 
+    /** @return Builder<Product> */
     public static function getGlobalSearchEloquentQuery(): Builder
     {
         return parent::getGlobalSearchEloquentQuery()->with(['brand']);

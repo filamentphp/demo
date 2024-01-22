@@ -27,11 +27,13 @@ class Brand extends Model implements HasMedia
         'is_visible' => 'boolean',
     ];
 
+    /** @return MorphToMany<Address> */
     public function addresses(): MorphToMany
     {
         return $this->morphToMany(Address::class, 'addressable', 'addressables');
     }
 
+    /** @return HasMany<Product> */
     public function products(): HasMany
     {
         return $this->hasMany(Product::class, 'shop_brand_id');

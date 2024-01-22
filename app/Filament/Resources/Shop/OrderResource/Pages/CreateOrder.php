@@ -49,6 +49,7 @@ class CreateOrder extends CreateRecord
             ->sendToDatabase(auth()->user());
     }
 
+    /** @return Step[] */
     protected function getSteps(): array
     {
         return [
