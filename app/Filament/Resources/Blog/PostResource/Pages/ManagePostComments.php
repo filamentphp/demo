@@ -23,7 +23,11 @@ class ManagePostComments extends ManageRelatedRecords
 
     public function getTitle(): string | Htmlable
     {
-        return "Manage {$this->getRecordTitle()} Comments";
+        $recordTitle = $this->getRecordTitle();
+
+        $recordTitle = $recordTitle instanceof Htmlable ? $recordTitle->toHtml() : $recordTitle;
+
+        return "Manage {$recordTitle} Comments";
     }
 
     public function getBreadcrumb(): string

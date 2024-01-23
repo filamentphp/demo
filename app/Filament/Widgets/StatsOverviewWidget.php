@@ -33,13 +33,13 @@ class StatsOverviewWidget extends BaseWidget
 
         $diffInDays = $startDate ? $startDate->diffInDays($endDate) : 0;
 
-        $revenue = ($startDate ? ($diffInDays * 137) : 192100) * $businessCustomerMultiplier;
-        $newCustomers = ($startDate ? ($diffInDays * 7) : 1340) * $businessCustomerMultiplier;
-        $newOrders = ($startDate ? ($diffInDays * 13) : 3543) * $businessCustomerMultiplier;
+        $revenue = (int) (($startDate ? ($diffInDays * 137) : 192100) * $businessCustomerMultiplier);
+        $newCustomers = (int) (($startDate ? ($diffInDays * 7) : 1340) * $businessCustomerMultiplier);
+        $newOrders = (int) (($startDate ? ($diffInDays * 13) : 3543) * $businessCustomerMultiplier);
 
         $formatNumber = function (int $number): string {
             if ($number < 1000) {
-                return Number::format($number, 0);
+                return (string) Number::format($number, 0);
             }
 
             if ($number < 1000000) {
