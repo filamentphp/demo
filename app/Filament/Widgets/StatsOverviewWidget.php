@@ -16,11 +16,12 @@ class StatsOverviewWidget extends BaseWidget
 
     protected function getStats(): array
     {
-        $startDate = filled($this->filters['startDate'] ?? null) ?
+
+        $startDate = ! is_null($this->filters['startDate'] ?? null) ?
             Carbon::parse($this->filters['startDate']) :
             null;
 
-        $endDate = filled($this->filters['endDate'] ?? null) ?
+        $endDate = ! is_null($this->filters['endDate'] ?? null) ?
             Carbon::parse($this->filters['endDate']) :
             now();
 

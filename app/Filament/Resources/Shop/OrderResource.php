@@ -222,7 +222,10 @@ class OrderResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::$model::where('status', 'new')->count();
+        /** @var class-string<Model> $modelClass */
+        $modelClass = static::$model;
+
+        return (string) $modelClass::where('status', 'new')->count();
     }
 
     /** @return Forms\Components\Component[] */

@@ -34,7 +34,7 @@ class AddressForm extends Forms\Components\Field
             $relationship->updateOrCreate($state);
         }
 
-        $record->touch();
+        $record?->touch();
     }
 
     public function getChildComponents(): array
