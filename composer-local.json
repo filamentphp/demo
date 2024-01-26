@@ -61,6 +61,14 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
+        ],
+        "cs": [
+            "pint"
+        ],
+        "pint": "pint",
+        "test:phpstan": "phpstan analyse",
+        "test": [
+            "@test:phpstan"
         ]
     },
     "extra": {
