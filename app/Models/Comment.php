@@ -20,11 +20,13 @@ class Comment extends Model
         'is_visible' => 'boolean',
     ];
 
+    /** @return BelongsTo<Customer,self> */
     public function customer(): BelongsTo
     {
         return $this->belongsTo(Customer::class);
     }
 
+    /** @return MorphTo<Model,self> */
     public function commentable(): MorphTo
     {
         return $this->morphTo();

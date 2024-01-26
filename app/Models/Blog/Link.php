@@ -11,6 +11,7 @@ class Link extends Model
     use HasFactory;
     use HasTranslations;
 
+    /** @var string[] */
     public $translatable = [
         'title',
         'description',

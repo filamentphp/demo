@@ -194,6 +194,7 @@ class OrderResource extends Resource
         ];
     }
 
+    /** @return Builder<Order> */
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()->withoutGlobalScope(SoftDeletingScope::class);
@@ -213,6 +214,7 @@ class OrderResource extends Resource
         ];
     }
 
+    /** @return Builder<Order> */
     public static function getGlobalSearchEloquentQuery(): Builder
     {
         return parent::getGlobalSearchEloquentQuery()->with(['customer', 'items']);
@@ -220,9 +222,13 @@ class OrderResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::$model::where('status', 'new')->count();
+        /** @var class-string<Model> $modelClass */
+        $modelClass = static::$model;
+
+        return (string) $modelClass::where('status', 'new')->count();
     }
 
+    /** @return Forms\Components\Component[] */
     public static function getDetailsFormSchema(): array
     {
         return [
@@ -265,7 +271,7 @@ class OrderResource extends Resource
                 ->createOptionAction(function (Action $action) {
                     return $action
                         ->modalHeading('Create customer')
-                        ->modalButton('Create customer')
+                        ->modalSubmitActionLabel('Create customer')
                         ->modalWidth('lg');
                 }),
 
@@ -277,7 +283,7 @@ class OrderResource extends Resource
             Forms\Components\Select::make('currency')
                 ->searchable()
                 ->getSearchResultsUsing(fn (string $query) => Currency::where('name', 'like', "%{$query}%")->pluck('name', 'id'))
-                ->getOptionLabelUsing(fn ($value): ?string => Currency::find($value)?->getAttribute('name'))
+                ->getOptionLabelUsing(fn ($value): ?string => Currency::firstWhere('id', $value)?->getAttribute('name'))
                 ->required(),
 
             AddressForm::make('address')

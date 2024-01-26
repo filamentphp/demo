@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Blog\PostResource\Pages;
 
 use App\Filament\Resources\Blog\PostResource;
+use App\Models\Blog\Post;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Contracts\Support\Htmlable;
@@ -13,7 +14,10 @@ class EditPost extends EditRecord
 
     public function getTitle(): string | Htmlable
     {
-        return $this->record->title;
+        /** @var Post */
+        $record = $this->getRecord();
+
+        return $record->title;
     }
 
     protected function getActions(): array

@@ -27,16 +27,19 @@ class Category extends Model implements HasMedia
         'is_visible' => 'boolean',
     ];
 
+    /** @return HasMany<Category> */
     public function children(): HasMany
     {
         return $this->hasMany(Category::class, 'parent_id');
     }
 
+    /** @return BelongsTo<Category,self> */
     public function parent(): BelongsTo
     {
         return $this->belongsTo(Category::class, 'parent_id');
     }
 
+    /** @return BelongsToMany<Product> */
     public function products(): BelongsToMany
     {
         return $this->belongsToMany(Product::class, 'shop_category_product', 'shop_category_id', 'shop_product_id');

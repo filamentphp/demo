@@ -10,6 +10,7 @@ class AddressForm extends Forms\Components\Field
 {
     protected string $view = 'filament-forms::components.group';
 
+    /** @var string|callable|null */
     public $relationship = null;
 
     public function relationship(string | callable $relationship): static
@@ -33,7 +34,7 @@ class AddressForm extends Forms\Components\Field
             $relationship->updateOrCreate($state);
         }
 
-        $record->touch();
+        $record?->touch();
     }
 
     public function getChildComponents(): array
@@ -44,7 +45,7 @@ class AddressForm extends Forms\Components\Field
                     Forms\Components\Select::make('country')
                         ->searchable()
                         ->getSearchResultsUsing(fn (string $query) => Country::where('name', 'like', "%{$query}%")->pluck('name', 'id'))
-                        ->getOptionLabelUsing(fn ($value): ?string => Country::find($value)?->getAttribute('name')),
+                        ->getOptionLabelUsing(fn ($value): ?string => Country::firstWhere('id', $value)?->getAttribute('name')),
                 ]),
             Forms\Components\TextInput::make('street')
                 ->label('Street address')

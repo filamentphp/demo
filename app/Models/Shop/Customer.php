@@ -28,16 +28,19 @@ class Customer extends Model
         'birthday' => 'date',
     ];
 
+    /** @return MorphToMany<Address> */
     public function addresses(): MorphToMany
     {
         return $this->morphToMany(Address::class, 'addressable');
     }
 
+    /** @return HasMany<Comment> */
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
     }
 
+    /** @return HasManyThrough<Payment> */
     public function payments(): HasManyThrough
     {
         return $this->hasManyThrough(Payment::class, Order::class, 'shop_customer_id');

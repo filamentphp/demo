@@ -107,7 +107,8 @@ class PostResource extends Resource
                     ->sortable()
                     ->toggleable(),
 
-                Tables\Columns\BadgeColumn::make('status')
+                Tables\Columns\TextColumn::make('status')
+                    ->badge()
                     ->getStateUsing(fn (Post $record): string => $record->published_at?->isPast() ? 'Published' : 'Draft')
                     ->colors([
                         'success' => 'Published',
@@ -241,6 +242,7 @@ class PostResource extends Resource
         ];
     }
 
+    /** @return Builder<Post> */
     public static function getGlobalSearchEloquentQuery(): Builder
     {
         return parent::getGlobalSearchEloquentQuery()->with(['author', 'category']);
