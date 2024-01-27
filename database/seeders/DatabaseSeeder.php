@@ -47,6 +47,7 @@ class DatabaseSeeder extends Seeder
         $brands = $this->withProgressBar(20, fn () => Brand::factory()->count(20)
             ->has(Address::factory()->count(rand(1, 3)))
             ->create());
+        Brand::query()->update(['sort' => new Expression('id')]);
         $this->command->info('Shop brands created.');
 
         $this->command->warn(PHP_EOL . 'Creating shop categories...');
