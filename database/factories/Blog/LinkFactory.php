@@ -3,6 +3,7 @@
 namespace Database\Factories\Blog;
 
 use Database\Factories\Concerns\CanCreateImages;
+use Database\Seeders\LocalImages;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -33,7 +34,7 @@ class LinkFactory extends Factory
                 'nl' => $this->faker->sentence(),
             ],
             'color' => $this->faker->hexColor(),
-            'image' => $this->createImage('https://source.unsplash.com/random/1280x720/?img=1'),
+            'image' => $this->createImage(LocalImages::SIZE_1280x720),
         ];
     }
 }

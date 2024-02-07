@@ -2,19 +2,17 @@
 
 namespace Database\Factories\Concerns;
 
-use Database\Seeders\DatabaseSeeder;
+use Database\Seeders\LocalImages;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 trait CanCreateImages
 {
-    public function createImage(?string $url = null): ?string
+    public function createImage(?string $size = LocalImages::SIZE_200x200): ?string
     {
-        try {
-            $image = file_get_contents($url ?? DatabaseSeeder::IMAGE_URL);
-        } catch (Throwable $exception) {
-            return null;
-        }
+        $randomImage = LocalImages::getRandomFile($size);
+
+        $image = file_get_contents($randomImage->getPathname());
 
         $filename = Str::uuid() . '.jpg';
 

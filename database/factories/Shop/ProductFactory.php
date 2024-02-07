@@ -4,6 +4,7 @@ namespace Database\Factories\Shop;
 
 use App\Models\Shop\Product;
 use Database\Seeders\DatabaseSeeder;
+use Database\Seeders\LocalImages;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\UnreachableUrl;
@@ -42,7 +43,8 @@ class ProductFactory extends Factory
         return $this->afterCreating(function (Product $product) {
             try {
                 $product
-                    ->addMediaFromUrl(DatabaseSeeder::IMAGE_URL)
+                    ->addMedia(LocalImages::getRandomFile())
+                    ->preservingOriginal()
                     ->toMediaCollection('product-images');
             } catch (UnreachableUrl $exception) {
                 return;
