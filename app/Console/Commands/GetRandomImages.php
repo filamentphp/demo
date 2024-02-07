@@ -33,12 +33,16 @@ class GetRandomImages extends Command
         // This needs some deeper research to get the best results
 
         $schemas = [
-            ['amount' => 5, 'size' => LocalImages::SIZE_200x200, 'terms' => ['']],
-            ['amount' => 5, 'size' => LocalImages::SIZE_1280x720, 'terms' => ['']],
+            ['amount' => 40, 'size' => LocalImages::SIZE_200x200, 'terms' => ['']],
+            ['amount' => 40, 'size' => LocalImages::SIZE_1280x720, 'terms' => ['']],
         ];
 
         foreach ($schemas as $schema) {
             $this->getRandomImages($schema);
+        }
+
+        foreach ($schemas as $schema) {
+            $this->removeDuplicates($schema);
         }
     }
 
@@ -62,7 +66,7 @@ class GetRandomImages extends Command
             $filename = Str::uuid() . '.jpg';
 
             File::put(database_path(
-                path: "seeders/local_images/{$size}/{$filename}.jpg"),
+                path: "seeders/local_images/{$size}/{$filename}"),
                 contents: $image
             );
 
@@ -73,5 +77,23 @@ class GetRandomImages extends Command
 
         $this->newLine();
         $this->info('Done!');
+    }
+
+    protected function removeDuplicates($schema)
+    {
+        ['size' => $size] = $schema;
+
+        $allFiles = fn() => collect(File::files(database_path('seeders/local_images/' . $size)));
+
+        $uniqueImageSet = $allFiles()
+            ->mapWithKeys(fn ($file) => [md5_file($file->getPathname()) => $file->getPathname()])
+            ->values();
+
+        $allFiles()
+            ->map(fn ($file) => $file->getPathname())
+            ->diff($uniqueImageSet)
+            ->each(fn ($file) => File::delete($file));
+
+        $this->info("Kept " . $uniqueImageSet->count() . " unique files from size $size");
     }
 }
