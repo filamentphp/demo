@@ -3,7 +3,6 @@
 namespace Database\Factories\Shop;
 
 use App\Models\Shop\Product;
-use Database\Seeders\DatabaseSeeder;
 use Database\Seeders\LocalImages;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;

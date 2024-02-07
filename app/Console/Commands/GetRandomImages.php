@@ -58,15 +58,16 @@ class GetRandomImages extends Command
         $progressBar->start();
 
         foreach (range(1, $amount) as $i) {
-
             $url = "https://source.unsplash.com/{$size}/?img=1," . implode(',', $terms);
             $image = file_get_contents($url);
 
             File::ensureDirectoryExists(database_path('seeders/local_images/' . $size));
             $filename = Str::uuid() . '.jpg';
 
-            File::put(database_path(
-                path: "seeders/local_images/{$size}/{$filename}"),
+            File::put(
+                database_path(
+                    path: "seeders/local_images/{$size}/{$filename}"
+                ),
                 contents: $image
             );
 
@@ -83,7 +84,7 @@ class GetRandomImages extends Command
     {
         ['size' => $size] = $schema;
 
-        $allFiles = fn() => collect(File::files(database_path('seeders/local_images/' . $size)));
+        $allFiles = fn () => collect(File::files(database_path('seeders/local_images/' . $size)));
 
         $uniqueImageSet = $allFiles()
             ->mapWithKeys(fn ($file) => [md5_file($file->getPathname()) => $file->getPathname()])
@@ -94,6 +95,6 @@ class GetRandomImages extends Command
             ->diff($uniqueImageSet)
             ->each(fn ($file) => File::delete($file));
 
-        $this->info("Kept " . $uniqueImageSet->count() . " unique files from size $size");
+        $this->info('Kept ' . $uniqueImageSet->count() . " unique files from size $size");
     }
 }
