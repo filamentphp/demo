@@ -29,8 +29,6 @@ use Symfony\Component\Console\Helper\ProgressBar;
 
 class DatabaseSeeder extends Seeder
 {
-    const IMAGE_URL = 'https://source.unsplash.com/random/200x200/?img=1';
-
     public function run(): void
     {
         DB::raw('SET time_zone=\'+00:00\'');
