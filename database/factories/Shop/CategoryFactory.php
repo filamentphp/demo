@@ -6,6 +6,9 @@ use App\Models\Shop\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Shop\Category>
+ */
 class CategoryFactory extends Factory
 {
     /**

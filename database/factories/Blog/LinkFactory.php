@@ -2,7 +2,7 @@
 
 namespace Database\Factories\Blog;
 
-use Database\Factories\Concerns\CanCreateImages;
+use App\Models\Blog\Link;
 use Database\Seeders\LocalImages;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -12,8 +12,6 @@ use Illuminate\Support\Str;
  */
 class LinkFactory extends Factory
 {
-    use CanCreateImages;
-
     /**
      * Define the model's default state.
      *
@@ -34,7 +32,16 @@ class LinkFactory extends Factory
                 'nl' => $this->faker->sentence(),
             ],
             'color' => $this->faker->hexColor(),
-            'image' => $this->createImage(LocalImages::SIZE_1280x720),
         ];
+    }
+
+    public function configure(): LinkFactory
+    {
+        return $this->afterCreating(function (Link $product) {
+            $product
+                ->addMedia(LocalImages::getRandomFile(LocalImages::SIZE_1280x720))
+                ->preservingOriginal()
+                ->toMediaCollection('link-images');
+        });
     }
 }

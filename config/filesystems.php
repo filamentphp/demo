@@ -42,6 +42,27 @@ return [
             'visibility' => 'public',
         ],
 
+        'product-images' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/product-images'),
+            'url' => env('APP_URL') . '/storage/product-images',
+            'visibility' => 'public',
+        ],
+
+        'link-images' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/link-images'),
+            'url' => env('APP_URL') . '/storage/link-images',
+            'visibility' => 'public',
+        ],
+
+        'post-images' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/post-images'),
+            'url' => env('APP_URL') . '/storage/post-images',
+            'visibility' => 'public',
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

@@ -178,7 +178,8 @@ class ProductResource extends Resource
             ->columns([
                 Tables\Columns\SpatieMediaLibraryImageColumn::make('product-image')
                     ->label('Image')
-                    ->collection('product-images'),
+                    ->collection('product-images')
+                    ->conversion('thumb'),
 
                 Tables\Columns\TextColumn::make('name')
                     ->label('Name')

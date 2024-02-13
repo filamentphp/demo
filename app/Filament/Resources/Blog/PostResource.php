@@ -78,8 +78,8 @@ class PostResource extends Resource
 
                 Forms\Components\Section::make('Image')
                     ->schema([
-                        Forms\Components\FileUpload::make('image')
-                            ->image()
+                        Forms\Components\SpatieMediaLibraryFileUpload::make('image')
+                            ->collection('post-images')
                             ->hiddenLabel(),
                     ])
                     ->collapsible(),
@@ -90,8 +90,10 @@ class PostResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('image')
-                    ->label('Image'),
+                Tables\Columns\SpatieMediaLibraryImageColumn::make('image')
+                    ->label('Image')
+                    ->collection('post-images')
+                    ->conversion('thumb'),
 
                 Tables\Columns\TextColumn::make('title')
                     ->searchable()
@@ -201,9 +203,10 @@ class PostResource extends Resource
                                         Components\SpatieTagsEntry::make('tags'),
                                     ]),
                                 ]),
-                            Components\ImageEntry::make('image')
+                            Components\SpatieMediaLibraryImageEntry::make('image')
+                                ->collection('post-images')
                                 ->hiddenLabel()
-                                ->grow(false),
+                                ->grow(false)
                         ])->from('lg'),
                     ]),
                 Components\Section::make('Content')

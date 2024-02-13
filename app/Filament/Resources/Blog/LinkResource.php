@@ -8,6 +8,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\ColorEntry;
 use Filament\Infolists\Components\ImageEntry;
+use Filament\Infolists\Components\SpatieMediaLibraryImageEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Notifications\Notification;
@@ -49,8 +50,8 @@ class LinkResource extends Resource
                     ->required()
                     ->maxLength(255)
                     ->columnSpanFull(),
-                Forms\Components\FileUpload::make('image')
-                    ->image(),
+                Forms\Components\SpatieMediaLibraryFileUpload::make('image')
+                    ->collection('link-images')
             ]);
     }
 
@@ -66,7 +67,9 @@ class LinkResource extends Resource
                     ->label('URL')
                     ->columnSpanFull()
                     ->url(fn (Link $record): string => '#' . urlencode($record->url)),
-                ImageEntry::make('image'),
+                SpatieMediaLibraryImageEntry::make('image')
+                    ->collection('link-images')
+                    ->conversion('thumb'),
             ]);
     }
 
@@ -75,7 +78,10 @@ class LinkResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\Layout\Stack::make([
-                    Tables\Columns\ImageColumn::make('image')
+                    Tables\Columns\SpatieMediaLibraryImageColumn::make('image')
+                        ->label('Image')
+                        ->collection('link-images')
+                        ->conversion('thumb')
                         ->height('100%')
                         ->width('100%'),
                     Tables\Columns\Layout\Stack::make([
