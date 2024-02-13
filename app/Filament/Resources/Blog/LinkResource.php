@@ -51,7 +51,7 @@ class LinkResource extends Resource
                     ->columnSpanFull(),
                 Forms\Components\SpatieMediaLibraryFileUpload::make('image')
                     ->collection('link-images')
-                    ->acceptedFileTypes(['image/jpeg'])
+                    ->acceptedFileTypes(['image/jpeg']),
             ]);
     }
 

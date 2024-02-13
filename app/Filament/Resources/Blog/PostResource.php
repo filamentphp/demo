@@ -81,7 +81,7 @@ class PostResource extends Resource
                         Forms\Components\SpatieMediaLibraryFileUpload::make('image')
                             ->collection('post-images')
                             ->hiddenLabel()
-                            ->acceptedFileTypes(['image/jpeg'])
+                            ->acceptedFileTypes(['image/jpeg']),
                     ])
                     ->collapsible(),
             ]);
@@ -207,7 +207,7 @@ class PostResource extends Resource
                             Components\SpatieMediaLibraryImageEntry::make('image')
                                 ->collection('post-images')
                                 ->hiddenLabel()
-                                ->grow(false)
+                                ->grow(false),
                         ])->from('lg'),
                     ]),
                 Components\Section::make('Content')

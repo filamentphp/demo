@@ -6,7 +6,6 @@ use App\Models\Shop\Product;
 use Database\Seeders\LocalImages;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\UnreachableUrl;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Shop\Product>

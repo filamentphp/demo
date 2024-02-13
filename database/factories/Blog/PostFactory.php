@@ -6,7 +6,6 @@ use App\Models\Blog\Post;
 use Database\Seeders\LocalImages;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\UnreachableUrl;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Blog\Post>
