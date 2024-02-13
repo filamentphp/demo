@@ -80,7 +80,8 @@ class PostResource extends Resource
                     ->schema([
                         Forms\Components\SpatieMediaLibraryFileUpload::make('image')
                             ->collection('post-images')
-                            ->hiddenLabel(),
+                            ->hiddenLabel()
+                            ->acceptedFileTypes(['image/jpeg'])
                     ])
                     ->collapsible(),
             ]);
