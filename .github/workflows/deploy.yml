@@ -11,7 +11,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout code
-              uses: actions/checkout@dev
+              uses: actions/checkout@main
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
@@ -21,7 +21,7 @@ jobs:
             - name: Run Pint
               run: ./vendor/bin/pint
             - name: Commit changes
-              uses: stefanzweifel/git-auto-commit-action@v4
+              uses: stefanzweifel/git-auto-commit-action@main
               with:
                   commit_message: Fix styling
     deploy:
@@ -30,7 +30,7 @@ jobs:
       needs: pint
       steps:
         - name: Checkout Repository
-          uses: actions/checkout@dev
+          uses: actions/checkout@main
         - name: ssh into Dev Server
           uses: appleboy/ssh-action@master
           with:
