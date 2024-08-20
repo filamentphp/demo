@@ -3,7 +3,7 @@ name: Check & fix styling & Deployment
 on: 
   push:
     branches:
-      - dev
+      - main
 
 jobs:
     pint:
