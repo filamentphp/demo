@@ -49,6 +49,15 @@ class CustomerResource extends Resource
                         Forms\Components\TextInput::make('phone')
                             ->maxLength(255),
 
+                        Forms\Components\Select::make('gender')
+                        ->placeholder('Select gender')
+                        ->options([
+                            'male' => 'Male',
+                            'female' => 'Female',
+                        ])
+                        ->required()
+                        ->native(false),
+
                         Forms\Components\DatePicker::make('birthday')
                             ->maxDate('today'),
                     ])
