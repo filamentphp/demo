@@ -1,0 +1,97 @@
+.product-360-popup .mfp-content {
+    max-width:83rem
+}
+.product-gallery-degree {
+    margin: 0 auto;
+    cursor: ew-resize;
+    &:after {
+        content: '';
+        position: absolute;
+        left: 0;
+        width: 100%;
+        display: block;
+        height: 170%;
+        border-radius: 50%;
+        border: 1px solid #E6EFF1;
+        top: 205px;
+    }
+    .product-degree-images {
+        position: relative;
+        display: none;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        z-index: 1;
+        img {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: auto;
+            max-height: 500px;
+            max-width: 100%
+        }
+        img.previous-image {
+            visibility: hidden
+        }
+        img.current-image {
+            visibility: visible
+        }
+    }
+    .w-loading {
+        margin-top: 0 !important
+    }
+    .nav_bar {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 15px;
+        z-index: 11;
+        padding: 9px 28px;
+        border-radius: 3px;
+        background: rgba(255, 255, 255);
+        a {
+            margin: 0 .5rem;
+            font-size: 0;
+            text-align: center;
+            font-weight: 600;
+            color: var(--wolmart-dark-color, #333);
+            &:hover {
+                color:  #444;
+            }
+            &:before {
+                font-family: 'Font Awesome 5 Free';
+                font-size: 2rem;
+            }
+        }
+        & > :nth-child(2):before {
+            content: "\f04b";
+        }
+        .nav_bar_stop:before {
+            content: "\f04c";
+        }
+        .nav_bar_previous:before {
+            content: "\f048";
+        }
+        .nav_bar_next:before {
+            content: "\f051";
+        }
+    } 
+}
+@media (max-width: 869px) {
+    .product-gallery-degree{
+        width:calc(100vw - 40px) !important;max-height:100vw;
+    }
+}
+@media (max-height: 567px) {
+    .product-gallery-degree {
+        height:calc(100vh - 40px) !important;max-width:166vh;
+        &:after {
+            height: 100%;
+            top: 250px;
+        }
+    }
+}

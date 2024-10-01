@@ -1,0 +1,129 @@
+/**
+ * 360 Degree Gallery
+ *
+ * @package Alpha FrameWork
+ * @since 1.0
+ */
+
+.product-360-popup .mfp-content {
+    max-width: 83rem;
+}
+
+.product-gallery-degree {
+    position: absolute !important;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    cursor: ew-resize;
+    .product-degree-images {
+        display: none;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        background-color: #fff;
+        position: relative;
+        &:after {
+            content: '';
+            border-color: rgba(175, 175, 175, 0.05) rgba(175, 175, 175, 0.1) rgba(175, 175, 175, 0.15);
+            border-radius: 50%;
+            border-style: solid;
+            border-width: 2px 2px 4px;
+            bottom: 60px;
+            height: 50%;
+            left: 50px;
+            position: absolute;
+            right: 50px;
+            z-index: 10;
+            transition-delay: 0.5s;
+        }
+        img {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: auto;
+            max-height: 500px;
+            max-width: 100%;
+            &.previous-image {
+                visibility: hidden;
+            }
+            &.current-image {
+                visibility: visible;
+            }
+        }
+    }
+    .d-loading {
+        margin-top: 0 !important;
+    }
+    .nav_bar {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 15px;
+        z-index: 11;
+        padding: 0 1.5rem;
+        border-radius: 3rem;
+        background: rgba(255,255,255,.5);
+        a {
+            margin: 0 1rem;
+            font-size: 0;
+            text-align: center;
+            font-weight: 600;
+            color: #333;
+            
+            border: 1px solid #e1e1e1;
+            border-radius: 50%;
+
+            &:hover {
+                color: #444;
+            }
+
+            &:before {
+                display: block;
+                font-family: 'Font Awesome 5 Free';
+                font-size: 1.6rem;
+                
+                width: 2.5em;
+                height: 2.5em;
+                line-height: 2.5em;
+            }
+        }
+        > :nth-child(2):before {
+            content: "\f04b";
+            font-size: 2.4rem;
+        }
+        .nav_bar_stop:before {
+            content: "\f04c";
+        }
+        .nav_bar_previous:before {
+            content: "\f048";
+        }
+        .nav_bar_next:before {
+            content: "\f051";
+        }
+    }
+}
+
+@media (max-width: 767px) {
+    .product-gallery-degree .product-degree-images:after {
+        bottom: 20%;
+        height: 35%;
+        left: 5%;
+        right: 5%;
+    }
+}
+@media (max-width: 869px) {
+    .product-gallery-degree {
+        width: calc(100vw - 40px)!important;
+        max-height: 100vw;
+    }
+}
+@media (max-height: 539px) {
+    .product-gallery-degree {
+        height: calc(100vh - 40px)!important;
+        max-width: 166vh;
+    }
+}
