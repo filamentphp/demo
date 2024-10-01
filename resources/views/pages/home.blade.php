@@ -15,6 +15,8 @@
         <!-- Favicon -->
 {{--        <link rel="icon" type="image/png" href="images/icons/favicon.png">--}}
         <!-- Preload Font -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
         <link rel="preload" href="{{asset('fonts/front/riode.ttf')}}" as="font" type="font/woff2" crossorigin="anonymous">
         <link rel="preload" href="{{asset('vendor/template/fontawesome-free/webfonts/fa-solid-900.woff2')}}" as="font" type="font/woff2"
               crossorigin="anonymous">
