@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "althinect/filament-spatie-roles-permissions": "^2.2",
         "filament/filament": "^3.0",
         "filament/spatie-laravel-media-library-plugin": "^3.0",
         "filament/spatie-laravel-settings-plugin": "^3.0",
@@ -20,6 +21,7 @@
         "laravel/horizon": "^5.21",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.8",
+        "spatie/laravel-permission": "^6.9",
         "squirephp/countries-en": "^3.3",
         "squirephp/currencies-en": "^3.3"
     },
