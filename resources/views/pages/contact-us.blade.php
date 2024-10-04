@@ -77,7 +77,7 @@
                     <span class="divider"></span>
                     <div class="dropdown wishlist wishlist-dropdown off-canvas">
                         <a href="wishlist.html" class="wishlist-toggle">
-                            <i class="d-icon-heart"></i>
+                            <i class="fa-regular fa-heart"></i>
                         </a>
                         <div class="canvas-overlay"></div>
                         <!-- End Wishlist Toggle -->
@@ -158,7 +158,7 @@
                                 <span class="cart-name">Shopping Cart:</span>
                                 <span class="cart-price">$0.00</span>
                             </div>
-                            <i class="d-icon-bag"><span class="cart-count">2</span></i>
+                            <i class="fa-solid fa-bag-shopping"></i><span class="cart-count">2</span></i>
                         </a>
                         <div class="canvas-overlay"></div>
                         <!-- End Cart Toggle -->

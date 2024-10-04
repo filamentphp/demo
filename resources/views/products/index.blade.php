@@ -361,7 +361,7 @@
 
                     <div class="dropdown wishlist wishlist-dropdown off-canvas mr-4 d-lg-show">
                         <a href="wishlist.html" class="wishlist-toggle">
-                            <i class="d-icon-heart"></i>
+                            <i class="fa-regular fa-heart"></i>
                         </a>
                         <div class="canvas-overlay"></div>
                         <!-- End Wishlist Toggle -->
@@ -438,7 +438,7 @@
 
                     <div class="dropdown cart-dropdown type2 mr-0 mr-lg-2">
                         <a href="#" class="cart-toggle link">
-                            <i class="d-icon-bag"><span class="cart-count">2</span></i>
+                            <i class="fa-solid fa-bag-shopping"></i><span class="cart-count">2</span></i>
                         </a>
                         <div class="dropdown-box">
                             <div class="products scrollable">
@@ -865,7 +865,7 @@
                                                        max="1000000">
                                                 <button class="quantity-plus d-icon-plus"></button>
                                             </div>
-                                            <button class="btn-product btn-cart"><i class="d-icon-bag"></i>Add
+                                            <button class="btn-product btn-cart"><i class="fa-solid fa-bag-shopping"></i></i>Add
                                                 To Cart</button>
                                         </div>
                                     </div>
@@ -1473,7 +1473,7 @@
                                                data-target="#addCartModal" title="Add to cart"><i
                                                     class="d-icon-bag"></i></a>
                                             <a href="#" class="btn-product-icon btn-wishlist"
-                                               title="Add to wishlist"><i class="d-icon-heart"></i></a>
+                                               title="Add to wishlist"><i class="fa-regular fa-heart"></i></a>
                                         </div>
                                         <div class="product-action">
                                             <a href="#" class="btn-product btn-quickview" title="Quick View">Quick
@@ -1507,7 +1507,7 @@
                                                data-target="#addCartModal" title="Add to cart"><i
                                                     class="d-icon-bag"></i></a>
                                             <a href="#" class="btn-product-icon btn-wishlist"
-                                               title="Add to wishlist"><i class="d-icon-heart"></i></a>
+                                               title="Add to wishlist"><i class="fa-regular fa-heart"></i></a>
                                         </div>
                                         <div class="product-action">
                                             <a href="#" class="btn-product btn-quickview" title="Quick View">Quick
@@ -1541,7 +1541,7 @@
                                                data-target="#addCartModal" title="Add to cart"><i
                                                     class="d-icon-bag"></i></a>
                                             <a href="#" class="btn-product-icon btn-wishlist"
-                                               title="Add to wishlist"><i class="d-icon-heart"></i></a>
+                                               title="Add to wishlist"><i class="fa-regular fa-heart"></i></a>
                                         </div>
                                         <div class="product-action">
                                             <a href="#" class="btn-product btn-quickview" title="Quick View">Quick
@@ -1575,7 +1575,7 @@
                                                data-target="#addCartModal" title="Add to cart"><i
                                                     class="d-icon-bag"></i></a>
                                             <a href="#" class="btn-product-icon btn-wishlist"
-                                               title="Add to wishlist"><i class="d-icon-heart"></i></a>
+                                               title="Add to wishlist"><i class="fa-regular fa-heart"></i></a>
                                         </div>
                                         <div class="product-action">
                                             <a href="#" class="btn-product btn-quickview" title="Quick View">Quick
@@ -1612,7 +1612,7 @@
                                                data-target="#addCartModal" title="Add to cart"><i
                                                     class="d-icon-bag"></i></a>
                                             <a href="#" class="btn-product-icon btn-wishlist"
-                                               title="Add to wishlist"><i class="d-icon-heart"></i></a>
+                                               title="Add to wishlist"><i class="fa-regular fa-heart"></i></a>
                                         </div>
                                         <div class="product-action">
                                             <a href="#" class="btn-product btn-quickview" title="Quick View">Quick
@@ -1646,7 +1646,7 @@
                                                data-target="#addCartModal" title="Add to cart"><i
                                                     class="d-icon-bag"></i></a>
                                             <a href="#" class="btn-product-icon btn-wishlist"
-                                               title="Add to wishlist"><i class="d-icon-heart"></i></a>
+                                               title="Add to wishlist"><i class="fa-regular fa-heart"></i></a>
                                         </div>
                                         <div class="product-action">
                                             <a href="#" class="btn-product btn-quickview" title="Quick View">Quick
@@ -1784,7 +1784,7 @@
         <span>Categories</span>
     </a>
     <a href="wishlist.html" class="sticky-link">
-        <i class="d-icon-heart"></i>
+        <i class="fa-regular fa-heart"></i>
         <span>Wishlist</span>
     </a>
     <a href="account.html" class="sticky-link">

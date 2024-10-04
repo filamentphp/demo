@@ -11,14 +11,15 @@
                 <div class="col-lg-9">
                     <div class="widget widget-newsletter form-wrapper form-wrapper-inline">
                         <div class="newsletter-info mx-auto mr-lg-2 ml-lg-4">
-                            <h4 class="widget-title">Subscribe to our Newsletter</h4>
-                            <p>Get all the latest information, Sales and Offers.</p>
+                            <h4 class="widget-title">S'abonner à notre lettre d'information</h4>
+                            <p>Obtenez toutes les dernières informations, ventes et offres.</p>
                         </div>
                         <form action="#" class="input-wrapper input-wrapper-inline">
                             <input type="email" class="form-control" name="email" id="email"
                                    placeholder="Email address here..." required />
-                            <button class="btn btn-primary btn-rounded btn-md ml-2" type="submit">subscribe<i
-                                    class="d-icon-arrow-right"></i></button>
+                            <button class="btn btn-primary btn-rounded btn-md ml-2" type="submit">souscrire
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </button>
                         </form>
                     </div>
                     <!-- End Newsletter -->
@@ -33,8 +34,8 @@
                         <h4 class="widget-title">Contact Info</h4>
                         <ul class="widget-body">
                             <li>
-                                <label>Phone:</label>
-                                <a href="tel:#">Toll Free (123) 456-7890</a>
+                                <label>Téléphone:</label>
+                                <a href="tel:#">+212 662-750030</a>
                             </li>
                             <li>
                                 <label>Email:</label>
@@ -42,13 +43,13 @@
                             </li>
                             <li>
                                 <label>Address:</label>
-                                <a href="#">123 Street Name, City, England</a>
+                                <a href="#">N 15 rue Ennakhil cité dakhla Agadir</a>
                             </li>
                             <li>
-                                <label>WORKING DAYS / HOURS:</label>
+                                <label>JOURS / HEURES DE TRAVAIL :</label>
                             </li>
                             <li>
-                                <a href="#">Mon - Sun / 9:00 AM - 8:00 PM</a>
+                                <a href="#">Lun - dim / 9h00 - 20h00</a>
                             </li>
                         </ul>
                     </div>
@@ -56,22 +57,22 @@
                 </div>
                 <div class="col-lg-4 col-md-6">
                     <div class="widget ml-lg-4">
-                        <h4 class="widget-title">My Account</h4>
+                        <h4 class="widget-title">Mon compte</h4>
                         <ul class="widget-body">
                             <li>
-                                <a href="about-us.html">About Us</a>
+                                <a href="about-us.html">À propos de nous</a>
                             </li>
                             <li>
-                                <a href="#">Order History</a>
+                                <a href="#">Historique des commandes</a>
                             </li>
                             <li>
-                                <a href="#">Returns</a>
+                                <a href="#">Retours</a>
                             </li>
                             <li>
                                 <a href="#">Custom Service</a>
                             </li>
                             <li>
-                                <a href="#">Terms &amp; Condition</a>
+                                <a href="#">Conditions générales</a>
                             </li>
                         </ul>
                     </div>
@@ -79,22 +80,16 @@
                 </div>
                 <div class="col-lg-4 col-md-6">
                     <div class="widget ml-lg-4">
-                        <h4 class="widget-title">Contact Info</h4>
+                        <h4 class="widget-title">Contact</h4>
                         <ul class="widget-body">
                             <li>
-                                <a href="#">Sign in</a>
+                                <a href="#">Login</a>
                             </li>
                             <li>
-                                <a href="cart.html">View Cart</a>
+                                <a href="cart.html">Voir le panier</a>
                             </li>
                             <li>
-                                <a href="wishlist.html">My Wishlist</a>
-                            </li>
-                            <li>
-                                <a href="#">Track My Order</a>
-                            </li>
-                            <li>
-                                <a href="#">Help</a>
+                                <a href="wishlist.html">Ma liste de souhaits</a>
                             </li>
                         </ul>
                     </div>
@@ -110,7 +105,7 @@
                 </figure>
             </div>
             <div class="footer-center">
-                <p class="copyright">Muster & Dikson &copy; 2024. All Rights Reserved</p>
+                <p class="copyright">Muster & Dikson &copy; 2024. Tous droits réservés</p>
             </div>
             <div class="footer-right">
                 <div class="social-links">

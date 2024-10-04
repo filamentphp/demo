@@ -1,230 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('.__base')
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+@section('content')
 
-
-        <title>Muster & Dikson</title>
-
-        <meta name="keywords" content="HTML5 Template" />
-        <meta name="description" content="Muster & Dikson">
-        <meta name="author" content="D-THEMES">
-
-        <!-- Favicon -->
-{{--        <link rel="icon" type="image/png" href="images/icons/favicon.png">--}}
-        <!-- Preload Font -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
-        <link rel="preload" href="{{asset('fonts/front/riode.ttf')}}" as="font" type="font/woff2" crossorigin="anonymous">
-        <link rel="preload" href="{{asset('vendor/template/fontawesome-free/webfonts/fa-solid-900.woff2')}}" as="font" type="font/woff2"
-              crossorigin="anonymous">
-        <link rel="preload" href="{{asset('vendor/template/fontawesome-free/webfonts/fa-brands-400.woff2')}}" as="font" type="font/woff2"
-              crossorigin="anonymous">
-
-        <link rel="stylesheet" type="text/css" href="{{asset('vendor/template/fontawesome-free/css/all.min.css')}}">
-        <link rel="stylesheet" type="text/css" href="{{asset('vendor/template/animate/animate.min.css')}}">
-
-        <!-- Plugins CSS File -->
-        <link rel="stylesheet" type="text/css" href="{{asset('vendor/template/magnific-popup/magnific-popup.min.css')}}">
-        <link rel="stylesheet" type="text/css" href="{{asset('vendor/template/owl-carousel/owl.carousel.min.css')}}">
-
-        <link rel="stylesheet" type="text/css" href="{{asset('vendor/template/sticky-icon/stickyicon.css')}}">
-
-
-        <!-- Main CSS File -->
-        <link rel="stylesheet" type="text/css" href="{{asset('css/template/css/demo19.css')}}">
-    </head>
-
+    @section('content')
     <body class="home">
 
         <div class="page-wrapper">
-            <header class="header">
-                <div class="header-middle sticky-header fix-top sticky-content">
-                    <div class="container-fluid">
-                        <div class="header-left">
-                            <a href="#" class="mobile-menu-toggle">
-                                <i class="d-icon-bars2"></i>
-                            </a>
-                            <a href="index.html" class="logo">
-                                <img src="images/logo/logo-no-bg.png" alt="logo" width="153" height="44" />
-                            </a>
-                            <!-- End Logo -->
-                            <nav class="main-nav">
-                                <ul class="menu">
-                                    <li class="active">
-                                        <a href="index.html">Home</a>
-                                    </li>
-                                    <li class="">
-                                        <a href="index.html">Shop</a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-                        <div class="header-center">
-                        </div>
-                        <div class="header-right">
-                            <!-- End Divider -->
-                            <div class="header-search hs-toggle mr-4">
-                                <a href="#" class="search-toggle" title="search-toggle">
-                                    <i class="d-icon-search"></i>
-                                </a>
-                                <form action="#" class="input-wrapper">
-                                    <input type="text" class="form-control" name="search" autocomplete="off"
-                                           placeholder="Search your keyword..." required />
-                                    <button class="btn btn-search" type="submit" title="submit-button">
-                                        <i class="d-icon-search"></i>
-                                    </button>
-                                </form>
-                            </div>
-                            <!-- End Header Search -->
-                            <a href="ajax/login.html" class="login-link d-lg-show mr-4" title="login"><i
-                                class="d-icon-user"></i></a>
 
-                            <div class="dropdown wishlist wishlist-dropdown off-canvas mr-4 d-lg-show">
-                                <a href="wishlist.html" class="wishlist-toggle" title="wishlist">
-                                    <i class="d-icon-heart"></i>
-                                </a>
-                                <div class="canvas-overlay"></div>
-                                <!-- End Wishlist Toggle -->
-                                <div class="dropdown-box scrollable">
-                                    <div class="canvas-header">
-                                        <h4 class="canvas-title">wishlist</h4>
-                                        <a href="#" class="btn btn-dark btn-link btn-icon-right btn-close">close<i
-                                            class="d-icon-arrow-right"></i><span class="sr-only">wishlist</span></a>
-                                    </div>
-                                    <div class="products scrollable">
-                                        <div class="product product-wishlist">
-                                            <figure class="product-media">
-                                                <a href="product.html">
-                                                    <img src="images/wishlist/product-1.jpg" width="100" height="100"
-                                                         alt="product" />
-                                                </a>
-                                                <button class="btn btn-link btn-close">
-                                                    <i class="fas fa-times"></i><span class="sr-only">Close</span>
-                                                </button>
-                                            </figure>
-                                            <div class="product-detail">
-                                                <a href="product.html" class="product-name">Girl's Dark Bag</a>
-                                                <div class="price-box">
-                                                    <span class="product-price">$84.00</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- End of wishlist Product -->
-                                        <div class="product product-wishlist">
-                                            <figure class="product-media">
-                                                <a href="product.html">
-                                                    <img src="images/wishlist/product-2.jpg" width="100" height="100"
-                                                         alt="product" />
-                                                </a>
-                                                <button class="btn btn-link btn-close">
-                                                    <i class="fas fa-times"></i><span class="sr-only">Close</span>
-                                                </button>
-                                            </figure>
-                                            <div class="product-detail">
-                                                <a href="product.html" class="product-name">Women's Fashional Comforter
-                                                </a>
-                                                <div class="price-box">
-                                                    <span class="product-price">$84.00</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- End of wishlist Product -->
-                                        <div class="product product-wishlist">
-                                            <figure class="product-media">
-                                                <a href="product.html">
-                                                    <img src="images/wishlist/product-3.jpg" width="100" height="100"
-                                                         alt="product" />
-                                                </a>
-                                                <button class="btn btn-link btn-close">
-                                                    <i class="fas fa-times"></i><span class="sr-only">Close</span>
-                                                </button>
-                                            </figure>
-                                            <div class="product-detail">
-                                                <a href="product.html" class="product-name">Wide Knickerbockers</a>
-                                                <div class="price-box">
-                                                    <span class="product-price">$84.00</span>
-                                                </div>
-                                            </div>
-                                        </div>
 
-                                        <!-- End of wishlist Product -->
-                                    </div>
-                                    <a href="wishlist.html" class="btn btn-dark wishlist-btn mt-4"><span>Go To
-                                                Wishlist</span></a>
-                                    <!-- End of Products  -->
-                                </div>
-                                <!-- End Dropdown Box -->
-                            </div>
-
-                            <div class="dropdown cart-dropdown type2 mr-0 mr-lg-2">
-                                <a href="#" class="cart-toggle link">
-                                    <i class="d-icon-bag"><span class="cart-count">2</span></i>
-                                </a>
-                                <div class="dropdown-box">
-                                    <div class="products scrollable">
-                                        <div class="product product-cart">
-                                            <figure class="product-media">
-                                                <a href="product.html">
-                                                    <img src="images/product-img/p1.jpg" alt="product" width="80"
-                                                         height="88" />
-                                                </a>
-                                                <button class="btn btn-link btn-close">
-                                                    <i class="fas fa-times"></i><span class="sr-only">Close</span>
-                                                </button>
-                                            </figure>
-                                            <div class="product-detail">
-                                                <a href="product.html" class="product-name">Riode White Trends</a>
-                                                <div class="price-box">
-                                                    <span class="product-quantity">1</span>
-                                                    <span class="product-price">$21.00</span>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                        <!-- End of Cart Product -->
-                                        <div class="product product-cart">
-                                            <figure class="product-media">
-                                                <a href="product.html">
-                                                    <img src="images/product-img/p2.png" alt="product" width="80"
-                                                         height="88" />
-                                                </a>
-                                                <button class="btn btn-link btn-close">
-                                                    <i class="fas fa-times"></i><span class="sr-only">Close</span>
-                                                </button>
-                                            </figure>
-                                            <div class="product-detail">
-                                                <a href="product.html" class="product-name">Dark Blue Women’s
-                                                    Leomora Hat</a>
-                                                <div class="price-box">
-                                                    <span class="product-quantity">1</span>
-                                                    <span class="product-price">$118.00</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- End of Cart Product -->
-                                    </div>
-                                    <!-- End of Products  -->
-                                    <div class="cart-total">
-                                        <label>Subtotal:</label>
-                                        <span class="price">$139.00</span>
-                                    </div>
-                                    <!-- End of Cart Total -->
-                                    <div class="cart-action">
-                                        <a href="cart.html" class="btn btn-dark btn-link">View Cart</a>
-                                        <a href="checkout.html" class="btn btn-dark"><span>Go To Checkout</span></a>
-                                    </div>
-                                    <!-- End of Cart Action -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </header>
-            <!-- End Header -->
             <main class="main">
                 <div class="page-content">
                     <section class="intro-section">
@@ -346,96 +129,7 @@
                 </div>
 
             </main>
-            <footer class="footer appear-animate" data-animation-options="{ 'delay': '.2s' }">
-                <div class="footer-middle">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-xl-3 col-lg-4 col-sm-6">
-                                <div class="widget widget-about">
-                                    <a href="index.html" class="logo-footer mb-5">
-                                        <img src="images/demos/demo19/logo-footer.png" alt="logo-footer" width="154"
-                                             height="43" />
-                                    </a>
-                                    <div class="widget-body">
-                                        <p class="ls-s">Avec sa nouvelle branche au Maroc, l'entreprise <br />
-                                            met plus de 50 ans d'expertise au service des coiffeurs  <br />
-                                            et esthéticiennes, offrant des services. de qualité et une gamme de produits haut de gamme</p>
-                                        <a href="mailto:mail@riode.com">sales@muster-dikson.ma</a>
-                                    </div>
-                                </div>
-                                <!-- End of Widget -->
-                            </div>
-                            <div class="col-xl-2 col-lg-4 col-sm-6">
-                                <div class="widget">
-                                    <h4 class="widget-title">Compte</h4>
-                                    <ul class="widget-body">
-                                        <li><a href="#">Conditions Générales</a></li>
-                                        <li><a href="#">Politique de Confidentialité</a></li>
-                                        <li><a href="#">Privacy Policy</a></li>
-                                        <li><a href="#">Site Map</a></li>
-                                    </ul>
-                                </div>
-                                <!-- End of Widget -->
-                            </div>
-                            <div class="col-xl-2 col-lg-4 col-sm-6">
-                                <div class="widget">
-                                    <h4 class="widget-title">
-                                        Obtenir de l'aide</h4>
-                                    <ul class="widget-body">
-                                        <li><a href="#">Expédition & Livraison
-                                        </a></li>
-                                        <li><a href="#">Brand</a></li>
-                                        <li><a href="#">Options de Paiement</a></li>
-                                        <li><a href="contact-us.html">Nous Contacter</a></li>
-                                    </ul>
-                                </div>
-                                <!-- End of Widget -->
-                            </div>
-                            <div class="col-xl-2 col-lg-4 col-sm-6">
-                                <div class="widget">
-                                    <h4 class="widget-title">À propos de nous</h4>
-                                    <ul class="widget-body">
-                                        <li><a href="about-us.html">À propos de nous</a></li>
-                                    </ul>
-                                </div>
-                                <!-- End of Widget -->
-                            </div>
-                            <div class="col-xl-3 col-lg-8">
-                                <div class="widget mb-4">
-                                    <h4 class="widget-title">Subscribe to our newsletter</h4>
-                                    <div class="widget-body widget-newsletter mt-1">
-                                        <form action="#" class="input-wrapper input-wrapper-inline mb-5">
-                                            <input type="email" class="form-control" name="email" id="email"
-                                                   placeholder="Email address here..." required />
-                                            <button class="btn btn-primary font-weight-bold" type="submit">subscribe <i
-                                                class="d-icon-arrow-right"></i></button>
-                                        </form>
-                                    </div>
-                                </div>
-                                <div class="footer-info d-flex align-items-center justify-content-between">
-                                    <figure class="payment">
-                                        <img src="images/demos/demo4/payment.png" alt="payment" width="135" height="24" />
-                                    </figure>
-                                    <div class="social-links">
-                                        <a href="#" title="social-link"
-                                           class="social-link social-facebook fab fa-facebook-f"></a>
-                                        <a href="#" title="social-link"
-                                           class="social-link social-twitter fab fa-twitter"></a>
-                                        <a href="#" title="social-link"
-                                           class="social-link social-linkedin fab fa-linkedin-in"></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- End of FooterMiddle -->
-                <div class="footer-bottom d-block text-center">
-                    <p class="copyright">Riode eCommerce &copy; 2021. All Rights Reserved</p>
-                </div>
-                <!-- End of FooterBottom -->
-            </footer>
-            <!-- End Footer -->
+
         </div>
         <!-- Sticky Footer -->
         <div class="sticky-footer sticky-content fix-bottom">
@@ -448,7 +142,7 @@
                 <span>Categories</span>
             </a>
             <a href="wishlist.html" class="sticky-link">
-                <i class="d-icon-heart"></i>
+                <i class="fa-regular fa-heart"></i>
                 <span>Wishlist</span>
             </a>
             <a href="account.html" class="sticky-link">
@@ -457,20 +151,20 @@
             </a>
             <div class="header-search hs-toggle dir-up">
                 <a href="#" class="search-toggle sticky-link">
-                    <i class="d-icon-search"></i>
+                   <i class="fa-solid fa-magnifying-glass"></i>
                     <span>Search</span>
                 </a>
                 <form action="#" class="input-wrapper">
                     <input type="text" class="form-control" name="search" autocomplete="off"
                            placeholder="Search your keyword..." required />
                     <button class="btn btn-search" type="submit" title="submit-button">
-                        <i class="d-icon-search"></i>
+                       <i class="fa-solid fa-magnifying-glass"></i>
                     </button>
                 </form>
             </div>
         </div>
         <!-- Scroll Top -->
-        <a id="scroll-top" href="#top" title="Top" role="button" class="scroll-top"><i class="d-icon-arrow-up"></i></a>
+        <a id="scroll-top" href="#top" title="Top" role="button" class="scroll-top"><i class="fa-solid fa-arrow-up"></i></a>
 
         <!-- MobileMenu -->
         <div class="mobile-menu-wrapper">
@@ -484,7 +178,7 @@
                     <input type="text" class="form-control" name="search" autocomplete="off"
                            placeholder="Search your keyword..." required />
                     <button class="btn btn-search" type="submit" title="submit-button">
-                        <i class="d-icon-search"></i>
+                       <i class="fa-solid fa-magnifying-glass"></i>
                     </button>
                 </form>
                 <!-- End Search Form -->
@@ -791,17 +485,4 @@
         </div>
 
 
-        <!-- Plugins JS File -->
-        <script src="{{asset('vendor/template/jquery/jquery.min.js')}}"></script>
-        <script src="{{asset('vendor/template/parallax/parallax.min.js')}}"></script>
-        <script src="{{asset('vendor/template/elevatezoom/jquery.elevatezoom.min.js')}}"></script>
-        <script src="{{asset('vendor/template/magnific-popup/jquery.magnific-popup.min.js')}}"></script>
-
-        <script src="{{asset('vendor/template/owl-carousel/owl.carousel.min.js')}}"></script>
-        <script src="{{asset('vendor/template/imagesloaded/imagesloaded.pkgd.min.js')}}"></script>
-        <script src="{{asset('vendor/template/isotope/isotope.pkgd.min.js')}}"></script>
-        <!-- Main JS File -->
-        <script src="{{asset('js/front/main.min.js')}}"></script>
-    </body>
-
-</html>
+    @endsection
