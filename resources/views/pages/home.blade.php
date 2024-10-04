@@ -46,8 +46,73 @@
 
                             </div>
                         </div>
+                        <div class="intro-slider animation-slider owl-carousel owl-theme mb-2 owl-loaded owl-drag" data-owl-options="{
+                        'items': 1,
+                        'loop': true,
+                        'dots': false,
+                        'autoplay': true
+                        }">
+                            <div class="owl-stage-outer"><div class="owl-stage" style="transform: translate3d(-3072px, 0px, 0px); transition: all; width: 9216px;">
+                                    <div class="owl-item active" style="width: 1536px;"><div class="intro-slide1 banner banner-fixed" data-index="1">
+                                            <figure class="kenBurnsToRight duration">
+                                                <img src="{{asset('images/head/img2.jpg')}}" alt="intro-banner" width="1903" height="867" style="opacity:0.5;background-color: #2e2e31">
+                                                <div class="snowfall particle-effect"></div>
+                                            </figure>
+                                            <div class="banner-content y-50">
+                                                <h4 class="banner-subtitle d-flex align-items-center text-primary text-uppercase font-weight-bold slide-animate fadeInUpShorter show-content" data-animation-options="{'name': 'fadeInUpShorter', 'duration': '1.2s'}" style="animation-duration: 1.2s; animation-delay: 0.2s;">
+                                                    Révélez Votre Beauté Naturelle</h4>
+                                                <h3 class="banner-title ls-m font-weight-bolder slide-animate fadeInUpShorter show-content" data-animation-options="{'name': 'fadeInUpShorter', 'duration': '1.2s', 'delay': '.3s'}" style="animation-duration: 1.2s; animation-delay: 0.3s;">
+                                                    Beauté Simplifiée</h3>
+                                                <span class="h-divider ml-1 bg-primary slide-animate fadeInUpShorter show-content" data-animation-options="{'name': 'fadeInUpShorter', 'duration': '1.2s', 'delay': '.4s'}" style="animation-duration: 1.2s; animation-delay: 0.4s;"></span>
+                                                <p class="font-primary ls-s text-dark ml-1 slide-animate fadeInUpShorter show-content" data-animation-options="{'name': 'fadeInUpShorter', 'duration': '1.2s', 'delay': '.4s'}" style="animation-duration: 1.2s; animation-delay: 0.4s;">
+                                                    Get Free Shipping on all orders over $75</p>
+                                                <a href="demo19-shop.html" class="btn btn-dark ml-1 slide-animate fadeInUpShorter show-content" data-animation-options="{'name': 'fadeInUpShorter', 'duration': '1.2s', 'delay': '.5s'}" style="animation-duration: 1.2s; animation-delay: 0.5s;">Découvrez la Collection <i class="fa-solid fa-arrow-right"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="owl-item cloned" style="width: 1536px;"><div class="intro-slide1 banner banner-fixed" data-index="1">
+                                            <figure class="kenBurnsToRight duration">
+                                                <img src="{{asset('images/head/img1.jpg')}}" alt="intro-banner" width="1903" height="867" style="opacity:0.5;background-color: #2e2e31">
+                                            </figure>
+                                            <div class="banner-content y-50">
+                                                <h4 class="banner-subtitle d-flex align-items-center text-primary text-uppercase font-weight-bold slide-animate" data-animation-options="{'name': 'fadeInUpShorter', 'duration': '1.2s'}">
+                                                    Révélez Votre Beauté Naturelle</h4>
+                                                <h3 class="banner-title ls-m font-weight-bolder slide-animate" data-animation-options="{'name': 'fadeInUpShorter', 'duration': '1.2s', 'delay': '.3s'}">
+                                                    Fashion Collection</h3>
+                                                <span class="h-divider ml-1 bg-primary slide-animate" data-animation-options="{'name': 'fadeInUpShorter', 'duration': '1.2s', 'delay': '.4s'}"></span>
+                                                <p class="font-primary ls-s text-dark ml-1 slide-animate" data-animation-options="{'name': 'fadeInUpShorter', 'duration': '1.2s', 'delay': '.4s'}">
+                                                    </p>
+                                                <a href="demo19-shop.html" class="btn btn-dark ml-1 slide-animate" data-animation-options="{'name': 'fadeInUpShorter', 'duration': '1.2s', 'delay': '.5s'}">Découvrez la Collection <i class="fa-solid fa-arrow-right"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="owl-item cloned" style="width: 1536px;"><div class="intro-slide2 banner banner-fixed" data-index="2">
+                                            <figure class="kenBurnsToLeft duration">
+                                                <img src="images/demos/demo19/slides/2.jpg" alt="intro-banner" width="1903" height="867" style="background-color: #2e2e31">
+                                                <div class="particle-effect sparkle"></div>
+                                            </figure>
+                                            <div class="banner-content y-50">
+                                                <h4 class="banner-subtitle d-flex align-items-center text-white text-uppercase font-weight-bold slide-animate" data-animation-options="{'name': 'fadeInLeftShorter', 'duration': '1.2s'}">
+                                                    Saison d'été</h4>
+                                                <h3 class="banner-title ls-m font-weight-bolder slide-animate" data-animation-options="{'name': 'fadeInLeftShorter', 'duration': '1.2s', 'delay': '.3s'}">
+                                                    Fashion Collection</h3>
+                                                <span class="h-divider ml-1 bg-white slide-animate" data-animation-options="{'name': 'fadeInLeftShorter', 'duration': '1.2s', 'delay': '.3s'}"></span>
+                                                <p class="font-primary ls-s ml-1 text-dark slide-animate" data-animation-options="{'name': 'fadeInLeftShorter', 'duration': '1.2s', 'delay': '.3s'}">
+                                                    Get Free Shipping on all orders over $75</p>
+                                                <a href="demo19-shop.html" class="btn btn-dark ml-1 slide-animate" data-animation-options="{'name': 'fadeInLeftShorter', 'duration': '1.2s', 'delay': '.4s'}">Découvrez la Collection <i class="fa-solid fa-arrow-right"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                <div class="owl-nav disabled"><button type="button" title="presentation" class="owl-prev"><i class="d-icon-angle-left"></i></button>
+                                <button type="button" title="presentation" class="owl-next"><i class="d-icon-angle-right"></i></button>
+                                </div>
+                            <div class="owl-dots disabled">
 
+                            </div></div>
                     </section>
+
                     <section class="banner-group container-fluid mt-10 pt-6 pb-8 mb-10 appear-animate">
                         <div class="owl-carousel owl-theme row cols-lg-2 cols-1" data-owl-options="{
                                 'items': 2,
@@ -104,28 +169,81 @@
                         </div>
                     </section>
 
-                    <section class="banner video-banner parallax" data-parallax-options="{'speed': 3, 'offset': -40}"
-                             data-image-src="images/demos/demo19/video.jpg" style="background-color: #292e32">
-                        <div class="banner-content appear-animate text-center pr-4 pl-4">
-                            <h4 class="banner-subtitle ls-s font-secondary text-white text-uppercase appear-animate"
-                                data-animation-options="{
-                                    'name': 'fadeInDownShorter'
-                                }">Brand Experience</h4>
-                            <h3 class="banner-title text-white text-uppercase font-weight-bold mb-5 appear-animate"
-                                data-animation-options="{
-                                    'name': 'blurIn',
-                                    'delay': '.4s',
-                                    'duration': '1.4s'
-                                }">Premium for the pros 2021</h3>
-                            <a class="btn-play btn-iframe text-white appear-animate" data-animation-options="{
-                                    'name': 'fadeIn',
-                                    'delay': '.8s'
-                                }" href="video/memory-of-a-woman.mp4">
-                                <i class="d-icon-play-solid ml-0"></i>
-                            </a>
+                    <section class="categories container-fluid mt-10 pt-2 appear-animate">
+                        <h2 class="title title-simple text-center">Acheter par catégories</h2>
+                        <div class="owl-carousel owl-theme row owl-nav-full cols-xl-5 cols-lg-4 cols-md-3 cols-sm-2 cols-1 gutter-sm"
+                             data-owl-options="{
+                                    'items': 3,
+                                    'margin': 10,
+                                    'loop': false,
+                                    'nav': true,
+                                    'dots': false,
+                                    'responsive': {
+                                        '0': {
+                                            'items': 1
+                                        },
+                                        '576': {
+                                            'items': 2
+                                        },
+                                        '768': {
+                                            'items': 3
+                                        }
+                                    }
+                                }">
+                            <div class="category category-absolute category-classic overlay-zoom" data-animation-options="{
+                            'name': 'fadeIn',
+                            'delay': '.3s'
+                        }">
+                                <a href="demo19-shop.html">
+                                    <figure class="category-media">
+                                        <img src="images/demos/demo19/categories/1.jpg" alt="category" width="348"
+                                             height="348" />
+                                    </figure>
+                                </a>
+                                <div class="category-content">
+                                    <h4 class="category-name">Hygiène-Sécurité</h4>
+                                    <span class="category-count">
+                                    <span>47</span> Products
+                                </span>
+                                </div>
+                            </div>
+                            <div class="category category-absolute category-classic overlay-zoom" data-animation-options="{
+                            'name': 'fadeIn',
+                            'delay': '.4s'
+                        }">
+                                <a href="demo19-shop.html">
+                                    <figure class="category-media">
+                                        <img src="images/demos/demo19/categories/2.jpg" alt="category" width="348"
+                                             height="348" />
+                                    </figure>
+                                </a>
+                                <div class="category-content">
+                                    <h4 class="category-name">Esthétique</h4>
+                                    <span class="category-count">
+                                    <span>42</span> Products
+                                </span>
+                                </div>
+                            </div>
+                            <div class="category category-absolute category-classic overlay-zoom" data-animation-options="{
+                            'name': 'fadeIn',
+                            'delay': '.5s'
+                        }">
+                                <a href="demo19-shop.html">
+                                    <figure class="category-media">
+                                        <img src="images/demos/demo19/categories/3.jpg" alt="category" width="348"
+                                             height="348" />
+                                    </figure>
+                                </a>
+                                <div class="category-content">
+                                    <h4 class="category-name">Salon de coiffure</h4>
+                                    <span class="category-count">
+                                    <span>9</span> Products
+                                </span>
+                                </div>
+                            </div>
+
                         </div>
                     </section>
-
                 </div>
 
             </main>
@@ -452,7 +570,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li><a href="https://d-themes.com/buynow/riodehtml">Buy Riode!</a></li>
+
                 </ul>
                 <!-- End MobileMenu -->
             </div>
