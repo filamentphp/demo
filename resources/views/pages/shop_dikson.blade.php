@@ -115,7 +115,7 @@
                                     <div class="product text-center">
                                         <figure class="product-media">
                                             <a href="{{ route('products.show', $product->id) }}">
-                                                <img src="{{ $product->image ? asset('images/products/' . $product->image) : 'https://d-themes.com/html/riode/images/product/product-1-1-580x652.jpg' }}" alt="{{ $product->name }}" width="280" height="315">
+                                                <img src="{{ $product->image ? asset('images/products/' . $product->image) : 'https://i.makeup.fr/i/i4/i4dfmpe8rxkj.png' }}" alt="{{ $product->name }}" width="280" height="315">
                                             </a>
                                             <div class="product-action-vertical">
                                                 {{--                                                            <a href="{{ route('cart.add', $product->id) }}" class="btn-product-icon btn-cart" title="Add to cart">--}}

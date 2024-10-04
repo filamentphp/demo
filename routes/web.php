@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Mail;
 
 Route::get('form', Form::class);
 
-Route::view('/', 'pages.home');
+Route::view('/', 'pages.home')->name('index');
 
 
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');

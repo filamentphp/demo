@@ -7,17 +7,17 @@
                 <a href="#" class="mobile-menu-toggle">
                     <i class="d-icon-bars2"></i>
                 </a>
-                <a href="index.html" class="logo">
+                <a href="{{route("index")}}" class="logo">
                     <img src="{{asset('images/logo/logo-no-bg.png')}}" alt="logo" width="306" height="88" />
                 </a>
                 <!-- End Logo -->
                 <nav class="main-nav">
                     <ul class="menu">
                         <li class="active">
-                            <a href="index.html">Home</a>
+                            <a href="{{route("index")}}">Home</a>
                         </li>
                         <li class="">
-                            <a href="index.html">Shop</a>
+                            <a href="{{route("shop.muster")}}">Shop</a>
                         </li>
                     </ul>
                 </nav>
