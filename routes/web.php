@@ -4,6 +4,8 @@ use App\Livewire\Form;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ShopController;
+use App\Mail\MyTestEmail;
+use Illuminate\Support\Facades\Mail;
 
 Route::get('form', Form::class);
 
@@ -19,8 +21,14 @@ Route::get('/contact', function () {
 
 Route::get('/shop', function () {
     return view('pages.shop_dikson');
-});
+})->name('shop.index');
 
 Route::get('/shop/muster', [ShopController::class, 'showMusterProducts'])->name('shop.muster');
+Route::get('/shop/dikson', [ShopController::class, 'showMusterProducts'])->name('shop.dikson');
 
 
+Route::get('/testroute', function() {
+    $name = "Funny Coder";
+
+    Mail::to('soufianjill@gmail.com')->send(new MyTestEmail($name));
+});

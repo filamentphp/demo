@@ -38,11 +38,17 @@ class ContactForm extends Page
     {
         $this->validate();
 
-     dd("ess");
+        // Send the email
+        Mail::to('soufianjill@gmail.ma')->send(new ContactFormMail([
+            'name' => $this->name,
+            'email' => $this->email,
+            'message' => $this->message,
+        ]));
+
+
         $this->reset();
 
-        // Show success message
-        $this->notify('success', 'Comment submitted successfully!');
+        $this->notify('success', 'Message submitted successfully!');
     }
 
     protected function rules(): array

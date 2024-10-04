@@ -19,14 +19,15 @@
                                             'name': 'fadeInLeftShorter',
                                             'delay': '.8s'
                                         }" style="animation-duration: 1.2s;">
-                                    <a href="muster-shop.html">
+                                    <a href="{{ route('shop.muster') }}">
                                         <figure>
-                                            <img src="images/demo-images/photo1.jpg" alt="banner" width="380" height="207" style="background-color: rgb(233, 233, 233); height: 75vh; opacity: 0.7;">
+                                            <img src="{{asset('images/demo-images/photo1.jpg')}}" alt="banner" width="380" height="207" style="background-color: rgb(233, 233, 233); height: 75vh; opacity: 0.7;">
                                         </figure>
-                                    </a>
+
                                     <div class="banner-content" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
-                                        <h2 class="banner-title font-weight-bold text-black" style="font-size: 3rem;">Muster</h2>
+                                        <h2 class="banner-title font-weight-bold text-black" style="font-size: 4rem;font-family: Bahnschrift">Muster</h2>
                                     </div>
+                                    </a>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-sm-6 mb-2">
@@ -34,14 +35,15 @@
                                             'name': 'fadeInLeftShorter',
                                             'delay': '.8s'
                                         }" style="animation-duration: 1.2s;">
-                                    <a href="dikson-shop.html">
+                                    <a href="{{ route('shop.dikson') }}">
                                         <figure>
-                                            <img src="images/demo-images/photo2.jpg" alt="banner" width="380" height="207" style="background-color: rgb(233, 233, 233); height: 75vh; opacity: 0.7;">
+                                            <img src="{{asset('images/demo-images/photo2.jpg')}}" alt="banner" width="380" height="207" style="background-color: rgb(233, 233, 233); height: 75vh; opacity: 0.7;">
                                         </figure>
-                                    </a>
+
                                     <div class="banner-content" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
-                                        <h2 class="banner-title font-weight-bold text-black" style="font-size: 3rem;">Dikson</h2>
+                                        <h2 class="banner-title font-weight-bold text-black" style="font-size: 4rem;font-family: Bahnschrift">Dikson</h2>
                                     </div>
+                                    </a>
                                 </div>
 
                             </div>
@@ -64,9 +66,7 @@
                                                 <h3 class="banner-title ls-m font-weight-bolder slide-animate fadeInUpShorter show-content" data-animation-options="{'name': 'fadeInUpShorter', 'duration': '1.2s', 'delay': '.3s'}" style="animation-duration: 1.2s; animation-delay: 0.3s;">
                                                     Beauté Simplifiée</h3>
                                                 <span class="h-divider ml-1 bg-primary slide-animate fadeInUpShorter show-content" data-animation-options="{'name': 'fadeInUpShorter', 'duration': '1.2s', 'delay': '.4s'}" style="animation-duration: 1.2s; animation-delay: 0.4s;"></span>
-                                                <p class="font-primary ls-s text-dark ml-1 slide-animate fadeInUpShorter show-content" data-animation-options="{'name': 'fadeInUpShorter', 'duration': '1.2s', 'delay': '.4s'}" style="animation-duration: 1.2s; animation-delay: 0.4s;">
-                                                    Get Free Shipping on all orders over $75</p>
-                                                <a href="demo19-shop.html" class="btn btn-dark ml-1 slide-animate fadeInUpShorter show-content" data-animation-options="{'name': 'fadeInUpShorter', 'duration': '1.2s', 'delay': '.5s'}" style="animation-duration: 1.2s; animation-delay: 0.5s;">Découvrez la Collection <i class="fa-solid fa-arrow-right"></i></a>
+                                                <a href="{{route('shop.index')}}" class="btn btn-dark ml-1 slide-animate fadeInUpShorter show-content" data-animation-options="{'name': 'fadeInUpShorter', 'duration': '1.2s', 'delay': '.5s'}" style="animation-duration: 1.2s; animation-delay: 0.5s;">Découvrez la Collection <i class="fa-solid fa-arrow-right"></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -82,7 +82,7 @@
                                                 <span class="h-divider ml-1 bg-primary slide-animate" data-animation-options="{'name': 'fadeInUpShorter', 'duration': '1.2s', 'delay': '.4s'}"></span>
                                                 <p class="font-primary ls-s text-dark ml-1 slide-animate" data-animation-options="{'name': 'fadeInUpShorter', 'duration': '1.2s', 'delay': '.4s'}">
                                                     </p>
-                                                <a href="demo19-shop.html" class="btn btn-dark ml-1 slide-animate" data-animation-options="{'name': 'fadeInUpShorter', 'duration': '1.2s', 'delay': '.5s'}">Découvrez la Collection <i class="fa-solid fa-arrow-right"></i></a>
+                                                <a href="{{route('shop.index')}}" class="btn btn-dark ml-1 slide-animate" data-animation-options="{'name': 'fadeInUpShorter', 'duration': '1.2s', 'delay': '.5s'}">Découvrez la Collection <i class="fa-solid fa-arrow-right"></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -99,7 +99,7 @@
                                                 <span class="h-divider ml-1 bg-white slide-animate" data-animation-options="{'name': 'fadeInLeftShorter', 'duration': '1.2s', 'delay': '.3s'}"></span>
                                                 <p class="font-primary ls-s ml-1 text-dark slide-animate" data-animation-options="{'name': 'fadeInLeftShorter', 'duration': '1.2s', 'delay': '.3s'}">
                                                     Get Free Shipping on all orders over $75</p>
-                                                <a href="demo19-shop.html" class="btn btn-dark ml-1 slide-animate" data-animation-options="{'name': 'fadeInLeftShorter', 'duration': '1.2s', 'delay': '.4s'}">Découvrez la Collection <i class="fa-solid fa-arrow-right"></i></a>
+                                                <a href="{{route('shop.index')}}" class="btn btn-dark ml-1 slide-animate" data-animation-options="{'name': 'fadeInLeftShorter', 'duration': '1.2s', 'delay': '.4s'}">Découvrez la Collection <i class="fa-solid fa-arrow-right"></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -194,9 +194,9 @@
                             'name': 'fadeIn',
                             'delay': '.3s'
                         }">
-                                <a href="demo19-shop.html">
+                                <a href="{{route('shop.index')}}">
                                     <figure class="category-media">
-                                        <img src="images/demos/demo19/categories/1.jpg" alt="category" width="348"
+                                        <img src="{{asset('images/category/img1.jpg')}}" alt="category" width="348"
                                              height="348" />
                                     </figure>
                                 </a>
@@ -211,9 +211,9 @@
                             'name': 'fadeIn',
                             'delay': '.4s'
                         }">
-                                <a href="demo19-shop.html">
+                                <a href="{{route('shop.index')}}">
                                     <figure class="category-media">
-                                        <img src="images/demos/demo19/categories/2.jpg" alt="category" width="348"
+                                        <img src="{{asset('images/category/img2.jpg')}}" alt="category" width="348"
                                              height="348" />
                                     </figure>
                                 </a>
@@ -228,9 +228,9 @@
                             'name': 'fadeIn',
                             'delay': '.5s'
                         }">
-                                <a href="demo19-shop.html">
+                                <a href="{{route('shop.index')}}">
                                     <figure class="category-media">
-                                        <img src="images/demos/demo19/categories/3.jpg" alt="category" width="348"
+                                        <img src="{{asset('images/category/img3.jpg')}}" alt="category" width="348"
                                              height="348" />
                                     </figure>
                                 </a>
@@ -255,7 +255,7 @@
                 <i class="fa-solid fa-house"></i>
                 <span>Home</span>
             </a>
-            <a href="demo19-shop.html" class="sticky-link">
+            <a href="{{route('shop.index')}}" class="sticky-link">
                 <i class="d-icon-volume"></i>
                 <span>Categories</span>
             </a>
@@ -305,7 +305,7 @@
                         <a href="index.html">Home</a>
                     </li>
                     <li>
-                        <a href="demo19-shop.html">Categories</a>
+                        <a href="{{route('shop.index')}}">Categories</a>
                         <ul>
                             <li>
                                 <a href="#">

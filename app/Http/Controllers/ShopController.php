@@ -16,4 +16,14 @@ class ShopController extends Controller
 
         return view('pages.shop_muster', ['products' => $products]);
     }
+
+    public function showDiksonProducts()
+    {
+        $products = Product::whereHas('categories', function ($query) {
+            $query->where('name', 'dikson');
+        })->withCount('comments')
+            ->get();
+
+        return view('pages.shop_dikson', ['products' => $products]);
+    }
 }
