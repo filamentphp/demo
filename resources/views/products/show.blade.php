@@ -344,7 +344,7 @@
                                         <div class="product-detail">
                                             <a href="product.html" class="product-name">Girl's Dark Bag</a>
                                             <div class="price-box">
-                                                <span class="product-price">{{ number_format($product->price, 2) }} MAD</span>
+                                                <span class="product-price">{{$product->price}} MAD</span>
                                             </div>
                                         </div>
                                     </div>
@@ -363,7 +363,7 @@
                                             <a href="product.html" class="product-name">{{ route('products.show', $product->id) }}">{{ $product->name }}
                                             </a>
                                             <div class="price-box">
-                                                <span class="product-price">{{ number_format($product->price, 2) }} MAD</span>
+                                                <span class="product-price">{{$product->price}} MAD</span>
                                             </div>
                                         </div>
                                     </div>
@@ -381,7 +381,7 @@
                                         <div class="product-detail">
                                             <a href="product.html" class="product-name">Wide Knickerbockers</a>
                                             <div class="price-box">
-                                                <span class="product-price">{{ number_format($product->price, 2) }} MAD</span>
+                                                <span class="product-price">{{$product->price}} MAD</span>
                                             </div>
                                         </div>
                                     </div>
@@ -729,7 +729,7 @@
                                             SKU: <span class="product-sku">{{$product->sku}}</span>
 {{--                                            BRAND: <span class="product-brand">{{$product->categories->name}}</span>--}}
                                         </div>
-                                        <div class="product-price">{{ number_format($product->price, 2) }} MAD</div>
+                                        <div class="product-price">{{ $product->price }} MAD</div>
                                         <div class="ratings-container">
                                             <div class="">
                                                 <i class="fa-solid fa-star"></i>
