@@ -176,6 +176,11 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('id')
+                    ->label('id')
+                    ->searchable()
+                    ->sortable(),
+
                 Tables\Columns\SpatieMediaLibraryImageColumn::make('product-image')
                     ->label('Image')
                     ->collection('product-images'),
@@ -277,7 +282,6 @@ class ProductResource extends Resource
             \App\Filament\Clusters\Products\Resources\ProductResource\RelationManagers\CommentsRelationManager::class,
         ];
     }
-
     public static function getWidgets(): array
     {
         return [
