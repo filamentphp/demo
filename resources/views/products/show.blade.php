@@ -10,14 +10,14 @@
                 <div class="container-fluid">
                     <div class="product-navigation pb-0 pt-2">
                         <ul class="breadcrumb breadcrumb-lg">
-                            <li><a href="demo19.html"><i class="d-icon-home"></i></a></li>
+                            <li><a href="demo19.html"><i class="fa-solid fa-house"></i></a></li>
                             <li><a href="#" class="active">Products</a></li>
                             <li>Detail</li>
                         </ul>
                         <ul class="product-nav">
                             <li class="product-nav-prev">
                                 <a href="#">
-                                    <i class="d-icon-arrow-left"></i> Prev
+                                    <i class="fa-solid fa-arrow-left></i> Précédente
                                     <span class="product-nav-popup">
 										<img src="images/product/product-thumb-prev.jpg" alt="product thumbnail"
                                              width="110" height="123">
@@ -27,7 +27,7 @@
                             </li>
                             <li class="product-nav-next">
                                 <a href="#">
-                                    Next <i class="d-icon-arrow-right"></i>
+                                    Suivante <i class="fa-solid fa-arrow-right"></i>
                                     <span class="product-nav-popup">
 										<img src="images/product/product-thumb-next.jpg" alt="product thumbnail"
                                              width="110" height="123">
@@ -813,7 +813,7 @@
                                                                         <a class="page-link page-link-prev" href="#"
                                                                            aria-label="Previous" tabindex="-1"
                                                                            aria-disabled="true">
-                                                                            <i class="d-icon-arrow-left"></i>Prev
+                                                                            <i class="fa-solid fa-arrow-left"></i>Précédente
                                                                         </a>
                                                                     </li>
                                                                     <li class="page-item active" aria-current="page"><a
@@ -828,8 +828,8 @@
                                                                     </li>
                                                                     <li class="page-item">
                                                                         <a class="page-link page-link-next" href="#"
-                                                                           aria-label="Next">
-                                                                            Next<i class="d-icon-arrow-right"></i>
+                                                                           aria-label="Suivante">
+                                                                            Suivante<i class="fa-solid fa-arrow-right"></i>
                                                                         </a>
                                                                     </li>
                                                                 </ul>
@@ -992,7 +992,7 @@
                                                     <span class="ratings" style="width:100%"></span>
                                                     <span class="tooltiptext tooltip-top"></span>
                                                 </div>
-                                                <a href="demo19-product.html" class="rating-reviews">( 6 reviews )</a>
+                                                <a href="demo19-product.html" class="rating-reviews">( 6 Avis )</a>
                                             </div>
                                         </div>
                                     </div>
@@ -1026,7 +1026,7 @@
                                                     <span class="ratings" style="width:100%"></span>
                                                     <span class="tooltiptext tooltip-top"></span>
                                                 </div>
-                                                <a href="demo19-product.html" class="rating-reviews">( 6 reviews )</a>
+                                                <a href="demo19-product.html" class="rating-reviews">( 6 Avis )</a>
                                             </div>
                                         </div>
                                     </div>
@@ -1060,7 +1060,7 @@
                                                     <span class="ratings" style="width:100%"></span>
                                                     <span class="tooltiptext tooltip-top"></span>
                                                 </div>
-                                                <a href="demo19-product.html" class="rating-reviews">( 6 reviews )</a>
+                                                <a href="demo19-product.html" class="rating-reviews">( 6 Avis )</a>
                                             </div>
                                         </div>
                                     </div>
@@ -1094,7 +1094,7 @@
                                                     <span class="ratings" style="width:100%"></span>
                                                     <span class="tooltiptext tooltip-top"></span>
                                                 </div>
-                                                <a href="demo19-product.html" class="rating-reviews">( 6 reviews )</a>
+                                                <a href="demo19-product.html" class="rating-reviews">( 6 Avis )</a>
                                             </div>
                                         </div>
                                     </div>
@@ -1131,7 +1131,7 @@
                                                     <span class="ratings" style="width:100%"></span>
                                                     <span class="tooltiptext tooltip-top"></span>
                                                 </div>
-                                                <a href="demo19-product.html" class="rating-reviews">( 6 reviews )</a>
+                                                <a href="demo19-product.html" class="rating-reviews">( 6 Avis )</a>
                                             </div>
                                         </div>
                                     </div>
@@ -1165,7 +1165,7 @@
                                                     <span class="ratings" style="width:100%"></span>
                                                     <span class="tooltiptext tooltip-top"></span>
                                                 </div>
-                                                <a href="demo19-product.html" class="rating-reviews">( 6 reviews )</a>
+                                                <a href="demo19-product.html" class="rating-reviews">( 6 Avis )</a>
                                             </div>
                                         </div>
                                     </div>

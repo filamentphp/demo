@@ -564,7 +564,7 @@
         <nav class="breadcrumb-nav">
             <div class="container">
                 <ul class="breadcrumb">
-                    <li><a href="demo1.html"><i class="d-icon-home"></i></a></li>
+                    <li><a href="demo1.html"><i class="fa-solid fa-house"></i></a></li>
                     <li>Contact Us</li>
                 </ul>
             </div>
@@ -611,7 +611,7 @@
                                             <input class="form-control" type="email" wire:model="email" placeholder="Email *" required>
                                         </div>
                                     </div>
-                                    <button class="btn btn-dark btn-rounded" type="submit">Post Comment<i class="d-icon-arrow-right"></i></button>
+                                    <button class="btn btn-dark btn-rounded" type="submit">Post Comment<i class="fa-solid fa-arrow-right"></i></button>
                                 </form>
                             </div>
                         </div>

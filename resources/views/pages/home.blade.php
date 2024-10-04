@@ -252,7 +252,7 @@
         <!-- Sticky Footer -->
         <div class="sticky-footer sticky-content fix-bottom">
             <a href="index.html" class="sticky-link">
-                <i class="d-icon-home"></i>
+                <i class="fa-solid fa-house"></i>
                 <span>Home</span>
             </a>
             <a href="demo19-shop.html" class="sticky-link">
