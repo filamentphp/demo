@@ -11,7 +11,8 @@ class ShopController extends Controller
     {
         $products = Product::whereHas('categories', function ($query) {
             $query->where('name', 'muster');
-        })->get();
+        })->withCount('comments')
+            ->get();
 
         return view('pages.shop_muster', ['products' => $products]);
     }

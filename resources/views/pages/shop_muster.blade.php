@@ -101,10 +101,10 @@
                                         <option value="">Réinitialiser le tri personnalisé</option>
                                     </select>
                                 </div>
-                                <div class="toolbox-item toolbox-layout">
-                                    <a href="shop-list-mode.html" class=" btn-layout"><i class="fa-solid fa-list"></i></a>
-                                    <a href="shop.html" class=" btn-layout active"><i class="fa-regular fa-square"></i></a>
-                                </div>
+{{--                                <div class="toolbox-item toolbox-layout">--}}
+{{--                                    <a href="shop-list-mode.html" class=" btn-layout"><i class="fa-solid fa-list"></i></a>--}}
+{{--                                    <a href="shop.html" class=" btn-layout active"><i class="fa-regular fa-square"></i></a>--}}
+{{--                                </div>--}}
                             </div>
                         </div>
                     </div>
@@ -126,7 +126,7 @@
                                                 {{--                                                            </a>--}}
                                             </div>
                                             <div class="product-action">
-                                                <a href="#" class="btn-product btn-quickview" title="Quick View">Quick View</a>
+                                                <a href="#" class="btn-product btn-quickview" title="Quick View">Voir</a>
                                             </div>
                                         </figure>
                                         <div class="product-details">
@@ -134,14 +134,19 @@
                                                 <a href="{{ route('products.show', $product->id) }}">{{ $product->name }}</a>
                                             </h3>
                                             <div class="product-price">
-                                                <span class="price">${{ number_format($product->price, 2) }}</span>
+                                                <span class="price">{{ number_format($product->price, 2) }} MAD</span>
                                             </div>
                                             <div class="ratings-container">
-                                                <div class="ratings-full">
-                                                    <span class="ratings" style="width:{{ $product->rating * 20 }}%"></span>
-                                                    <span class="tooltiptext tooltip-top">{{ $product->rating }} Stars</span>
+                                                <div class="">
+                                                    <i class="fa-solid fa-star"></i>
+                                                    <i class="fa-solid fa-star"></i>
+                                                    <i class="fa-solid fa-star"></i>
+                                                    <i class="fa-solid fa-star"></i>
+                                                    <i class="fa-solid fa-star"></i>
+{{--                                                    <span class="" style="width:{{ $product->rating * 20 }}%"></span>--}}
+{{--                                                    <span class="tooltiptext tooltip-top">{{ $product->rating }} Stars</span>--}}
                                                 </div>
-                                                <a href="{{ route('products.show', $product->id) }}" class="rating-reviews">({{ $product->reviews_count }} reviews)</a>
+                                                <a href="{{ route('products.show', $product->id) }}" class="rating-reviews">({{ $product->reviews_count }} Avis)</a>
                                             </div>
                                         </div>
                                     </div>
