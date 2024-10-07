@@ -32,3 +32,4 @@ Route::get('/testroute', function() {
 
     Mail::to('soufianjill@gmail.com')->send(new MyTestEmail($name));
 });
+

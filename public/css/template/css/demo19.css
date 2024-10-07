@@ -5517,8 +5517,8 @@ blockquote {
 }
 @font-face {
     font-family: "riode";
-    src: url("../fonts/riode.eot?5gap68");
-    src: url("../fonts/riode.eot?5gap68#iefix") format("embedded-opentype"), url("../fonts/riode.ttf?5gap68") format("truetype"), url("../fonts/riode.woff?5gap68") format("woff"), url("../fonts/riode.svg?5gap68#riode") format("svg");
+    src: url("../fonts/front/riode.eot?5gap68");
+    src: url("../fonts/front/riode.eot?5gap68#iefix") format("embedded-opentype"), url("../fonts/riode.ttf?5gap68") format("truetype"), url("../fonts/riode.woff?5gap68") format("woff"), url("../fonts/riode.svg?5gap68#riode") format("svg");
     font-weight: normal;
     font-style: normal;
     font-display: block;

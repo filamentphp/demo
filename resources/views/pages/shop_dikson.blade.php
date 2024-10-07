@@ -2,179 +2,141 @@
 
 @section('content')
 
-
     <div class="page-wrapper">
-
 
         <main class="main">
             <div class="page-header"
-                 style="background-image: url('images/demos/demo19/page-header.jpg'); background-color: #3C63A4;">
-                <h1 class="page-title">Muster Shop</h1>
+                 style="background-image: url('images/demos/demo-beauty/page-header.jpg'); background-color: #ECEDF1;">
+                <h1 class="page-title font-weight-bold text-dark">Muster Shop</h1>
                 <ul class="breadcrumb pb-0">
-                    <li><a href="demo19.html"><i class="fa-solid fa-house"></i></a></li>
-                    <li class="delimiter">/</li>
-                    <li>Dikson Shop</li>
+                    <li class="text-dark"><a href="demo-beauty.html" class="text-dark"><i class="d-icon-home"></i></a>
+                    </li>
+                    <li class="delimiter text-dark">/</li>
+                    <li class="text-dark">Muster Shop</li>
                 </ul>
             </div>
             <!-- End PageHeader -->
-            <div class="page-content mb-10 pb-2">
-                <div class="container-fluid">
-                    <div class="toolbox-wrap">
-                        <aside class="sidebar sidebar-fixed shop-sidebar closed">
-                            <div class="sidebar-overlay">
-                                <a class="sidebar-close" href="#"><i class="d-icon-times"></i></a>
-                            </div>
-                            <div class="sidebar-content">
-                                <div class="mb-0 mb-lg-4">
-                                    <div class="filter-actions">
-                                        <a href="#"
-                                           class="sidebar-toggle-btn toggle-remain btn btn-sm btn-outline btn-primary">Filter<i
-                                                class="d-icon-arrow-left"></i></a>
-                                        <a href="#" class="filter-clean text-primary">Clean All</a>
-                                    </div>
-                                    <!-- <a href="#" class="filter-clean text-primary">Clean All</a> -->
-                                    <div class="row cols-lg-4">
-                                        <div class="widget">
-                                            <h3 class="widget-title">Size</h3>
-                                            <ul class="widget-body filter-items">
-                                                <li><a href="#">Small</a></li>
-                                                <li><a href="#">Medium</a></li>
-                                                <li><a href="#">Large</a></li>
-                                                <li><a href="#">Extra Large</a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="widget">
-                                            <h3 class="widget-title">Color</h3>
-                                            <ul class="widget-body filter-items">
-                                                <li><a href="#">Black</a></li>
-                                                <li><a href="#">Blue</a></li>
-                                                <li><a href="#">Green</a></li>
-                                                <li><a href="#">Gray</a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="widget">
-                                            <h3 class="widget-title">Price</h3>
-                                            <ul class="widget-body filter-items filter-price">
-                                                <li><a href="#">All<span>(10)</span></a></li>
-                                                <li><a href="#">$0.00 - $100.00<span>(1)</span></a></li>
-                                                <li><a href="#">$100.00 - $200.00<span>(9)</span></a></li>
-                                                <li><a href="#">$200.00+<span>(3)</span></a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="widget">
-                                            <h3 class="widget-title">Tags</h3>
-                                            <div class="widget-body pt-2">
-                                                <a href="#" class="tag">Bag</a>
-                                                <a href="#" class="tag">Classic</a>
-                                                <a href="#" class="tag">Converse</a>
-                                                <a href="#" class="tag">Diesel</a>
-                                                <a href="#" class="tag">Fit</a>
-                                                <a href="#" class="tag">Green</a>
-                                                <a href="#" class="tag">Jeans</a>
-                                                <a href="#" class="tag">Jumper</a>
-                                                <a href="#" class="tag">Leather</a>
-                                                <a href="#" class="tag">Man</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+            <div class="page-content mb-10 pb-3">
+                <div class="container">
+                    <nav class="toolbox toolbox-horizontal sticky-toolbox sticky-content fix-top">
+                        <aside class="sidebar sidebar-fixed shop-sidebar">
+                            <div class="sidebar-overlay"></div>
+                            <a class="sidebar-close" href="#"><i class="d-icon-times"></i></a>
+                            {{--                            <div class="sidebar-content toolbox-left">--}}
+                            {{--                                <div class="toolbox-item select-menu">--}}
+                            {{--                                    <a class="select-menu-toggle" href="#">Select Price</a>--}}
+                            {{--                                    <ul class="filter-items">--}}
+                            {{--                                        <li><a href="#">$0.00 - $50.00</a></li>--}}
+                            {{--                                        <li><a href="#">$50.00 - $100.00</a></li>--}}
+                            {{--                                        <li><a href="#">$100.00 - $200.00</a></li>--}}
+                            {{--                                        <li><a href="#">$200.00+</a></li>--}}
+                            {{--                                    </ul>--}}
+                            {{--                                </div>--}}
+                            {{--                                <div class="toolbox-item select-menu">--}}
+                            {{--                                    <a class="select-menu-toggle" href="#">Select Color</a>--}}
+                            {{--                                    <ul class="filter-items">--}}
+                            {{--                                        <li><a href="#">Black</a></li>--}}
+                            {{--                                        <li><a href="#">Blue</a></li>--}}
+                            {{--                                        <li><a href="#">Brown</a></li>--}}
+                            {{--                                        <li><a href="#">Green</a></li>--}}
+                            {{--                                    </ul>--}}
+                            {{--                                </div>--}}
+                            {{--                            </div>--}}
                         </aside>
-                        <div class="toolbox sticky-toolbox sticky-content fix-top">
-                            <div class="toolbox-left">
-                                <a href="#"
-                                   class="toolbox-item left-sidebar-toggle btn btn-outline btn-primary btn-icon-left font-primary">
-                                    <i class="fa-solid fa-filter"></i>Filter</a>
-                                <p class="toolbox-item show-info mr-sm-auto">
-                                    Affichage de 1 à 12 sur 30 produits</p>
+                        {{--                        <div class="toolbox-left">--}}
+                        {{--                            <a href="#"--}}
+                        {{--                               class="toolbox-item left-sidebar-toggle btn btn-sm btn-outline btn-primary btn-rounded btn-icon-right d-lg-none">--}}
+                        {{--                                Filter<i class="d-icon-arrow-right"></i></a>--}}
+                        {{--                            <div class="toolbox-item toolbox-sort select-menu">--}}
+                        {{--                                <select name="orderby" class="form-control">--}}
+                        {{--                                    <option value="default" selected="selected">Default Sorting</option>--}}
+                        {{--                                    <option value="popularity">Most Popular</option>--}}
+                        {{--                                    <option value="rating">Average rating</option>--}}
+                        {{--                                    <option value="date">Latest</option>--}}
+                        {{--                                    <option value="price-low">Sort forward price low</option>--}}
+                        {{--                                    <option value="price-high">Sort forward price high</option>--}}
+                        {{--                                    <option value="">Clear custom sort</option>--}}
+                        {{--                                </select>--}}
+                        {{--                            </div>--}}
+                        {{--                        </div>--}}
+                        <div class="toolbox-right">
+                            <div class="toolbox-item toolbox-show select-box text-dark">
+                                <label>show :</label>
+                                <select name="count" class="form-control">
+                                    <option value="12">12</option>
+                                    <option value="24">24</option>
+                                    <option value="36">36</option>
+                                </select>
                             </div>
-                            <div class="toolbox-right">
-                                <div class="toolbox-item toolbox-sort select-box">
-                                    <label>Trier par :</label>
-                                    <select name="orderby" class="form-control">
-                                        <option value="default">Par défaut</option>
-                                        <option value="popularity" selected="selected">Les plus populaires</option>
-                                        <option value="rating">Note moyenne</option>
-                                        <option value="date">Les plus récents</option>
-                                        <option value="price-low">Prix croissant</option>
-                                        <option value="price-high">Prix décroissant</option>
-                                        <option value="">Réinitialiser le tri personnalisé</option>
-                                    </select>
-                                </div>
-                                {{--                                <div class="toolbox-item toolbox-layout">--}}
-                                {{--                                    <a href="shop-list-mode.html" class=" btn-layout"><i class="fa-solid fa-list"></i></a>--}}
-                                {{--                                    <a href="shop.html" class=" btn-layout active"><i class="fa-regular fa-square"></i></a>--}}
-                                {{--                                </div>--}}
+                            <div class="toolbox-item toolbox-layout">
+                                <a href="shop-list-mode.html" class="d-icon-mode-list btn-layout"></a>
+                                <a href="shop.html" class="d-icon-mode-grid btn-layout active"></a>
                             </div>
                         </div>
+                    </nav>
+                    <div class="select-items">
+                        <a href="#" class="filter-clean text-primary">Clean All</a>
                     </div>
-                    <div class="row cols-2 cols-sm-3 cols-md-4 cols-xl-6">
+                    <div class="row cols-2 cols-sm-3 cols-md-4 product-wrapper">
+
                         @foreach($products as $product)
-                            <div class="col-6 col-md-3 mb-4"> <!-- Adjusted for 4 products per row -->
-                                <div class="product-wrap">
-                                    <div class="product text-center">
-                                        <figure class="product-media">
-                                            <a href="{{ route('products.show', $product->id) }}">
-                                                <img src="{{ $product->image ? asset('images/products/' . $product->image) : 'https://i.makeup.fr/i/i4/i4dfmpe8rxkj.png' }}" alt="{{ $product->name }}" width="280" height="315">
+                            <div class="product-wrap">
+                                <div class="product text-center">
+                                    <figure class="product-media">
+                                        <a href="{{ route('products.show', $product->id) }}">
+                                            <img src="{{ $product->image ? asset('images/products/' . $product->image) : 'https://i.makeup.fr/i/i4/i4dfmpe8rxkj.png' }}" alt="{{ $product->name }}" width="300"
+                                                 height="338">
+                                            <img src="{{ $product->image ? asset('images/products/' . $product->image) : 'https://i.makeup.fr/i/i4/i4dfmpe8rxkj.png' }}" alt="{{ $product->name }}" width="300"
+                                                 height="338">
+                                        </a>
+                                        <div class="product-action-vertical">
+                                            <a href="#" class="btn-product-icon btn-cart" title="Select Options">
+                                                <i class="d-icon-bag"></i>
                                             </a>
-                                            <div class="product-action-vertical">
-                                                {{--                                                            <a href="{{ route('cart.add', $product->id) }}" class="btn-product-icon btn-cart" title="Add to cart">--}}
-                                                {{--                                                                <i class="d-icon-bag"></i>--}}
-                                                {{--                                                            </a>--}}
-                                                {{--                                                            <a href="{{ route('wishlist.add', $product->id) }}" class="btn-product-icon btn-wishlist" title="Add to wishlist">--}}
-                                                {{--                                                                <i class="d-icon-heart"></i>--}}
-                                                {{--                                                            </a>--}}
-                                            </div>
-                                            <div class="product-action">
-                                                <a href="#" class="btn-product btn-quickview" title="Quick View">Voir</a>
-                                            </div>
-                                        </figure>
-                                        <div class="product-details">
-                                            <h3 class="product-name">
-                                                <a href="{{ route('products.show', $product->id) }}">{{ $product->name }}</a>
-                                            </h3>
+                                            <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"><i
+                                                    class="d-icon-heart"></i></a>
+                                        </div>
+                                        <div class="product-action">
+                                            <a href="#" class="btn-product btn-quickview" title="Quick View">Quick
+                                                View</a>
+                                        </div>
+                                    </figure>
+                                    <div class="product-details">
+                                        <h3 class="product-name">
+                                            <a href="{{ route('products.show', $product->id) }}">{{ $product->name }}</a>
+                                        </h3>
+                                        <div class="product-price">
                                             <div class="product-price">
-                                                <span class="price">{{ number_format($product->price, 2) }} MAD</span>
+                                                <ins class="new-price">{{ number_format($product->price, 2) }} MAD</ins><del class="old-price">{{ number_format($product->old_price, 2) }} MAD</del>
                                             </div>
-                                            <div class="ratings-container">
-                                                <div class="">
-                                                    <i class="fa-solid fa-star"></i>
-                                                    <i class="fa-solid fa-star"></i>
-                                                    <i class="fa-solid fa-star"></i>
-                                                    <i class="fa-solid fa-star"></i>
-                                                    <i class="fa-solid fa-star"></i>
-                                                    {{--                                                    <span class="" style="width:{{ $product->rating * 20 }}%"></span>--}}
-                                                    {{--                                                    <span class="tooltiptext tooltip-top">{{ $product->rating }} Stars</span>--}}
-                                                </div>
-                                                <a href="{{ route('products.show', $product->id) }}" class="rating-reviews">({{ $product->reviews_count }} Avis)</a>
+                                        </div>
+                                        <div class="ratings-container">
+                                            <div class="ratings-full">
+                                                <span class="ratings" style="width:40%"></span>
+                                                <span class="tooltiptext tooltip-top"></span>
                                             </div>
+                                            <a href="{{ route('products.show', $product->id) }}" class="rating-reviews">({{ $product->reviews_count }} Avis)</a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         @endforeach
+
                     </div>
-                    {{--                    <div class="row cols-2 cols-sm-3 cols-md-4 cols-xl-6 product-wrapper">--}}
-                    {{--                        <div class="shop-products">--}}
-                    {{--                            <div class="product-list">--}}
-                    {{--                            </div>--}}
-                    {{--                        </div>--}}
-                    {{--                    </div>--}}
-                    <nav class="toolbox toolbox-pagination justify-content-center">
+                    <nav class="toolbox toolbox-pagination mb-1">
+                        <p class="toolbox-item show-info d-block mb-2 mb-sm-0">Showing 1–12 of 24 Products</p>
                         <ul class="pagination">
                             <li class="page-item disabled">
                                 <a class="page-link page-link-prev" href="#" aria-label="Previous" tabindex="-1"
                                    aria-disabled="true">
-                                    <i class="fa-solid fa-arrow-left"></i>Précédente
+                                    <i class="d-icon-arrow-left"></i>Prev
                                 </a>
                             </li>
-                            <li class="page-item active" aria-current="page"><a class="page-link" href="#">1</a>
-                            </li>
+                            <li class="page-item active" aria-current="page"><a class="page-link" href="#">1</a></li>
                             <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
                             <li class="page-item">
-                                <a class="page-link page-link-next" href="#" aria-label="Suivante">
-                                    Suivante<i class="fa-solid fa-arrow-right"></i>
+                                <a class="page-link page-link-next" href="#" aria-label="Next">
+                                    Next<i class="d-icon-arrow-right"></i>
                                 </a>
                             </li>
                         </ul>
@@ -183,8 +145,124 @@
             </div>
 
         </main>
-        <!-- End Main -->
 
+        <!-- End of Main -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-middle">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-12">
+                            <div class="widget widget-about">
+                                <a href="demo-beauty.html" class="logo-footer">
+                                    <img src="images/demos/demo-beauty/logo-footer.png" alt="logo-footer" width="154"
+                                         height="43" />
+                                </a>
+                                <div class="widget-body">
+                                    <p>Fringilla urna porttitor rhoncus dolor purus <br> luctus venenatis lectus magna
+                                        fringilla diam <br> maecenas ultricies mi eget mauris.
+                                    </p>
+                                    <a href="mailto:Riode@example.com">Riode@example.com</a>
+                                </div>
+                            </div>
+                            <!-- End Widget -->
+                        </div>
+                        <div class="col-lg-8 col-md-12">
+                            <div class="row">
+                                <div class="col-md-4 col-sm-12">
+                                    <div class="widget">
+                                        <h4 class="widget-title">About Us</h4>
+                                        <ul class="widget-body">
+                                            <li>
+                                                <a href="about-us.html">About Us</a>
+                                            </li>
+                                            <li>
+                                                <a href="#">Order History</a>
+                                            </li>
+                                            <li>
+                                                <a href="#">Returns</a>
+                                            </li>
+                                            <li>
+                                                <a href="#">Custom Service</a>
+                                            </li>
+                                            <li>
+                                                <a href="#">Terms &amp; Condition</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <!-- End Widget -->
+                                </div>
+                                <div class="col-md-4 col-sm-12">
+                                    <div class="widget">
+                                        <h4 class="widget-title">Customer Service</h4>
+                                        <ul class="widget-body">
+                                            <li>
+                                                <a href="#">Payment Methods</a>
+                                            </li>
+                                            <li>
+                                                <a href="#">Money-back Guarantee!</a>
+                                            </li>
+                                            <li>
+                                                <a href="#">Returns</a>
+                                            </li>
+                                            <li>
+                                                <a href="#">Custom Service</a>
+                                            </li>
+                                            <li>
+                                                <a href="#">Terms &amp; Conditions</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <!-- End Widget -->
+                                </div>
+                                <div class="col-md-4 col-sm-12">
+                                    <div class="widget mb-0">
+                                        <h4 class="widget-title">My Account</h4>
+                                        <ul class="widget-body">
+                                            <li>
+                                                <a href="#">Sign in</a>
+                                            </li>
+                                            <li>
+                                                <a href="cart.html">View Cart</a>
+                                            </li>
+                                            <li>
+                                                <a href="wishlist.html">My Wishlist</a>
+                                            </li>
+                                            <li>
+                                                <a href="#">Track My Order</a>
+                                            </li>
+                                            <li>
+                                                <a href="#">Help</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <!-- End Widget -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- End Footer Middle -->
+                <div class="footer-bottom">
+                    <div class="footer-left">
+                        <figure class="payment">
+                            <img src="images/payment.png" alt="payment" width="159" height="29" />
+                        </figure>
+                    </div>
+                    <div class="footer-center">
+                        <p class="copyright">Riode eCommerce &copy; 2021. All Rights Reserved</p>
+                    </div>
+                    <div class="footer-right">
+                        <div class="social-links">
+                            <a href="#" class="social-link social-facebook fab fa-facebook-f"></a>
+                            <a href="#" class="social-link social-twitter fab fa-twitter"></a>
+                            <a href="#" class="social-link social-linkedin fab fa-linkedin-in"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Footer Bottom -->
+        </footer>
+        <!-- End Footer -->
     </div>
-
-@endsection
+@endsection('content')
