@@ -84,8 +84,16 @@
                                 <div class="product text-center">
                                     <figure class="product-media">
                                         <a href="{{ route('products.show', $product->id) }}">
-                                            <img src="{{ $product->image ? asset('images/products/' . $product->image) : 'https://i.makeup.fr/i/i4/i4dfmpe8rxkj.png' }}" alt="{{ $product->name }}" width="300"
-                                                 height="338">
+{{--                                            @foreach ($product->getMedia('product-images') as $image)--}}
+{{--                                                <img src="{{ $image->getUrl() }}" alt="Product Image" class="img-fluid mb-3">--}}
+{{--                                            @endforeach--}}
+
+                                            @if ($product->getFirstMediaUrl('product-images'))
+                                                <img src="{{ $product->getFirstMediaUrl('product-images') }}" alt="{{ $product->name }}" width="300"
+                                                     height="338">
+                                            @else
+                                                <img src="https://i.makeup.fr/i/i4/i4dfmpe8rxkj.png" alt="Product Image">
+                                            @endif
                                             <img src="{{ $product->image ? asset('images/products/' . $product->image) : 'https://i.makeup.fr/i/i4/i4dfmpe8rxkj.png' }}" alt="{{ $product->name }}" width="300"
                                                  height="338">
                                         </a>
