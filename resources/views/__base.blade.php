@@ -40,7 +40,7 @@
         <link rel="stylesheet" type="text/css" href="{{ asset('vendor/template/sticky-icon/stickyicon.css')}}">
 
         <!-- Main CSS File -->
-        <link rel="stylesheet" type="text/css" href="{{ asset('css/demo-beauty.min.css')}}">
+        <link rel="stylesheet" type="text/css" href="{{ asset('css/demo34.min.css')}}">
     </head>
 
     <body class="home">
