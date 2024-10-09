@@ -26,4 +26,22 @@ class ShopController extends Controller
 
         return view('pages.shop_dikson', ['products' => $products]);
     }
+
+    public function cart()
+    {
+        $products = Product::whereHas('categories', function ($query) {
+            $query->where('name', 'dikson');
+        });
+
+        return view('pages.cart', ['products' => $products]);
+    }
+
+    public function checkout()
+    {
+        $products = Product::whereHas('categories', function ($query) {
+            $query->where('name', 'dikson');
+        });
+
+        return view('pages.checkout', ['products' => $products]);
+    }
 }

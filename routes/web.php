@@ -27,6 +27,10 @@ Route::get('/shop/muster', [ShopController::class, 'showMusterProducts'])->name(
 Route::get('/shop/dikson', [ShopController::class, 'showMusterProducts'])->name('shop.dikson');
 
 
+Route::get('/cart', [ShopController::class, 'cart'])->name('cart');
+Route::get('/checkout', [ShopController::class, 'checkout'])->name('checkout');
+
+
 Route::get('/testroute', function() {
     $name = "Funny Coder";
 
