@@ -131,23 +131,27 @@
                         @endforeach
 
                     </div>
+
+                    <h1>No product</h1>
+
+
                     <nav class="toolbox toolbox-pagination mb-1">
-                        <p class="toolbox-item show-info d-block mb-2 mb-sm-0">Showing 1–12 of 24 Products</p>
-                        <ul class="pagination">
-                            <li class="page-item disabled">
-                                <a class="page-link page-link-prev" href="#" aria-label="Previous" tabindex="-1"
-                                   aria-disabled="true">
-                                    <i class="d-icon-arrow-left"></i>Prev
-                                </a>
-                            </li>
-                            <li class="page-item active" aria-current="page"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item">
-                                <a class="page-link page-link-next" href="#" aria-label="Next">
-                                    Next<i class="d-icon-arrow-right"></i>
-                                </a>
-                            </li>
-                        </ul>
+{{--                        <p class="toolbox-item show-info d-block mb-2 mb-sm-0">Showing 1–12 of 24 Products</p>--}}
+{{--                        <ul class="pagination">--}}
+{{--                            <li class="page-item disabled">--}}
+{{--                                <a class="page-link page-link-prev" href="#" aria-label="Previous" tabindex="-1"--}}
+{{--                                   aria-disabled="true">--}}
+{{--                                    <i class="d-icon-arrow-left"></i>Prev--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
+{{--                            <li class="page-item active" aria-current="page"><a class="page-link" href="#">1</a></li>--}}
+{{--                            <li class="page-item"><a class="page-link" href="#">2</a></li>--}}
+{{--                            <li class="page-item">--}}
+{{--                                <a class="page-link page-link-next" href="#" aria-label="Next">--}}
+{{--                                    Next<i class="d-icon-arrow-right"></i>--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
+{{--                        </ul>--}}
                     </nav>
                 </div>
             </div>

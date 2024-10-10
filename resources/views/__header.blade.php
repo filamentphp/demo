@@ -44,7 +44,7 @@
                     </div>
                     <div class="icon-box-content d-lg-show">
                         <h4 class="icon-box-title text-white">Appelez-nous:</h4>
-                        <p class="text-white">++212 662-750030 </p>
+                        <p class="text-white">+212 662-750030 </p>
                     </div>
                 </a>
             </div>
@@ -139,9 +139,9 @@
                     <a href="#" class="cart-toggle label-block link">
                         <div class="cart-label d-lg-show">
                             <span class="cart-name">Mon Panier:</span>
-                            <span class="cart-price">$42.00</span>
+                            <span class="cart-price"></span>
                         </div>
-                        <i class="d-icon-bag"><span class="cart-count">2</span></i>
+                        <i class="d-icon-bag"><span class="cart-count">0</span></i>
                     </a>
                     <div class="canvas-overlay"></div>
                     <!-- End Cart Toggle -->
@@ -223,61 +223,32 @@
                         </li>
                         <li>
                             <a href="demo34-shop.html">Categories</a>
-                            <ul>
-                                <li>
-                                    <a href="#">
-                                        Variations 1
-                                    </a>
-                                    <ul>
-                                        <li><a href="shop-classic-filter.html">Classic Filter</a></li>
-                                        <li><a href="shop-left-toggle-sidebar.html">Left Toggle Filter</a></li>
-                                        <li><a href="shop-right-toggle-sidebar.html">Right Toggle Sidebar</a></li>
-                                        <li><a href="shop-horizontal-filter.html">Horizontal Filter </a>
-                                        </li>
-                                        <li><a href="shop-navigation-filter.html">Navigation Filter</a></li>
-
-                                        <li><a href="shop-off-canvas-filter.html">Off-Canvas Filter </a></li>
-                                        <li><a href="shop-top-banner.html">Top Banner</a></li>
-                                        <li><a href="shop-inner-top-banner.html">Inner Top Banner</a></li>
-                                        <li><a href="shop-with-bottom-block.html">With Bottom Block</a></li>
-                                        <li><a href="shop-category-in-page-header.html">Category In Page Header</a>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        Variations 2
-                                    </a>
-                                    <ul>
-                                        <li><a href="shop-grid-3cols.html">3 Columns Mode</a></li>
-                                        <li><a href="shop-grid-4cols.html">4 Columns Mode</a></li>
-                                        <li><a href="shop-grid-5cols.html">5 Columns Mode</a></li>
-                                        <li><a href="shop-grid-6cols.html">6 Columns Mode</a></li>
-                                        <li><a href="shop-grid-7cols.html">7 Columns Mode</a></li>
-                                        <li><a href="shop-grid-8cols.html">8 Columns Mode</a></li>
-                                        <li><a href="shop-list-mode.html">List Mode</a></li>
-                                        <li><a href="shop-pagination.html">Pagination</a></li>
-                                        <li><a href="shop-infinite-ajaxscroll.html">Infinite Ajaxscroll </a></li>
-                                        <li><a href="shop-loadmore-button.html">Loadmore Button</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        Variations 3
-                                    </a>
-                                    <ul>
-                                        <li><a href="shop-category-grid-shop.html">Category Grid Shop</a></li>
-                                        <li><a href="shop-category+products.html">Category + Products</a></li>
-                                        <li><a href="shop-default-1.html">Shop Default 1 </a></li>
-                                        <li><a href="shop-default-2.html">Shop Default 2</a></li>
-                                        <li><a href="shop-default-3.html">Shop Default 3</a></li>
-                                        <li><a href="shop-default-4.html">Shop Default 4</a></li>
-                                        <li><a href="shop-default-5.html">Shop Default 5</a></li>
-                                        <li><a href="shop-default-6.html">Shop Default 6</a></li>
-                                        <li><a href="shop-default-7.html">Shop Default 7</a></li>
-                                        <li><a href="shop-default-8.html">Shop Default 8</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
+                            <div class="megamenu">
+                                <div class="row">
+                                    <div class="col-6 col-sm-6 col-md-6 col-lg-3">
+                                        <h4 class="menu-title">Muster</h4>
+                                    </div>
+                                    <div class="col-6 col-sm-6 col-md-6 col-lg-3">
+                                        <h4 class="menu-title">Dikson</h4>
+                                    </div>
+                                    <div
+                                        class="col-6 col-sm-4 col-md-4 col-lg-3 menu-banner menu-banner1 banner banner-fixed">
+                                        <figure>
+                                            <img src="{{asset('images/front/menu1.png')}}" alt="Menu banner" width="221"
+                                                 height="330" />
+                                        </figure>
+                                        <div class="banner-content y-50">
+{{--                                            <h4 class="banner-subtitle font-weight-bold text-primary ls-m">Sale.--}}
+{{--                                            </h4>--}}
+{{--                                            <h3 class="banner-title font-weight-bold"><span--}}
+{{--                                                    class="text-uppercase">Up to</span>70% Off</h3>--}}
+{{--                                            <a href="#" class="btn btn-link btn-underline">shop now<i--}}
+{{--                                                    class="d-icon-arrow-right"></i></a>--}}
+                                        </div>
+                                    </div>
+                                    <!-- End Megamenu -->
+                                </div>
+                            </div>
                         </li>
                     </ul>
                 </nav>

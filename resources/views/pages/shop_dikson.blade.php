@@ -7,12 +7,12 @@
         <main class="main">
             <div class="page-header"
                  style="background-image: url('images/demos/demo-beauty/page-header.jpg'); background-color: #ECEDF1;">
-                <h1 class="page-title font-weight-bold text-dark">Muster Shop</h1>
+                <h1 class="page-title font-weight-bold text-dark">Dikson Shop</h1>
                 <ul class="breadcrumb pb-0">
                     <li class="text-dark"><a href="demo-beauty.html" class="text-dark"><i class="d-icon-home"></i></a>
                     </li>
                     <li class="delimiter text-dark">/</li>
-                    <li class="text-dark">Muster Shop</li>
+                    <li class="text-dark">Dikson Shop</li>
                 </ul>
             </div>
             <!-- End PageHeader -->
@@ -124,7 +124,7 @@
 
                     </div>
                     <nav class="toolbox toolbox-pagination mb-1">
-                        <p class="toolbox-item show-info d-block mb-2 mb-sm-0">Showing 1–12 of 24 Products</p>
+{{--                        <p class="toolbox-item show-info d-block mb-2 mb-sm-0">Showing 1–12 of 24 Products</p>--}}
                         <ul class="pagination">
                             <li class="page-item disabled">
                                 <a class="page-link page-link-prev" href="#" aria-label="Previous" tabindex="-1"
