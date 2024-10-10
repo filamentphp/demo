@@ -132,8 +132,6 @@
 
                     </div>
 
-                    <h1>No product</h1>
-
 
                     <nav class="toolbox toolbox-pagination mb-1">
 {{--                        <p class="toolbox-item show-info d-block mb-2 mb-sm-0">Showing 1–12 of 24 Products</p>--}}
