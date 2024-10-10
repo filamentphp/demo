@@ -4,21 +4,22 @@
             <div class="row">
                 <div class="col-lg-4 col-md-12">
                     <div class="widget widget-about pl-0">
-                        <a href="demo34.html" class="logo-footer">
-                            <img src="images/demos/demo34/logo.png" alt="logo-footer" width="154" height="43" />
+                        <a href="{{assert("images/payment.png")}}" class="logo-footer">
+                            <img src="{{asset("images/logo/logo-muster-dickson.jpg")}}" alt="logo-footer" width="154" height="43" />
                         </a>
                         <div class="widget-body">
-                            <p>Fringilla urna porttitor rhoncus dolor purus luctus <br> venenatis lectus magna
-                                fringilla diam maecenas <br> ultricies mi eget mauris.
+                            <p>Une entreprise dynamique depuis plus de 50 ans au service permanent du coiffeur et de l'esthéticienne,
+                                qui étudie, produit et agit pour offrir un service toujours meilleur  et une gamme de produits de
+                                qualité supérieure. <br>
                             </p>
-                            <a href="mailto:mail@example.com">Riode@example.com</a>
+                            <a href="mailto:mail@example.com">contact@muster-dikson.com/</a>
                         </div>
                     </div>
                     <!-- End Widget -->
                 </div>
                 <div class="col-lg-8 col-md-12">
                     <div class="row">
-                        <div class="col-md-4 col-sm-12">
+                        <div class="col-md-6 col-sm-12">
                             <div class="widget">
                                 <h4 class="widget-title">About Us</h4>
                                 <ul class="widget-body">
@@ -41,7 +42,7 @@
                             </div>
                             <!-- End Widget -->
                         </div>
-                        <div class="col-md-4 col-sm-12">
+                        <div class="col-md-6 col-sm-12">
                             <div class="widget">
                                 <h4 class="widget-title">Customer Service</h4>
                                 <ul class="widget-body">
@@ -64,29 +65,7 @@
                             </div>
                             <!-- End Widget -->
                         </div>
-                        <div class="col-md-4 col-sm-12">
-                            <div class="widget">
-                                <h4 class="widget-title">My Account</h4>
-                                <ul class="widget-body">
-                                    <li>
-                                        <a href="#">Sign in</a>
-                                    </li>
-                                    <li>
-                                        <a href="{{route('cart.show')}}">View Cart</a>
-                                    </li>
-                                    <li>
-                                        <a href="wishlist.html">My Wishlist</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Track My Order</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Help</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <!-- End Widget -->
-                        </div>
+
                     </div>
                 </div>
 

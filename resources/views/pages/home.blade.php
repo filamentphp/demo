@@ -44,7 +44,7 @@
 {{--                                    <p class="banner-desc font-weight-normal lh-1 mb-8">--}}
 {{--                                        <strong class="text-primary text-uppercase">Up To 10% Off</strong>--}}
 {{--                                    </p>--}}
-                                    <a href="{{asset('shop.dikson')}}" class="btn btn-rounded btn-dark">Shop now<i
+                                    <a href="{{route('shop.dikson')}}" class="btn btn-rounded btn-dark">Shop now<i
                                             class="d-icon-arrow-right"></i></a>
                                 </div>
                             </div>
