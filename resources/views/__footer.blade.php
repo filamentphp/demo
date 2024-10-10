@@ -72,7 +72,7 @@
                                         <a href="#">Sign in</a>
                                     </li>
                                     <li>
-                                        <a href="cart.html">View Cart</a>
+                                        <a href="{{route('cart.show')}}">View Cart</a>
                                     </li>
                                     <li>
                                         <a href="wishlist.html">My Wishlist</a>

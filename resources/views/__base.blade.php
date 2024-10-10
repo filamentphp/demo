@@ -54,6 +54,9 @@
         @include('__footer')
 
         @include('__libsjs')
+
+        @yield('scripts')
+
     </body>
 
 </html>

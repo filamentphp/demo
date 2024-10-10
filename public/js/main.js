@@ -1969,7 +1969,7 @@ window.Riode = {};
                         imageLink: $product.find('.product-name > a').attr('href'),
                         price: $product.find('.product-variation-price').length > 0 ? $product.find('.product-variation-price').children('span').html() : $product.find('.product-price .price').html(),
                         count: $product.find('.quantity').val(),
-                        actionTemplate: '<div class="action-group d-flex mt-3">a href="/checkout" class="btn btn-sm btn-primary btn-rounded">Check Out</a></div>'
+                        actionTemplate: '<div class="action-group d-flex mt-3"><a href="/checkout" class="btn btn-sm btn-primary btn-rounded">Check Out</a></div>'
                     });
                 }
             });

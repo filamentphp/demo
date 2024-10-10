@@ -31,6 +31,20 @@ class Order extends Model
         'shipping_price',
         'shipping_method',
         'notes',
+        'first_name',
+        'last_name',
+        'company_name',
+        'country',
+        'address1',
+        'address2',
+        'city',
+        'state',
+        'zip',
+        'phone',
+        'email',
+        'order_notes',
+        'create_account',
+        'different_address',
     ];
 
     protected $casts = [
