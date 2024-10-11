@@ -23,13 +23,12 @@
                                     <div class="product-thumbs">
                                         <div class="product-thumb active">
                                             @foreach($product->getMedia('product-images') as $media)
-                                                <img src="{{ $media->getUrl() }}" alt="Product Image">
+                                                @if ($media->getUrl())
+                                                    <img src="{{ $media->getUrl() }}" alt="{{ $product->name }}" width="150" height="169">
+                                                @else
+                                                    <img src="https://i.makeup.fr/i/i4/i4dfmpe8rxkj.png" alt="Product Image">
+                                                @endif
                                             @endforeach
-                                            @if ($product->getFirstMediaUrl('product-images'))
-                                                <img src="{{ $product->getFirstMediaUrl('product-images') }}" alt="{{ $product->name }}" width="150" height="169">
-                                            @else
-                                                <img src="https://i.makeup.fr/i/i4/i4dfmpe8rxkj.png" alt="Product Image">
-                                            @endif
                                         </div>
                                     </div>
                                     <button class="thumb-up disabled"><i class="fas fa-chevron-left"></i></button>
