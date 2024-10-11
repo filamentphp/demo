@@ -91,7 +91,7 @@
                                             @if ($product->getFirstMediaUrl('product-images'))
                                                 <img src="{{ $product->getFirstMediaUrl('product-images') }}" alt="{{ $product->name }}" width="300"
                                                      height="338">
-                                                <img src="src={{ $product->getFirstMediaUrl('product-images') }}" alt="{{ $product->name }}" width="300"
+                                                <img src="{{ $product->getFirstMediaUrl('product-images') }}" alt="{{ $product->name }}" width="300"
                                                      height="338">
                                             @endif
 
