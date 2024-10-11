@@ -14,7 +14,7 @@
 
                                     @foreach($product->getMedia('product-images') as $media)
                                         @if ($media->getUrl())
-                                            <figure class="product-image" style="width: 450px; height: 550px; overflow: hidden;">
+                                            <figure class="product-image" style="width: auto; height: 550px; overflow: hidden;">
                                                 <img src="{{ $media->getUrl() }}" alt="{{ $product->name }}" style="width: 100%; height: 100%; object-fit: contain;">
                                             </figure>
                                         @endif
