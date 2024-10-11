@@ -12,7 +12,7 @@
                             <div class="product-gallery product-gallery-sticky mb-lg-9 mb-4">
                                 <div class="product-single-carousel owl-carousel owl-theme owl-nav-inner row cols-1">
                                     <figure class="product-image">
-                                        {{dump($product->image )}}
+                                        {{dump($product->images )}}
                                         <img src="https://muster-dikson.com/images/product/8/0/2/5/8025_default.jpg"
 {{--                                             data-zoom-image="https://muster-dikson.com/images/product/8/0/2/5/8025_default.jpg"--}}
                                              alt="Women's Brown Leather Backpacks" width="600" height="675">
