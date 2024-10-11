@@ -11,20 +11,21 @@
                         <div class="col-md-6">
                             <div class="product-gallery product-gallery-sticky mb-lg-9 mb-4">
                                 <div class="product-single-carousel owl-carousel owl-theme owl-nav-inner row cols-1">
-                                    <figure class="product-image">
-                                        @if ($product->getFirstMediaUrl('product-images'))
-                                            <img src="{{ $product->getFirstMediaUrl('product-images') }}" alt="{{ $product->name }}"  width="600" height="675">
+
+                                    @foreach($product->getMedia('product-images') as $media)
+                                        @if ($media->getUrl())
+                                            <figure class="product-image">
+                                                <img src="{{ $media->getUrl() }}" alt="{{ $product->name }}"
+                                                      width="800" height="900">
+                                            </figure>
                                         @else
-                                            <img src="https://i.makeup.fr/i/i4/i4dfmpe8rxkj.png" alt="Product Image">
+                                            <img src="https://i.makeup.fr/i/i4/i4dfmpe8rxkj.png"  width="800" height="900">
                                         @endif
-                                    </figure>
+                                    @endforeach
+
                                 </div>
                                 <div class="product-thumbs-wrap">
                                     <div class="product-thumbs">
-                                        <div class="product-thumb active">
-                                            <img src="images/product/product-2-1-109x122.jpg" alt="product thumbnail"
-                                                 width="109" height="122">
-                                        </div>
                                         @foreach($product->getMedia('product-images') as $media)
                                             @if ($media->getUrl())
                                                 <div class="product-thumb {{ $loop->first ? 'active' : '' }}">
@@ -34,7 +35,6 @@
                                                 <img src="https://i.makeup.fr/i/i4/i4dfmpe8rxkj.png" alt="Product Image">
                                             @endif
                                         @endforeach
-
                                     </div>
                                     <button class="thumb-up disabled"><i class="fas fa-chevron-left"></i></button>
                                     <button class="thumb-down disabled"><i class="fas fa-chevron-right"></i></button>
