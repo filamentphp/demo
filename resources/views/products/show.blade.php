@@ -67,7 +67,12 @@
                                 <h1 class="product-name">{{ $product->name }}</h1>
                                 <div class="product-meta">
                                     SKU: <span class="product-sku">{{ $product->sku }}</span>
-                                    BRAND: <span class="product-brand">{{ $product->brand->name }}</span>
+                                    @if(isset($product->brand->name))
+                                        BRAND: <span class="product-brand">  {{ $product->brand->name }}
+                                        @else
+                                            No brand available
+                                        @endif
+                                    </span>
                                 </div>
                                 <div class="product-price">{{ $product->price }} MAD</div>
                                 <div class="ratings-container">
