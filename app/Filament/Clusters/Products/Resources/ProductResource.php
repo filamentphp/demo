@@ -75,6 +75,10 @@ class ProductResource extends Resource
                                     ->multiple()
                                     ->maxFiles(10)
                                     ->maxSize(5024)
+                                    ->imageResizeMode('cover')
+                                    ->imageCropAspectRatio('16:9')
+                                    ->imageResizeTargetWidth('1920')
+                                    ->imageResizeTargetHeight('1080')
                                     ->hiddenLabel(),
                             ])
                             ->collapsible(),
