@@ -91,11 +91,10 @@
                                             @if ($product->getFirstMediaUrl('product-images'))
                                                 <img src="{{ $product->getFirstMediaUrl('product-images') }}" alt="{{ $product->name }}" width="300"
                                                      height="338">
-                                            @else
-                                                <img src="https://i.makeup.fr/i/i4/i4dfmpe8rxkj.png" alt="Product Image">
+                                                <img src="src={{ $product->getFirstMediaUrl('product-images') }}" alt="{{ $product->name }}" width="300"
+                                                     height="338">
                                             @endif
-                                            <img src="{{ $product->image ? asset('images/products/' . $product->image) : 'https://i.makeup.fr/i/i4/i4dfmpe8rxkj.png' }}" alt="{{ $product->name }}" width="300"
-                                                 height="338">
+
                                         </a>
                                         <div class="product-action-vertical">
                                             <a href="#" class="btn-product-icon btn-cart" title="Select Options">
