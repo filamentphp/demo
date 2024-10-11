@@ -12,6 +12,7 @@
                             <div class="product-gallery product-gallery-sticky mb-lg-9 mb-4">
                                 <div class="product-single-carousel owl-carousel owl-theme owl-nav-inner row cols-1">
                                     <figure class="product-image">
+                                        {{dump($product->image )}}
                                         <img src="https://muster-dikson.com/images/product/8/0/2/5/8025_default.jpg"
 {{--                                             data-zoom-image="https://muster-dikson.com/images/product/8/0/2/5/8025_default.jpg"--}}
                                              alt="Women's Brown Leather Backpacks" width="600" height="675">
@@ -45,10 +46,10 @@
                                             <a href="#">
                                                 <i class="d-icon-arrow-left"></i> Prev
                                                 <span class="product-nav-popup">
-{{--                    <img src="images/product/product-thumb-prev.jpg"--}}
-{{--                         alt="product thumbnail" width="110" height="123">--}}
-                    <span class="product-name">Sed egtas Dnte Comfort</span>
-                </span>
+                                {{--                    <img src="images/product/product-thumb-prev.jpg"--}}
+                                {{--                         alt="product thumbnail" width="110" height="123">--}}
+                                                    <span class="product-name">Sed egtas Dnte Comfort</span>
+                                                </span>
                                             </a>
                                         </li>
                                         <li class="product-nav-next">
@@ -69,9 +70,7 @@
                                     SKU: <span class="product-sku">{{ $product->sku }}</span>
                                     @if(isset($product->brand->name))
                                         BRAND: <span class="product-brand">  {{ $product->brand->name }}
-                                        @else
-                                            No brand available
-                                        @endif
+                                    @endif
                                     </span>
                                 </div>
                                 <div class="product-price">{{ $product->price }} MAD</div>
