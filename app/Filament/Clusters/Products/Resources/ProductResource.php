@@ -74,7 +74,6 @@ class ProductResource extends Resource
                                     ->collection('product-images')
                                     ->multiple()
                                     ->maxFiles(10)
-                                    ->minSize(512)
                                     ->maxSize(5024)
                                     ->hiddenLabel(),
                             ])
