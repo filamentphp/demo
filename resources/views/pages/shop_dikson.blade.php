@@ -104,10 +104,10 @@
                                             <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"><i
                                                     class="d-icon-heart"></i></a>
                                         </div>
-                                        <div class="product-action">
-                                            <a href="#" class="btn-product btn-quickview" title="Quick View">Quick
-                                                View</a>
-                                        </div>
+{{--                                        <div class="product-action">--}}
+{{--                                            <a href="#" class="btn-product btn-quickview" title="Quick View">Quick--}}
+{{--                                                View</a>--}}
+{{--                                        </div>--}}
                                     </figure>
                                     <div class="product-details">
                                         <h3 class="product-name">
