@@ -22,7 +22,9 @@
                                 <div class="product-thumbs-wrap">
                                     <div class="product-thumbs">
                                         <div class="product-thumb active">
-                                            {{dump($product->getMedia('product-images')->getItems())}}
+                                            @foreach($product->getMedia('product-images') as $media)
+                                                <img src="{{ $media->getUrl() }}" alt="Product Image">
+                                            @endforeach
                                             @if ($product->getFirstMediaUrl('product-images'))
                                                 <img src="{{ $product->getFirstMediaUrl('product-images') }}" alt="{{ $product->name }}" width="150" height="169">
                                             @else
