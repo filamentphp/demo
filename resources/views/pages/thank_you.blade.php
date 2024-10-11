@@ -1,4 +1,4 @@
-@extends('.__base')
+@extends('.__base_main')
 
 @section('content')
 
