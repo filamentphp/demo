@@ -49,7 +49,7 @@
                 </a>
             </div>
             <div class="header-center">
-                <a href="demo34.html" class="logo">
+                <a href="{{route('index')}}" class="logo">
                     <img src="{{asset('images/logo/logo-muster-dickson.jpg')}}" alt="logo-muster-dickson" width="187" height="75" />
                 </a>
                 <!-- End Header Search -->
@@ -219,10 +219,10 @@
                 <nav class="main-nav">
                     <ul class="menu">
                         <li class="active">
-                            <a href="demo34.html">Home</a>
+                            <a href="{{route('index')}}">Home</a>
                         </li>
                         <li>
-                            <a href="demo34-shop.html">Categories</a>
+                            <a href="{{route('index')}}">Categories</a>
                             <div class="megamenu">
                                 <div class="row">
                                     <div class="col-6 col-sm-6 col-md-6 col-lg-3">

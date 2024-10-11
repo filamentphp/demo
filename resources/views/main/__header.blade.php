@@ -5,31 +5,12 @@
 {{--                <p class="welcome-msg">Welcome to Riode store message or remove it!</p>--}}
 {{--            </div>--}}
             <div class="header-right">
-                <div class="dropdown">
-                    <a href="#currency">USD</a>
-                    <ul class="dropdown-box">
-                        <li><a href="#USD">USD</a></li>
-                        <li><a href="#EUR">EUR</a></li>
-                    </ul>
-                </div>
-                <!-- End DropDown Menu -->
-                <div class="dropdown ml-5">
-                    <a href="#language">ENG</a>
-                    <ul class="dropdown-box">
-                        <li>
-                            <a href="#USD">ENG</a>
-                        </li>
-                        <li>
-                            <a href="#EUR">FRH</a>
-                        </li>
-                    </ul>
-                </div>
                 <!-- End DropDown Menu -->
                 <span class="divider"></span>
-                <a href="contact-us.html" class="contact d-lg-show"><i class="d-icon-map"></i>Contact</a>
-                <a href="#" class="help d-lg-show"><i class="d-icon-info"></i> Need Help</a>
-                <a class="login-link" href="ajax/login.html" data-toggle="login-modal"><i
-                        class="d-icon-user"></i>Sign in</a>
+                <a href="{{route('contact')}}" class="contact d-lg-show"><i class="d-icon-map"></i>Contact</a>
+{{--                <a href="#" class="help d-lg-show"><i class="d-icon-info"></i> Need Help</a>--}}
+{{--                <a class="login-link" href="ajax/login.html" data-toggle="login-modal"><i--}}
+{{--                        class="d-icon-user"></i>Sign in</a>--}}
                 <span class="delimiter">/</span>
                 <a class="register-link ml-0" href="ajax/login.html" data-toggle="login-modal">Register</a>
                 <!-- End of Login -->
@@ -65,83 +46,83 @@
                         <i class="d-icon-phone"></i>
                     </div>
                     <div class="icon-box-content d-lg-show">
-                        <h4 class="icon-box-title">Call Us Now:</h4>
-                        <p>0(800) 123-456</p>
+                        <h4 class="icon-box-title">Appelez-nous:</h4>
+                        <p>+212 662-750030</p>
                     </div>
                 </a>
                 <span class="divider"></span>
                 <div class="dropdown wishlist wishlist-dropdown off-canvas">
-                    <a href="wishlist.html" class="wishlist-toggle">
-                        <i class="d-icon-heart"></i>
-                    </a>
+{{--                    <a href="wishlist.html" class="wishlist-toggle">--}}
+{{--                        <i class="d-icon-heart"></i>--}}
+{{--                    </a>--}}
                     <div class="canvas-overlay"></div>
                     <!-- End Wishlist Toggle -->
                     <div class="dropdown-box scrollable">
-                        <div class="canvas-header">
-                            <h4 class="canvas-title">wishlist</h4>
-                            <a href="#" class="btn btn-dark btn-link btn-icon-right btn-close">close<i
-                                    class="d-icon-arrow-right"></i><span class="sr-only">wishlist</span></a>
-                        </div>
-                        <div class="products scrollable">
-                            <div class="product product-wishlist">
-                                <figure class="product-media">
-                                    <a href="product.html">
-                                        <img src="images/wishlist/product-1.jpg" width="100" height="100"
-                                             alt="product" />
-                                    </a>
-                                    <button class="btn btn-link btn-close">
-                                        <i class="fas fa-times"></i><span class="sr-only">Close</span>
-                                    </button>
-                                </figure>
-                                <div class="product-detail">
-                                    <a href="product.html" class="product-name">Girl's Dark Bag</a>
-                                    <div class="price-box">
-                                        <span class="product-price">$84.00</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End of wishlist Product -->
-                            <div class="product product-wishlist">
-                                <figure class="product-media">
-                                    <a href="product.html">
-                                        <img src="images/wishlist/product-2.jpg" width="100" height="100"
-                                             alt="product" />
-                                    </a>
-                                    <button class="btn btn-link btn-close">
-                                        <i class="fas fa-times"></i><span class="sr-only">Close</span>
-                                    </button>
-                                </figure>
-                                <div class="product-detail">
-                                    <a href="product.html" class="product-name">Women's Fashional Comforter
-                                    </a>
-                                    <div class="price-box">
-                                        <span class="product-price">$84.00</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End of wishlist Product -->
-                            <div class="product product-wishlist">
-                                <figure class="product-media">
-                                    <a href="product.html">
-                                        <img src="images/wishlist/product-3.jpg" width="100" height="100"
-                                             alt="product" />
-                                    </a>
-                                    <button class="btn btn-link btn-close">
-                                        <i class="fas fa-times"></i><span class="sr-only">Close</span>
-                                    </button>
-                                </figure>
-                                <div class="product-detail">
-                                    <a href="product.html" class="product-name">Wide Knickerbockers</a>
-                                    <div class="price-box">
-                                        <span class="product-price">$84.00</span>
-                                    </div>
-                                </div>
-                            </div>
+{{--                        <div class="canvas-header">--}}
+{{--                            <h4 class="canvas-title">wishlist</h4>--}}
+{{--                            <a href="#" class="btn btn-dark btn-link btn-icon-right btn-close">close<i--}}
+{{--                                    class="d-icon-arrow-right"></i><span class="sr-only">wishlist</span></a>--}}
+{{--                        </div>--}}
+{{--                        <div class="products scrollable">--}}
+{{--                            <div class="product product-wishlist">--}}
+{{--                                <figure class="product-media">--}}
+{{--                                    <a href="product.html">--}}
+{{--                                        <img src="images/wishlist/product-1.jpg" width="100" height="100"--}}
+{{--                                             alt="product" />--}}
+{{--                                    </a>--}}
+{{--                                    <button class="btn btn-link btn-close">--}}
+{{--                                        <i class="fas fa-times"></i><span class="sr-only">Close</span>--}}
+{{--                                    </button>--}}
+{{--                                </figure>--}}
+{{--                                <div class="product-detail">--}}
+{{--                                    <a href="product.html" class="product-name">Girl's Dark Bag</a>--}}
+{{--                                    <div class="price-box">--}}
+{{--                                        <span class="product-price">$84.00</span>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                            <!-- End of wishlist Product -->--}}
+{{--                            <div class="product product-wishlist">--}}
+{{--                                <figure class="product-media">--}}
+{{--                                    <a href="product.html">--}}
+{{--                                        <img src="images/wishlist/product-2.jpg" width="100" height="100"--}}
+{{--                                             alt="product" />--}}
+{{--                                    </a>--}}
+{{--                                    <button class="btn btn-link btn-close">--}}
+{{--                                        <i class="fas fa-times"></i><span class="sr-only">Close</span>--}}
+{{--                                    </button>--}}
+{{--                                </figure>--}}
+{{--                                <div class="product-detail">--}}
+{{--                                    <a href="product.html" class="product-name">Women's Fashional Comforter--}}
+{{--                                    </a>--}}
+{{--                                    <div class="price-box">--}}
+{{--                                        <span class="product-price">$84.00</span>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                            <!-- End of wishlist Product -->--}}
+{{--                            <div class="product product-wishlist">--}}
+{{--                                <figure class="product-media">--}}
+{{--                                    <a href="product.html">--}}
+{{--                                        <img src="images/wishlist/product-3.jpg" width="100" height="100"--}}
+{{--                                             alt="product" />--}}
+{{--                                    </a>--}}
+{{--                                    <button class="btn btn-link btn-close">--}}
+{{--                                        <i class="fas fa-times"></i><span class="sr-only">Close</span>--}}
+{{--                                    </button>--}}
+{{--                                </figure>--}}
+{{--                                <div class="product-detail">--}}
+{{--                                    <a href="product.html" class="product-name">Wide Knickerbockers</a>--}}
+{{--                                    <div class="price-box">--}}
+{{--                                        <span class="product-price">$84.00</span>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
 
-                            <!-- End of wishlist Product -->
-                        </div>
-                        <a href="wishlist.html" class="btn btn-dark wishlist-btn mt-4"><span>Go To
-                                        Wishlist</span></a>
+{{--                            <!-- End of wishlist Product -->--}}
+{{--                        </div>--}}
+{{--                        <a href="wishlist.html" class="btn btn-dark wishlist-btn mt-4"><span>Go To--}}
+{{--                                        Wishlist</span></a>--}}
                         <!-- End of Products  -->
                     </div>
                     <!-- End Dropdown Box -->
@@ -153,7 +134,7 @@
                             <span class="cart-name">Shopping Cart:</span>
                             <span class="cart-price">$0.00</span>
                         </div>
-                        <i class="d-icon-bag"><span class="cart-count">2</span></i>
+                        <i class="d-icon-bag"><span class="cart-count">0</span></i>
                     </a>
                     <div class="canvas-overlay"></div>
                     <!-- End Cart Toggle -->
@@ -302,10 +283,6 @@
 
                     </ul>
                 </nav>
-            </div>
-            <div class="header-right">
-                <a href="#"><i class="d-icon-card"></i>Special Offers</a>
-                <a href="https://d-themes.com/buynow/riodehtml" class="ml-6">Buy Riode!</a>
             </div>
         </div>
     </div>
