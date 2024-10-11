@@ -119,7 +119,7 @@
                                             Chefs-d'œuvre pour les coiffeurs</h4>
                                         <h3 class="banner-title text-black font-weight-bold ls-normal lg-1">Ciseaux professionnels Müster</h3>
 {{--                                        <p class="banner-desc text-white">Free shipping on all orders over $99.00</p>--}}
-                                        <a href="{{ asset('pdfs/muster_scissors.pdf') }}" class="btn btn-white btn-rounded text-uppercase">Voir plus<i class="d-icon-arrow-right"></i></a>
+                                        <a href="{{ asset('pdf/muster_scissors.pdf') }}" class="btn btn-white btn-rounded text-uppercase">Voir plus<i class="d-icon-arrow-right"></i></a>
                                     </div>
                                 </div>
                             </div>
