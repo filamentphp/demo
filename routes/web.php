@@ -38,7 +38,7 @@ Route::post('/cart/update', [CartController::class, 'updateQuantity'])->name('ca
 
 
 Route::get('/checkout', [CartController::class, 'checkout'])->name('checkout');
-Route::get('/thankyou', [ShopController::class, 'thankyou'])->name('thankyou');
+Route::get('/thankyou', [ShopController::class, 'tahnkyou'])->name('thankyou');
 
 Route::post('/place-order', [ShopController::class, 'store'])->name('order.store');
 
