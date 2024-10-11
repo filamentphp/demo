@@ -25,7 +25,7 @@
                     <i class="d-icon-bars2"></i>
                 </a>
                 <a href="{{route('index')}}" class="logo">
-                    <img src="{{asset('images/logo/logo-muster-dickson.jpg')}}" alt="logo-muster-dickson" width="197" height="85" />
+                    <img src="{{asset('images/logo/logo.jpg')}}" alt="logo-muster-dickson" width="197" height="85" />
                 </a>
                 <!-- End Logo -->
 

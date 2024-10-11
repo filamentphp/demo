@@ -50,7 +50,7 @@
             </div>
             <div class="header-center">
                 <a href="{{route('index')}}" class="logo">
-                    <img src="{{asset('images/logo/logo-muster-dickson.jpg')}}" alt="logo-muster-dickson" width="187" height="75" />
+                    <img src="{{asset('images/logo/logo.jpg')}}" alt="logo-muster-dickson" width="187" height="75" />
                 </a>
                 <!-- End Header Search -->
             </div>
