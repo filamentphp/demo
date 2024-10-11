@@ -27,7 +27,7 @@
                                 <tr data-id="{{ $item->id }}">
                                     <td class="product-thumbnail">
                                         <figure>
-                                            <img src="https://muster-dikson.com/images/product/8/0/2/5/8025_default.jpg" width="100" height="100" alt="product">
+                                            <img src="{{ $item->product->getFirstMediaUrl('product-images')}}" width="100" height="100" alt="{{$item->product->name}}">
                                         </figure>
                                     </td>
                                     <td class="product-name">
@@ -35,7 +35,7 @@
                                             <a href="#">{{ $item->product->name }}</a>
                                         </div>
                                     </td>
-                                    <td class="product-price">${{ $item->product->price }}</td>
+                                    <td class="product-price">{{ $item->product->price }} MAD</td>
                                     <td class="product-quantity">
                                         <div class="input-group">
 {{--                                            <button class="quantity-minus d-icon-minus"></button>--}}
