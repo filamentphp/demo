@@ -28,7 +28,7 @@
 {{--                                        <strong class="text-primary text-uppercase">Up To 10% Off</strong>--}}
                                         Transformez Votre Routine Beauté !
                                     </p>
-                                    <a href="{{asset('shop.muster')}}" class="btn btn-rounded btn-dark">Shop now<i
+                                    <a href="{{route('shop.muster')}}" class="btn btn-rounded btn-dark">Shop now<i
                                             class="d-icon-arrow-right"></i></a>
                                 </div>
                             </div>
