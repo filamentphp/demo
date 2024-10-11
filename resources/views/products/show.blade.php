@@ -22,8 +22,11 @@
                                 <div class="product-thumbs-wrap">
                                     <div class="product-thumbs">
                                         <div class="product-thumb active">
-                                            <img src="https://muster-dikson.com/images/product/8/0/2/5/8025_default.jpg" alt="product thumbnail"
-                                                 width="150" height="169">
+                                            @if ($product->getFirstMediaUrl('product-images'))
+                                                <img src="{{ $product->getFirstMediaUrl('product-images') }}" alt="{{ $product->name }}" width="150" height="169">
+                                            @else
+                                                <img src="https://i.makeup.fr/i/i4/i4dfmpe8rxkj.png" alt="Product Image">
+                                            @endif
                                         </div>
                                     </div>
                                     <button class="thumb-up disabled"><i class="fas fa-chevron-left"></i></button>
