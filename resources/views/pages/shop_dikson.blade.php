@@ -77,6 +77,7 @@
                     <div class="select-items">
                         <a href="#" class="filter-clean text-primary">Clean All</a>
                     </div>
+
                     <div class="row cols-2 cols-sm-3 cols-md-4 product-wrapper">
 
                         @foreach($products as $product)
@@ -84,10 +85,17 @@
                                 <div class="product text-center">
                                     <figure class="product-media">
                                         <a href="{{ route('products.show', $product->id) }}">
-                                            <img src="{{ $product->image ? asset('images/products/' . $product->image) : 'https://i.makeup.fr/i/i4/i4dfmpe8rxkj.png' }}" alt="{{ $product->name }}" width="300"
-                                                 height="338">
-                                            <img src="{{ $product->image ? asset('images/products/' . $product->image) : 'https://i.makeup.fr/i/i4/i4dfmpe8rxkj.png' }}" alt="{{ $product->name }}" width="300"
-                                                 height="338">
+                                            {{--                                            @foreach ($product->getMedia('product-images') as $image)--}}
+                                            {{--                                                <img src="{{ $image->getUrl() }}" alt="Product Image" class="img-fluid mb-3">--}}
+                                            {{--                                            @endforeach--}}
+
+                                            @if ($product->getFirstMediaUrl('product-images'))
+                                                <img src="{{ $product->getFirstMediaUrl('product-images') }}" alt="{{ $product->name }}" width="300"
+                                                     height="338">
+                                                <img src="{{ $product->getFirstMediaUrl('product-images') }}" alt="{{ $product->name }}" width="300"
+                                                     height="338">
+                                            @endif
+
                                         </a>
                                         <div class="product-action-vertical">
                                             <a href="#" class="btn-product-icon btn-cart" title="Select Options">
@@ -112,7 +120,7 @@
                                         </div>
                                         <div class="ratings-container">
                                             <div class="ratings-full">
-                                                <span class="ratings" style="width:40%"></span>
+                                                <span class="ratings" style="width:90%"></span>
                                                 <span class="tooltiptext tooltip-top"></span>
                                             </div>
                                             <a href="{{ route('products.show', $product->id) }}" class="rating-reviews">({{ $product->reviews_count }} Avis)</a>
@@ -123,6 +131,7 @@
                         @endforeach
 
                     </div>
+
                     <nav class="toolbox toolbox-pagination mb-1">
 {{--                        <p class="toolbox-item show-info d-block mb-2 mb-sm-0">Showing 1–12 of 24 Products</p>--}}
                         <ul class="pagination">
