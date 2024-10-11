@@ -22,18 +22,24 @@
                                 <div class="product-thumbs-wrap">
                                     <div class="product-thumbs">
                                         <div class="product-thumb active">
-                                            @foreach($product->getMedia('product-images') as $media)
-                                                @if ($media->getUrl())
-                                                    <img src="{{ $media->getUrl() }}" alt="{{ $product->name }}" width="150" height="169">
-                                                @else
-                                                    <img src="https://i.makeup.fr/i/i4/i4dfmpe8rxkj.png" alt="Product Image">
-                                                @endif
-                                            @endforeach
+                                            <img src="images/product/product-2-1-109x122.jpg" alt="product thumbnail"
+                                                 width="109" height="122">
                                         </div>
+                                        @foreach($product->getMedia('product-images') as $media)
+                                            @if ($media->getUrl())
+                                                <div class="product-thumb {{ $loop->first ? 'active' : '' }}">
+                                                    <img src="{{ $media->getUrl() }}" alt="{{ $product->name }}" width="109" height="122">
+                                                </div>
+                                            @else
+                                                <img src="https://i.makeup.fr/i/i4/i4dfmpe8rxkj.png" alt="Product Image">
+                                            @endif
+                                        @endforeach
+
                                     </div>
                                     <button class="thumb-up disabled"><i class="fas fa-chevron-left"></i></button>
                                     <button class="thumb-down disabled"><i class="fas fa-chevron-right"></i></button>
                                 </div>
+
                             </div>
                         </div>
                         <div class="col-md-6">
