@@ -39,11 +39,9 @@
 
                                         </a>
                                         <div class="product-action-vertical">
-                                            <a href="#" class="btn-product-icon btn-cart" title="Select Options">
+                                            <a href="{{route('cart.show')}}" class="btn-product-icon btn-cart" title="Select Options">
                                                 <i class="d-icon-bag"></i>
                                             </a>
-                                            <a href="#" class="btn-product-icon btn-wishlist" title="Add to wishlist"><i
-                                                    class="d-icon-heart"></i></a>
                                         </div>
                                     </figure>
                                     <div class="product-details">
