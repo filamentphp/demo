@@ -28,7 +28,7 @@
 {{--                                        <strong class="text-primary text-uppercase">Up To 10% Off</strong>--}}
                                         Transformez Votre Routine Beauté !
                                     </p>
-                                    <a href="{{route('shop.muster')}}" class="btn btn-rounded btn-dark">Shop now<i
+                                    <a href="{{route('shop.muster')}}" class="btn btn-rounded btn-dark">Achetez maintenant<i
                                             class="d-icon-arrow-right"></i></a>
                                 </div>
                             </div>
@@ -44,7 +44,7 @@
 {{--                                    <p class="banner-desc font-weight-normal lh-1 mb-8">--}}
 {{--                                        <strong class="text-primary text-uppercase">Up To 10% Off</strong>--}}
 {{--                                    </p>--}}
-                                    <a href="{{route('shop.dikson')}}" class="btn btn-rounded btn-dark">Shop now<i
+                                    <a href="{{route('shop.dikson')}}" class="btn btn-rounded btn-dark">Achetez maintenant<i
                                             class="d-icon-arrow-right"></i></a>
                                 </div>
                             </div>
@@ -52,15 +52,15 @@
                         <div class="col-lg-6 col-md-12 mb-4">
                             <div class="banner category-banner overlay-dark" style="background-color: #222;">
                                 <figure>
-                                    <img src="{{asset("images/front/banner-muster.png")}}" alt="banner" width="580" height="268" style="opacity: 0.4;">
+                                    <img src="{{asset("images/front/banner-muster.png")}}" alt="banner" width="580" height="268">
                                 </figure>
                                 <div class="banner-content y-50">
 {{--                                    <h4 class="banner-subtitle text-uppercase font-weight-normal lh-1 text-white">New--}}
 {{--                                        Collection--}}
 {{--                                    </h4>--}}
-                                    <h3 class="banner-title font-weight-bold lh-1 mb-5 text-white">Voir Muster</h3>
+                                    <h3 class="banner-title font-weight-bold lh-1 mb-5 ">Voir Muster</h3>
                                     <a href="{{route('shop.muster')}}"
-                                       class="btn btn-link btn-white btn-underline text-uppercase">Shop now<i
+                                       class="btn btn-link btn-black btn-underline text-uppercase">Achetez maintenant<i
                                             class="d-icon-arrow-right"></i></a>
                                 </div>
                             </div>

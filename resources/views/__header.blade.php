@@ -2,32 +2,11 @@
     <div class="header-top">
         <div class="container">
             <div class="header-left">
-{{--                <p class="welcome-msg ls-normal">Welcome to Riode store message or remove it!</p>--}}
             </div>
             <div class="header-right">
-{{--                <div class="dropdown">--}}
-{{--                    <a href="#currency">USD</a>--}}
-{{--                    <ul class="dropdown-box">--}}
-{{--                        <li><a href="#USD">USD</a></li>--}}
-{{--                        <li><a href="#EUR">EUR</a></li>--}}
-{{--                    </ul>--}}
-{{--                </div>--}}
-                <!-- End DropDown Menu -->
-{{--                <div class="dropdown">--}}
-{{--                    <a href="#language">ENG</a>--}}
-{{--                    <ul class="dropdown-box">--}}
-{{--                        <li>--}}
-{{--                            <a href="#USD">ENG</a>--}}
-{{--                        </li>--}}
-{{--                        <li>--}}
-{{--                            <a href="#EUR">FRH</a>--}}
-{{--                        </li>--}}
-{{--                    </ul>--}}
-{{--                </div>--}}
                 <!-- End DropDown Menu -->
                 <span class="divider d-lg-show"></span>
                 <a href="{{ route("contact") }}" class="contact d-lg-show ml-0"><i class="d-icon-map"></i>Contactez-nous</a>
-{{--                <a href="#" class="help d-lg-show"><i class="d-icon-info"></i> Need Help</a>--}}
             </div>
         </div>
     </div>
@@ -55,50 +34,12 @@
                 <!-- End Header Search -->
             </div>
             <div class="header-right">
-{{--                <a href="wishlist.html" class="login-link mr-4 mr-lg-6" title="wishlist">--}}
-{{--                    <i class="d-icon-user"></i>--}}
-{{--                </a>--}}
+
                 <div class="dropdown wishlist wishlist-dropdown off-canvas">
-{{--                    <a href="wishlist.html" class="wishlist-toggle" title="wishlist">--}}
-{{--                        <i class="d-icon-heart"></i>--}}
-{{--                    </a>--}}
                     <div class="canvas-overlay"></div>
-                    <!-- End Wishlist Toggle -->
                     <div class="dropdown-box scrollable">
-{{--                        <div class="canvas-header">--}}
-{{--                            <h4 class="canvas-title">wishlist</h4>--}}
-{{--                            <a href="#" class="btn btn-dark btn-link btn-icon-right btn-close">close<i--}}
-{{--                                    class="d-icon-arrow-right"></i><span class="sr-only">wishlist</span></a>--}}
-{{--                        </div>--}}
                         <div class="products scrollable">
-{{--                            <div class="product product-wishlist">--}}
-{{--                                <figure class="product-media">--}}
-{{--                                    <a href="product.html">--}}
-{{--                                        <img src="images/wishlist/product-1.jpg" width="100" height="100"--}}
-{{--                                             alt="product" />--}}
-{{--                                    </a>--}}
-{{--                                    <button class="btn btn-link btn-close">--}}
-{{--                                        <i class="fas fa-times"></i><span class="sr-only">Close</span>--}}
-{{--                                    </button>--}}
-{{--                                </figure>--}}
-{{--                                <div class="product-detail">--}}
-{{--                                    <a href="product.html" class="product-name">Girl's Dark Bag</a>--}}
-{{--                                    <div class="price-box">--}}
-{{--                                        <span class="product-price">$84.00</span>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-                            <!-- End of wishlist Product -->
                             <div class="product product-wishlist">
-{{--                                <figure class="product-media">--}}
-{{--                                    <a href="product.html">--}}
-{{--                                        <img src="images/wishlist/product-2.jpg" width="100" height="100"--}}
-{{--                                             alt="product" />--}}
-{{--                                    </a>--}}
-{{--                                    <button class="btn btn-link btn-close">--}}
-{{--                                        <i class="fas fa-times"></i><span class="sr-only">Close</span>--}}
-{{--                                    </button>--}}
-{{--                                </figure>--}}
                                 <div class="product-detail">
                                     <a href="product.html" class="product-name">Women's Fashional Comforter
                                     </a>
@@ -111,8 +52,6 @@
                             <div class="product product-wishlist">
                                 <figure class="product-media">
                                     <a href="product.html">
-{{--                                        <img src="images/wishlist/product-3.jpg" width="100" height="100"--}}
-{{--                                             alt="product" />--}}
                                     </a>
                                     <button class="btn btn-link btn-close">
                                         <i class="fas fa-times"></i><span class="sr-only">Close</span>
