@@ -52,7 +52,7 @@
                         <div class="col-lg-6 col-md-12 mb-4">
                             <div class="banner category-banner overlay-dark" style="background-color: #222;">
                                 <figure>
-                                    <img src="{{asset("images/front/img.png")}}" alt="banner" width="580" height="268" style="opacity: 0.4;">
+                                    <img src="{{asset("images/front/banner-muster.png")}}" alt="banner" width="580" height="268" style="opacity: 0.4;">
                                 </figure>
                                 <div class="banner-content y-50">
 {{--                                    <h4 class="banner-subtitle text-uppercase font-weight-normal lh-1 text-white">New--}}
@@ -68,12 +68,12 @@
                         <div class="col-lg-6 col-md-12 mb-4">
                             <div class="banner category-banner overlay-dark" style="background-color: #E5E6E8;">
                                 <figure>
-                                    <img src="{{asset("images/front/banner2.png")}}" alt="banner" width="580" height="268">
+                                    <img src="{{asset("images/front/banner-dikson.png")}}" alt="banner" width="580" height="268">
                                 </figure>
                                 <div class="banner-content y-50">
 {{--                                    <h4 class="banner-subtitle text-uppercase font-weight-normal lh-1">Trending</h4>--}}
-                                    <h3 class="banner-title font-weight-bold lh-1 mb-5 text-white">Voir Dikson</h3>
-                                    <a href="{{route('shop.dikson')}}" class="btn btn-white btn-link btn-underline text-uppercase">Shop
+                                    <h3 class="banner-title font-weight-bold lh-1 mb-5">Voir Dikson</h3>
+                                    <a href="{{route('shop.dikson')}}" class="btn btn-black btn-link btn-underline text-uppercase">Shop
                                         now<i class="d-icon-arrow-right"></i></a>
                                 </div>
                             </div>
@@ -126,6 +126,165 @@
                         </div>
                     </div>
                 </section>
+
+                <section class="icon-boxes-section mb-lg-10 pb-4 pt-2">
+                    <div class="container">
+                        <div class="owl-carousel owl-theme row cols-md-3 cols-sm-2 cols-1" data-owl-options="{
+                            'nav': false,
+                            'dots': false,
+                            'autoplay': true,
+                            'autoplayTimeout': 4000,
+                            'responsive': {
+                                '0': {
+                                    'items': 1
+                                },
+                                '576': {
+                                    'items': 2
+                                },
+                                '768': {
+                                    'autoplay': false,
+                                    'items': 3
+                                },
+                                '992': {
+                                    'items': 4
+                                }
+                            }
+                        }">
+                            <div class="icon-box text-center appear-animate" data-animation-options="{
+                                'name': 'fadeInRightShorter',
+                                'delay': '.4s'
+                            }">
+                                <i class="icon-box-icon d-icon-truck text-primary" style="font-size: 5rem"></i>
+                                <div class="icon-box-content">
+                                    <h4 class="icon-box-title">Free Shipping & Return</h4>
+                                    <p class="d-inline-block" style="max-width: 27rem;">Get free delivery of your orders
+                                        all
+                                        over the world.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="icon-box text-center appear-animate" data-animation-options="{
+                                'name': 'fadeInRightShorter',
+                                'delay': '.6s'
+                            }">
+                                <i class="icon-box-icon d-icon-service text-primary" style="font-size: 4rem"></i>
+                                <div class="icon-box-content">
+                                    <h4 class="icon-box-title">Customer Support</h4>
+                                    <p class="d-inline-block" style="max-width: 27rem;">We provide convenient support of
+                                        24/7 for our customers.</p>
+                                </div>
+                            </div>
+                            <div class="icon-box text-center appear-animate" data-animation-options="{
+                                'name': 'fadeInRightShorter',
+                                'delay': '.8s'
+                            }">
+                                <i class="icon-box-icon d-icon-money text-primary" style="font-size: 4.2rem"></i>
+                                <div class="icon-box-content">
+                                    <h4 class="icon-box-title">Secured Payment</h4>
+                                    <p class="d-inline-block" style="max-width: 27rem;">We fully guarantee our money
+                                        back
+                                        policy with no doubt.</p>
+                                </div>
+                            </div>
+                            <div class="icon-box text-center appear-animate" data-animation-options="{
+                                'name': 'fadeInRightShorter',
+                                'delay': '1s'
+                            }">
+                                <i class="icon-box-icon d-icon-card text-primary" style="font-size: 5rem"></i>
+                                <div class="icon-box-content">
+                                    <h4 class="icon-box-title">Money Back Guarantee</h4>
+                                    <p class="d-inline-block" style="max-width: 30rem;">Get our first gift - 20% off for
+                                        your first ordered product.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="blog-section container mt-4 mt-lg-10 pt-4 mb-0 mb-lg-6">
+                    <h3 class="text-center font-weight-bold lh-1 ls-m pt-4 mb-5">Latest News</h3>
+                    <div class="owl-carousel owl-theme owl-shadow-carousel row cols-lg-3 cols-sm-2 cols-1 pb-4"
+                         data-owl-options="{
+                        'items': 3,
+                        'margin': 20,
+                        'dots': false,
+                        'loop': false,
+                        'nav': false,
+                        'autoplay': true,
+                        'autoplayTimeout': 4000,
+                        'responsive': {
+                            '0': {
+                                'items': 1
+                            },
+                            '576': {
+                                'items': 2
+                            },
+                            '992': {
+                                'items': 3
+                            }
+                        }
+                    }">
+                        <div class="post post-image-gap appear-animate"
+                             data-animation-options="{'name': 'fadeInRightShorter', 'delay': '.5s'}">
+                            <figure class="post-media">
+                                <a href="post-single.html">
+                                    <img src="images/demos/demo34/blog/1.jpg" width="400" height="240" alt="post" />
+                                </a>
+                                <div class="post-calendar">
+                                    <span class="post-day">19</span>
+                                    <span class="post-month">JAN</span>
+                                </div>
+                            </figure>
+                            <div class="post-details">
+                                <h4 class="post-title"><a href="post-single.html">30% Discount for Shoes & Bags</a></h4>
+                                <p class="post-content">Sed pretium, ligula sollicitudin laoreet viverra, tortor libero
+                                    sodales leo, eget blandit nunc tortor eu nibh. Suspendisse potenti.…</p>
+                                <a href="post-single.html" class="btn btn-link btn-underline btn-primary btn-md">Read
+                                    More<i class="d-icon-arrow-right"></i></a>
+                            </div>
+                        </div>
+                        <div class="post post-image-gap appear-animate"
+                             data-animation-options="{'name': 'fadeInUpShorter', 'delay': '.3s'}">
+                            <figure class="post-media">
+                                <a href="post-single.html">
+                                    <img src="images/demos/demo34/blog/2.jpg" width="400" height="240" alt="post" />
+                                </a>
+                                <div class="post-calendar">
+                                    <span class="post-day">19</span>
+                                    <span class="post-month">JAN</span>
+                                </div>
+                            </figure>
+                            <div class="post-details">
+                                <h4 class="post-title"><a href="post-single.html">Quisque a lectus</a></h4>
+                                <p class="post-content">Sed pretium, ligula sollicitudin laoreet viverra, tortor libero
+                                    sodales leo, eget blandit nunc tortor eu nibh. Suspendisse potenti.…</p>
+                                <a href="post-single.html" class="btn btn-link btn-underline btn-primary btn-md">Read
+                                    More<i class="d-icon-arrow-right"></i></a>
+                            </div>
+                        </div>
+                        <div class="post post-image-gap appear-animate"
+                             data-animation-options="{'name': 'fadeInLeftShorter', 'delay': '.5s'}">
+                            <figure class="post-media">
+                                <a href="post-single.html">
+                                    <img src="images/demos/demo34/blog/3.jpg" width="400" height="240" alt="post" />
+                                </a>
+                                <div class="post-calendar">
+                                    <span class="post-day">19</span>
+                                    <span class="post-month">JAN</span>
+                                </div>
+                            </figure>
+                            <div class="post-details">
+                                <h4 class="post-title"><a href="post-single.html">Utaliquam sollicitudin leo</a></h4>
+                                <p class="post-content">Sed pretium, ligula sollicitudin laoreet viverra, tortor libero
+                                    sodales leo, eget blandit nunc tortor eu nibh. Suspendisse potenti.…</p>
+                                <a href="post-single.html" class="btn btn-link btn-underline btn-primary btn-md">Read
+                                    More<i class="d-icon-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
             </div>
 
         </main>

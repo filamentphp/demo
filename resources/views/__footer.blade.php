@@ -76,7 +76,7 @@
                 </figure>
             </div>
             <div class="footer-center">
-                <p class="copyright">Muster & Dikson &copy; 2024.</p>
+                <p class="copyright">Muster & Dikson &copy; 2024</p>
             </div>
             <div class="footer-right">
                 <div class="social-links">

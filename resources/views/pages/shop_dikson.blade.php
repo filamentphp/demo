@@ -108,7 +108,7 @@
 {{--                                            <a href="#" class="btn-product btn-quickview" title="Quick View">Quick--}}
 {{--                                                View</a>--}}
 {{--                                        </div>--}}
-                                    </figure>
+                                    </figure>h
                                     <div class="product-details">
                                         <h3 class="product-name">
                                             <a href="{{ route('products.show', $product->id) }}">{{ $product->name }}</a>
