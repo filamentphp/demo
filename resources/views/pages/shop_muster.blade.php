@@ -59,20 +59,20 @@
 {{--                                </select>--}}
 {{--                            </div>--}}
 {{--                        </div>--}}
-                        <div class="toolbox-right">
-                            <div class="toolbox-item toolbox-show select-box text-dark">
-                                <label>show :</label>
-                                <select name="count" class="form-control">
-                                    <option value="12">12</option>
-                                    <option value="24">24</option>
-                                    <option value="36">36</option>
-                                </select>
-                            </div>
-                            <div class="toolbox-item toolbox-layout">
-                                <a href="shop-list-mode.html" class="d-icon-mode-list btn-layout"></a>
-                                <a href="shop.html" class="d-icon-mode-grid btn-layout active"></a>
-                            </div>
-                        </div>
+{{--                        <div class="toolbox-right">--}}
+{{--                            <div class="toolbox-item toolbox-show select-box text-dark">--}}
+{{--                                <label>show :</label>--}}
+{{--                                <select name="count" class="form-control">--}}
+{{--                                    <option value="12">12</option>--}}
+{{--                                    <option value="24">24</option>--}}
+{{--                                    <option value="36">36</option>--}}
+{{--                                </select>--}}
+{{--                            </div>--}}
+{{--                            <div class="toolbox-item toolbox-layout">--}}
+{{--                                <a href="shop-list-mode.html" class="d-icon-mode-list btn-layout"></a>--}}
+{{--                                <a href="shop.html" class="d-icon-mode-grid btn-layout active"></a>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
                     </nav>
                     <div class="select-items">
                         <a href="#" class="filter-clean text-primary">Clean All</a>
@@ -128,7 +128,6 @@
                                 </div>
                             </div>
                         @endforeach
-
                     </div>
 
 

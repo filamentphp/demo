@@ -60,18 +60,18 @@
                         {{--                            </div>--}}
                         {{--                        </div>--}}
                         <div class="toolbox-right">
-                            <div class="toolbox-item toolbox-show select-box text-dark">
-                                <label>show :</label>
-                                <select name="count" class="form-control">
-                                    <option value="12">12</option>
-                                    <option value="24">24</option>
-                                    <option value="36">36</option>
-                                </select>
-                            </div>
-                            <div class="toolbox-item toolbox-layout">
-                                <a href="shop-list-mode.html" class="d-icon-mode-list btn-layout"></a>
-                                <a href="shop.html" class="d-icon-mode-grid btn-layout active"></a>
-                            </div>
+{{--                            <div class="toolbox-item toolbox-show select-box text-dark">--}}
+{{--                                <label>show :</label>--}}
+{{--                                <select name="count" class="form-control">--}}
+{{--                                    <option value="12">12</option>--}}
+{{--                                    <option value="24">24</option>--}}
+{{--                                    <option value="36">36</option>--}}
+{{--                                </select>--}}
+{{--                            </div>--}}
+{{--                            <div class="toolbox-item toolbox-layout">--}}
+{{--                                <a href="shop-list-mode.html" class="d-icon-mode-list btn-layout"></a>--}}
+{{--                                <a href="shop.html" class="d-icon-mode-grid btn-layout active"></a>--}}
+{{--                            </div>--}}
                         </div>
                     </nav>
                     <div class="select-items">
@@ -85,9 +85,9 @@
                                 <div class="product text-center">
                                     <figure class="product-media">
                                         <a href="{{ route('products.show', $product->id) }}">
-                                            {{--                                            @foreach ($product->getMedia('product-images') as $image)--}}
-                                            {{--                                                <img src="{{ $image->getUrl() }}" alt="Product Image" class="img-fluid mb-3">--}}
-                                            {{--                                            @endforeach--}}
+                            {{--                                            @foreach ($product->getMedia('product-images') as $image)--}}
+                            {{--                                                <img src="{{ $image->getUrl() }}" alt="Product Image" class="img-fluid mb-3">--}}
+                            {{--                                            @endforeach--}}
 
                                             @if ($product->getFirstMediaUrl('product-images'))
                                                 <img src="{{ $product->getFirstMediaUrl('product-images') }}" alt="{{ $product->name }}" width="300"

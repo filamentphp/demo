@@ -12,7 +12,7 @@
                                 qui étudie, produit et agit pour offrir un service toujours meilleur  et une gamme de produits de
                                 qualité supérieure. <br>
                             </p>
-                            <a href="mailto:mail@example.com">contact@muster-dikson.com/</a>
+                            <a href="mailto:mail@example.com">contact@muster-dikson.com</a>
                         </div>
                     </div>
                     <!-- End Widget -->
@@ -25,9 +25,6 @@
                                 <ul class="widget-body">
                                     <li>
                                         <a href="about-us.html">About Us</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Order History</a>
                                     </li>
                                     <li>
                                         <a href="#">Returns</a>
@@ -65,10 +62,8 @@
                             </div>
                             <!-- End Widget -->
                         </div>
-
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -77,11 +72,11 @@
         <div class="footer-bottom">
             <div class="footer-left">
                 <figure class="payment">
-                    <img src="images/payment.png" alt="payment" width="159" height="29" />
+                    <img src="{{asset("images/payment.png")}}" alt="payment" width="159" height="29" />
                 </figure>
             </div>
             <div class="footer-center">
-                <p class="copyright">Riode eCommerce &copy; 2021. All Rights Reserved</p>
+                <p class="copyright">Muster & Dikson &copy; 2024.</p>
             </div>
             <div class="footer-right">
                 <div class="social-links">
