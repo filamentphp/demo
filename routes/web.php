@@ -20,6 +20,11 @@ Route::get('/contact', function () {
     return view('pages.contact-us');
 })->name('contact');
 
+Route::get('/video', function () {
+    return view('pages.video');
+})->name('video');
+
+
 Route::get('/shop', function () {
     return view('pages.shop_dikson');
 })->name('shop.index');

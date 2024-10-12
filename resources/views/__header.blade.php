@@ -160,34 +160,14 @@
                         <li class="active">
                             <a href="{{route('index')}}">Home</a>
                         </li>
-                        <li>
-                            <a href="{{route('index')}}">Categories</a>
-                            <div class="megamenu">
-                                <div class="row">
-                                    <div class="col-6 col-sm-6 col-md-6 col-lg-3">
-                                        <h4 class="menu-title">Muster</h4>
-                                    </div>
-                                    <div class="col-6 col-sm-6 col-md-6 col-lg-3">
-                                        <h4 class="menu-title">Dikson</h4>
-                                    </div>
-                                    <div
-                                        class="col-6 col-sm-4 col-md-4 col-lg-3 menu-banner menu-banner1 banner banner-fixed">
-                                        <figure>
-                                            <img src="{{asset('images/front/menu1.png')}}" alt="Menu banner" width="221"
-                                                 height="330" />
-                                        </figure>
-                                        <div class="banner-content y-50">
-{{--                                            <h4 class="banner-subtitle font-weight-bold text-primary ls-m">Sale.--}}
-{{--                                            </h4>--}}
-{{--                                            <h3 class="banner-title font-weight-bold"><span--}}
-{{--                                                    class="text-uppercase">Up to</span>70% Off</h3>--}}
-{{--                                            <a href="#" class="btn btn-link btn-underline">shop now<i--}}
-{{--                                                    class="d-icon-arrow-right"></i></a>--}}
-                                        </div>
-                                    </div>
-                                    <!-- End Megamenu -->
-                                </div>
-                            </div>
+                        <li class="">
+                            <a href="{{route('index')}}">Coiffeur</a>
+                        </li>
+                        <li class="">
+                            <a href="{{route('contact')}}">Contact</a>
+                        </li>
+                        <li class="">
+                            <a href="{{route('video')}}">Video</a>
                         </li>
                     </ul>
                 </nav>

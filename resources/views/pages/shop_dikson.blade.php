@@ -74,9 +74,7 @@
 {{--                            </div>--}}
                         </div>
                     </nav>
-                    <div class="select-items">
-                        <a href="#" class="filter-clean text-primary">Clean All</a>
-                    </div>
+
 
                     <div class="row cols-2 cols-sm-3 cols-md-4 product-wrapper">
 
