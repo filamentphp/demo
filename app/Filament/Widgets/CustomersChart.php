@@ -2,6 +2,8 @@
 
 namespace App\Filament\Widgets;
 
+use App\Models\Shop\Customer;
+use Carbon\Carbon;
 use Filament\Widgets\ChartWidget;
 
 class CustomersChart extends ChartWidget
@@ -17,15 +19,34 @@ class CustomersChart extends ChartWidget
 
     protected function getData(): array
     {
+        return $this->getMonthlyCustomers();
+    }
+
+    public function getMonthlyCustomers()
+    {
+        $monthlyCustomers = Customer::selectRaw('MONTH(created_at) as month, COUNT(*) as total')
+            ->whereYear('created_at', Carbon::now()->year)
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get()
+            ->keyBy('month')
+            ->toArray();
+
+        $customerData = [];
+        for ($i = 1; $i <= 12; $i++) {
+            $customerData[] = $monthlyCustomers[$i]['total'] ?? 0;
+        }
+
         return [
             'datasets' => [
                 [
                     'label' => 'Customers',
-                    'data' => [4344, 5676, 6798, 7890, 8987, 9388, 10343, 10524, 13664, 14345, 15753, 17332],
+                    'data' => $customerData,
                     'fill' => 'start',
                 ],
             ],
             'labels' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
         ];
     }
+
 }

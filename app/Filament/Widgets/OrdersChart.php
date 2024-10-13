@@ -2,6 +2,8 @@
 
 namespace App\Filament\Widgets;
 
+use App\Models\Shop\Order;
+use Carbon\Carbon;
 use Filament\Widgets\ChartWidget;
 
 class OrdersChart extends ChartWidget
@@ -17,11 +19,30 @@ class OrdersChart extends ChartWidget
 
     protected function getData(): array
     {
+        return $this->getMonthlyOrders();
+    }
+
+    public function getMonthlyOrders()
+    {
+        // Get the total orders per month for the current year
+        $monthlyOrders = Order::selectRaw('MONTH(created_at) as month, COUNT(*) as total')
+            ->whereYear('created_at', Carbon::now()->year)
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get()
+            ->keyBy('month')
+            ->toArray();
+
+        $orderData = [];
+        for ($i = 1; $i <= 12; $i++) {
+            $orderData[] = $monthlyOrders[$i]['total'] ?? 0;
+        }
+
         return [
             'datasets' => [
                 [
                     'label' => 'Orders',
-                    'data' => [2433, 3454, 4566, 3300, 5545, 5765, 6787, 8767, 7565, 8576, 9686, 8996],
+                    'data' => $orderData,
                     'fill' => 'start',
                 ],
             ],
