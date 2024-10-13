@@ -50,17 +50,8 @@
                     <p class="welcome-msg">Bienvenue dans la boutique Muster & Dikson!</p>
                 </div>
                 <div class="header-right">
-
-                    <!-- End DropDown Menu -->
-                    <!-- End DropDown Menu -->
                     <span class="divider"></span>
                     <a href="{{route('contact.create')}}" class="contact d-lg-show"><i class="d-icon-map"></i>Contact</a>
-                    <a href="#" class="help d-lg-show"><i class="d-icon-info"></i> Need Help</a>
-                    <a class="login-link" href="ajax/login.html" data-toggle="login-modal"><i
-                            class="d-icon-user"></i>Sign in</a>
-                    <span class="delimiter">/</span>
-                    <a class="register-link ml-0" href="ajax/login.html" data-toggle="login-modal">Register</a>
-                    <!-- End of Login -->
                 </div>
             </div>
         </div>
@@ -74,9 +65,6 @@
                     <a href="{{route('index')}}" class="logo">
                         <img src="{{asset('images/logo/logo.jpg')}}" alt="logo" width="253" height="84" />
                     </a>
-                    <!-- End Logo -->
-                    <!-- End Header Search -->
-{{--                </div>--}}
             </div>
         </div>
 
@@ -99,13 +87,13 @@
         <nav class="breadcrumb-nav">
             <div class="container">
                 <ul class="breadcrumb">
-                    <li><a href="demo1.html"><i class="d-icon-home"></i></a></li>
-                    <li>Contact Us</li>
+                    <li><a href="{{route('index')}}"><i class="d-icon-home"></i></a></li>
+                    <li>Contactez-nous</li>
                 </ul>
             </div>
         </nav>
         <div class="page-header" style="background-image: url(images/page-header/contact-us.jpg)">
-            <h1 class="page-title font-weight-bold text-capitalize ls-l">Contact Us</h1>
+            <h1 class="page-title font-weight-bold text-capitalize ls-l">Contactez-nous</h1>
         </div>
         <div class="page-content mt-10 pt-7">
             <section class="contact-section pb-4">
@@ -115,7 +103,7 @@
                             <div class="grey-section d-flex align-items-center h-100">
                                 <div>
                                     <h4 class="mb-2 text-capitalize">Adresse</h4>
-                                    <p>N 15 rue Ennakhil cité dakhla Aagadir</p>
+                                    <p>N 15 rue Ennakhil cité dakhla Agadir</p>
 
                                     <h4 class="mb-2 text-capitalize">Tel:</h4>
                                     <p>
@@ -167,45 +155,54 @@
 
                                         <!-- Checkbox for Enterprise -->
                                         <div class="col-12 mb-4">
-                                            <label class="form-control">
-                                                <input type="checkbox" id="entreprise" name="entreprise"> Êtes-vous une entreprise ?
-                                            </label>
+                                            <div class="form-control mt-4 mb-5 d-flex align-items-center">
+                                                <input type="checkbox" class="custom-checkbox" id="entreprise-checkbox" name="entreprise">
+                                                <label class="form-control-label ms-2" for="entreprise-checkbox">
+                                                    Êtes-vous une entreprise ?
+                                                </label>
+                                            </div>
+
+{{--                                            <label class="form-control">--}}
+{{--                                                <input type="checkbox" id="entreprise" name="entreprise" class="custom-checkbox"  >--}}
+{{--                                                Êtes-vous une entreprise ?--}}
+{{--                                            </label>--}}
                                         </div>
 
-                                        <!-- Additional Fields for Enterprise (conditionally shown) -->
                                         <div id="entreprise-fields" style="display: none;">
-                                            <!-- Phone -->
                                             <div class="col-md-6 mb-4">
-                                                <input class="form-control" type="text" id="telephone" name="telephone" placeholder="Téléphone">
+                                                <input class="form-control" type="text" name="telephone" placeholder="Téléphone">
                                             </div>
-
-                                            <!-- City -->
                                             <div class="col-md-6 mb-4">
-                                                <input class="form-control" type="text" id="ville" name="ville" placeholder="Ville">
+                                                <input class="form-control" type="text" name="ville" placeholder="Ville">
                                             </div>
-
-                                            <!-- Enterprise Name -->
                                             <div class="col-md-6 mb-4">
-                                                <input class="form-control" type="text" id="nom_entreprise" name="nom_entreprise" placeholder="Nom de l'entreprise">
+                                                <input class="form-control" type="text" name="nom_entreprise" placeholder="Nom de l'entreprise">
                                             </div>
-
-                                            <!-- Registration Number -->
                                             <div class="col-md-6 mb-4">
-                                                <input class="form-control" type="text" id="num_pattente" name="num_pattente" placeholder="Numéro de patente (si existe)">
+                                                <input class="form-control" type="text" name="num_pattente" placeholder="Numéro de patente">
                                             </div>
                                         </div>
+
                                     </div>
 
                                     <!-- Submit Button -->
                                     <button class="btn btn-dark btn-rounded">Envoyer <i class="d-icon-arrow-right"></i></button>
                                 </form>
 
-                                <script>
-                                    document.getElementById('entreprise').addEventListener('change', function () {
-                                        var entrepriseFields = document.getElementById('entreprise-fields');
-                                        entrepriseFields.style.display = this.checked ? 'block' : 'none';
-                                    });
-                                </script>
+                                    <script>
+                                        document.addEventListener('DOMContentLoaded', function() {
+                                            const entrepriseCheckbox = document.getElementById('entreprise-checkbox');
+                                            const entrepriseFields = document.getElementById('entreprise-fields');
+
+                                            entrepriseCheckbox.addEventListener('change', function() {
+                                                if (entrepriseCheckbox.checked) {
+                                                    entrepriseFields.style.display = 'block';
+                                                } else {
+                                                    entrepriseFields.style.display = 'none';
+                                                }
+                                            });
+                                        });
+                                    </script>
                             </div>
                         </div>
                     </div>
@@ -250,8 +247,8 @@
 
     // Map Markers
     var mapMarkers = [ {
-        address: "New York, NY 10017",
-        html: "<strong>New York Office<\/strong><br>New York, NY 10017",
+        address: "Agadir",
+        html: "<strong>N 15 rue Ennakhil cité dakhla <\/strong><br>Agadir",
         popup: true
     } ];
 
