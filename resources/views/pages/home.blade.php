@@ -71,10 +71,8 @@
                                     <img src="{{asset("images/front/banner-dikson.png")}}" alt="banner" width="580" height="268">
                                 </figure>
                                 <div class="banner-content y-50">
-{{--                                    <h4 class="banner-subtitle text-uppercase font-weight-normal lh-1">Trending</h4>--}}
                                     <h3 class="banner-title font-weight-bold lh-1 mb-5">Voir Dikson</h3>
-                                    <a href="{{route('shop.dikson')}}" class="btn btn-black btn-link btn-underline text-uppercase">Shop
-                                        now<i class="d-icon-arrow-right"></i></a>
+                                    <a href="{{route('shop.dikson')}}" class="btn btn-black btn-link btn-underline text-uppercase">Achetez maintenant<i class="d-icon-arrow-right"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -90,11 +88,7 @@
                                         <img src="{{asset('images/front/newsletter.png')}}" alt="banner" width="380"
                                              height="170">
                                     </figure>
-                                    <div class="banner-content y-50">
-                                        <h4 class="banner-subtitle font-weight-bold ls-normal mb-0">Flash Sale</h4>
-                                        <strong class="text-primary text-uppercase">Up To 50% Off</strong>
-                                        <p class="banner-desc mb-0 ls-normal mt-4">From Riode Store</p>
-                                    </div>
+
                                 </div>
                                 <div class="newsletter-form text-center">
                                     <h3 class="newsletter-title font-weight-bold text-uppercase ls-m mb-6">

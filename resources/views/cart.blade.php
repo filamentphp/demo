@@ -4,9 +4,9 @@
     <main class="main cart">
         <div class="page-content pt-7 pb-10">
             <div class="step-by pr-4 pl-4">
-                <h3 class="title title-simple title-step active"><a href="{{route('cart.show')}}">1. Shopping Cart</a></h3>
-                <h3 class="title title-simple title-step"><a href="{{route('checkout')}}">2. Checkout</a></h3>
-                <h3 class="title title-simple title-step"><a href="{{route('thankyou')}}">3. Order Complete</a></h3>
+                <h3 class="title title-simple title-step active"><a href="{{route('cart.show')}}">1. Panier</a></h3>
+                <h3 class="title title-simple title-step"><a href="{{route('checkout')}}">2. Caisse</a></h3>
+                <h3 class="title title-simple title-step"><a href="{{route('thankyou')}}">3. Commande terminée</a></h3>
             </div>
             <div class="container mt-7 mb-2">
                 <div class="row">
@@ -14,11 +14,11 @@
                         <table class="shop-table cart-table">
                             <thead>
                             <tr>
-                                <th>Product</th>
+                                <th>Produit</th>
                                 <th></th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Subtotal</th>
+                                <th>Prix</th>
+                                <th>Quantité</th>
+                                <th>Sous-total</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
@@ -38,39 +38,37 @@
                                     <td class="product-price">{{ $item->product->price }} MAD</td>
                                     <td class="product-quantity">
                                         <div class="input-group">
-{{--                                            <button class="quantity-minus d-icon-minus"></button>--}}
                                             <input class="quantity form-control disabled" type="number" min="1" value="{{ $item->quantity }}" data-product-id="{{ $item->product->id }}">
-{{--                                            <button class="quantity-plus d-icon-plus"></button>--}}
                                         </div>
                                     </td>
                                     <td class="product-subtotal">
                                         <span class="amount">${{ $item->product->price * $item->quantity }}</span>
                                     </td>
                                     <td class="product-close">
-                                        <button class="btn btn-danger btn-sm remove-item" data-product-id="{{ $item->product->id }}">Remove</button>
+                                        <button class="btn btn-danger btn-sm remove-item" data-product-id="{{ $item->product->id }}">Supprimer</button>
                                     </td>
                                 </tr>
                             @endforeach
-
                             </tbody>
                         </table>
                     </div>
 
                     <aside class="col-lg-4">
                         <div class="summary mb-4">
-                            <h3 class="summary-title">Cart Totals</h3>
+                            <h3 class="summary-title">Totaux du panier</h3>
                             <table class="total">
                                 <tr class="summary-subtotal">
-                                    <td>Subtotal</td>
+                                    <td>Sous-total</td>
                                     <td id="cart-subtotal">${{ $total }}</td>
                                 </tr>
                             </table>
-                            <a href="{{route('checkout')}}" class="btn btn-dark btn-rounded btn-checkout">Proceed to checkout</a>
+                            <a href="{{route('checkout')}}" class="btn btn-dark btn-rounded btn-checkout">Procéder au paiement</a>
                         </div>
                     </aside>
                 </div>
             </div>
         </div>
+
     </main>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -92,7 +90,7 @@
                         _token: '{{ csrf_token() }}'
                     },
                     success: function(response) {
-                        location.reload(); // Reload page to reflect changes
+                        location.reload();
                     }
                 });
             });
