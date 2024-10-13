@@ -135,7 +135,7 @@
 
                                 <form class="pl-lg-2" method="POST" action="{{ route('contact.store') }}">
                                     @csrf
-                                    <h4 class="ls-m font-weight-bold">Connectons-nous</h4>
+                                    <h4 class="ls-m font-weight-bold">Écrivez-nous</h4>
 
                                     <div class="row mb-2">
                                         <!-- Message -->
@@ -194,6 +194,7 @@
                                             const entrepriseCheckbox = document.getElementById('entreprise-checkbox');
                                             const entrepriseFields = document.getElementById('entreprise-fields');
 
+                                            entrepriseCheckbox.checked = false;
                                             entrepriseCheckbox.addEventListener('change', function() {
                                                 if (entrepriseCheckbox.checked) {
                                                     entrepriseFields.style.display = 'block';
