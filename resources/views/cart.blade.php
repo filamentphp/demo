@@ -42,7 +42,7 @@
                                         </div>
                                     </td>
                                     <td class="product-subtotal">
-                                        <span class="amount">${{ $item->product->price * $item->quantity }}</span>
+                                        <span class="amount">{{ $item->product->price * $item->quantity }} MAD</span>
                                     </td>
                                     <td class="product-close">
                                         <button class="btn btn-danger btn-sm remove-item" data-product-id="{{ $item->product->id }}">Supprimer</button>
@@ -59,7 +59,7 @@
                             <table class="total">
                                 <tr class="summary-subtotal">
                                     <td>Sous-total</td>
-                                    <td id="cart-subtotal">${{ $total }}</td>
+                                    <td id="cart-subtotal">{{ $total }} MAD</td>
                                 </tr>
                             </table>
                             <a href="{{route('checkout')}}" class="btn btn-dark btn-rounded btn-checkout">Procéder au paiement</a>

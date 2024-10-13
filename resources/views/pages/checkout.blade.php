@@ -23,8 +23,8 @@
 
                                 <!-- First Name & Last Name -->
                                 <div class="row">
-                                    <div class="col-xs-6">
-                                        <label>Prénom *</label>
+                                    <div class="col-xs-12">
+                                        <label>Nom Complete *</label>
                                         <input type="text" class="form-control" name="name" value="{{ old('name') }}" required />
                                     </div>
 {{--                                    <div class="col-xs-6">--}}
@@ -57,18 +57,14 @@
                                         <input type="text" class="form-control" name="city" value="{{ old('city') }}" required />
                                     </div>
                                     <div class="col-xs-6">
-                                        <label>État *</label>
-                                        <input type="text" class="form-control" name="state" value="{{ old('state') }}" required />
+                                        <label>Code Postal *</label>
+                                        <input type="text" class="form-control" name="zip" value="{{ old('zip') }}" required />
                                     </div>
                                 </div>
 
                                 <!-- ZIP & Phone -->
                                 <div class="row">
-                                    <div class="col-xs-6">
-                                        <label>Code Postal *</label>
-                                        <input type="text" class="form-control" name="zip" value="{{ old('zip') }}" required />
-                                    </div>
-                                    <div class="col-xs-6">
+                                    <div class="col-xs-12">
                                         <label>Téléphone *</label>
                                         <input type="text" class="form-control" name="phone" value="{{ old('phone') }}" required />
                                     </div>
