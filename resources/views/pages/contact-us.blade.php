@@ -54,7 +54,7 @@
                     <!-- End DropDown Menu -->
                     <!-- End DropDown Menu -->
                     <span class="divider"></span>
-                    <a href="{{route('contact')}}" class="contact d-lg-show"><i class="d-icon-map"></i>Contact</a>
+                    <a href="{{route('contact.create')}}" class="contact d-lg-show"><i class="d-icon-map"></i>Contact</a>
                     <a href="#" class="help d-lg-show"><i class="d-icon-info"></i> Need Help</a>
                     <a class="login-link" href="ajax/login.html" data-toggle="login-modal"><i
                             class="d-icon-user"></i>Sign in</a>
@@ -108,7 +108,7 @@
             <h1 class="page-title font-weight-bold text-capitalize ls-l">Contact Us</h1>
         </div>
         <div class="page-content mt-10 pt-7">
-            <section class="contact-section">
+            <section class="contact-section pb-4">
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-3 col-md-4 col-sm-6 ls-m mb-4">
@@ -131,23 +131,81 @@
                         </div>
                         <div class="col-lg-9 col-md-8 col-sm-6 d-flex align-items-center mb-4">
                             <div class="w-100">
-                                <form class="pl-lg-2" action="#">
+                                @if(session('success'))
+                                    <div class="alert text-white alert-success alert-icon alert-inline mb-4">
+                                        <i class="fas fa-check-circle"></i>
+                                        <h4 class="alert-title">Votre message a été envoyé avec succès !</h4>
+                                        <p>Merci. Nous vous répondrons dans les plus brefs délais.</p>
+                                        <button type="button" class="btn btn-link btn-close">
+                                            <i class="d-icon-times"></i>
+                                        </button>
+                                    </div>
+
+
+                                    <div></div>
+                                @endif
+
+                                <form class="pl-lg-2" method="POST" action="{{ route('contact.store') }}">
+                                    @csrf
                                     <h4 class="ls-m font-weight-bold">Connectons-nous</h4>
+
                                     <div class="row mb-2">
+                                        <!-- Message -->
                                         <div class="col-12 mb-4">
-                                                <textarea class="form-control" required
-                                                          placeholder="Comment*"></textarea>
+                                            <textarea class="form-control" id="message" name="message" placeholder="Message*" required></textarea>
                                         </div>
+
+                                        <!-- Name -->
                                         <div class="col-md-6 mb-4">
-                                            <input class="form-control" type="text" placeholder="Name *" required>
+                                            <input class="form-control" type="text" id="nom" name="nom" placeholder="Nom *" required>
                                         </div>
+
+                                        <!-- Email -->
                                         <div class="col-md-6 mb-4">
-                                            <input class="form-control" type="email" placeholder="Email *" required>
+                                            <input class="form-control" type="email" id="email" name="email" placeholder="Email *" required>
+                                        </div>
+
+                                        <!-- Checkbox for Enterprise -->
+                                        <div class="col-12 mb-4">
+                                            <label class="form-control">
+                                                <input type="checkbox" id="entreprise" name="entreprise"> Êtes-vous une entreprise ?
+                                            </label>
+                                        </div>
+
+                                        <!-- Additional Fields for Enterprise (conditionally shown) -->
+                                        <div id="entreprise-fields" style="display: none;">
+                                            <!-- Phone -->
+                                            <div class="col-md-6 mb-4">
+                                                <input class="form-control" type="text" id="telephone" name="telephone" placeholder="Téléphone">
+                                            </div>
+
+                                            <!-- City -->
+                                            <div class="col-md-6 mb-4">
+                                                <input class="form-control" type="text" id="ville" name="ville" placeholder="Ville">
+                                            </div>
+
+                                            <!-- Enterprise Name -->
+                                            <div class="col-md-6 mb-4">
+                                                <input class="form-control" type="text" id="nom_entreprise" name="nom_entreprise" placeholder="Nom de l'entreprise">
+                                            </div>
+
+                                            <!-- Registration Number -->
+                                            <div class="col-md-6 mb-4">
+                                                <input class="form-control" type="text" id="num_pattente" name="num_pattente" placeholder="Numéro de patente (si existe)">
+                                            </div>
                                         </div>
                                     </div>
-                                    <button class="btn btn-dark btn-rounded">Envoyer<i
-                                            class="d-icon-arrow-right"></i></button>
+
+                                    <!-- Submit Button -->
+                                    <button class="btn btn-dark btn-rounded">Envoyer <i class="d-icon-arrow-right"></i></button>
                                 </form>
+
+                                <script>
+                                    document.getElementById('entreprise').addEventListener('change', function () {
+                                        var entrepriseFields = document.getElementById('entreprise-fields');
+                                        entrepriseFields.style.display = this.checked ? 'block' : 'none';
+                                    });
+                                </script>
                             </div>
                         </div>
                     </div>
@@ -156,7 +214,7 @@
             <!-- End About Section-->
 
             <!-- Google Maps - Go to the bottom of the page to change settings and map location. -->
-            <div class="grey-section google-map" id="googlemaps" style="height: 386px"></div>
+            <div class="grey-section google-map mt-5" id="googlemaps" style="height: 386px"></div>
             <!-- End Map Section -->
         </div>
 

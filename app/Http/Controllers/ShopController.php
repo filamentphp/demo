@@ -40,7 +40,7 @@ class ShopController extends Controller
 
 
 
-    public function tahnkyou()
+    public function tahnkYou()
     {
         $products = Product::whereHas('categories', function ($query) {
             $query->where('name', 'dikson');

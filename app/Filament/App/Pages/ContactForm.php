@@ -6,6 +6,9 @@ use Filament\Pages\Page;
 
 use Filament\Forms;
 use Illuminate\Support\Facades\Mail;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\Checkbox;
 
 class ContactForm extends Page
 {
@@ -13,30 +16,63 @@ class ContactForm extends Page
 
     protected static string $view = 'filament.app.pages.contact-form';
 
+
+    public function mount()
+    {
+        $this->form->fill([]);
+    }
+
     protected function getFormSchema(): array
     {
         return [
-            Forms\Components\Textarea::make('comment')
-                ->label('Comment*')
+            TextInput::make('nom')
+                ->label('Nom')
                 ->required(),
-            Forms\Components\TextInput::make('name')
-                ->label('Name*')
-                ->required(),
-            Forms\Components\TextInput::make('email')
-                ->label('Email*')
+
+            TextInput::make('email')
+                ->label('Email')
                 ->email()
                 ->required(),
-            Forms\Components\Button::make('submit')
-                ->label('Post Comment')
-                ->action('submit')
-                ->color('dark')
-                ->icon('d-icon-arrow-right')
+
+            Textarea::make('message')
+                ->label('Message')
+                ->required(),
+
+            Checkbox::make('est_entreprise')
+                ->label('Êtes-vous une entreprise?')
+                ->reactive()
+                ->afterStateUpdated(function ($state, callable $set) {
+                    $set('show_enterprise_fields', $state);
+                }),
+
+            TextInput::make('telephone')
+                ->label('Téléphone')
+                ->required()
+                ->visible(fn ($get) => $get('show_enterprise_fields')),
+
+            TextInput::make('ville')
+                ->label('Ville')
+                ->required()
+                ->visible(fn ($get) => $get('show_enterprise_fields')),
+
+            TextInput::make('nom_entreprise')
+                ->label('Nom de l\'entreprise')
+                ->required()
+                ->visible(fn ($get) => $get('show_enterprise_fields')),
+
+            TextInput::make('num_patente')
+                ->label('Numéro de patente')
+                ->visible(fn ($get) => $get('show_enterprise_fields')),
         ];
     }
 
     public function submit()
     {
-        $this->validate();
+        $validatedData = $this->form->getState();
+
+        $this->form->fill([]);
+
+        $this->notify('success', 'Votre message a été envoyé avec succès.');
 
         // Send the email
         Mail::to('soufianjill@gmail.ma')->send(new ContactFormMail([

@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\CartController;
 use App\Mail\MyTestEmail;
+use App\Http\Controllers\ContactController;
 use Illuminate\Support\Facades\Mail;
 
 Route::get('form', Form::class);
@@ -16,9 +17,13 @@ Route::view('/', 'pages.home')->name('index');
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
 
-Route::get('/contact', function () {
-    return view('pages.contact-us');
-})->name('contact');
+//Route::get('/contact', function () {
+//    return view('pages.contact-us');
+//})->name('contact');
+
+Route::get('/contact', [ContactController::class, 'create'])->name('contact.create');
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+
 
 Route::get('/video', function () {
     return view('pages.video');
@@ -43,7 +48,7 @@ Route::post('/cart/update', [CartController::class, 'updateQuantity'])->name('ca
 
 
 Route::get('/checkout', [CartController::class, 'checkout'])->name('checkout');
-Route::get('/thankyou', [ShopController::class, 'tahnkyou'])->name('thankyou');
+Route::get('/thank-you', [ShopController::class, 'tahnkYou'])->name('thankyou');
 
 Route::post('/place-order', [ShopController::class, 'store'])->name('order.store');
 
