@@ -138,17 +138,14 @@
                                     <h4 class="ls-m font-weight-bold">Écrivez-nous</h4>
 
                                     <div class="row mb-2">
-                                        <!-- Message -->
                                         <div class="col-12 mb-4">
                                             <textarea class="form-control" id="message" name="message" placeholder="Message*" required></textarea>
                                         </div>
 
-                                        <!-- Name -->
                                         <div class="col-md-6 mb-4">
                                             <input class="form-control" type="text" id="nom" name="nom" placeholder="Nom *" required>
                                         </div>
 
-                                        <!-- Email -->
                                         <div class="col-md-6 mb-4">
                                             <input class="form-control" type="email" id="email" name="email" placeholder="Email *" required>
                                         </div>
@@ -161,11 +158,6 @@
                                                     Êtes-vous une entreprise ?
                                                 </label>
                                             </div>
-
-{{--                                            <label class="form-control">--}}
-{{--                                                <input type="checkbox" id="entreprise" name="entreprise" class="custom-checkbox"  >--}}
-{{--                                                Êtes-vous une entreprise ?--}}
-{{--                                            </label>--}}
                                         </div>
 
                                         <div id="entreprise-fields" style="display: none;">
