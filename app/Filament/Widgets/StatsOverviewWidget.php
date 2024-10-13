@@ -33,10 +33,9 @@ class StatsOverviewWidget extends BaseWidget
             default => 1 / 3,
         };
 
-        // Calculate the difference in days for the selected period
+
         $diffInDays = $startDate->diffInDays($endDate);
 
-        // Get monthly data for revenue, new customers, and new orders
         $monthlyRevenue = Order::whereBetween('created_at', [$startDate, $endDate])
             ->selectRaw('MONTH(created_at) as month, SUM(total_price) as total')
             ->groupBy('month')
