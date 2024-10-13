@@ -21,7 +21,7 @@ Route::get('/products/{id}', [ProductController::class, 'show'])->name('products
 //    return view('pages.contact-us');
 //})->name('contact');
 
-Route::get('/contact', [ContactController::class, 'create'])->name('contact.create');
+Route::get('/contact', [ContactController::class, 'create'])->name('contact');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
 

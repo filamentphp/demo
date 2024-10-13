@@ -51,7 +51,7 @@
                 </div>
                 <div class="header-right">
                     <span class="divider"></span>
-                    <a href="{{route('contact.create')}}" class="contact d-lg-show"><i class="d-icon-map"></i>Contact</a>
+                    <a href="{{route('contact')}}" class="contact d-lg-show"><i class="d-icon-map"></i>Contact</a>
                 </div>
             </div>
         </div>
