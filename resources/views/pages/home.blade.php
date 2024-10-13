@@ -101,9 +101,9 @@
                                         Newsletter</h3>
                                     <form action="#" method="get" class="input-wrapper">
                                         <input type="email" class="form-control text-center" name="email" id="email"
-                                               placeholder="Email address here..." required="">
+                                               placeholder="Votre Email..." required="">
                                         <button class="btn btn-primary text-uppercase w-100"
-                                                type="submit">Subscribe</button>
+                                                type="submit">S'abonner</button>
                                     </form>
                                 </div>
                             </div>
@@ -145,9 +145,6 @@
                                     'autoplay': false,
                                     'items': 3
                                 },
-                                '992': {
-                                    'items': 4
-                                }
                             }
                         }">
                             <div class="icon-box text-center appear-animate" data-animation-options="{
@@ -156,10 +153,8 @@
                             }">
                                 <i class="icon-box-icon d-icon-truck text-primary" style="font-size: 5rem"></i>
                                 <div class="icon-box-content">
-                                    <h4 class="icon-box-title">Free Shipping & Return</h4>
-                                    <p class="d-inline-block" style="max-width: 27rem;">Get free delivery of your orders
-                                        all
-                                        over the world.
+                                    <h4 class="icon-box-title">Livraison & Retour Offerts</h4>
+                                    <p class="d-inline-block" style="max-width: 27rem;">Profitez de la livraison gratuite de vos commandes partout dans le Maroc.
                                     </p>
                                 </div>
                             </div>
@@ -169,32 +164,18 @@
                             }">
                                 <i class="icon-box-icon d-icon-service text-primary" style="font-size: 4rem"></i>
                                 <div class="icon-box-content">
-                                    <h4 class="icon-box-title">Customer Support</h4>
-                                    <p class="d-inline-block" style="max-width: 27rem;">We provide convenient support of
-                                        24/7 for our customers.</p>
+                                    <h4 class="icon-box-title">Service Client</h4>
+                                    <p class="d-inline-block" style="max-width: 27rem;">Notre support est disponible 24/7 pour vous accompagner à chaque étape.</p>
                                 </div>
                             </div>
                             <div class="icon-box text-center appear-animate" data-animation-options="{
                                 'name': 'fadeInRightShorter',
                                 'delay': '.8s'
                             }">
-                                <i class="icon-box-icon d-icon-money text-primary" style="font-size: 4.2rem"></i>
+                                <i class="icon-box-icon d-icon-star text-primary" style="font-size: 4.2rem"></i>
                                 <div class="icon-box-content">
-                                    <h4 class="icon-box-title">Secured Payment</h4>
-                                    <p class="d-inline-block" style="max-width: 27rem;">We fully guarantee our money
-                                        back
-                                        policy with no doubt.</p>
-                                </div>
-                            </div>
-                            <div class="icon-box text-center appear-animate" data-animation-options="{
-                                'name': 'fadeInRightShorter',
-                                'delay': '1s'
-                            }">
-                                <i class="icon-box-icon d-icon-card text-primary" style="font-size: 5rem"></i>
-                                <div class="icon-box-content">
-                                    <h4 class="icon-box-title">Money Back Guarantee</h4>
-                                    <p class="d-inline-block" style="max-width: 30rem;">Get our first gift - 20% off for
-                                        your first ordered product.</p>
+                                    <h4 class="icon-box-title">Produits de Qualité</h4>
+                                    <p class="d-inline-block" style="max-width: 27rem;">Nous vous proposons des produits de haute qualité pour sublimer vos cheveux.</p>
                                 </div>
                             </div>
                         </div>
@@ -202,7 +183,7 @@
                 </section>
 
                 <section class="blog-section container mt-4 mt-lg-10 pt-4 mb-0 mb-lg-6">
-                    <h3 class="text-center font-weight-bold lh-1 ls-m pt-4 mb-5">Latest News</h3>
+                    <h3 class="text-center font-weight-bold lh-1 ls-m pt-4 mb-5">Dernières Nouvelles</h3>
                     <div class="owl-carousel owl-theme owl-shadow-carousel row cols-lg-3 cols-sm-2 cols-1 pb-4"
                          data-owl-options="{
                         'items': 3,

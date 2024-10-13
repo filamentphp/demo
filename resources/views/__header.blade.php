@@ -146,10 +146,8 @@
                     </div>
                     <!-- End Dropdown Box -->
                 </div>
-
             </div>
         </div>
-
     </div>
 
     <div class="header-bottom sticky-header fix-top sticky-content">
@@ -164,10 +162,10 @@
                             <a href="{{route('index')}}">Coiffeur</a>
                         </li>
                         <li class="">
-                            <a href="{{route('contact')}}">Contact</a>
+                            <a href="{{route('video')}}">Video</a>
                         </li>
                         <li class="">
-                            <a href="{{route('video')}}">Video</a>
+                            <a href="{{route('contact')}}">Contact</a>
                         </li>
                     </ul>
                 </nav>
