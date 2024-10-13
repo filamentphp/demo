@@ -8,157 +8,119 @@
         <main class="main checkout">
             <div class="page-content pt-7 pb-10 mb-10">
                 <div class="step-by pr-4 pl-4">
-                    <h3 class="title title-simple title-step"><a href="{{route('cart.show')}}">1. Shopping Cart</a></h3>
-                    <h3 class="title title-simple title-step active"><a href="{{route('checkout')}}">2. Checkout</a></h3>
-                    <h3 class="title title-simple title-step"><a href="{{route('thankyou')}}">3. Order Complete</a></h3>
+                    <h3 class="title title-simple title-step"><a href="{{route('cart.show')}}">1. Panier</a></h3>
+                    <h3 class="title title-simple title-step active"><a href="{{route('checkout')}}">2. Paiement</a></h3>
+                    <h3 class="title title-simple title-step"><a href="{{route('thankyou')}}">3. Commande Complète</a></h3>
                 </div>
                 <div class="container mt-7">
                     <form action="{{ route('order.store') }}" method="POST" class="form">
                         @csrf
+
                         <div class="row">
+                            <!-- Customer Details Section -->
                             <div class="col-lg-7 mb-6 mb-lg-0 pr-lg-4">
                                 <h3 class="title title-simple text-left text-uppercase">Billing Details</h3>
+
+                                <!-- First Name & Last Name -->
                                 <div class="row">
                                     <div class="col-xs-6">
-                                        <label>First Name *</label>
-                                        <input type="text" class="form-control" name="first-name" value="{{ old('first-name') }}" required="" />
+                                        <label>Prénom *</label>
+                                        <input type="text" class="form-control" name="name" value="{{ old('name') }}" required />
                                     </div>
-                                    <div class="col-xs-6">
-                                        <label>Last Name *</label>
-                                        <input type="text" class="form-control" name="last-name" value="{{ old('last-name') }}" required="" />
-                                    </div>
+{{--                                    <div class="col-xs-6">--}}
+{{--                                        <label>Nom *</label>--}}
+{{--                                        <input type="text" class="form-control" name="last_name" value="{{ old('last_name') }}" required />--}}
+{{--                                    </div>--}}
                                 </div>
-                                <label>Company Name (Optional)</label>
-                                <input type="text" class="form-control" name="company-name" value="{{ old('company-name') }}" />
 
-                                <label>Country / Region *</label>
+                                <!-- Company Name -->
+                                <label>Nom de l'entreprise (Optionnel)</label>
+                                <input type="text" class="form-control" name="company_name" value="{{ old('company_name') }}" />
+
+                                <!-- Country -->
+                                <label>Pays / Région *</label>
                                 <div class="select-box">
                                     <select name="country" class="form-control" required>
-                                        <option value="fr" {{ old('country') == 'mr' ? 'selected' : '' }}>Maroc</option>
+                                        <option value="fr" {{ old('country') == 'fr' ? 'selected' : '' }}>Maroc</option>
                                     </select>
                                 </div>
 
-                                <label>Street Address *</label>
-                                <input type="text" class="form-control" name="address1" value="{{ old('address1') }}" required="" placeholder="House number and street name" />
-                                <input type="text" class="form-control" name="address2" value="{{ old('address2') }}" placeholder="Apartment, suite, unit, etc. (optional)" />
+                                <!-- Address -->
+                                <label>Adresse *</label>
+                                <input type="text" class="form-control" name="address1" value="{{ old('address1') }}" required placeholder="Numéro et nom de la rue" />
+                                <input type="text" class="form-control" name="address2" value="{{ old('address2') }}" placeholder="Appartement, suite, unité, etc. (optionnel)" />
 
+                                <!-- City & State -->
                                 <div class="row">
                                     <div class="col-xs-6">
-                                        <label>Town / City *</label>
-                                        <input type="text" class="form-control" name="city" value="{{ old('city') }}" required="" />
+                                        <label>Ville *</label>
+                                        <input type="text" class="form-control" name="city" value="{{ old('city') }}" required />
                                     </div>
                                     <div class="col-xs-6">
-                                        <label>State *</label>
-                                        <input type="text" class="form-control" name="state" value="{{ old('state') }}" required="" />
+                                        <label>État *</label>
+                                        <input type="text" class="form-control" name="state" value="{{ old('state') }}" required />
                                     </div>
                                 </div>
 
+                                <!-- ZIP & Phone -->
                                 <div class="row">
                                     <div class="col-xs-6">
-                                        <label>ZIP *</label>
-                                        <input type="text" class="form-control" name="zip" value="{{ old('zip') }}" required="" />
+                                        <label>Code Postal *</label>
+                                        <input type="text" class="form-control" name="zip" value="{{ old('zip') }}" required />
                                     </div>
                                     <div class="col-xs-6">
-                                        <label>Phone *</label>
-                                        <input type="text" class="form-control" name="phone" value="{{ old('phone') }}" required="" />
+                                        <label>Téléphone *</label>
+                                        <input type="text" class="form-control" name="phone" value="{{ old('phone') }}" required />
                                     </div>
                                 </div>
 
-                                <label>Email Address *</label>
-                                <input type="email" class="form-control" name="email-address" value="{{ old('email-address') }}" required="" />
+                                <!-- Email Address -->
+                                <label>Adresse e-mail *</label>
+                                <input type="email" class="form-control" name="email" value="{{ old('email') }}" required />
 
-                                <div class="form-checkbox mb-0">
-                                    <input type="checkbox" class="custom-checkbox" id="create-account" name="create-account" {{ old('create-account') ? 'checked' : '' }}>
-                                    <label class="form-control-label ls-s" for="create-account">Create an account?</label>
-                                </div>
-
-                                <div class="form-checkbox mb-6">
-                                    <input type="checkbox" class="custom-checkbox" id="different-address" name="different-address" {{ old('different-address') ? 'checked' : '' }}>
-                                    <label class="form-control-label ls-s" for="different-address">Ship to a different address?</label>
-                                </div>
-
-                                <h2 class="title title-simple text-uppercase text-left">Additional Information</h2>
-                                <label>Order Notes (Optional)</label>
-                                <textarea class="form-control pb-2 pt-2 mb-0" name="order-notes" cols="30" rows="5" placeholder="Notes about your order, e.g. special notes for delivery">{{ old('order-notes') }}</textarea>
+                                <!-- Additional Information -->
+                                <h2 class="title title-simple text-uppercase text-left">Informations supplémentaires</h2>
+                                <label>Notes de commande (Optionnel)</label>
+                                <textarea class="form-control pb-2 pt-2 mb-0" name="order_notes" cols="30" rows="5">{{ old('order_notes') }}</textarea>
                             </div>
 
+                            <!-- Order Summary Section -->
                             <aside class="col-lg-5 sticky-sidebar-wrapper">
-                                <div class="sticky-sidebar mt-1" data-sticky-options="{'bottom': 50}">
+                                <div class="sticky-sidebar mt-1">
                                     <div class="summary pt-5">
-                                        <h3 class="title title-simple text-left text-uppercase">Your Order</h3>
+                                        <h3 class="title title-simple text-left text-uppercase">Votre Commande</h3>
                                         <table class="order-table">
                                             <thead>
                                             <tr>
-                                                <th>Product</th>
-                                                <th></th>
+                                                <th>Produit</th>
+                                                <th>Total</th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             @foreach($cartItems as $item)
-                                                <tr data-id="{{ $item->id }}">
-                                                    <td class="product-name">
-                                                        <div class="product-name-section">
-                                                            <a href="#">{{ $item->product->name }}</a>
-                                                            <span class="product-quantity">×&nbsp;{{ $item->quantity }}</span>
-                                                        </div>
-                                                    </td>
-                                                    <td class="product-total text-body">
-                                                        ${{ $item->product->price * $item->quantity }}
-                                                    </td>
+                                                <tr>
+                                                    <td>{{ $item->product->name }} × {{ $item->quantity }}</td>
+                                                    <td>{{ $item->product->price * $item->quantity }} MAD</td>
                                                 </tr>
                                             @endforeach
-                                            <tr class="summary-subtotal">
-                                                <td>
-                                                    <h4 class="summary-subtitle">Total</h4>
-                                                </td>
-                                                <td class="summary-subtotal-price pb-0 pt-0">
-                                                    ${{ $cartItems->sum(fn($item) => $item->product->price * $item->quantity) }}
-                                                </td>
-                                            </tr>
                                             </tbody>
+                                            <tfoot>
+                                            <tr>
+                                                <td>Total:</td>
+                                                <td>{{ $cartItems->sum(fn($item) => $item->product->price * $item->quantity) }} MAD</td>
+                                            </tr>
+                                            </tfoot>
                                         </table>
 
-                                        <div class="payment accordion radio-type">
-                                            <h4 class="summary-subtitle ls-m pb-3">Payment Methods</h4>
-                                            <div class="card">
-                                                <div class="card-header">
-                                                    <a href="#collapse1" class="collapse text-body text-normal ls-m">Check payments</a>
-                                                </div>
-                                                <div id="collapse1" class="expanded" style="display: block;">
-                                                    <div class="card-body ls-m">
-                                                        Please send a check to Store Name, Store Street, Store Town, Store State / County, Store Postcode.
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="card">
-                                                <div class="card-header">
-                                                    <a href="#collapse2" class="expand text-body text-normal ls-m">Cash on delivery</a>
-                                                </div>
-                                                <div id="collapse2" class="collapsed">
-                                                    <div class="card-body ls-m">
-                                                        Pay with cash upon delivery.
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-checkbox mt-4 mb-5">
-                                            <input type="checkbox" class="custom-checkbox" id="terms-condition" name="terms-condition" />
-                                            <label class="form-control-label" for="terms-condition">
-                                                I have read and agree to the website <a href="#">terms and conditions</a>*
-                                            </label>
-                                        </div>
-
-                                        <button type="submit" class="btn btn-dark btn-rounded btn-order">Place Order</button>
+                                        <button type="submit" class="btn btn-dark btn-rounded btn-order">Passer la commande</button>
                                     </div>
                                 </div>
                             </aside>
                         </div>
                     </form>
                 </div>
-
             </div>
+
 
         </main>
         <!-- End Main -->
