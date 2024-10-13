@@ -2,6 +2,8 @@
 
 namespace App\Filament\Widgets;
 
+use App\Models\Shop\Customer;
+use App\Models\Shop\Order;
 use Carbon\Carbon;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
@@ -16,12 +18,11 @@ class StatsOverviewWidget extends BaseWidget
 
     protected function getStats(): array
     {
-
-        $startDate = ! is_null($this->filters['startDate'] ?? null) ?
+        $startDate = !is_null($this->filters['startDate'] ?? null) ?
             Carbon::parse($this->filters['startDate']) :
-            null;
+            now()->startOfYear();
 
-        $endDate = ! is_null($this->filters['endDate'] ?? null) ?
+        $endDate = !is_null($this->filters['endDate'] ?? null) ?
             Carbon::parse($this->filters['endDate']) :
             now();
 
@@ -32,15 +33,46 @@ class StatsOverviewWidget extends BaseWidget
             default => 1 / 3,
         };
 
-        $diffInDays = $startDate ? $startDate->diffInDays($endDate) : 0;
+        // Calculate the difference in days for the selected period
+        $diffInDays = $startDate->diffInDays($endDate);
 
-        $revenue = (int) (($startDate ? ($diffInDays * 137) : 192100) * $businessCustomerMultiplier);
-        $newCustomers = (int) (($startDate ? ($diffInDays * 7) : 1340) * $businessCustomerMultiplier);
-        $newOrders = (int) (($startDate ? ($diffInDays * 13) : 3543) * $businessCustomerMultiplier);
+        // Get monthly data for revenue, new customers, and new orders
+        $monthlyRevenue = Order::whereBetween('created_at', [$startDate, $endDate])
+            ->selectRaw('MONTH(created_at) as month, SUM(total_price) as total')
+            ->groupBy('month')
+            ->pluck('total', 'month')
+            ->toArray();
+
+        $monthlyCustomers = Customer::whereBetween('created_at', [$startDate, $endDate])
+            ->selectRaw('MONTH(created_at) as month, COUNT(id) as count')
+            ->groupBy('month')
+            ->pluck('count', 'month')
+            ->toArray();
+
+        $monthlyOrders = Order::whereBetween('created_at', [$startDate, $endDate])
+            ->selectRaw('MONTH(created_at) as month, COUNT(id) as count')
+            ->groupBy('month')
+            ->pluck('count', 'month')
+            ->toArray();
+
+        // Apply the businessCustomerMultiplier to the fetched data
+        $revenue = (int)(array_sum($monthlyRevenue) * $businessCustomerMultiplier);
+        $newCustomers = (int)(array_sum($monthlyCustomers) * $businessCustomerMultiplier);
+        $newOrders = (int)(array_sum($monthlyOrders) * $businessCustomerMultiplier);
+
+        // Prepare chart data dynamically for each month
+        $revenueChartData = [];
+        $customersChartData = [];
+        $ordersChartData = [];
+        for ($month = 1; $month <= 12; $month++) {
+            $revenueChartData[] = $monthlyRevenue[$month] ?? 0;
+            $customersChartData[] = $monthlyCustomers[$month] ?? 0;
+            $ordersChartData[] = $monthlyOrders[$month] ?? 0;
+        }
 
         $formatNumber = function (int $number): string {
             if ($number < 1000) {
-                return (string) Number::format($number, 0);
+                return (string)Number::format($number, 0);
             }
 
             if ($number < 1000000) {
@@ -51,20 +83,20 @@ class StatsOverviewWidget extends BaseWidget
         };
 
         return [
-            Stat::make('Revenue', '$' . $formatNumber($revenue))
-                ->description('32k increase')
+            Stat::make('Revenue',  $formatNumber($revenue) . ' MAD' )
+                ->description('Revenue in the selected period')
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
-                ->chart([7, 2, 10, 3, 15, 4, 17])
+                ->chart($revenueChartData)
                 ->color('success'),
             Stat::make('New customers', $formatNumber($newCustomers))
-                ->description('3% decrease')
-                ->descriptionIcon('heroicon-m-arrow-trending-down')
-                ->chart([17, 16, 14, 15, 14, 13, 12])
-                ->color('danger'),
+                ->description('Customers acquired in the selected period')
+//                ->descriptionIcon('heroicon-m-user')
+                ->chart($customersChartData)
+                ->color('info'),
             Stat::make('New orders', $formatNumber($newOrders))
-                ->description('7% increase')
+                ->description('Orders placed in the selected period')
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
-                ->chart([15, 4, 10, 2, 12, 4, 12])
+                ->chart($ordersChartData)
                 ->color('success'),
         ];
     }

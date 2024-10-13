@@ -24,7 +24,6 @@ class OrdersChart extends ChartWidget
 
     public function getMonthlyOrders()
     {
-        // Get the total orders per month for the current year
         $monthlyOrders = Order::selectRaw('MONTH(created_at) as month, COUNT(*) as total')
             ->whereYear('created_at', Carbon::now()->year)
             ->groupBy('month')
