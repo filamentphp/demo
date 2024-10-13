@@ -150,7 +150,6 @@
                                             <input class="form-control" type="email" id="email" name="email" placeholder="Email *" required>
                                         </div>
 
-                                        <!-- Checkbox for Enterprise -->
                                         <div class="col-12 mb-4">
                                             <div class="form-control mt-4 mb-5 d-flex align-items-center">
                                                 <input type="checkbox" class="custom-checkbox" id="entreprise-checkbox" name="entreprise">
@@ -177,7 +176,6 @@
 
                                     </div>
 
-                                    <!-- Submit Button -->
                                     <button class="btn btn-dark btn-rounded">Envoyer <i class="d-icon-arrow-right"></i></button>
                                 </form>
 

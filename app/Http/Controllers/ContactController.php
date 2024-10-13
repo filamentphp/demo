@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Contact;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class ContactController extends Controller
 {
@@ -38,6 +39,12 @@ class ContactController extends Controller
             'num_pattente' => $request->num_pattente,
         ]);
 
+        // Send the email
+//        Mail::to('soufianjill@gmail.ma')->send(new ContactFormMail([
+//            'name' => $this->name,
+//            'email' => $this->email,
+//            'message' => $this->message,
+//        ]));
 
         return redirect()->back()->with('success', 'Votre message a été envoyé avec succès.');
     }
