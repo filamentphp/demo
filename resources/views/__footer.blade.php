@@ -21,19 +21,19 @@
                     <div class="row">
                         <div class="col-md-6 col-sm-12">
                             <div class="widget">
-                                <h4 class="widget-title">About Us</h4>
+                                <h4 class="widget-title">À Propos de Nous</h4>
                                 <ul class="widget-body">
                                     <li>
-                                        <a href="about-us.html">About Us</a>
+                                        <a href="about-us.html">À Propos de Nous</a>
                                     </li>
                                     <li>
-                                        <a href="#">Returns</a>
+                                        <a href="#">Retours</a>
                                     </li>
                                     <li>
-                                        <a href="#">Custom Service</a>
+                                        <a href="#">Service Client</a>
                                     </li>
                                     <li>
-                                        <a href="#">Terms &amp; Condition</a>
+                                        <a href="#">Conditions Générales</a>
                                     </li>
                                 </ul>
                             </div>
@@ -41,27 +41,29 @@
                         </div>
                         <div class="col-md-6 col-sm-12">
                             <div class="widget">
-                                <h4 class="widget-title">Customer Service</h4>
+                                <h4 class="widget-title">Service Client</h4>
                                 <ul class="widget-body">
                                     <li>
-                                        <a href="#">Payment Methods</a>
+                                        <a href="#">Méthodes de Paiement</a>
                                     </li>
                                     <li>
-                                        <a href="#">Money-back Guarantee!</a>
+                                        <a href="#">Garantie de Remboursement !</a>
                                     </li>
                                     <li>
-                                        <a href="#">Returns</a>
+                                        <a href="#">Retours</a>
                                     </li>
                                     <li>
-                                        <a href="#">Shipping</a>
+                                        <a href="#">Expédition</a>
                                     </li>
                                     <li>
-                                        <a href="#">Terms and Conditions</a>
+                                        <a href="#">Conditions Générales</a>
                                     </li>
                                 </ul>
                             </div>
                             <!-- End Widget -->
                         </div>
+
+
                     </div>
                 </div>
             </div>
