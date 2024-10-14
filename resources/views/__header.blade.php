@@ -61,11 +61,11 @@
                         <li class="active">
                             <a href="{{route('index')}}">Home</a>
                         </li>
-                        <li class="">
-                            <a href="{{route('index')}}">Coiffeur</a>
-                        </li>
-                        <li class="">
-                            <a href="{{route('video')}}">Video</a>
+{{--                        <li class="">--}}
+{{--                            <a href="{{route('index')}}">Coiffeur</a>--}}
+{{--                        </li>--}}
+{{--                        <li class="">--}}
+{{--                            <a href="{{route('video')}}">Video</a>--}}
                         </li>
                         <li class="">
                             <a style="text-transform: none!important;" href="{{route('about_us')}}">À propos de nous</a>
