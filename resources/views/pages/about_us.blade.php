@@ -28,8 +28,9 @@
                             <div class="col-lg-4 mb-10 mb-lg-4">
                                 <h5 class="section-subtitle lh-2 ls-md font-weight-normal">01. Ce Que Nous Faisons</h5>
                                 <h3 class="section-title lh-1 font-weight-bold">Offrir des services parfaits et pratiques</h3>
-                                <p class="section-desc">Lorem quis bibendum auctar, nisi elit consequat ipsum, nec sagittis sem nibh id elit.</p>
+                                <p class="section-desc">Nous fournissons des solutions personnalisées et innovantes pour répondre aux besoins de nos clients, en garantissant des services de haute qualité et un support fiable à chaque étape.</p>
                             </div>
+
                             <div class="col-lg-8 ">
                                 <div class="row">
                                     <div class="col-md-4 mb-4">
