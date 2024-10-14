@@ -27,7 +27,7 @@
                                         <a href="{{route('about_us')}}">À Propos de Nous</a>
                                     </li>
                                     <li>
-                                        <a href="{{route('contact_us')}}">Contactez Nous</a>
+                                        <a href="{{route('contact')}}">Contactez Nous</a>
                                     </li>
                                 </ul>
                             </div>
