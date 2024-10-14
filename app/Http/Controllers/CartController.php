@@ -62,22 +62,19 @@ class CartController extends Controller
     }
 
     // Remove Item from Cart
-//    public function removeCartItem($id, Request $request)
-//    {
-//        $sessionId = $request->session()->getId();
-//        $cartItem = Cart::where('session_id', $sessionId)->where('id', $id)->firstOrFail();
-//        $cartItem->delete();
-//
-//        return response()->json(['success' => 'Item removed from cart!']);
-//    }
+    public function removeCartItem($id, Request $request)
+    {
+        $sessionId = $request->session()->getId();
+        $cartItem = Cart::where('session_id', $sessionId)->where('id', $id)->firstOrFail();
+        $cartItem->delete();
+
+        return response()->json(['success' => 'Item removed from cart!']);
+    }
 
     public function showCart(Request $request)
     {
         $sessionId = $request->session()->getId();
-
-        // Fetch cart items based on session ID
         $cartItems = Cart::where('session_id', $sessionId)->with('product')->get();
-
 
         $sessionId = $request->session()->getId();
         $cartItems = Cart::where('session_id', $sessionId)->with('product')->get();
@@ -150,15 +147,6 @@ class CartController extends Controller
         return response()->json(['success' => 'Cart item updated successfully!']);
     }
 
-    // Remove an item from the cart
-    public function removeCartItem($id)
-    {
-        $cartItem = Cart::findOrFail($id);
-        $cartItem->delete();
-
-        return response()->json(['success' => 'Item removed from cart successfully!']);
-
-    }
 
     public function updateQuantity(Request $request)
     {
@@ -166,24 +154,17 @@ class CartController extends Controller
         $productId = $request->input('product_id');
         $quantity = $request->input('quantity');
 
-        // Retrieve current cart items
         $cartItems = session('cart.items', []);
 
-        // Check if the product exists in the cart
         if (isset($cartItems[$productId])) {
-            // Update the quantity
             $cartItems[$productId]['quantity'] = $quantity;
 
-            // Update the session with the new cart items
             session(['cart.items' => $cartItems]);
 
-            // Recalculate the total price
             $cartTotal = 0;
             foreach ($cartItems as $item) {
                 $cartTotal += $item['price'] * $item['quantity'];
             }
-
-            // Update the session total
             session(['cart.total' => $cartTotal]);
 
             return response()->json([

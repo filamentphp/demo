@@ -6,9 +6,9 @@
         <main class="main order">
             <div class="page-content pt-7 pb-10 mb-10">
                 <div class="step-by pr-4 pl-4">
-                    <h3 class="title title-simple title-step"><a href="{{route('cart.show')}}">1. Panier d'Achat</a></h3>
-                    <h3 class="title title-simple title-step"><a href="{{route('checkout')}}">2. Caisse</a></h3>
-                    <h3 class="title title-simple title-step active"><a href="{{route('thankyou')}}">3. Commande Terminée</a></h3>
+                    <h3 class="title title-simple title-step">1. Panier d'Achat</h3>
+                    <h3 class="title title-simple title-step">2. Caisse</h3>
+                    <h3 class="title title-simple title-step active">3. Commande Terminée</h3>
                 </div>
                 <div class="container mt-8">
                     <div class="order-message mr-auto ml-auto">

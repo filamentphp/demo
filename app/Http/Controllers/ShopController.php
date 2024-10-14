@@ -11,6 +11,25 @@ use Illuminate\Http\Request;
 
 class ShopController extends Controller
 {
+    public function index(Request $request)
+    {
+        $sessionId = $request->session()->getId();
+        $cartItems = Cart::where('session_id', $sessionId)->with('product')->get();
+
+        $sessionId = $request->session()->getId();
+        $cartItems = Cart::where('session_id', $sessionId)->with('product')->get();
+        $total = $cartItems->sum(function ($item) {
+            return $item->product->price * $item->quantity;
+        });
+
+        return view('pages.home', compact('cartItems', 'total'));
+    }
+
+    function getCartItems()
+    {
+
+    }
+
     public function showMusterProducts()
     {
         $products = Product::whereHas('categories', function ($query) {

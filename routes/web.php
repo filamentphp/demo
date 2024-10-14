@@ -11,7 +11,8 @@ use Illuminate\Support\Facades\Mail;
 
 Route::get('form', Form::class);
 
-Route::view('/', 'pages.home')->name('index');
+//Route::view('/', 'pages.home')->name('index');
+Route::get('/', [ShopController::class, 'index'])->name('index');
 
 
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
@@ -38,7 +39,6 @@ Route::get('/shop/muster', [ShopController::class, 'showMusterProducts'])->name(
 Route::get('/shop/dikson', [ShopController::class, 'showDiksonProducts'])->name('shop.dikson');
 
 
-//Route::get('/cart', [ShopController::class, 'cart'])->name('cart');
 // Cart routes
 Route::get('/cart', [CartController::class, 'showCart'])->name('cart.show');
 Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
