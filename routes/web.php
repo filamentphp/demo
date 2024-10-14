@@ -50,6 +50,10 @@ Route::post('/cart/update', [CartController::class, 'updateQuantity'])->name('ca
 Route::get('/checkout', [CartController::class, 'checkout'])->name('checkout');
 Route::get('/thank-you', [ShopController::class, 'tahnkYou'])->name('thankyou');
 
+Route::get('/about-us', function () {
+    return view('pages.about_us');
+})->name('about_us');
+
 Route::post('/place-order', [ShopController::class, 'store'])->name('order.store');
 
 
