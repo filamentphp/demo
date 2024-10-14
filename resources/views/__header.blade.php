@@ -68,8 +68,12 @@
                             <a href="{{route('video')}}">Video</a>
                         </li>
                         <li class="">
+                            <a href="{{route('about_us')}}">À propos de nous</a>
+                        </li>
+                        <li class="">
                             <a href="{{route('contact')}}">Contact</a>
                         </li>
+
                     </ul>
                 </nav>
             </div>
