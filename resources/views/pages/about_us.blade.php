@@ -61,12 +61,35 @@
                 </section>
                 <!-- Fin de la Section À Propos -->
 
+                <section class="store-section pb-10 appear-animate">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-md-6 order-md-first mb-4">
+                                <h5 class="section-subtitle lh-2 ls-md font-weight-normal mb-1">03. Notre Magasin</h5>
+                                <h3 class="section-title lh-1 font-weight-bold">Attendez-vous à un soutien<br>incroyable</h3>
+                                <p class="section-desc text-grey">
+                                    Déjà des millions de personnes sont très satisfaites de ceci.<br>
+                                    Ce constructeur de pages et le nombre ne fait qu'augmenter. La technologie<br>
+                                    évolue, les exigences augmentent. Muster & Dikson a apporté.
+                                </p>
+                                <a href="{{route('index')}}" class="btn btn-dark btn-link btn-underline ls-m">Découvrez Notre Magasin<i class="d-icon-arrow-right"></i></a>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <figure>
+                                    <img src="{{asset('images/front/factory.jpg')}}" alt="Notre Magasin" width="580" height="507" class="banner-radius" style="background-color: #DEE6E8;" />
+                                </figure>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- Fin de la Section Magasin -->
+
                 <section class="customer-section pb-10 appear-animate">
                     <div class="container">
                         <div class="row align-items-center">
                             <div class="col-md-7 mb-4">
                                 <figure>
-                                    <img src="images/subpages/customer.jpg" alt="Client Heureux" width="580" height="507" class="banner-radius" style="background-color: #BDD0DE;" />
+                                    <img src="{{asset('images/front/factory2.jpg')}}" alt="Client Heureux" width="580" height="507" class="banner-radius" style="background-color: #BDD0DE;" />
                                 </figure>
                             </div>
                             <div class="col-md-5 mb-4">
@@ -84,28 +107,7 @@
                 </section>
                 <!-- Fin de la Section Client -->
 
-                <section class="store-section pb-10 appear-animate">
-                    <div class="container">
-                        <div class="row align-items-center">
-                            <div class="col-md-6 order-md-first mb-4">
-                                <h5 class="section-subtitle lh-2 ls-md font-weight-normal mb-1">03. Notre Magasin</h5>
-                                <h3 class="section-title lh-1 font-weight-bold">Attendez-vous à un soutien<br>incroyable</h3>
-                                <p class="section-desc text-grey">
-                                    Déjà des millions de personnes sont très satisfaites de ceci.<br>
-                                    Ce constructeur de pages et le nombre ne fait qu'augmenter. La technologie<br>
-                                    évolue, les exigences augmentent. Muster & Dikson a apporté.
-                                </p>
-                                <a href="{{route('index')}}" class="btn btn-dark btn-link btn-underline ls-m">Découvrez Notre Magasin<i class="d-icon-arrow-right"></i></a>
-                            </div>
-                            <div class="col-md-6 mb-4">
-                                <figure>
-                                    <img src="images/subpages/store.jpg" alt="Notre Magasin" width="580" height="507" class="banner-radius" style="background-color: #DEE6E8;" />
-                                </figure>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                <!-- Fin de la Section Magasin -->
+
 
 {{--                <section class="brand-section grey-section pt-10 pb-10 appear-animate">--}}
 {{--                    <div class="container mt-8 mb-10">--}}
