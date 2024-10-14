@@ -43,7 +43,7 @@ class AdminPanelProvider extends PanelProvider
                 'success' => Color::Emerald,
                 'warning' => Color::Orange,
             ])
-            ->brandLogo(asset('images/logo/logo-bg-white.png'))
+            ->brandLogo(asset('images/logo/logo-muster-dickson-white-bg.jpg'))
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,

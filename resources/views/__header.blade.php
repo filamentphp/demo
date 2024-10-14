@@ -47,8 +47,6 @@
                     </a>
                     <div class="canvas-overlay"></div>
                 </div>
-
-
             </div>
         </div>
     </div>
