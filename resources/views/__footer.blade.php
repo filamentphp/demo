@@ -12,7 +12,7 @@
                                 qui étudie, produit et agit pour offrir un service toujours meilleur  et une gamme de produits de
                                 qualité supérieure. <br>
                             </p>
-                            <a href="mailto:mail@example.com">contact@muster-dikson.com</a>
+                            <a href="mailto:contact@muster-dikson.co">contact@muster-dikson.com</a>
                         </div>
                     </div>
                     <!-- End Widget -->
@@ -24,16 +24,10 @@
                                 <h4 class="widget-title">À Propos de Nous</h4>
                                 <ul class="widget-body">
                                     <li>
-                                        <a href="about-us.html">À Propos de Nous</a>
+                                        <a href="{{route('about_us')}}">À Propos de Nous</a>
                                     </li>
                                     <li>
-                                        <a href="#">Retours</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Service Client</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Conditions Générales</a>
+                                        <a href="{{route('contact_us')}}">Contactez Nous</a>
                                     </li>
                                 </ul>
                             </div>
@@ -46,18 +40,21 @@
                                     <li>
                                         <a href="#">Méthodes de Paiement</a>
                                     </li>
-                                    <li>
-                                        <a href="#">Garantie de Remboursement !</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Retours</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Expédition</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Conditions Générales</a>
-                                    </li>
+{{--                                    <li>--}}
+{{--                                        <a href="#">Garantie de Remboursement !</a>--}}
+{{--                                    </li>--}}
+{{--                                    <li>--}}
+{{--                                        <a href="#">Retours</a>--}}
+{{--                                    </li>--}}
+{{--                                    <li>--}}
+{{--                                        <a href="#">Expédition</a>--}}
+{{--                                    </li>--}}
+                                        <li>
+                                            <a href="#">Service Client</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Conditions Générales</a>
+                                        </li>
                                 </ul>
                             </div>
                             <!-- End Widget -->
