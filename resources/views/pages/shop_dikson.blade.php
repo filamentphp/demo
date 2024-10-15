@@ -36,27 +36,23 @@
                                     <figure class="product-media">
                                         <a href="{{ route('products.show', $product->id) }}">
                                             @if ($product->getFirstMediaUrl('product-images'))
-                                                <img src="{{ $product->getFirstMediaUrl('product-images') }}" alt="{{ $product->name }}" width="300"
-                                                     height="338">
-                                                <img src="{{ $product->getFirstMediaUrl('product-images') }}" alt="{{ $product->name }}" width="300"
-                                                     height="338">
+                                                <img class="product-image" style="width: 300px; height: 338px;object-fit: cover" src="{{ $product->getFirstMediaUrl('product-images') }}" alt="{{ $product->name }}">
+                                                <img class="product-image" style="width: 300px; height: 338px;object-fit: cover" src="{{ $product->getFirstMediaUrl('product-images') }}" alt="{{ $product->name }}">
                                             @endif
-
                                         </a>
                                         <div class="product-action-vertical">
                                             <a href="{{route('cart.show')}}" class="btn-product-icon btn-cart" title="Select Options">
                                                 <i class="d-icon-bag"></i>
                                             </a>
                                         </div>
-                                    </figure>h
+                                    </figure>
                                     <div class="product-details">
                                         <h3 class="product-name">
                                             <a href="{{ route('products.show', $product->id) }}">{{ $product->name }}</a>
                                         </h3>
                                         <div class="product-price">
-                                            <div class="product-price">
-                                                <ins class="new-price">{{ number_format($product->price, 2) }} MAD</ins><del class="old-price">{{ number_format($product->old_price, 2) }} MAD</del>
-                                            </div>
+                                            <ins class="new-price">{{ number_format($product->price, 2) }} MAD</ins>
+                                            <del class="old-price">{{ number_format($product->old_price, 2) }} MAD</del>
                                         </div>
                                         <div class="ratings-container">
                                             <div class="ratings-full">

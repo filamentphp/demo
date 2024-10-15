@@ -67,7 +67,7 @@
                                                 <span class="product-nav-popup">
 {{--                                                    <img src="images/product/product-thumb-next.jpg"--}}
 {{--                                                         alt="product thumbnail" width="110" height="123">--}}
-                                                    <span class="product-name">Sed egtas Dnte Comfort</span>
+{{--                                                    <span class="product-name">Sed egtas Dnte Comfort</span>--}}
                                                 </span>
                                             </a>
                                         </li>
@@ -105,7 +105,7 @@
 
                                         <!-- Add the data attribute to identify the product ID -->
                                         <button class="btn-product btn-cart" id="add-to-cart-btn" data-product-id="{{ $product->id }}">
-                                            <i class="d-icon-bag"></i>Add To Cart
+                                            <i class="d-icon-bag"></i>Ajouter au panier
                                         </button>
                                     </div>
                                 </div>
@@ -117,23 +117,20 @@
                                 @section('scripts')
                                     <script>
                                         document.addEventListener('DOMContentLoaded', function () {
-                                            // Add to Cart Button
                                             const addToCartButton = document.getElementById('add-to-cart-btn');
 
                                             addToCartButton.addEventListener('click', function (e) {
                                                 e.preventDefault();
 
-                                                const productId = this.getAttribute('data-product-id'); // Get product ID from data attribute
-                                                const quantity = document.getElementById('product-quantity').value; // Get the selected quantity
+                                                const productId = this.getAttribute('data-product-id');
+                                                const quantity = document.getElementById('product-quantity').value;
 
-                                                // Prepare the data for AJAX request
                                                 const cartData = {
                                                     product_id: productId,
                                                     quantity: quantity,
                                                     _token: '{{ csrf_token() }}'
                                                 };
 
-                                                // Send AJAX request to add product to cart
                                                 fetch('{{ route("cart.add") }}', {
                                                     method: 'POST',
                                                     headers: {
@@ -146,7 +143,6 @@
                                                     .then(data => {
                                                         console.log(data);
                                                         if (data.success === 'Item added to cart successfully!') {
-                                                            // Call alertCartAdded function
                                                             // alert("product added");
                                                         }
                                                     })
