@@ -8,6 +8,27 @@
 
         <main class="main home">
             <div class="page-content">
+                <section style="padding: 0 !important;" id="categorie" class="container-fluid p-0 mb-5">
+                    <div class="row no-gutters">
+                        <div class="col-12 col-md-6 overlay-container">
+                            <picture>
+                                <source class="image img-fluid" media="(max-width: 575px)" srcset="https://muster-dikson.com/images/img/sezioni/parrucchiere-s.jpg?v=1">
+                                <source class="image img-fluid" media="(min-width: 576px) and (max-width: 1100px)" srcset="https://muster-dikson.com/images/img/sezioni/parrucchiere-md.jpg?v=1 2x">
+                                <source class="image img-fluid" media="(min-width: 1101px)" srcset="https://muster-dikson.com/images/img/sezioni/parrucchiere.jpg?v=1">
+                                <img src="https://muster-dikson.com/images/img/sezioni/parrucchiere.jpg?v=1" class="image img-fluid" alt="">
+                            </picture>
+                        </div>
+                        <div class="col-12 col-md-6 overlay-container">
+                            <picture>
+                                <source class="image img-fluid" media="(max-width: 575px)" srcset="https://muster-dikson.com/images/img/sezioni/estetica-s.jpg?v=1">
+                                <source class="image img-fluid" media="(min-width: 576px) and (max-width: 1100px)" srcset="https://muster-dikson.com/images/img/sezioni/estetica-md.jpg?v=1 2x">
+                                <source class="image img-fluid" media="(min-width: 1101px)" srcset="https://muster-dikson.com/images/img/sezioni/estetica.jpg?v=1">
+                                <img src="https://muster-dikson.com/images/img/sezioni/estetica.jpg?v=1" class="image img-fluid" alt="">
+                            </picture>
+                        </div>
+                    </div>
+                </section>
+
                 <section class="intro-section container mb-lg-4">
                     <div class="row pb-4">
                         <div class="intro-slider animation-slider owl-carousel owl-dot-white owl-theme owl-dot-inner row cols-1 gutter-no mb-4"

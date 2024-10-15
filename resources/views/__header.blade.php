@@ -66,6 +66,9 @@
 {{--                            <a href="{{route('video')}}">Video</a>--}}
                         </li>
                         <li class="">
+                            <a href="{{route('contact')}}">Contact</a>
+                        </li>
+                        <li class="">
                             <a style="text-transform: none!important;" href="{{route('about_us')}}">À propos de nous</a>
                         </li>
                         <li class="">
