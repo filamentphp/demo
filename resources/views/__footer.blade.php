@@ -5,7 +5,7 @@
                 <div class="col-lg-4 col-md-12">
                     <div class="widget widget-about pl-0">
                         <a href="{{assert("images/payment.png")}}" class="logo-footer">
-                            <img src="{{asset("images/logo/logo.jpg")}}" alt="logo-footer" width="154" height="43" />
+                            <img src="{{asset("images/logo/logo-muster-dickson-white-bg.jpg")}}" alt="logo-footer" width="154" height="43" />
                         </a>
                         <div class="widget-body">
                             <p>Une entreprise dynamique depuis plus de 50 ans au service permanent du coiffeur et de l'esthéticienne,
