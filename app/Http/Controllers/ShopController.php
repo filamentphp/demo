@@ -32,7 +32,7 @@ class ShopController extends Controller
 
     public function showMusterProducts()
     {
-        $products = Product::whereHas('categories', function ($query) {
+        $products = Product::whereHas('brand', function ($query) {
             $query->where('name', 'muster');
         })->withCount('comments')
             ->get();
