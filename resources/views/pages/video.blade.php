@@ -16,39 +16,113 @@
                 </ul>
             </div>
             <!-- End PageHeader -->
-            <div class="page-content mb-10 pb-3">
+            <div class="page-content mb-10 pb-3 mt-5">
                 <div class="container">
-                    <nav class="toolbox toolbox-horizontal sticky-toolbox sticky-content fix-top">
-                        <aside class="sidebar sidebar-fixed shop-sidebar">
-                            <div class="sidebar-overlay"></div>
-                            <a class="sidebar-close" href="#"><i class="d-icon-times"></i></a>
-                        </aside>
-                        <div class="toolbox-right">
+                    <section class="default-section">
+                        <h2 class="title title-center">Default</h2>
+                        <div class="code-template">
+                            <div class="row">
+                                <div class="col-sm-6 col-lg-3 mb-4">
+                                    <div class="category category-default category-rounded category-absolute overlay-zoom">
+                                        <a href="#">
+                                            <div class="category-media">
+                                                <video width="280" height="280" controls>
+                                                    <source src="https://www.youtube.com/watch?v=KnBRujhBSiQ&themeRefresh=1" type="video/mp4">
+                                                    Your browser does not support the video tag.
+                                                </video>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-lg-3 mb-4">
+                                    <div class="category category-default category-rounded category-absolute overlay-zoom">
+                                        <a href="#">
+                                            <div class="category-media">
+                                                <video width="280" height="280" controls>
+                                                    <source src="https://www.youtube.com/watch?v=KnBRujhBSiQ&themeRefresh=1" type="video/mp4">
+                                                    Your browser does not support the video tag.
+                                                </video>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-lg-3 mb-4">
+                                    <div class="category category-default category-rounded category-absolute overlay-zoom">
+                                        <a href="#">
+                                            <div class="category-media">
+                                                <video width="280" height="280" controls>
+                                                    <source src="https://www.youtube.com/watch?v=KnBRujhBSiQ&themeRefresh=1" type="video/mp4">
+                                                    Your browser does not support the video tag.
+                                                </video>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-lg-3 mb-4">
+                                    <div class="category category-default category-rounded category-absolute overlay-zoom">
+                                        <a href="#">
+                                            <div class="category-media">
+                                                <video width="280" height="280" controls>
+                                                    <source src="https://www.youtube.com/watch?v=KnBRujhBSiQ&themeRefresh=1" type="video/mp4">
+                                                    Your browser does not support the video tag.
+                                                </video>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6 col-lg-3 mb-4">
+                                    <div class="category category-default category-rounded category-absolute overlay-zoom">
+                                        <a href="#">
+                                            <div class="category-media">
+                                                <video width="280" height="280" controls>
+                                                    <source src="https://www.youtube.com/watch?v=KnBRujhBSiQ&themeRefresh=1" type="video/mp4">
+                                                    Your browser does not support the video tag.
+                                                </video>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-lg-3 mb-4">
+                                    <div class="category category-default category-rounded category-absolute overlay-zoom">
+                                        <a href="#">
+                                            <div class="category-media">
+                                                <video width="280" height="280" controls>
+                                                    <source src="https://www.youtube.com/watch?v=KnBRujhBSiQ&themeRefresh=1" type="video/mp4">
+                                                    Your browser does not support the video tag.
+                                                </video>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-lg-3 mb-4">
+                                    <div class="category category-default category-rounded category-absolute overlay-zoom">
+                                        <a href="#">
+                                            <div class="category-media">
+                                                <video width="280" height="280" controls>
+                                                    <source src="https://www.youtube.com/watch?v=KnBRujhBSiQ&themeRefresh=1" type="video/mp4">
+                                                    Your browser does not support the video tag.
+                                                </video>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-lg-3 mb-4">
+                                    <div class="category category-default category-rounded category-absolute overlay-zoom">
+                                        <a href="#">
+                                            <div class="category-media">
+                                                <video width="280" height="280" controls>
+                                                    <source src="https://www.youtube.com/watch?v=KnBRujhBSiQ&themeRefresh=1" type="video/mp4">
+                                                    Your browser does not support the video tag.
+                                                </video>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </nav>
-
-                    <div class="row cols-2 cols-sm-3 cols-md-4 product-wrapper">
-
-                    </div>
-
-                    <nav class="toolbox toolbox-pagination mb-1">
-{{--                        <p class="toolbox-item show-info d-block mb-2 mb-sm-0">Showing 1–12 of 24 Products</p>--}}
-{{--                        <ul class="pagination">--}}
-{{--                            <li class="page-item disabled">--}}
-{{--                                <a class="page-link page-link-prev" href="#" aria-label="Previous" tabindex="-1"--}}
-{{--                                   aria-disabled="true">--}}
-{{--                                    <i class="d-icon-arrow-left"></i>Prev--}}
-{{--                                </a>--}}
-{{--                            </li>--}}
-{{--                            <li class="page-item active" aria-current="page"><a class="page-link" href="#">1</a></li>--}}
-{{--                            <li class="page-item"><a class="page-link" href="#">2</a></li>--}}
-{{--                            <li class="page-item">--}}
-{{--                                <a class="page-link page-link-next" href="#" aria-label="Next">--}}
-{{--                                    Next<i class="d-icon-arrow-right"></i>--}}
-{{--                                </a>--}}
-{{--                            </li>--}}
-{{--                        </ul>--}}
-                    </nav>
+                    </section>
                 </div>
             </div>
 

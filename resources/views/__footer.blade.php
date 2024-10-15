@@ -37,32 +37,20 @@
 {{--                                <h4 class="widget-title">Service Client</h4>--}}
                                 <ul class="widget-body">
                                     <li>
-                                        <a href="#">Coiffeur</a>
+                                        <a href="{{route('hairdresser')}}">Coiffeur</a>
                                     </li>
                                     <li>
-                                        <a href="#">Beauté</a>
+                                        <a href="{{route('beauty')}}">Beauté</a>
                                     </li>
                                     <li>
-                                        <a href="#">Hygiène Sécurité</a>
+                                        <a href="{{route('hygiene-safety')}}">Hygiène Sécurité</a>
                                     </li>
                                     <li>
-                                        <a href="#">Vidéo</a>
+                                        <a href="{{route('video')}}">Vidéo</a>
                                     </li>
                                     <li>
-                                        <a href="#">Téléchargements</a>
+                                        <a href="{{route('downloads')}}">Téléchargements</a>
                                     </li>
-{{--                                    <li>--}}
-{{--                                        <a href="#">Garantie de Remboursement !</a>--}}
-{{--                                    </li>--}}
-{{--                                    <li>--}}
-{{--                                        <a href="#">Retours</a>--}}
-{{--                                    </li>--}}
-{{--                                    <li>--}}
-{{--                                        <a href="#">Expédition</a>--}}
-{{--                                    </li>--}}
-{{--                                        <li>--}}
-{{--                                            <a href="#">Service Client</a>--}}
-{{--                                        </li>--}}
                                 </ul>
                             </div>
                             <!-- End Widget -->
@@ -79,7 +67,7 @@
                                         <p> <i class="d-icon-headphone"></i> +212 662-750030</p>
                                     </li>
                                     <li>
-                                        <p>  contact@muster-dikson.ma</p>
+                                        <p> contact@muster-dikson.ma</p>
                                     </li>
                                 </ul>
                             </div>
@@ -95,6 +83,9 @@
     <!-- End Footer Middle -->
     <div class="container">
         <div class="footer-bottom">
+            <div class="footer-left">
+                <img width="90" height="100" src="{{asset('images/front/madeinitaly.png')}}">
+            </div>
             <div class="footer-center">
                 <p class="copyright">Muster & Dikson &copy; 2024 | <a href="#"> Conditions Générales</a> </p>
             </div>
