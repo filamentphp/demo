@@ -26,9 +26,7 @@ Route::get('/contact', [ContactController::class, 'create'])->name('contact');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
 
-Route::get('/video', function () {
-    return view('pages.video');
-})->name('video');
+
 
 
 Route::get('/shop', function () {
@@ -55,6 +53,30 @@ Route::get('/about-us', function () {
 })->name('about_us');
 
 Route::post('/place-order', [ShopController::class, 'store'])->name('order.store');
+
+//Pages
+Route::get('/hairdresser', function () {
+    return view('pages.hairdresser');
+})->name('hairdresser');
+
+Route::get('/beauty', function () {
+    return view('pages.beauty');
+})->name('beauty');
+
+Route::get('/hygiene-safety', function () {
+    return view('pages.hygiene-safety');
+})->name('hygiene-safety');
+
+Route::get('/video', function () {
+    return view('pages.video');
+})->name('video');
+
+Route::get('/downloads', function () {
+    return view('pages.downloads');
+})->name('downloads');
+
+
+
 
 
 Route::get('/testroute', function() {
