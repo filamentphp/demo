@@ -6,6 +6,11 @@ A demo application to illustrate how Filament Admin works.
 
 [Open in Gitpod](https://gitpod.io/#https://github.com/filamentphp/demo) to edit it and preview your changes with no setup required.
 
+Or get this project running instantly with **Codeanywhere** by clicking the button below:  
+
+[![Open in Codeanywhere](https://codeanywhere.com/img/open-in-codeanywhere-btn.svg)](https://app.codeanywhere.com/#https://github.com/filamentphp/demo)
+
+
 ## Installation
 
 Clone the repo locally:
