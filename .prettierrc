@@ -1,0 +1,9 @@
+{
+    "parser": "php",
+    "plugins": ["@prettier/plugin-php"],
+    "phpVersion": "7.0",
+    "trailingComma": "es5",
+    "singleQuote": true,
+    "printWidth": 80,
+    "exclude": ["node_modules/**/*", "vendor/**/*"]
+}
