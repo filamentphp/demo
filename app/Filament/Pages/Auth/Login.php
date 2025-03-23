@@ -12,7 +12,7 @@ class Login extends BasePage
 
         $this->form->fill([
             'email' => 'admin@filamentphp.com',
-            'password' => 'password',
+            'password' => 'wYnatErfIcti',
             'remember' => true,
         ]);
     }
