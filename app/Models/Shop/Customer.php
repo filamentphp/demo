@@ -4,6 +4,7 @@ namespace App\Models\Shop;
 
 use App\Models\Address;
 use App\Models\Comment;
+use Database\Factories\Shop\CustomerFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -13,7 +14,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Customer extends Model
 {
+    /** @use HasFactory<CustomerFactory> */
     use HasFactory;
+
     use SoftDeletes;
 
     /**
@@ -28,19 +31,19 @@ class Customer extends Model
         'birthday' => 'date',
     ];
 
-    /** @return MorphToMany<Address> */
+    /** @return MorphToMany<Address, $this> */
     public function addresses(): MorphToMany
     {
         return $this->morphToMany(Address::class, 'addressable');
     }
 
-    /** @return HasMany<Comment> */
+    /** @return HasMany<Comment, $this> */
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
     }
 
-    /** @return HasManyThrough<Payment> */
+    /** @return HasManyThrough<Payment, Order, $this> */
     public function payments(): HasManyThrough
     {
         return $this->hasManyThrough(Payment::class, Order::class, 'shop_customer_id');
