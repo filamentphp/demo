@@ -5,7 +5,6 @@ namespace App\Filament\Resources\Blog;
 use App\Filament\Resources\Blog\AuthorResource\Pages;
 use App\Models\Blog\Author;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -25,10 +24,10 @@ class AuthorResource extends Resource
 
     protected static ?int $navigationSort = 2;
 
-    public static function form(Form $form): Form
+    public static function form(Forms\Form $form): Forms\Form
     {
         return $form
-            ->schema([
+            ->components([
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
@@ -90,11 +89,11 @@ class AuthorResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                \Filament\Tables\Actions\EditAction::make(),
+                \Filament\Tables\Actions\DeleteAction::make(),
             ])
             ->groupedBulkActions([
-                Tables\Actions\DeleteBulkAction::make()
+                \Filament\Tables\Actions\DeleteBulkAction::make()
                     ->action(function () {
                         Notification::make()
                             ->title('Now, now, don\'t be cheeky, leave some records for others to play with!')

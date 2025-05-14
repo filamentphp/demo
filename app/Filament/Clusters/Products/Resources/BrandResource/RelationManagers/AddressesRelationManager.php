@@ -3,9 +3,10 @@
 namespace App\Filament\Clusters\Products\Resources\BrandResource\RelationManagers;
 
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
+use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Tables\Actions\DetachAction;
 use Filament\Tables\Table;
 use Squire\Models\Country;
 
@@ -15,10 +16,10 @@ class AddressesRelationManager extends RelationManager
 
     protected static ?string $recordTitleAttribute = 'full_address';
 
-    public function form(Form $form): Form
+    public function form(\Filament\Forms\Form $form): \Filament\Forms\Form
     {
         return $form
-            ->schema([
+            ->components([
                 Forms\Components\TextInput::make('street'),
 
                 Forms\Components\TextInput::make('zip'),
@@ -51,17 +52,17 @@ class AddressesRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\AttachAction::make(),
-                Tables\Actions\CreateAction::make(),
+                // AttachAction::make(),
+                \Filament\Tables\Actions\CreateAction::make(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DetachAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                \Filament\Tables\Actions\EditAction::make(),
+                DetachAction::make(),
+                \Filament\Tables\Actions\DeleteAction::make(),
             ])
             ->groupedBulkActions([
-                Tables\Actions\DetachBulkAction::make(),
-                Tables\Actions\DeleteBulkAction::make(),
+                \Filament\Tables\Actions\DetachBulkAction::make(),
+                DeleteBulkAction::make(),
             ]);
     }
 }

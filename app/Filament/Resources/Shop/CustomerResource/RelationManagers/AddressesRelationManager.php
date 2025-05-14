@@ -3,9 +3,10 @@
 namespace App\Filament\Resources\Shop\CustomerResource\RelationManagers;
 
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\DetachAction;
 use Filament\Tables\Table;
 use Squire\Models\Country;
 
@@ -15,10 +16,10 @@ class AddressesRelationManager extends RelationManager
 
     protected static ?string $recordTitleAttribute = 'full_address';
 
-    public function form(Form $form): Form
+    public function form(\Filament\Forms\Form $form): \Filament\Forms\Form
     {
         return $form
-            ->schema([
+            ->components([
                 Forms\Components\TextInput::make('street'),
 
                 Forms\Components\TextInput::make('zip'),
@@ -45,23 +46,23 @@ class AddressesRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('city'),
 
                 Tables\Columns\TextColumn::make('country')
-                    ->formatStateUsing(fn ($state): ?string => Country::find($state)?->name ?? null),
+                    ->formatStateUsing(fn ($state): ?string => Country::find($state)->name ?? null),
             ])
             ->filters([
                 //
             ])
             ->headerActions([
-                Tables\Actions\AttachAction::make(),
-                Tables\Actions\CreateAction::make(),
+                // \Filament\Tables\Actions\AttachAction::make(),
+                \Filament\Tables\Actions\CreateAction::make(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DetachAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                \Filament\Tables\Actions\EditAction::make(),
+                DetachAction::make(),
+                DeleteAction::make(),
             ])
             ->groupedBulkActions([
-                Tables\Actions\DetachBulkAction::make(),
-                Tables\Actions\DeleteBulkAction::make(),
+                \Filament\Tables\Actions\DetachBulkAction::make(),
+                \Filament\Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 }

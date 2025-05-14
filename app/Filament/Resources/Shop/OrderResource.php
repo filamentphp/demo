@@ -11,17 +11,15 @@ use App\Forms\Components\AddressForm;
 use App\Models\Shop\Order;
 use App\Models\Shop\Product;
 use Filament\Forms;
-use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Repeater;
-use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Carbon;
 use Squire\Models\Currency;
 
 class OrderResource extends Resource
@@ -38,24 +36,24 @@ class OrderResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
-    public static function form(Form $form): Form
+    public static function form(Forms\Form $form): Forms\Form
     {
         return $form
-            ->schema([
-                Forms\Components\Group::make()
+            ->components([
+                \Filament\Forms\Components\Group::make()
                     ->schema([
-                        Forms\Components\Section::make()
+                        \Filament\Forms\Components\Section::make()
                             ->schema(static::getDetailsFormSchema())
                             ->columns(2),
 
-                        Forms\Components\Section::make('Order items')
+                        \Filament\Forms\Components\Section::make('Order items')
                             ->headerActions([
-                                Action::make('reset')
+                                \Filament\Tables\Actions\Action::make('reset')
                                     ->modalHeading('Are you sure?')
                                     ->modalDescription('All existing items will be removed from the order.')
                                     ->requiresConfirmation()
                                     ->color('danger')
-                                    ->action(fn (Forms\Set $set) => $set('items', [])),
+                                    ->action(fn (\Filament\Forms\Set $set) => $set('items', [])),
                             ])
                             ->schema([
                                 static::getItemsRepeater(),
@@ -63,7 +61,7 @@ class OrderResource extends Resource
                     ])
                     ->columnSpan(['lg' => fn (?Order $record) => $record === null ? 3 : 2]),
 
-                Forms\Components\Section::make()
+                \Filament\Forms\Components\Section::make()
                     ->schema([
                         Forms\Components\Placeholder::make('created_at')
                             ->label('Created at')
@@ -121,8 +119,8 @@ class OrderResource extends Resource
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
 
-                Tables\Filters\Filter::make('created_at')
-                    ->form([
+                /*Filter::make('created_at')
+                    ->schema([
                         Forms\Components\DatePicker::make('created_from')
                             ->placeholder(fn ($state): string => 'Dec 18, ' . now()->subYear()->format('Y')),
                         Forms\Components\DatePicker::make('created_until')
@@ -149,13 +147,13 @@ class OrderResource extends Resource
                         }
 
                         return $indicators;
-                    }),
+                    }),*/
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                EditAction::make(),
             ])
             ->groupedBulkActions([
-                Tables\Actions\DeleteBulkAction::make()
+                \Filament\Tables\Actions\DeleteBulkAction::make()
                     ->action(function () {
                         Notification::make()
                             ->title('Now, now, don\'t be cheeky, leave some records for others to play with!')
@@ -228,7 +226,7 @@ class OrderResource extends Resource
         return (string) $modelClass::where('status', 'new')->count();
     }
 
-    /** @return Forms\Components\Component[] */
+    /** @return \Filament\Schemas\Components\Component[] */
     public static function getDetailsFormSchema(): array
     {
         return [
@@ -268,7 +266,7 @@ class OrderResource extends Resource
                         ->required()
                         ->native(false),
                 ])
-                ->createOptionAction(function (Action $action) {
+                ->createOptionAction(function (\Filament\Actions\Action $action) {
                     return $action
                         ->modalHeading('Create customer')
                         ->modalSubmitActionLabel('Create customer')
@@ -304,7 +302,7 @@ class OrderResource extends Resource
                     ->options(Product::query()->pluck('name', 'id'))
                     ->required()
                     ->reactive()
-                    ->afterStateUpdated(fn ($state, Forms\Set $set) => $set('unit_price', Product::find($state)?->price ?? 0))
+                    ->afterStateUpdated(fn ($state, \Filament\Forms\Set $set) => $set('unit_price', Product::find($state)?->price ?? 0))
                     ->distinct()
                     ->disableOptionsWhenSelectedInSiblingRepeaterItems()
                     ->columnSpan([
@@ -332,7 +330,7 @@ class OrderResource extends Resource
                     ]),
             ])
             ->extraItemActions([
-                Action::make('openProduct')
+                \Filament\Tables\Actions\Action::make('openProduct')
                     ->tooltip('Open product')
                     ->icon('heroicon-m-arrow-top-right-on-square')
                     ->url(function (array $arguments, Repeater $component): ?string {

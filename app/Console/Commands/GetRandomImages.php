@@ -26,7 +26,7 @@ class GetRandomImages extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
         // Use an empty string to get random images
         // We could fine-tune with search terms, examples: 'nature', 'people', 'city', 'abstract', 'food', 'sports', 'technics', 'transport', 'animals'
@@ -46,7 +46,7 @@ class GetRandomImages extends Command
         }
     }
 
-    protected function getRandomImages($schema)
+    protected function getRandomImages($schema): void
     {
         ['amount' => $amount, 'size' => $size, 'terms' => $terms] = $schema;
 
@@ -80,7 +80,7 @@ class GetRandomImages extends Command
         $this->info('Done!');
     }
 
-    protected function removeDuplicates($schema)
+    protected function removeDuplicates($schema): void
     {
         ['size' => $size] = $schema;
 

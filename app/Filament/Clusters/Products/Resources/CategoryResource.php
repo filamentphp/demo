@@ -5,7 +5,6 @@ namespace App\Filament\Clusters\Products\Resources;
 use App\Filament\Clusters\Products;
 use App\Models\Shop\Category;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -27,19 +26,19 @@ class CategoryResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
-    public static function form(Form $form): Form
+    public static function form(Forms\Form $form): Forms\Form
     {
         return $form
-            ->schema([
-                Forms\Components\Section::make()
+            ->components([
+                \Filament\Forms\Components\Section::make()
                     ->schema([
-                        Forms\Components\Grid::make()
+                        \Filament\Forms\Components\Grid::make()
                             ->schema([
                                 Forms\Components\TextInput::make('name')
                                     ->required()
                                     ->maxLength(255)
                                     ->live(onBlur: true)
-                                    ->afterStateUpdated(fn (string $operation, $state, Forms\Set $set) => $operation === 'create' ? $set('slug', Str::slug($state)) : null),
+                                    ->afterStateUpdated(fn (string $operation, $state, \Filament\Forms\Set $set) => $operation === 'create' ? $set('slug', Str::slug($state)) : null),
 
                                 Forms\Components\TextInput::make('slug')
                                     ->disabled()
@@ -63,7 +62,7 @@ class CategoryResource extends Resource
                             ->label('Description'),
                     ])
                     ->columnSpan(['lg' => fn (?Category $record) => $record === null ? 3 : 2]),
-                Forms\Components\Section::make()
+                \Filament\Forms\Components\Section::make()
                     ->schema([
                         Forms\Components\Placeholder::make('created_at')
                             ->label('Created at')
@@ -103,10 +102,10 @@ class CategoryResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                \Filament\Tables\Actions\EditAction::make(),
             ])
             ->groupedBulkActions([
-                Tables\Actions\DeleteBulkAction::make()
+                \Filament\Tables\Actions\DeleteBulkAction::make()
                     ->action(function () {
                         Notification::make()
                             ->title('Now, now, don\'t be cheeky, leave some records for others to play with!')

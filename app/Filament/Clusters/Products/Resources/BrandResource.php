@@ -5,7 +5,9 @@ namespace App\Filament\Clusters\Products\Resources;
 use App\Filament\Clusters\Products;
 use App\Models\Shop\Brand;
 use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Set;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -26,19 +28,19 @@ class BrandResource extends Resource
 
     protected static ?int $navigationSort = 2;
 
-    public static function form(Form $form): Form
+    public static function form(Forms\Form $form): Forms\Form
     {
         return $form
-            ->schema([
-                Forms\Components\Section::make()
+            ->components([
+                Section::make()
                     ->schema([
-                        Forms\Components\Grid::make()
+                        Grid::make()
                             ->schema([
                                 Forms\Components\TextInput::make('name')
                                     ->required()
                                     ->maxLength(255)
                                     ->live(onBlur: true)
-                                    ->afterStateUpdated(fn (string $operation, $state, Forms\Set $set) => $operation === 'create' ? $set('slug', Str::slug($state)) : null),
+                                    ->afterStateUpdated(fn (string $operation, $state, Set $set) => $operation === 'create' ? $set('slug', Str::slug($state)) : null),
 
                                 Forms\Components\TextInput::make('slug')
                                     ->disabled()
@@ -60,7 +62,7 @@ class BrandResource extends Resource
                             ->label('Description'),
                     ])
                     ->columnSpan(['lg' => fn (?Brand $record) => $record === null ? 3 : 2]),
-                Forms\Components\Section::make()
+                Section::make()
                     ->schema([
                         Forms\Components\Placeholder::make('created_at')
                             ->label('Created at')
@@ -100,10 +102,10 @@ class BrandResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                \Filament\Tables\Actions\EditAction::make(),
             ])
             ->groupedBulkActions([
-                Tables\Actions\DeleteBulkAction::make()
+                \Filament\Tables\Actions\DeleteBulkAction::make()
                     ->action(function () {
                         Notification::make()
                             ->title('Now, now, don\'t be cheeky, leave some records for others to play with!')

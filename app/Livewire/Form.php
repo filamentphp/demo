@@ -9,7 +9,7 @@ use Illuminate\View\View;
 use Livewire\Component;
 
 /**
- * @property-read Forms\Form $form
+ * @property-read \Filament\Schemas\Schema $form
  */
 class Form extends Component implements HasForms
 {
@@ -27,7 +27,7 @@ class Form extends Component implements HasForms
         $this->form->fill();
     }
 
-    /** @return Forms\Components\Component[] */
+    /** @return \Filament\Schemas\Components\Component[] */
     protected function getFormSchema(): array
     {
         return [

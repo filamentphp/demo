@@ -5,10 +5,8 @@ namespace App\Filament\Resources\Blog;
 use App\Filament\Resources\Blog\CategoryResource\Pages;
 use App\Models\Blog\Category;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Infolist;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -29,15 +27,15 @@ class CategoryResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
-    public static function form(Form $form): Form
+    public static function form(Forms\Form $form): Forms\Form
     {
         return $form
-            ->schema([
+            ->components([
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255)
                     ->live(onBlur: true)
-                    ->afterStateUpdated(fn (string $operation, $state, Forms\Set $set) => $operation === 'create' ? $set('slug', Str::slug($state)) : null),
+                    ->afterStateUpdated(fn (string $operation, $state, \Filament\Forms\Set $set) => $operation === 'create' ? $set('slug', Str::slug($state)) : null),
 
                 Forms\Components\TextInput::make('slug')
                     ->disabled()
@@ -75,12 +73,12 @@ class CategoryResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                \Filament\Tables\Actions\ViewAction::make(),
+                \Filament\Tables\Actions\EditAction::make(),
+                \Filament\Tables\Actions\DeleteAction::make(),
             ])
             ->groupedBulkActions([
-                Tables\Actions\DeleteBulkAction::make()
+                \Filament\Tables\Actions\DeleteBulkAction::make()
                     ->action(function () {
                         Notification::make()
                             ->title('Now, now, don\'t be cheeky, leave some records for others to play with!')
@@ -90,10 +88,10 @@ class CategoryResource extends Resource
             ]);
     }
 
-    public static function infolist(Infolist $infolist): Infolist
+    public static function infolist(\Filament\Infolists\Infolist $form): \Filament\Infolists\Infolist
     {
-        return $infolist
-            ->schema([
+        return $form
+            ->components([
                 TextEntry::make('name'),
                 TextEntry::make('slug'),
                 TextEntry::make('description'),

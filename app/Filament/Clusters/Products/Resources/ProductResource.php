@@ -8,10 +8,10 @@ use App\Filament\Clusters\Products\Resources\ProductResource\Widgets\ProductStat
 use App\Models\Shop\Product;
 use Filament\Forms;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
-use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Filters\QueryBuilder;
 use Filament\Tables\Filters\QueryBuilder\Constraints\BooleanConstraint;
 use Filament\Tables\Filters\QueryBuilder\Constraints\DateConstraint;
@@ -36,19 +36,19 @@ class ProductResource extends Resource
 
     protected static ?int $navigationSort = 0;
 
-    public static function form(Form $form): Form
+    public static function form(Forms\Form $form): Forms\Form
     {
         return $form
-            ->schema([
-                Forms\Components\Group::make()
+            ->components([
+                \Filament\Forms\Components\Group::make()
                     ->schema([
-                        Forms\Components\Section::make()
+                        \Filament\Forms\Components\Section::make()
                             ->schema([
                                 Forms\Components\TextInput::make('name')
                                     ->required()
                                     ->maxLength(255)
                                     ->live(onBlur: true)
-                                    ->afterStateUpdated(function (string $operation, $state, Forms\Set $set) {
+                                    ->afterStateUpdated(function (string $operation, $state, \Filament\Forms\Set $set) {
                                         if ($operation !== 'create') {
                                             return;
                                         }
@@ -68,7 +68,7 @@ class ProductResource extends Resource
                             ])
                             ->columns(2),
 
-                        Forms\Components\Section::make('Images')
+                        \Filament\Forms\Components\Section::make('Images')
                             ->schema([
                                 SpatieMediaLibraryFileUpload::make('media')
                                     ->collection('product-images')
@@ -78,7 +78,7 @@ class ProductResource extends Resource
                             ])
                             ->collapsible(),
 
-                        Forms\Components\Section::make('Pricing')
+                        \Filament\Forms\Components\Section::make('Pricing')
                             ->schema([
                                 Forms\Components\TextInput::make('price')
                                     ->numeric()
@@ -99,7 +99,7 @@ class ProductResource extends Resource
                                     ->required(),
                             ])
                             ->columns(2),
-                        Forms\Components\Section::make('Inventory')
+                        \Filament\Forms\Components\Section::make('Inventory')
                             ->schema([
                                 Forms\Components\TextInput::make('sku')
                                     ->label('SKU (Stock Keeping Unit)')
@@ -127,7 +127,7 @@ class ProductResource extends Resource
                             ])
                             ->columns(2),
 
-                        Forms\Components\Section::make('Shipping')
+                        \Filament\Forms\Components\Section::make('Shipping')
                             ->schema([
                                 Forms\Components\Checkbox::make('backorder')
                                     ->label('This product can be returned'),
@@ -139,9 +139,9 @@ class ProductResource extends Resource
                     ])
                     ->columnSpan(['lg' => 2]),
 
-                Forms\Components\Group::make()
+                \Filament\Forms\Components\Group::make()
                     ->schema([
-                        Forms\Components\Section::make('Status')
+                        \Filament\Forms\Components\Section::make('Status')
                             ->schema([
                                 Forms\Components\Toggle::make('is_visible')
                                     ->label('Visible')
@@ -154,7 +154,7 @@ class ProductResource extends Resource
                                     ->required(),
                             ]),
 
-                        Forms\Components\Section::make('Associations')
+                        \Filament\Forms\Components\Section::make('Associations')
                             ->schema([
                                 Forms\Components\Select::make('shop_brand_id')
                                     ->relationship('brand', 'name')
@@ -258,10 +258,10 @@ class ProductResource extends Resource
             ], layout: Tables\Enums\FiltersLayout::AboveContentCollapsible)
             ->deferFilters()
             ->actions([
-                Tables\Actions\EditAction::make(),
+                EditAction::make(),
             ])
             ->groupedBulkActions([
-                Tables\Actions\DeleteBulkAction::make()
+                \Filament\Tables\Actions\DeleteBulkAction::make()
                     ->action(function () {
                         Notification::make()
                             ->title('Now, now, don\'t be cheeky, leave some records for others to play with!')

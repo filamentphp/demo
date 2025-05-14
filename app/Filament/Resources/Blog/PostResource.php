@@ -6,9 +6,7 @@ use App\Filament\Resources\Blog\PostResource\Pages;
 use App\Models\Blog\Post;
 use Filament\Forms;
 use Filament\Forms\Components\SpatieTagsInput;
-use Filament\Forms\Form;
 use Filament\Infolists\Components;
-use Filament\Infolists\Infolist;
 use Filament\Notifications\Notification;
 use Filament\Pages\SubNavigationPosition;
 use Filament\Resources\Pages\Page;
@@ -17,7 +15,6 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
 class PostResource extends Resource
@@ -34,19 +31,19 @@ class PostResource extends Resource
 
     protected static ?int $navigationSort = 0;
 
-    protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
+    protected static \Filament\Pages\SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
 
-    public static function form(Form $form): Form
+    public static function form(Forms\Form $form): Forms\Form
     {
         return $form
-            ->schema([
-                Forms\Components\Section::make()
+            ->components([
+                \Filament\Forms\Components\Section::make()
                     ->schema([
                         Forms\Components\TextInput::make('title')
                             ->required()
                             ->live(onBlur: true)
                             ->maxLength(255)
-                            ->afterStateUpdated(fn (string $operation, $state, Forms\Set $set) => $operation === 'create' ? $set('slug', Str::slug($state)) : null),
+                            ->afterStateUpdated(fn (string $operation, $state, \Filament\Forms\Set $set) => $operation === 'create' ? $set('slug', Str::slug($state)) : null),
 
                         Forms\Components\TextInput::make('slug')
                             ->disabled()
@@ -76,7 +73,7 @@ class PostResource extends Resource
                     ])
                     ->columns(2),
 
-                Forms\Components\Section::make('Image')
+                \Filament\Forms\Components\Section::make('Image')
                     ->schema([
                         Forms\Components\FileUpload::make('image')
                             ->image()
@@ -129,9 +126,9 @@ class PostResource extends Resource
                     ->limitList(2)
                     ->expandableLimitedList(),
             ])
-            ->filters([
-                Tables\Filters\Filter::make('published_at')
-                    ->form([
+            /*->filters([
+                Filter::make('published_at')
+                    ->schema([
                         Forms\Components\DatePicker::make('published_from')
                             ->placeholder(fn ($state): string => 'Dec 18, ' . now()->subYear()->format('Y')),
                         Forms\Components\DatePicker::make('published_until')
@@ -159,16 +156,16 @@ class PostResource extends Resource
 
                         return $indicators;
                     }),
-            ])
+            ])*/
             ->actions([
-                Tables\Actions\ViewAction::make(),
+                \Filament\Tables\Actions\ViewAction::make(),
 
-                Tables\Actions\EditAction::make(),
+                \Filament\Tables\Actions\EditAction::make(),
 
-                Tables\Actions\DeleteAction::make(),
+                \Filament\Tables\Actions\DeleteAction::make(),
             ])
             ->groupedBulkActions([
-                Tables\Actions\DeleteBulkAction::make()
+                \Filament\Tables\Actions\DeleteBulkAction::make()
                     ->action(function () {
                         Notification::make()
                             ->title('Now, now, don\'t be cheeky, leave some records for others to play with!')
@@ -178,16 +175,16 @@ class PostResource extends Resource
             ]);
     }
 
-    public static function infolist(Infolist $infolist): Infolist
+    public static function infolist(\Filament\Infolists\Infolist $infolist): \Filament\Infolists\Infolist
     {
         return $infolist
-            ->schema([
-                Components\Section::make()
+            ->components([
+                \Filament\Forms\Components\Section::make()
                     ->schema([
-                        Components\Split::make([
-                            Components\Grid::make(2)
+                        \Filament\Schemas\Components\Flex::make([
+                            \Filament\Forms\Components\Grid::make(2)
                                 ->schema([
-                                    Components\Group::make([
+                                    \Filament\Forms\Components\Group::make([
                                         Components\TextEntry::make('title'),
                                         Components\TextEntry::make('slug'),
                                         Components\TextEntry::make('published_at')
@@ -195,7 +192,7 @@ class PostResource extends Resource
                                             ->date()
                                             ->color('success'),
                                     ]),
-                                    Components\Group::make([
+                                    \Filament\Forms\Components\Group::make([
                                         Components\TextEntry::make('author.name'),
                                         Components\TextEntry::make('category.name'),
                                         Components\SpatieTagsEntry::make('tags'),
@@ -206,7 +203,7 @@ class PostResource extends Resource
                                 ->grow(false),
                         ])->from('lg'),
                     ]),
-                Components\Section::make('Content')
+                \Filament\Forms\Components\Section::make('Content')
                     ->schema([
                         Components\TextEntry::make('content')
                             ->prose()

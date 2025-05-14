@@ -6,8 +6,6 @@ use Filament\Widgets\ChartWidget;
 
 class CustomersChart extends ChartWidget
 {
-    protected static ?string $heading = 'Total customers';
-
     protected static ?int $sort = 2;
 
     protected function getType(): string

@@ -5,16 +5,15 @@ namespace App\Filament\Resources\Blog;
 use App\Filament\Resources\Blog\LinkResource\Pages;
 use App\Models\Blog\Link;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Infolists\Components\ColorEntry;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Infolist;
 use Filament\Notifications\Notification;
 use Filament\Resources\Concerns\Translatable;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
+use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Table;
 
 class LinkResource extends Resource
@@ -29,10 +28,10 @@ class LinkResource extends Resource
 
     protected static ?int $navigationSort = 3;
 
-    public static function form(Form $form): Form
+    public static function form(Forms\Form $form): Forms\Form
     {
         return $form
-            ->schema([
+            ->components([
                 Forms\Components\TextInput::make('title')
                     ->maxLength(255)
                     ->required(),
@@ -54,10 +53,10 @@ class LinkResource extends Resource
             ]);
     }
 
-    public static function infolist(Infolist $infolist): Infolist
+    public static function infolist(\Filament\Infolists\Infolist $infolist): \Filament\Infolists\Infolist
     {
         return $infolist
-            ->schema([
+            ->components([
                 TextEntry::make('title'),
                 ColorEntry::make('color'),
                 TextEntry::make('description')
@@ -110,16 +109,16 @@ class LinkResource extends Resource
                 'all',
             ])
             ->actions([
-                Tables\Actions\Action::make('visit')
+                \Filament\Tables\Actions\Action::make('visit')
                     ->label('Visit link')
                     ->icon('heroicon-m-arrow-top-right-on-square')
                     ->color('gray')
                     ->url(fn (Link $record): string => '#' . urlencode($record->url)),
-                Tables\Actions\EditAction::make(),
+                \Filament\Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make()
+                BulkActionGroup::make([
+                    \Filament\Tables\Actions\DeleteBulkAction::make()
                         ->action(function () {
                             Notification::make()
                                 ->title('Now, now, don\'t be cheeky, leave some records for others to play with!')

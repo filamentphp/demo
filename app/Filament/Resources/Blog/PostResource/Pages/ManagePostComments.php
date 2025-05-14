@@ -4,12 +4,11 @@ namespace App\Filament\Resources\Blog\PostResource\Pages;
 
 use App\Filament\Resources\Blog\PostResource;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Infolist;
 use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Tables;
+use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Table;
 use Illuminate\Contracts\Support\Htmlable;
 
@@ -40,10 +39,10 @@ class ManagePostComments extends ManageRelatedRecords
         return 'Manage Comments';
     }
 
-    public function form(Form $form): Form
+    public function form(\Filament\Forms\Form $form): \Filament\Forms\Form
     {
         return $form
-            ->schema([
+            ->components([
                 Forms\Components\TextInput::make('title')
                     ->required(),
 
@@ -63,11 +62,11 @@ class ManagePostComments extends ManageRelatedRecords
             ->columns(1);
     }
 
-    public function infolist(Infolist $infolist): Infolist
+    public function infolist(\Filament\Infolists\Infolist $infolist): \Filament\Infolists\Infolist
     {
         return $infolist
             ->columns(1)
-            ->schema([
+            ->components([
                 TextEntry::make('title'),
                 TextEntry::make('customer.name'),
                 IconEntry::make('is_visible')
@@ -100,15 +99,15 @@ class ManagePostComments extends ManageRelatedRecords
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                \Filament\Tables\Actions\CreateAction::make(),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                \Filament\Tables\Actions\ViewAction::make(),
+                \Filament\Tables\Actions\EditAction::make(),
+                \Filament\Tables\Actions\DeleteAction::make(),
             ])
             ->groupedBulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                DeleteBulkAction::make(),
             ]);
     }
 }

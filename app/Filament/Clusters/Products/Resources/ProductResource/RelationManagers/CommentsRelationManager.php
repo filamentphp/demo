@@ -4,10 +4,8 @@ namespace App\Filament\Clusters\Products\Resources\ProductResource\RelationManag
 
 use App\Models\User;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Infolist;
 use Filament\Notifications\Notification;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
@@ -19,11 +17,11 @@ class CommentsRelationManager extends RelationManager
 
     protected static ?string $recordTitleAttribute = 'title';
 
-    public function form(Form $form): Form
+    public function form(\Filament\Forms\Form $form): \Filament\Forms\Form
     {
         return $form
             ->columns(1)
-            ->schema([
+            ->components([
                 Forms\Components\TextInput::make('title')
                     ->required(),
 
@@ -42,11 +40,11 @@ class CommentsRelationManager extends RelationManager
             ]);
     }
 
-    public function infolist(Infolist $infolist): Infolist
+    public function infolist(\Filament\Infolists\Infolist $form): \Filament\Infolists\Infolist
     {
-        return $infolist
+        return $form
             ->columns(1)
-            ->schema([
+            ->components([
                 TextEntry::make('title'),
                 TextEntry::make('customer.name'),
                 IconEntry::make('is_visible')
@@ -78,7 +76,7 @@ class CommentsRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make()
+                \Filament\Tables\Actions\CreateAction::make()
                     ->after(function ($record) {
                         /** @var User $user */
                         $user = auth()->user();
@@ -91,12 +89,12 @@ class CommentsRelationManager extends RelationManager
                     }),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                \Filament\Tables\Actions\ViewAction::make(),
+                \Filament\Tables\Actions\EditAction::make(),
+                \Filament\Tables\Actions\DeleteAction::make(),
             ])
             ->groupedBulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                \Filament\Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 }

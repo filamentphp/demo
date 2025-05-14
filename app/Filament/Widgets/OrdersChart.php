@@ -6,8 +6,6 @@ use Filament\Widgets\ChartWidget;
 
 class OrdersChart extends ChartWidget
 {
-    protected static ?string $heading = 'Orders per month';
-
     protected static ?int $sort = 1;
 
     protected function getType(): string

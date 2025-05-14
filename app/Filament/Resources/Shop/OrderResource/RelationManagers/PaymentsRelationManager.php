@@ -4,7 +4,6 @@ namespace App\Filament\Resources\Shop\OrderResource\RelationManagers;
 
 use Akaunting\Money\Currency;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -16,10 +15,10 @@ class PaymentsRelationManager extends RelationManager
 
     protected static ?string $recordTitleAttribute = 'reference';
 
-    public function form(Form $form): Form
+    public function form(\Filament\Forms\Form $form): \Filament\Forms\Form
     {
         return $form
-            ->schema([
+            ->components([
                 Forms\Components\TextInput::make('reference')
                     ->columnSpan('full')
                     ->required(),
@@ -83,14 +82,14 @@ class PaymentsRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                \Filament\Tables\Actions\CreateAction::make(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                \Filament\Tables\Actions\EditAction::make(),
+                \Filament\Tables\Actions\DeleteAction::make(),
             ])
             ->groupedBulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                \Filament\Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 }

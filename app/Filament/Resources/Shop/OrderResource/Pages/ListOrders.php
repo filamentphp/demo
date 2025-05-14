@@ -30,11 +30,11 @@ class ListOrders extends ListRecords
     {
         return [
             null => Tab::make('All'),
-            'new' => Tab::make()->query(fn ($query) => $query->where('status', 'new')),
-            'processing' => Tab::make()->query(fn ($query) => $query->where('status', 'processing')),
-            'shipped' => Tab::make()->query(fn ($query) => $query->where('status', 'shipped')),
-            'delivered' => Tab::make()->query(fn ($query) => $query->where('status', 'delivered')),
-            'cancelled' => Tab::make()->query(fn ($query) => $query->where('status', 'cancelled')),
+            'new' => \Filament\Resources\Components\Tab::make()->query(fn ($query) => $query->where('status', 'new')),
+            'processing' => \Filament\Resources\Components\Tab::make()->query(fn ($query) => $query->where('status', 'processing')),
+            'shipped' => \Filament\Resources\Components\Tab::make()->query(fn ($query) => $query->where('status', 'shipped')),
+            'delivered' => \Filament\Resources\Components\Tab::make()->query(fn ($query) => $query->where('status', 'delivered')),
+            'cancelled' => \Filament\Resources\Components\Tab::make()->query(fn ($query) => $query->where('status', 'cancelled')),
         ];
     }
 }

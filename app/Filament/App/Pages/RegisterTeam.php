@@ -3,7 +3,6 @@
 namespace App\Filament\App\Pages;
 
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
 use Filament\Pages\Tenancy\RegisterTenant;
 
 class RegisterTeam extends RegisterTenant
@@ -13,10 +12,10 @@ class RegisterTeam extends RegisterTenant
         return 'New team';
     }
 
-    public function form(Form $form): Form
+    public function form(\Filament\Forms\Form $form): \Filament\Forms\Form
     {
         return $form
-            ->schema([
+            ->components([
                 TextInput::make('name')->required(),
             ]);
     }
