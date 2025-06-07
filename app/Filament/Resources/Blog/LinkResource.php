@@ -4,18 +4,23 @@ namespace App\Filament\Resources\Blog;
 
 use App\Filament\Resources\Blog\LinkResource\Pages;
 use App\Models\Blog\Link;
+use BackedEnum;
+use Filament\Actions\Action;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Infolists\Components\ColorEntry;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Infolist;
 use Filament\Notifications\Notification;
-use Filament\Resources\Concerns\Translatable;
 use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
 use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
 use Filament\Tables\Table;
+use LaraZeus\SpatieTranslatable\Resources\Concerns\Translatable;
+use UnitEnum;
 
 class LinkResource extends Resource
 {
@@ -23,16 +28,16 @@ class LinkResource extends Resource
 
     protected static ?string $model = Link::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-link';
+    protected static string | BackedEnum | null $navigationIcon = 'heroicon-o-link';
 
-    protected static ?string $navigationGroup = 'Blog';
+    protected static string | UnitEnum | null $navigationGroup = 'Blog';
 
     protected static ?int $navigationSort = 3;
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 Forms\Components\TextInput::make('title')
                     ->maxLength(255)
                     ->required(),
@@ -54,10 +59,10 @@ class LinkResource extends Resource
             ]);
     }
 
-    public static function infolist(Infolist $infolist): Infolist
+    public static function infolist(Schema $schema): Schema
     {
-        return $infolist
-            ->schema([
+        return $schema
+            ->components([
                 TextEntry::make('title'),
                 ColorEntry::make('color'),
                 TextEntry::make('description')
@@ -109,17 +114,17 @@ class LinkResource extends Resource
                 72,
                 'all',
             ])
-            ->actions([
-                Tables\Actions\Action::make('visit')
+            ->recordActions([
+                Action::make('visit')
                     ->label('Visit link')
                     ->icon('heroicon-m-arrow-top-right-on-square')
                     ->color('gray')
                     ->url(fn (Link $record): string => '#' . urlencode($record->url)),
-                Tables\Actions\EditAction::make(),
+                EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make()
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make()
                         ->action(function () {
                             Notification::make()
                                 ->title('Now, now, don\'t be cheeky, leave some records for others to play with!')

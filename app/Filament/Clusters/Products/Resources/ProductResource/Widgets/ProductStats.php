@@ -11,7 +11,7 @@ class ProductStats extends BaseWidget
 {
     use InteractsWithPageTable;
 
-    protected static ?string $pollingInterval = null;
+    protected ?string $pollingInterval = null;
 
     protected function getTablePage(): string
     {

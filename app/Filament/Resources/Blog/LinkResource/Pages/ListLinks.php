@@ -5,10 +5,11 @@ namespace App\Filament\Resources\Blog\LinkResource\Pages;
 use App\Filament\Resources\Blog\LinkResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use LaraZeus\SpatieTranslatable\Resources\Pages\ListRecords\Concerns\Translatable;
 
 class ListLinks extends ListRecords
 {
-    use ListRecords\Concerns\Translatable;
+    use Translatable;
 
     protected static string $resource = LinkResource::class;
 

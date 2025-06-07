@@ -4,13 +4,23 @@ namespace App\Filament\Clusters\Products\Resources;
 
 use App\Filament\Clusters\Products;
 use App\Filament\Clusters\Products\Resources\BrandResource\RelationManagers\ProductsRelationManager;
+use App\Filament\Clusters\Products\Resources\ProductResource\Pages\CreateProduct;
+use App\Filament\Clusters\Products\Resources\ProductResource\Pages\EditProduct;
+use App\Filament\Clusters\Products\Resources\ProductResource\Pages\ListProducts;
+use App\Filament\Clusters\Products\Resources\ProductResource\RelationManagers\CommentsRelationManager;
 use App\Filament\Clusters\Products\Resources\ProductResource\Widgets\ProductStats;
 use App\Models\Shop\Product;
+use BackedEnum;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
 use Filament\Forms;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
-use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Group;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Filters\QueryBuilder;
 use Filament\Tables\Filters\QueryBuilder\Constraints\BooleanConstraint;
@@ -30,25 +40,25 @@ class ProductResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    protected static ?string $navigationIcon = 'heroicon-o-bolt';
+    protected static string | BackedEnum | null $navigationIcon = 'heroicon-o-bolt';
 
     protected static ?string $navigationLabel = 'Products';
 
     protected static ?int $navigationSort = 0;
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Group::make()
+        return $schema
+            ->components([
+                Group::make()
                     ->schema([
-                        Forms\Components\Section::make()
+                        Section::make()
                             ->schema([
                                 Forms\Components\TextInput::make('name')
                                     ->required()
                                     ->maxLength(255)
                                     ->live(onBlur: true)
-                                    ->afterStateUpdated(function (string $operation, $state, Forms\Set $set) {
+                                    ->afterStateUpdated(function (string $operation, $state, Set $set) {
                                         if ($operation !== 'create') {
                                             return;
                                         }
@@ -68,7 +78,7 @@ class ProductResource extends Resource
                             ])
                             ->columns(2),
 
-                        Forms\Components\Section::make('Images')
+                        Section::make('Images')
                             ->schema([
                                 SpatieMediaLibraryFileUpload::make('media')
                                     ->collection('product-images')
@@ -78,7 +88,7 @@ class ProductResource extends Resource
                             ])
                             ->collapsible(),
 
-                        Forms\Components\Section::make('Pricing')
+                        Section::make('Pricing')
                             ->schema([
                                 Forms\Components\TextInput::make('price')
                                     ->numeric()
@@ -99,7 +109,7 @@ class ProductResource extends Resource
                                     ->required(),
                             ])
                             ->columns(2),
-                        Forms\Components\Section::make('Inventory')
+                        Section::make('Inventory')
                             ->schema([
                                 Forms\Components\TextInput::make('sku')
                                     ->label('SKU (Stock Keeping Unit)')
@@ -127,7 +137,7 @@ class ProductResource extends Resource
                             ])
                             ->columns(2),
 
-                        Forms\Components\Section::make('Shipping')
+                        Section::make('Shipping')
                             ->schema([
                                 Forms\Components\Checkbox::make('backorder')
                                     ->label('This product can be returned'),
@@ -139,9 +149,9 @@ class ProductResource extends Resource
                     ])
                     ->columnSpan(['lg' => 2]),
 
-                Forms\Components\Group::make()
+                Group::make()
                     ->schema([
-                        Forms\Components\Section::make('Status')
+                        Section::make('Status')
                             ->schema([
                                 Forms\Components\Toggle::make('is_visible')
                                     ->label('Visible')
@@ -154,7 +164,7 @@ class ProductResource extends Resource
                                     ->required(),
                             ]),
 
-                        Forms\Components\Section::make('Associations')
+                        Section::make('Associations')
                             ->schema([
                                 Forms\Components\Select::make('shop_brand_id')
                                     ->relationship('brand', 'name')
@@ -257,11 +267,11 @@ class ProductResource extends Resource
                     ->constraintPickerColumns(2),
             ], layout: Tables\Enums\FiltersLayout::AboveContentCollapsible)
             ->deferFilters()
-            ->actions([
-                Tables\Actions\EditAction::make(),
+            ->recordActions([
+                EditAction::make(),
             ])
             ->groupedBulkActions([
-                Tables\Actions\DeleteBulkAction::make()
+                DeleteBulkAction::make()
                     ->action(function () {
                         Notification::make()
                             ->title('Now, now, don\'t be cheeky, leave some records for others to play with!')
@@ -274,7 +284,7 @@ class ProductResource extends Resource
     public static function getRelations(): array
     {
         return [
-            \App\Filament\Clusters\Products\Resources\ProductResource\RelationManagers\CommentsRelationManager::class,
+            CommentsRelationManager::class,
         ];
     }
 
@@ -288,9 +298,9 @@ class ProductResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => \App\Filament\Clusters\Products\Resources\ProductResource\Pages\ListProducts::route('/'),
-            'create' => \App\Filament\Clusters\Products\Resources\ProductResource\Pages\CreateProduct::route('/create'),
-            'edit' => \App\Filament\Clusters\Products\Resources\ProductResource\Pages\EditProduct::route('/{record}/edit'),
+            'index' => ListProducts::route('/'),
+            'create' => CreateProduct::route('/create'),
+            'edit' => EditProduct::route('/{record}/edit'),
         ];
     }
 

@@ -3,12 +3,13 @@
 namespace App\Forms\Components;
 
 use Filament\Forms;
+use Filament\Schemas\Components\Grid;
 use Illuminate\Database\Eloquent\Model;
 use Squire\Models\Country;
 
 class AddressForm extends Forms\Components\Field
 {
-    protected string $view = 'filament-forms::components.group';
+    protected string $view = 'filament-schemas::components.grid';
 
     /** @var string|callable|null */
     public $relationship = null;
@@ -37,10 +38,10 @@ class AddressForm extends Forms\Components\Field
         $record?->touch();
     }
 
-    public function getChildComponents(): array
+    public function getDefaultChildComponents(): array
     {
         return [
-            Forms\Components\Grid::make()
+            Grid::make()
                 ->schema([
                     Forms\Components\Select::make('country')
                         ->searchable()
@@ -50,7 +51,7 @@ class AddressForm extends Forms\Components\Field
             Forms\Components\TextInput::make('street')
                 ->label('Street address')
                 ->maxLength(255),
-            Forms\Components\Grid::make(3)
+            Grid::make(3)
                 ->schema([
                     Forms\Components\TextInput::make('city')
                         ->maxLength(255),
