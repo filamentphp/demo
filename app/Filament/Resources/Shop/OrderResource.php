@@ -306,6 +306,13 @@ class OrderResource extends Resource
     {
         return Repeater::make('items')
             ->relationship()
+            ->table([
+                Repeater\TableColumn::make('Product'),
+                Repeater\TableColumn::make('Quantity')
+                    ->width(100),
+                Repeater\TableColumn::make('Unit Price')
+                    ->width(110),
+            ])
             ->schema([
                 Forms\Components\Select::make('shop_product_id')
                     ->label('Product')
@@ -315,18 +322,12 @@ class OrderResource extends Resource
                     ->afterStateUpdated(fn ($state, Set $set) => $set('unit_price', Product::find($state)?->price ?? 0))
                     ->distinct()
                     ->disableOptionsWhenSelectedInSiblingRepeaterItems()
-                    ->columnSpan([
-                        'md' => 5,
-                    ])
                     ->searchable(),
 
                 Forms\Components\TextInput::make('qty')
                     ->label('Quantity')
                     ->numeric()
                     ->default(1)
-                    ->columnSpan([
-                        'md' => 2,
-                    ])
                     ->required(),
 
                 Forms\Components\TextInput::make('unit_price')
@@ -334,10 +335,7 @@ class OrderResource extends Resource
                     ->disabled()
                     ->dehydrated()
                     ->numeric()
-                    ->required()
-                    ->columnSpan([
-                        'md' => 3,
-                    ]),
+                    ->required(),
             ])
             ->extraItemActions([
                 Action::make('openProduct')
@@ -359,9 +357,6 @@ class OrderResource extends Resource
             ->orderColumn('sort')
             ->defaultItems(1)
             ->hiddenLabel()
-            ->columns([
-                'md' => 10,
-            ])
             ->required();
     }
 }
