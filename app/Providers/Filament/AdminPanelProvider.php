@@ -63,6 +63,7 @@ class AdminPanelProvider extends PanelProvider
             ->plugin(
                 SpatieTranslatablePlugin::make()
                     ->defaultLocales(['en', 'es', 'nl']),
-            );
+            )
+            ->spa();
     }
 }
