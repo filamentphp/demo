@@ -61,7 +61,7 @@ class ManagePostComments extends ManageRelatedRecords
                     ->label('Approved for public')
                     ->default(true),
 
-                Forms\Components\MarkdownEditor::make('content')
+                Forms\Components\RichEditor::make('content')
                     ->required()
                     ->label('Content'),
             ])

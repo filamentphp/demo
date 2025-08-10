@@ -297,7 +297,7 @@ class OrderResource extends Resource
             AddressForm::make('address')
                 ->columnSpan('full'),
 
-            Forms\Components\MarkdownEditor::make('notes')
+            Forms\Components\RichEditor::make('notes')
                 ->columnSpan('full'),
         ];
     }

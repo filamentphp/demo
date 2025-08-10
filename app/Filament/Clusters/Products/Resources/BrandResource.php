@@ -67,7 +67,7 @@ class BrandResource extends Resource
                             ->label('Visible to customers.')
                             ->default(true),
 
-                        Forms\Components\MarkdownEditor::make('description')
+                        Forms\Components\RichEditor::make('description')
                             ->label('Description'),
                     ])
                     ->columnSpan(['lg' => fn (?Brand $record) => $record === null ? 3 : 2]),

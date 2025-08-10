@@ -69,7 +69,7 @@ class CategoryResource extends Resource
                             ->label('Visible to customers.')
                             ->default(true),
 
-                        Forms\Components\MarkdownEditor::make('description')
+                        Forms\Components\RichEditor::make('description')
                             ->label('Description'),
                     ])
                     ->columnSpan(['lg' => fn (?Category $record) => $record === null ? 3 : 2]),

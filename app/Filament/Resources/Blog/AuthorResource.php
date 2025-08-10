@@ -45,7 +45,7 @@ class AuthorResource extends Resource
                     ->email()
                     ->unique(Author::class, 'email', ignoreRecord: true),
 
-                Forms\Components\MarkdownEditor::make('bio')
+                Forms\Components\RichEditor::make('bio')
                     ->columnSpan('full'),
 
                 Forms\Components\TextInput::make('github_handle')

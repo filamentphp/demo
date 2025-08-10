@@ -40,7 +40,7 @@ class CommentsRelationManager extends RelationManager
                     ->label('Approved for public')
                     ->default(true),
 
-                Forms\Components\MarkdownEditor::make('content')
+                Forms\Components\RichEditor::make('content')
                     ->required()
                     ->label('Content'),
             ]);

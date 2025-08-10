@@ -73,7 +73,7 @@ class ProductResource extends Resource
                                     ->maxLength(255)
                                     ->unique(Product::class, 'slug', ignoreRecord: true),
 
-                                Forms\Components\MarkdownEditor::make('description')
+                                Forms\Components\RichEditor::make('description')
                                     ->columnSpan('full'),
                             ])
                             ->columns(2),
