@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('shop_products', function (Blueprint $table) {
+        Schema::create('shop_products', function (Blueprint $table): void {
             $table->id();
             $table->foreignId('shop_brand_id')->nullable()->constrained()->nullOnDelete();
             $table->string('name');

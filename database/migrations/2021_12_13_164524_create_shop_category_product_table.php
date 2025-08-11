@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('shop_category_product', function (Blueprint $table) {
+        Schema::create('shop_category_product', function (Blueprint $table): void {
             $table->id();
             $table->foreignId('shop_category_id');
             $table->foreignId('shop_product_id');

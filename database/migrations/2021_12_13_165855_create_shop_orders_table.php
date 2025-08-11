@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('shop_orders', function (Blueprint $table) {
+        Schema::create('shop_orders', function (Blueprint $table): void {
             $table->id();
             $table->foreignId('shop_customer_id')->nullable()->constrained()->nullOnDelete();
             $table->string('number', 32)->unique();

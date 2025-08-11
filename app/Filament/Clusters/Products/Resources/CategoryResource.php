@@ -11,7 +11,10 @@ use App\Models\Shop\Category;
 use BackedEnum;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Forms;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
@@ -19,7 +22,8 @@ use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
-use Filament\Tables;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
@@ -46,13 +50,13 @@ class CategoryResource extends Resource
                     ->schema([
                         Grid::make()
                             ->schema([
-                                Forms\Components\TextInput::make('name')
+                                TextInput::make('name')
                                     ->required()
                                     ->maxLength(255)
                                     ->live(onBlur: true)
                                     ->afterStateUpdated(fn (string $operation, $state, Set $set) => $operation === 'create' ? $set('slug', Str::slug($state)) : null),
 
-                                Forms\Components\TextInput::make('slug')
+                                TextInput::make('slug')
                                     ->disabled()
                                     ->dehydrated()
                                     ->required()
@@ -60,17 +64,17 @@ class CategoryResource extends Resource
                                     ->unique(Category::class, 'slug', ignoreRecord: true),
                             ]),
 
-                        Forms\Components\Select::make('parent_id')
+                        Select::make('parent_id')
                             ->label('Parent')
                             ->relationship('parent', 'name', fn (Builder $query) => $query->where('parent_id', null))
                             ->searchable()
                             ->placeholder('Select parent category'),
 
-                        Forms\Components\Toggle::make('is_visible')
+                        Toggle::make('is_visible')
                             ->label('Visible to customers.')
                             ->default(true),
 
-                        Forms\Components\RichEditor::make('description')
+                        RichEditor::make('description')
                             ->label('Description'),
                     ])
                     ->columnSpan(['lg' => fn (?Category $record) => $record === null ? 3 : 2]),
@@ -94,18 +98,18 @@ class CategoryResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->label('Name')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('parent.name')
+                TextColumn::make('parent.name')
                     ->label('Parent')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\IconColumn::make('is_visible')
+                IconColumn::make('is_visible')
                     ->label('Visibility')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->label('Updated Date')
                     ->date()
                     ->sortable(),
@@ -118,7 +122,7 @@ class CategoryResource extends Resource
             ])
             ->groupedBulkActions([
                 DeleteBulkAction::make()
-                    ->action(function () {
+                    ->action(function (): void {
                         Notification::make()
                             ->title('Now, now, don\'t be cheeky, leave some records for others to play with!')
                             ->warning()

@@ -2,19 +2,24 @@
 
 namespace App\Filament\Resources\Shop;
 
-use App\Filament\Resources\Shop\CustomerResource\Pages;
-use App\Filament\Resources\Shop\CustomerResource\RelationManagers;
+use App\Filament\Resources\Shop\CustomerResource\Pages\CreateCustomer;
+use App\Filament\Resources\Shop\CustomerResource\Pages\EditCustomer;
+use App\Filament\Resources\Shop\CustomerResource\Pages\ListCustomers;
+use App\Filament\Resources\Shop\CustomerResource\RelationManagers\AddressesRelationManager;
+use App\Filament\Resources\Shop\CustomerResource\RelationManagers\PaymentsRelationManager;
 use App\Models\Shop\Customer;
 use BackedEnum;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Forms;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
-use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -41,21 +46,21 @@ class CustomerResource extends Resource
             ->components([
                 Section::make()
                     ->schema([
-                        Forms\Components\TextInput::make('name')
+                        TextInput::make('name')
                             ->maxLength(255)
                             ->required(),
 
-                        Forms\Components\TextInput::make('email')
+                        TextInput::make('email')
                             ->label('Email address')
                             ->required()
                             ->email()
                             ->maxLength(255)
                             ->unique(ignoreRecord: true),
 
-                        Forms\Components\TextInput::make('phone')
+                        TextInput::make('phone')
                             ->maxLength(255),
 
-                        Forms\Components\DatePicker::make('birthday')
+                        DatePicker::make('birthday')
                             ->maxDate('today'),
                     ])
                     ->columns(2)
@@ -81,28 +86,28 @@ class CustomerResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->searchable(isIndividual: true)
                     ->sortable(),
-                Tables\Columns\TextColumn::make('email')
+                TextColumn::make('email')
                     ->label('Email address')
                     ->searchable(isIndividual: true, isGlobal: false)
                     ->sortable(),
-                Tables\Columns\TextColumn::make('country')
+                TextColumn::make('country')
                     ->getStateUsing(fn ($record): ?string => Country::find($record->addresses->first()?->country)->name ?? null),
-                Tables\Columns\TextColumn::make('phone')
+                TextColumn::make('phone')
                     ->searchable()
                     ->sortable(),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
+                TrashedFilter::make(),
             ])
             ->recordActions([
                 EditAction::make(),
             ])
             ->groupedBulkActions([
                 DeleteBulkAction::make()
-                    ->action(function () {
+                    ->action(function (): void {
                         Notification::make()
                             ->title('Now, now, don\'t be cheeky, leave some records for others to play with!')
                             ->warning()
@@ -120,17 +125,17 @@ class CustomerResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\AddressesRelationManager::class,
-            RelationManagers\PaymentsRelationManager::class,
+            AddressesRelationManager::class,
+            PaymentsRelationManager::class,
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCustomers::route('/'),
-            'create' => Pages\CreateCustomer::route('/create'),
-            'edit' => Pages\EditCustomer::route('/{record}/edit'),
+            'index' => ListCustomers::route('/'),
+            'create' => CreateCustomer::route('/create'),
+            'edit' => EditCustomer::route('/{record}/edit'),
         ];
     }
 

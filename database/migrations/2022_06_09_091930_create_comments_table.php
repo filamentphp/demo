@@ -11,7 +11,7 @@ return new class extends Migration
     {
         Schema::dropIfExists('shop_reviews');
 
-        Schema::create('comments', function (Blueprint $table) {
+        Schema::create('comments', function (Blueprint $table): void {
             $table->id();
 
             $table->foreignIdFor(Customer::class)->nullable()->constrained('shop_customers')->cascadeOnDelete();

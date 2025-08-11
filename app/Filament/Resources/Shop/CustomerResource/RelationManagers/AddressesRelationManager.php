@@ -9,10 +9,11 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\DetachAction;
 use Filament\Actions\DetachBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Forms;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
-use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Squire\Models\Country;
 
@@ -26,15 +27,15 @@ class AddressesRelationManager extends RelationManager
     {
         return $schema
             ->components([
-                Forms\Components\TextInput::make('street'),
+                TextInput::make('street'),
 
-                Forms\Components\TextInput::make('zip'),
+                TextInput::make('zip'),
 
-                Forms\Components\TextInput::make('city'),
+                TextInput::make('city'),
 
-                Forms\Components\TextInput::make('state'),
+                TextInput::make('state'),
 
-                Forms\Components\Select::make('country')
+                Select::make('country')
                     ->searchable()
                     ->getSearchResultsUsing(fn (string $query) => Country::where('name', 'like', "%{$query}%")->pluck('name', 'id'))
                     ->getOptionLabelUsing(fn ($value): ?string => Country::firstWhere('id', $value)?->getAttribute('name')),
@@ -45,13 +46,13 @@ class AddressesRelationManager extends RelationManager
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('street'),
+                TextColumn::make('street'),
 
-                Tables\Columns\TextColumn::make('zip'),
+                TextColumn::make('zip'),
 
-                Tables\Columns\TextColumn::make('city'),
+                TextColumn::make('city'),
 
-                Tables\Columns\TextColumn::make('country')
+                TextColumn::make('country')
                     ->formatStateUsing(fn ($state): ?string => Country::find($state)->name ?? null),
             ])
             ->filters([

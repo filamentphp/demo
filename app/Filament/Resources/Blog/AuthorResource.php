@@ -2,17 +2,20 @@
 
 namespace App\Filament\Resources\Blog;
 
-use App\Filament\Resources\Blog\AuthorResource\Pages;
+use App\Filament\Resources\Blog\AuthorResource\Pages\ManageAuthors;
 use App\Models\Blog\Author;
 use BackedEnum;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Forms;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Tables;
+use Filament\Tables\Columns\Layout\Split;
+use Filament\Tables\Columns\Layout\Stack;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use UnitEnum;
 
@@ -34,25 +37,25 @@ class AuthorResource extends Resource
     {
         return $schema
             ->components([
-                Forms\Components\TextInput::make('name')
+                TextInput::make('name')
                     ->required()
                     ->maxLength(255),
 
-                Forms\Components\TextInput::make('email')
+                TextInput::make('email')
                     ->label('Email address')
                     ->required()
                     ->maxLength(255)
                     ->email()
                     ->unique(Author::class, 'email', ignoreRecord: true),
 
-                Forms\Components\RichEditor::make('bio')
+                RichEditor::make('bio')
                     ->columnSpan('full'),
 
-                Forms\Components\TextInput::make('github_handle')
+                TextInput::make('github_handle')
                     ->label('GitHub handle')
                     ->maxLength(255),
 
-                Forms\Components\TextInput::make('twitter_handle')
+                TextInput::make('twitter_handle')
                     ->label('Twitter handle')
                     ->maxLength(255),
             ]);
@@ -62,15 +65,15 @@ class AuthorResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\Layout\Split::make([
-                    Tables\Columns\Layout\Stack::make([
-                        Tables\Columns\TextColumn::make('name')
+                Split::make([
+                    Stack::make([
+                        TextColumn::make('name')
                             ->searchable()
                             ->sortable()
                             ->weight('medium')
                             ->alignLeft(),
 
-                        Tables\Columns\TextColumn::make('email')
+                        TextColumn::make('email')
                             ->label('Email address')
                             ->searchable()
                             ->sortable()
@@ -78,13 +81,13 @@ class AuthorResource extends Resource
                             ->alignLeft(),
                     ])->space(),
 
-                    Tables\Columns\Layout\Stack::make([
-                        Tables\Columns\TextColumn::make('github_handle')
+                    Stack::make([
+                        TextColumn::make('github_handle')
                             ->icon('icon-github')
                             ->label('GitHub')
                             ->alignLeft(),
 
-                        Tables\Columns\TextColumn::make('twitter_handle')
+                        TextColumn::make('twitter_handle')
                             ->icon('icon-twitter')
                             ->label('Twitter')
                             ->alignLeft(),
@@ -100,7 +103,7 @@ class AuthorResource extends Resource
             ])
             ->groupedBulkActions([
                 DeleteBulkAction::make()
-                    ->action(function () {
+                    ->action(function (): void {
                         Notification::make()
                             ->title('Now, now, don\'t be cheeky, leave some records for others to play with!')
                             ->warning()
@@ -119,7 +122,7 @@ class AuthorResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageAuthors::route('/'),
+            'index' => ManageAuthors::route('/'),
         ];
     }
 }

@@ -2,13 +2,14 @@
 
 namespace Database\Factories\Blog;
 
+use App\Models\Blog\Link;
 use Database\Factories\Concerns\CanCreateImages;
 use Database\Seeders\LocalImages;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Blog\Link>
+ * @extends Factory<Link>
  */
 class LinkFactory extends Factory
 {

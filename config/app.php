@@ -27,6 +27,7 @@ use Illuminate\Queue\QueueServiceProvider;
 use Illuminate\Redis\RedisServiceProvider;
 use Illuminate\Session\SessionServiceProvider;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\App as AppFacade;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
@@ -259,7 +260,7 @@ return [
 
     'aliases' => [
 
-        'App' => Illuminate\Support\Facades\App::class,
+        'App' => AppFacade::class,
         'Arr' => Arr::class,
         'Artisan' => Artisan::class,
         'Auth' => Auth::class,

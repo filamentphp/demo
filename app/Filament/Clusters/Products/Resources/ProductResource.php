@@ -13,15 +13,23 @@ use App\Models\Shop\Product;
 use BackedEnum;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Forms;
+use Filament\Forms\Components\Checkbox;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
-use Filament\Tables;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\QueryBuilder;
 use Filament\Tables\Filters\QueryBuilder\Constraints\BooleanConstraint;
 use Filament\Tables\Filters\QueryBuilder\Constraints\DateConstraint;
@@ -54,11 +62,11 @@ class ProductResource extends Resource
                     ->schema([
                         Section::make()
                             ->schema([
-                                Forms\Components\TextInput::make('name')
+                                TextInput::make('name')
                                     ->required()
                                     ->maxLength(255)
                                     ->live(onBlur: true)
-                                    ->afterStateUpdated(function (string $operation, $state, Set $set) {
+                                    ->afterStateUpdated(function (string $operation, $state, Set $set): void {
                                         if ($operation !== 'create') {
                                             return;
                                         }
@@ -66,14 +74,14 @@ class ProductResource extends Resource
                                         $set('slug', Str::slug($state));
                                     }),
 
-                                Forms\Components\TextInput::make('slug')
+                                TextInput::make('slug')
                                     ->disabled()
                                     ->dehydrated()
                                     ->required()
                                     ->maxLength(255)
                                     ->unique(Product::class, 'slug', ignoreRecord: true),
 
-                                Forms\Components\RichEditor::make('description')
+                                RichEditor::make('description')
                                     ->columnSpan('full'),
                             ])
                             ->columns(2),
@@ -90,18 +98,18 @@ class ProductResource extends Resource
 
                         Section::make('Pricing')
                             ->schema([
-                                Forms\Components\TextInput::make('price')
+                                TextInput::make('price')
                                     ->numeric()
                                     ->rules(['regex:/^\d{1,6}(\.\d{0,2})?$/'])
                                     ->required(),
 
-                                Forms\Components\TextInput::make('old_price')
+                                TextInput::make('old_price')
                                     ->label('Compare at price')
                                     ->numeric()
                                     ->rules(['regex:/^\d{1,6}(\.\d{0,2})?$/'])
                                     ->required(),
 
-                                Forms\Components\TextInput::make('cost')
+                                TextInput::make('cost')
                                     ->label('Cost per item')
                                     ->helperText('Customers won\'t see this price.')
                                     ->numeric()
@@ -111,25 +119,25 @@ class ProductResource extends Resource
                             ->columns(2),
                         Section::make('Inventory')
                             ->schema([
-                                Forms\Components\TextInput::make('sku')
+                                TextInput::make('sku')
                                     ->label('SKU (Stock Keeping Unit)')
                                     ->unique(Product::class, 'sku', ignoreRecord: true)
                                     ->maxLength(255)
                                     ->required(),
 
-                                Forms\Components\TextInput::make('barcode')
+                                TextInput::make('barcode')
                                     ->label('Barcode (ISBN, UPC, GTIN, etc.)')
                                     ->unique(Product::class, 'barcode', ignoreRecord: true)
                                     ->maxLength(255)
                                     ->required(),
 
-                                Forms\Components\TextInput::make('qty')
+                                TextInput::make('qty')
                                     ->label('Quantity')
                                     ->numeric()
                                     ->rules(['integer', 'min:0'])
                                     ->required(),
 
-                                Forms\Components\TextInput::make('security_stock')
+                                TextInput::make('security_stock')
                                     ->helperText('The safety stock is the limit stock for your products which alerts you if the product stock will soon be out of stock.')
                                     ->numeric()
                                     ->rules(['integer', 'min:0'])
@@ -139,10 +147,10 @@ class ProductResource extends Resource
 
                         Section::make('Shipping')
                             ->schema([
-                                Forms\Components\Checkbox::make('backorder')
+                                Checkbox::make('backorder')
                                     ->label('This product can be returned'),
 
-                                Forms\Components\Checkbox::make('requires_shipping')
+                                Checkbox::make('requires_shipping')
                                     ->label('This product will be shipped'),
                             ])
                             ->columns(2),
@@ -153,12 +161,12 @@ class ProductResource extends Resource
                     ->schema([
                         Section::make('Status')
                             ->schema([
-                                Forms\Components\Toggle::make('is_visible')
+                                Toggle::make('is_visible')
                                     ->label('Visible')
                                     ->helperText('This product will be hidden from all sales channels.')
                                     ->default(true),
 
-                                Forms\Components\DatePicker::make('published_at')
+                                DatePicker::make('published_at')
                                     ->label('Availability')
                                     ->default(now())
                                     ->required(),
@@ -166,12 +174,12 @@ class ProductResource extends Resource
 
                         Section::make('Associations')
                             ->schema([
-                                Forms\Components\Select::make('shop_brand_id')
+                                Select::make('shop_brand_id')
                                     ->relationship('brand', 'name')
                                     ->searchable()
                                     ->hiddenOn(ProductsRelationManager::class),
 
-                                Forms\Components\Select::make('categories')
+                                Select::make('categories')
                                     ->relationship('categories', 'name')
                                     ->multiple()
                                     ->required(),
@@ -186,49 +194,49 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\SpatieMediaLibraryImageColumn::make('product-image')
+                SpatieMediaLibraryImageColumn::make('product-image')
                     ->label('Image')
                     ->collection('product-images'),
 
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->label('Name')
                     ->searchable()
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('brand.name')
+                TextColumn::make('brand.name')
                     ->searchable()
                     ->sortable()
                     ->toggleable(),
 
-                Tables\Columns\IconColumn::make('is_visible')
+                IconColumn::make('is_visible')
                     ->label('Visibility')
                     ->sortable()
                     ->toggleable(),
 
-                Tables\Columns\TextColumn::make('price')
+                TextColumn::make('price')
                     ->label('Price')
                     ->searchable()
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('sku')
+                TextColumn::make('sku')
                     ->label('SKU')
                     ->searchable()
                     ->sortable()
                     ->toggleable(),
 
-                Tables\Columns\TextColumn::make('qty')
+                TextColumn::make('qty')
                     ->label('Quantity')
                     ->searchable()
                     ->sortable()
                     ->toggleable(),
 
-                Tables\Columns\TextColumn::make('security_stock')
+                TextColumn::make('security_stock')
                     ->searchable()
                     ->sortable()
                     ->toggleable()
                     ->toggledHiddenByDefault(),
 
-                Tables\Columns\TextColumn::make('published_at')
+                TextColumn::make('published_at')
                     ->label('Publish Date')
                     ->date()
                     ->sortable()
@@ -265,14 +273,14 @@ class ProductResource extends Resource
                         DateConstraint::make('published_at'),
                     ])
                     ->constraintPickerColumns(2),
-            ], layout: Tables\Enums\FiltersLayout::AboveContentCollapsible)
+            ], layout: FiltersLayout::AboveContentCollapsible)
             ->deferFilters()
             ->recordActions([
                 EditAction::make(),
             ])
             ->groupedBulkActions([
                 DeleteBulkAction::make()
-                    ->action(function () {
+                    ->action(function (): void {
                         Notification::make()
                             ->title('Now, now, don\'t be cheeky, leave some records for others to play with!')
                             ->warning()

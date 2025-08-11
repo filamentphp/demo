@@ -9,7 +9,7 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('shop_payments', function (Blueprint $table) {
+        Schema::create('shop_payments', function (Blueprint $table): void {
             $table->id();
 
             $table->foreignIdFor(Order::class);

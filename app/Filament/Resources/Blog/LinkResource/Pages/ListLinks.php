@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\Blog\LinkResource\Pages;
 
 use App\Filament\Resources\Blog\LinkResource;
-use Filament\Actions;
+use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use LaraZeus\SpatieTranslatable\Actions\LocaleSwitcher;
 use LaraZeus\SpatieTranslatable\Resources\Pages\ListRecords\Concerns\Translatable;
@@ -17,7 +17,7 @@ class ListLinks extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            CreateAction::make(),
             LocaleSwitcher::make(),
         ];
     }

@@ -8,10 +8,13 @@ use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Forms;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\ToggleButtons;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
-use Filament\Tables;
+use Filament\Tables\Columns\ColumnGroup;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
@@ -26,7 +29,7 @@ class PaymentsRelationManager extends RelationManager
     {
         return $schema
             ->components([
-                Forms\Components\Select::make('order_id')
+                Select::make('order_id')
                     ->label('Order')
                     ->relationship(
                         'order',
@@ -37,21 +40,21 @@ class PaymentsRelationManager extends RelationManager
                     ->hiddenOn('edit')
                     ->required(),
 
-                Forms\Components\TextInput::make('reference')
+                TextInput::make('reference')
                     ->columnSpan(fn (string $operation) => $operation === 'edit' ? 2 : 1)
                     ->required(),
 
-                Forms\Components\TextInput::make('amount')
+                TextInput::make('amount')
                     ->numeric()
                     ->rules(['regex:/^\d{1,6}(\.\d{0,2})?$/'])
                     ->required(),
 
-                Forms\Components\Select::make('currency')
+                Select::make('currency')
                     ->options(collect(Currency::getCurrencies())->mapWithKeys(fn ($item, $key) => [$key => data_get($item, 'name')]))
                     ->searchable()
                     ->required(),
 
-                Forms\Components\ToggleButtons::make('provider')
+                ToggleButtons::make('provider')
                     ->inline()
                     ->grouped()
                     ->options([
@@ -60,7 +63,7 @@ class PaymentsRelationManager extends RelationManager
                     ])
                     ->required(),
 
-                Forms\Components\ToggleButtons::make('method')
+                ToggleButtons::make('method')
                     ->inline()
                     ->options([
                         'credit_card' => 'Credit card',
@@ -75,28 +78,28 @@ class PaymentsRelationManager extends RelationManager
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('order.number')
+                TextColumn::make('order.number')
                     ->url(fn ($record) => OrderResource::getUrl('edit', [$record->order]))
                     ->searchable()
                     ->sortable(),
 
-                Tables\Columns\ColumnGroup::make('Details')
+                ColumnGroup::make('Details')
                     ->columns([
-                        Tables\Columns\TextColumn::make('reference')
+                        TextColumn::make('reference')
                             ->searchable(),
 
-                        Tables\Columns\TextColumn::make('amount')
+                        TextColumn::make('amount')
                             ->sortable()
                             ->money(fn ($record) => $record->currency),
                     ]),
 
-                Tables\Columns\ColumnGroup::make('Context')
+                ColumnGroup::make('Context')
                     ->columns([
-                        Tables\Columns\TextColumn::make('provider')
+                        TextColumn::make('provider')
                             ->formatStateUsing(fn ($state) => Str::headline($state))
                             ->sortable(),
 
-                        Tables\Columns\TextColumn::make('method')
+                        TextColumn::make('method')
                             ->formatStateUsing(fn ($state) => Str::headline($state))
                             ->sortable(),
                     ]),

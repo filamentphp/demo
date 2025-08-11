@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('shop_order_addresses', function (Blueprint $table) {
+        Schema::create('shop_order_addresses', function (Blueprint $table): void {
             $table->id();
             $table->morphs('addressable');
             $table->string('country')->nullable();
