@@ -9,10 +9,10 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "filament/filament": "*",
-        "filament/spatie-laravel-media-library-plugin": "*",
-        "filament/spatie-laravel-settings-plugin": "*",
-        "filament/spatie-laravel-tags-plugin": "*",
+        "filament/filament": "^4.0",
+        "filament/spatie-laravel-media-library-plugin": "^4.0",
+        "filament/spatie-laravel-settings-plugin": "^4.0",
+        "filament/spatie-laravel-tags-plugin": "^4.0",
         "flowframe/laravel-trend": "^0.4.0",
         "guzzlehttp/guzzle": "^7.2",
         "lara-zeus/spatie-translatable": "^1.0@alpha",
@@ -77,12 +77,6 @@
             "dont-discover": []
         }
     },
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../filament/packages/*"
-        }
-    ],
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
