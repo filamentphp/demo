@@ -3,20 +3,20 @@
 namespace App\Filament\Pages;
 
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Form;
-use Filament\Forms\Get;
 use Filament\Pages\Dashboard as BaseDashboard;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Schema;
 
 class Dashboard extends BaseDashboard
 {
     use BaseDashboard\Concerns\HasFiltersForm;
 
-    public function filtersForm(Form $form): Form
+    public function filtersForm(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 Section::make()
                     ->schema([
                         Select::make('businessCustomersOnly')
@@ -27,7 +27,8 @@ class Dashboard extends BaseDashboard
                             ->minDate(fn (Get $get) => $get('startDate') ?: now())
                             ->maxDate(now()),
                     ])
-                    ->columns(3),
+                    ->columns(3)
+                    ->columnSpanFull(),
             ]);
     }
 }

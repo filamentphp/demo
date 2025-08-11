@@ -3,7 +3,7 @@
 namespace App\Filament\Clusters\Products\Resources\ProductResource\Pages;
 
 use App\Filament\Clusters\Products\Resources\ProductResource;
-use Filament\Actions;
+use Filament\Actions\CreateAction;
 use Filament\Pages\Concerns\ExposesTableToWidgets;
 use Filament\Resources\Pages\ListRecords;
 
@@ -16,7 +16,7 @@ class ListProducts extends ListRecords
     protected function getActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            CreateAction::make(),
         ];
     }
 

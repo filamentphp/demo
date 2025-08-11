@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Blog\Link>
+ * @extends Factory<Link>
  */
 class LinkFactory extends Factory
 {
@@ -37,7 +37,7 @@ class LinkFactory extends Factory
 
     public function configure(): LinkFactory
     {
-        return $this->afterCreating(function (Link $product) {
+        return $this->afterCreating(function (Link $product): void {
             $product
                 ->addMedia(LocalImages::getRandomFile(LocalImages::SIZE_1280x720))
                 ->preservingOriginal()

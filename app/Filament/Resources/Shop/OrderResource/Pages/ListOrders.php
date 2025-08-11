@@ -3,10 +3,10 @@
 namespace App\Filament\Resources\Shop\OrderResource\Pages;
 
 use App\Filament\Resources\Shop\OrderResource;
-use Filament\Actions;
+use Filament\Actions\CreateAction;
 use Filament\Pages\Concerns\ExposesTableToWidgets;
-use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ListRecords;
+use Filament\Schemas\Components\Tabs\Tab;
 
 class ListOrders extends ListRecords
 {
@@ -17,7 +17,7 @@ class ListOrders extends ListRecords
     protected function getActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            CreateAction::make(),
         ];
     }
 

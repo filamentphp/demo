@@ -3,6 +3,7 @@
 namespace App\Models\Shop;
 
 use App\Models\Comment;
+use Database\Factories\Shop\ProductFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -14,7 +15,9 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Product extends Model implements HasMedia
 {
+    /** @use HasFactory<ProductFactory> */
     use HasFactory;
+
     use InteractsWithMedia;
 
     /**
@@ -33,19 +36,19 @@ class Product extends Model implements HasMedia
         'published_at' => 'date',
     ];
 
-    /** @return BelongsTo<Brand,self> */
+    /** @return BelongsTo<Brand, $this> */
     public function brand(): BelongsTo
     {
         return $this->belongsTo(Brand::class, 'shop_brand_id');
     }
 
-    /** @return BelongsToMany<Category> */
+    /** @return BelongsToMany<Category, $this> */
     public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Category::class, 'shop_category_product', 'shop_product_id', 'shop_category_id')->withTimestamps();
     }
 
-    /** @return MorphMany<Comment> */
+    /** @return MorphMany<Comment, $this> */
     public function comments(): MorphMany
     {
         return $this->morphMany(Comment::class, 'commentable');

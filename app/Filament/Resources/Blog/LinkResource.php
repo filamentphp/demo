@@ -2,20 +2,36 @@
 
 namespace App\Filament\Resources\Blog;
 
-use App\Filament\Resources\Blog\LinkResource\Pages;
+use App\Filament\Resources\Blog\Forms\Components\SpatieMediaLibraryFileUpload;
+use App\Filament\Resources\Blog\LinkResource\Pages\CreateLink;
+use App\Filament\Resources\Blog\LinkResource\Pages\EditLink;
+use App\Filament\Resources\Blog\LinkResource\Pages\ListLinks;
+use App\Filament\Resources\Blog\LinkResource\Pages\ViewLink;
+use App\Filament\Resources\Blog\Tables\Columns\SpatieMediaLibraryImageColumn;
 use App\Models\Blog\Link;
-use Filament\Forms;
-use Filament\Forms\Form;
+use BackedEnum;
+use Filament\Actions\Action;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Forms\Components\ColorPicker;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\ColorEntry;
 use Filament\Infolists\Components\SpatieMediaLibraryImageEntry;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Infolist;
 use Filament\Notifications\Notification;
-use Filament\Resources\Concerns\Translatable;
 use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
 use Filament\Support\Enums\FontWeight;
-use Filament\Tables;
+use Filament\Tables\Columns\ColorColumn;
+use Filament\Tables\Columns\Layout\Panel;
+use Filament\Tables\Columns\Layout\Split;
+use Filament\Tables\Columns\Layout\Stack;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use LaraZeus\SpatieTranslatable\Resources\Concerns\Translatable;
+use UnitEnum;
 
 class LinkResource extends Resource
 {
@@ -23,42 +39,42 @@ class LinkResource extends Resource
 
     protected static ?string $model = Link::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-link';
+    protected static string | BackedEnum | null $navigationIcon = 'heroicon-o-link';
 
-    protected static ?string $navigationGroup = 'Blog';
+    protected static string | UnitEnum | null $navigationGroup = 'Blog';
 
     protected static ?int $navigationSort = 3;
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('title')
+        return $schema
+            ->components([
+                TextInput::make('title')
                     ->maxLength(255)
                     ->required(),
-                Forms\Components\ColorPicker::make('color')
+                ColorPicker::make('color')
                     ->required()
                     ->hex()
                     ->hexColor(),
-                Forms\Components\Textarea::make('description')
+                Textarea::make('description')
                     ->maxLength(1024)
                     ->required()
                     ->columnSpanFull(),
-                Forms\Components\TextInput::make('url')
+                TextInput::make('url')
                     ->label('URL')
                     ->required()
                     ->maxLength(255)
                     ->columnSpanFull(),
-                Forms\Components\SpatieMediaLibraryFileUpload::make('image')
+                SpatieMediaLibraryFileUpload::make('image')
                     ->collection('link-images')
                     ->acceptedFileTypes(['image/jpeg']),
             ]);
     }
 
-    public static function infolist(Infolist $infolist): Infolist
+    public static function infolist(Schema $schema): Schema
     {
-        return $infolist
-            ->schema([
+        return $schema
+            ->components([
                 TextEntry::make('title'),
                 ColorEntry::make('color'),
                 TextEntry::make('description')
@@ -77,27 +93,26 @@ class LinkResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\Layout\Stack::make([
-                    Tables\Columns\SpatieMediaLibraryImageColumn::make('image')
-                        ->label('Image')
+                Stack::make([
+                    SpatieMediaLibraryImageColumn::make('image')
                         ->collection('link-images')
                         ->conversion('thumb')
                         ->height('100%')
                         ->width('100%'),
-                    Tables\Columns\Layout\Stack::make([
-                        Tables\Columns\TextColumn::make('title')
+                    Stack::make([
+                        TextColumn::make('title')
                             ->weight(FontWeight::Bold),
-                        Tables\Columns\TextColumn::make('url')
+                        TextColumn::make('url')
                             ->formatStateUsing(fn (string $state): string => str($state)->after('://')->ltrim('www.')->trim('/'))
                             ->color('gray')
                             ->limit(30),
                     ]),
                 ])->space(3),
-                Tables\Columns\Layout\Panel::make([
-                    Tables\Columns\Layout\Split::make([
-                        Tables\Columns\ColorColumn::make('color')
+                Panel::make([
+                    Split::make([
+                        ColorColumn::make('color')
                             ->grow(false),
-                        Tables\Columns\TextColumn::make('description')
+                        TextColumn::make('description')
                             ->color('gray'),
                     ]),
                 ])->collapsible(),
@@ -115,18 +130,18 @@ class LinkResource extends Resource
                 72,
                 'all',
             ])
-            ->actions([
-                Tables\Actions\Action::make('visit')
+            ->recordActions([
+                Action::make('visit')
                     ->label('Visit link')
                     ->icon('heroicon-m-arrow-top-right-on-square')
                     ->color('gray')
                     ->url(fn (Link $record): string => '#' . urlencode($record->url)),
-                Tables\Actions\EditAction::make(),
+                EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make()
-                        ->action(function () {
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make()
+                        ->action(function (): void {
                             Notification::make()
                                 ->title('Now, now, don\'t be cheeky, leave some records for others to play with!')
                                 ->warning()
@@ -146,10 +161,10 @@ class LinkResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListLinks::route('/'),
-            'create' => Pages\CreateLink::route('/create'),
-            'view' => Pages\ViewLink::route('/{record}'),
-            'edit' => Pages\EditLink::route('/{record}/edit'),
+            'index' => ListLinks::route('/'),
+            'create' => CreateLink::route('/create'),
+            'view' => ViewLink::route('/{record}'),
+            'edit' => EditLink::route('/{record}/edit'),
         ];
     }
 }

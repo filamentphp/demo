@@ -4,11 +4,11 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class() extends Migration
+return new class extends Migration
 {
     public function up()
     {
-        Schema::create('tags', function (Blueprint $table) {
+        Schema::create('tags', function (Blueprint $table): void {
             $table->id();
 
             $table->json('name');
@@ -19,7 +19,7 @@ return new class() extends Migration
             $table->timestamps();
         });
 
-        Schema::create('taggables', function (Blueprint $table) {
+        Schema::create('taggables', function (Blueprint $table): void {
             $table->foreignId('tag_id')->constrained()->cascadeOnDelete();
 
             $table->morphs('taggable');

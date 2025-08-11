@@ -3,13 +3,22 @@
 namespace App\Filament\Resources\Blog\PostResource\Pages;
 
 use App\Filament\Resources\Blog\PostResource;
-use Filament\Forms;
-use Filament\Forms\Form;
+use BackedEnum;
+use Filament\Actions\CreateAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Infolist;
 use Filament\Resources\Pages\ManageRelatedRecords;
-use Filament\Tables;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Contracts\Support\Htmlable;
 
@@ -19,7 +28,7 @@ class ManagePostComments extends ManageRelatedRecords
 
     protected static string $relationship = 'comments';
 
-    protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-left-ellipsis';
+    protected static string | BackedEnum | null $navigationIcon = 'heroicon-o-chat-bubble-left-ellipsis';
 
     public function getTitle(): string | Htmlable
     {
@@ -40,34 +49,34 @@ class ManagePostComments extends ManageRelatedRecords
         return 'Manage Comments';
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('title')
+        return $schema
+            ->components([
+                TextInput::make('title')
                     ->required(),
 
-                Forms\Components\Select::make('customer_id')
+                Select::make('customer_id')
                     ->relationship('customer', 'name')
                     ->searchable()
                     ->required(),
 
-                Forms\Components\Toggle::make('is_visible')
+                Toggle::make('is_visible')
                     ->label('Approved for public')
                     ->default(true),
 
-                Forms\Components\MarkdownEditor::make('content')
+                RichEditor::make('content')
                     ->required()
                     ->label('Content'),
             ])
             ->columns(1);
     }
 
-    public function infolist(Infolist $infolist): Infolist
+    public function infolist(Schema $schema): Schema
     {
-        return $infolist
+        return $schema
             ->columns(1)
-            ->schema([
+            ->components([
                 TextEntry::make('title'),
                 TextEntry::make('customer.name'),
                 IconEntry::make('is_visible')
@@ -82,17 +91,17 @@ class ManagePostComments extends ManageRelatedRecords
         return $table
             ->recordTitleAttribute('title')
             ->columns([
-                Tables\Columns\TextColumn::make('title')
+                TextColumn::make('title')
                     ->label('Title')
                     ->searchable()
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('customer.name')
+                TextColumn::make('customer.name')
                     ->label('Customer')
                     ->searchable()
                     ->sortable(),
 
-                Tables\Columns\IconColumn::make('is_visible')
+                IconColumn::make('is_visible')
                     ->label('Visibility')
                     ->sortable(),
             ])
@@ -100,15 +109,15 @@ class ManagePostComments extends ManageRelatedRecords
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                CreateAction::make(),
             ])
-            ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                ViewAction::make(),
+                EditAction::make(),
+                DeleteAction::make(),
             ])
             ->groupedBulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                DeleteBulkAction::make(),
             ]);
     }
 }

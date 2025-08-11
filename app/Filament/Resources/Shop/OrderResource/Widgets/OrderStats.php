@@ -14,7 +14,7 @@ class OrderStats extends BaseWidget
 {
     use InteractsWithPageTable;
 
-    protected static ?string $pollingInterval = null;
+    protected ?string $pollingInterval = null;
 
     protected function getTablePage(): string
     {
@@ -39,7 +39,7 @@ class OrderStats extends BaseWidget
                         ->toArray()
                 ),
             Stat::make('Open orders', $this->getPageTableQuery()->whereIn('status', ['open', 'processing'])->count()),
-            Stat::make('Average price', number_format($this->getPageTableQuery()->avg('total_price'), 2)),
+            Stat::make('Average price', number_format((float) $this->getPageTableQuery()->avg('total_price'), 2)),
         ];
     }
 }

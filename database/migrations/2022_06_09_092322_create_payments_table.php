@@ -5,11 +5,11 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class() extends Migration
+return new class extends Migration
 {
     public function up()
     {
-        Schema::create('shop_payments', function (Blueprint $table) {
+        Schema::create('shop_payments', function (Blueprint $table): void {
             $table->id();
 
             $table->foreignIdFor(Order::class);

@@ -2,10 +2,18 @@
 
 namespace App\Filament\Resources\Shop\CustomerResource\RelationManagers;
 
-use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Actions\AttachAction;
+use Filament\Actions\CreateAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\DetachAction;
+use Filament\Actions\DetachBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Tables;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Squire\Models\Country;
 
@@ -15,19 +23,19 @@ class AddressesRelationManager extends RelationManager
 
     protected static ?string $recordTitleAttribute = 'full_address';
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('street'),
+        return $schema
+            ->components([
+                TextInput::make('street'),
 
-                Forms\Components\TextInput::make('zip'),
+                TextInput::make('zip'),
 
-                Forms\Components\TextInput::make('city'),
+                TextInput::make('city'),
 
-                Forms\Components\TextInput::make('state'),
+                TextInput::make('state'),
 
-                Forms\Components\Select::make('country')
+                Select::make('country')
                     ->searchable()
                     ->getSearchResultsUsing(fn (string $query) => Country::where('name', 'like', "%{$query}%")->pluck('name', 'id'))
                     ->getOptionLabelUsing(fn ($value): ?string => Country::firstWhere('id', $value)?->getAttribute('name')),
@@ -38,30 +46,30 @@ class AddressesRelationManager extends RelationManager
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('street'),
+                TextColumn::make('street'),
 
-                Tables\Columns\TextColumn::make('zip'),
+                TextColumn::make('zip'),
 
-                Tables\Columns\TextColumn::make('city'),
+                TextColumn::make('city'),
 
-                Tables\Columns\TextColumn::make('country')
-                    ->formatStateUsing(fn ($state): ?string => Country::find($state)?->name ?? null),
+                TextColumn::make('country')
+                    ->formatStateUsing(fn ($state): ?string => Country::find($state)->name ?? null),
             ])
             ->filters([
                 //
             ])
             ->headerActions([
-                Tables\Actions\AttachAction::make(),
-                Tables\Actions\CreateAction::make(),
+                AttachAction::make(),
+                CreateAction::make(),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DetachAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                EditAction::make(),
+                DetachAction::make(),
+                DeleteAction::make(),
             ])
             ->groupedBulkActions([
-                Tables\Actions\DetachBulkAction::make(),
-                Tables\Actions\DeleteBulkAction::make(),
+                DetachBulkAction::make(),
+                DeleteBulkAction::make(),
             ]);
     }
 }

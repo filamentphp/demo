@@ -2,12 +2,14 @@
 
 namespace App\Models\Blog;
 
+use Database\Factories\Blog\CategoryFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Category extends Model
 {
+    /** @use HasFactory<CategoryFactory> */
     use HasFactory;
 
     /**
@@ -22,7 +24,7 @@ class Category extends Model
         'is_visible' => 'boolean',
     ];
 
-    /** @return HasMany<Post> */
+    /** @return HasMany<Post, $this> */
     public function posts(): HasMany
     {
         return $this->hasMany(Post::class, 'blog_category_id');

@@ -18,7 +18,7 @@ use App\Models\Shop\Payment;
 use App\Models\Shop\Product;
 use App\Models\User;
 use Closure;
-use Filament\Notifications\Actions\Action;
+use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Query\Expression;
@@ -135,7 +135,7 @@ class DatabaseSeeder extends Seeder
 
         $progressBar->start();
 
-        $items = new Collection();
+        $items = new Collection;
 
         foreach (range(1, $amount) as $i) {
             $items = $items->merge(

@@ -32,7 +32,7 @@ class OrderFactory extends Factory
 
     public function configure(): Factory
     {
-        return $this->afterCreating(function (Order $order) {
+        return $this->afterCreating(function (Order $order): void {
             $order->address()->save(OrderAddressFactory::new()->make());
         });
     }

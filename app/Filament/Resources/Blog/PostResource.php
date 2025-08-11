@@ -2,23 +2,45 @@
 
 namespace App\Filament\Resources\Blog;
 
-use App\Filament\Resources\Blog\PostResource\Pages;
+use App\Filament\Resources\Blog\Forms\Components\SpatieMediaLibraryFileUpload;
+use App\Filament\Resources\Blog\PostResource\Pages\CreatePost;
+use App\Filament\Resources\Blog\PostResource\Pages\EditPost;
+use App\Filament\Resources\Blog\PostResource\Pages\ListPosts;
+use App\Filament\Resources\Blog\PostResource\Pages\ManagePostComments;
+use App\Filament\Resources\Blog\PostResource\Pages\ViewPost;
+use App\Filament\Resources\Blog\Tables\Columns\SpatieMediaLibraryImageColumn;
 use App\Models\Blog\Post;
-use Filament\Forms;
+use BackedEnum;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\SpatieTagsInput;
-use Filament\Forms\Form;
-use Filament\Infolists\Components;
-use Filament\Infolists\Infolist;
+use Filament\Forms\Components\TextInput;
+use Filament\Infolists\Components\SpatieMediaLibraryImageEntry;
+use Filament\Infolists\Components\SpatieTagsEntry;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Notifications\Notification;
-use Filament\Pages\SubNavigationPosition;
+use Filament\Pages\Enums\SubNavigationPosition;
 use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Schemas\Components\Flex;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Group;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
+use UnitEnum;
 
 class PostResource extends Resource
 {
@@ -28,57 +50,57 @@ class PostResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'title';
 
-    protected static ?string $navigationGroup = 'Blog';
+    protected static string | UnitEnum | null $navigationGroup = 'Blog';
 
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    protected static string | BackedEnum | null $navigationIcon = 'heroicon-o-document-text';
 
     protected static ?int $navigationSort = 0;
 
-    protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
+    protected static ?SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Section::make()
+        return $schema
+            ->components([
+                Section::make()
                     ->schema([
-                        Forms\Components\TextInput::make('title')
+                        TextInput::make('title')
                             ->required()
                             ->live(onBlur: true)
                             ->maxLength(255)
-                            ->afterStateUpdated(fn (string $operation, $state, Forms\Set $set) => $operation === 'create' ? $set('slug', Str::slug($state)) : null),
+                            ->afterStateUpdated(fn (string $operation, $state, Set $set) => $operation === 'create' ? $set('slug', Str::slug($state)) : null),
 
-                        Forms\Components\TextInput::make('slug')
+                        TextInput::make('slug')
                             ->disabled()
                             ->dehydrated()
                             ->required()
                             ->maxLength(255)
                             ->unique(Post::class, 'slug', ignoreRecord: true),
 
-                        Forms\Components\MarkdownEditor::make('content')
+                        RichEditor::make('content')
                             ->required()
                             ->columnSpan('full'),
 
-                        Forms\Components\Select::make('blog_author_id')
+                        Select::make('blog_author_id')
                             ->relationship('author', 'name')
                             ->searchable()
                             ->required(),
 
-                        Forms\Components\Select::make('blog_category_id')
+                        Select::make('blog_category_id')
                             ->relationship('category', 'name')
                             ->searchable()
                             ->required(),
 
-                        Forms\Components\DatePicker::make('published_at')
+                        DatePicker::make('published_at')
                             ->label('Published Date'),
 
                         SpatieTagsInput::make('tags'),
                     ])
                     ->columns(2),
 
-                Forms\Components\Section::make('Image')
+                Section::make('Image')
                     ->schema([
-                        Forms\Components\SpatieMediaLibraryFileUpload::make('image')
+                        SpatieMediaLibraryFileUpload::make('image')
                             ->collection('post-images')
                             ->hiddenLabel()
                             ->acceptedFileTypes(['image/jpeg']),
@@ -91,53 +113,53 @@ class PostResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\SpatieMediaLibraryImageColumn::make('image')
+                SpatieMediaLibraryImageColumn::make('image')
                     ->label('Image')
                     ->collection('post-images')
                     ->conversion('thumb'),
 
-                Tables\Columns\TextColumn::make('title')
+                TextColumn::make('title')
                     ->searchable()
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('slug')
+                TextColumn::make('slug')
                     ->searchable()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
 
-                Tables\Columns\TextColumn::make('author.name')
+                TextColumn::make('author.name')
                     ->searchable()
                     ->sortable()
                     ->toggleable(),
 
-                Tables\Columns\TextColumn::make('status')
+                TextColumn::make('status')
                     ->badge()
                     ->getStateUsing(fn (Post $record): string => $record->published_at?->isPast() ? 'Published' : 'Draft')
                     ->colors([
                         'success' => 'Published',
                     ]),
 
-                Tables\Columns\TextColumn::make('category.name')
+                TextColumn::make('category.name')
                     ->searchable()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
 
-                Tables\Columns\TextColumn::make('published_at')
+                TextColumn::make('published_at')
                     ->label('Published Date')
                     ->date(),
 
-                Tables\Columns\TextColumn::make('comments.customer.name')
+                TextColumn::make('comments.customer.name')
                     ->label('Comment Authors')
                     ->listWithLineBreaks()
                     ->limitList(2)
                     ->expandableLimitedList(),
             ])
             ->filters([
-                Tables\Filters\Filter::make('published_at')
-                    ->form([
-                        Forms\Components\DatePicker::make('published_from')
+                Filter::make('published_at')
+                    ->schema([
+                        DatePicker::make('published_from')
                             ->placeholder(fn ($state): string => 'Dec 18, ' . now()->subYear()->format('Y')),
-                        Forms\Components\DatePicker::make('published_until')
+                        DatePicker::make('published_until')
                             ->placeholder(fn ($state): string => now()->format('M d, Y')),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
@@ -163,16 +185,16 @@ class PostResource extends Resource
                         return $indicators;
                     }),
             ])
-            ->actions([
-                Tables\Actions\ViewAction::make(),
+            ->recordActions([
+                ViewAction::make(),
 
-                Tables\Actions\EditAction::make(),
+                EditAction::make(),
 
-                Tables\Actions\DeleteAction::make(),
+                DeleteAction::make(),
             ])
             ->groupedBulkActions([
-                Tables\Actions\DeleteBulkAction::make()
-                    ->action(function () {
+                DeleteBulkAction::make()
+                    ->action(function (): void {
                         Notification::make()
                             ->title('Now, now, don\'t be cheeky, leave some records for others to play with!')
                             ->warning()
@@ -181,38 +203,38 @@ class PostResource extends Resource
             ]);
     }
 
-    public static function infolist(Infolist $infolist): Infolist
+    public static function infolist(Schema $schema): Schema
     {
-        return $infolist
-            ->schema([
-                Components\Section::make()
+        return $schema
+            ->components([
+                Section::make()
                     ->schema([
-                        Components\Split::make([
-                            Components\Grid::make(2)
+                        Flex::make([
+                            Grid::make(2)
                                 ->schema([
-                                    Components\Group::make([
-                                        Components\TextEntry::make('title'),
-                                        Components\TextEntry::make('slug'),
-                                        Components\TextEntry::make('published_at')
+                                    Group::make([
+                                        TextEntry::make('title'),
+                                        TextEntry::make('slug'),
+                                        TextEntry::make('published_at')
                                             ->badge()
                                             ->date()
                                             ->color('success'),
                                     ]),
-                                    Components\Group::make([
-                                        Components\TextEntry::make('author.name'),
-                                        Components\TextEntry::make('category.name'),
-                                        Components\SpatieTagsEntry::make('tags'),
+                                    Group::make([
+                                        TextEntry::make('author.name'),
+                                        TextEntry::make('category.name'),
+                                        SpatieTagsEntry::make('tags'),
                                     ]),
                                 ]),
-                            Components\SpatieMediaLibraryImageEntry::make('image')
+                            SpatieMediaLibraryImageEntry::make('image')
                                 ->collection('post-images')
                                 ->hiddenLabel()
                                 ->grow(false),
                         ])->from('lg'),
                     ]),
-                Components\Section::make('Content')
+                Section::make('Content')
                     ->schema([
-                        Components\TextEntry::make('content')
+                        TextEntry::make('content')
                             ->prose()
                             ->markdown()
                             ->hiddenLabel(),
@@ -224,9 +246,9 @@ class PostResource extends Resource
     public static function getRecordSubNavigation(Page $page): array
     {
         return $page->generateNavigationItems([
-            Pages\ViewPost::class,
-            Pages\EditPost::class,
-            Pages\ManagePostComments::class,
+            ViewPost::class,
+            EditPost::class,
+            ManagePostComments::class,
         ]);
     }
 
@@ -238,11 +260,11 @@ class PostResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPosts::route('/'),
-            'create' => Pages\CreatePost::route('/create'),
-            'comments' => Pages\ManagePostComments::route('/{record}/comments'),
-            'edit' => Pages\EditPost::route('/{record}/edit'),
-            'view' => Pages\ViewPost::route('/{record}'),
+            'index' => ListPosts::route('/'),
+            'create' => CreatePost::route('/create'),
+            'comments' => ManagePostComments::route('/{record}/comments'),
+            'edit' => EditPost::route('/{record}/edit'),
+            'view' => ViewPost::route('/{record}'),
         ];
     }
 

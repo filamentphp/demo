@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Shop\Product>
+ * @extends Factory<Product>
  */
 class ProductFactory extends Factory
 {
@@ -41,7 +41,7 @@ class ProductFactory extends Factory
 
     public function configure(): ProductFactory
     {
-        return $this->afterCreating(function (Product $product) {
+        return $this->afterCreating(function (Product $product): void {
             $product
                 ->addMedia(LocalImages::getRandomFile(LocalImages::SIZE_200x200))
                 ->preservingOriginal()

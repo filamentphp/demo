@@ -2,13 +2,16 @@
 
 namespace App\Forms\Components;
 
-use Filament\Forms;
+use Filament\Forms\Components\Field;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Grid;
 use Illuminate\Database\Eloquent\Model;
 use Squire\Models\Country;
 
-class AddressForm extends Forms\Components\Field
+class AddressForm extends Field
 {
-    protected string $view = 'filament-forms::components.group';
+    protected string $view = 'filament-schemas::components.grid';
 
     /** @var string|callable|null */
     public $relationship = null;
@@ -34,30 +37,32 @@ class AddressForm extends Forms\Components\Field
             $relationship->updateOrCreate($state);
         }
 
-        $record?->touch();
+        if ($record instanceof Model) {
+            $record->touch();
+        }
     }
 
-    public function getChildComponents(): array
+    public function getDefaultChildComponents(): array
     {
         return [
-            Forms\Components\Grid::make()
+            Grid::make()
                 ->schema([
-                    Forms\Components\Select::make('country')
+                    Select::make('country')
                         ->searchable()
                         ->getSearchResultsUsing(fn (string $query) => Country::where('name', 'like', "%{$query}%")->pluck('name', 'id'))
                         ->getOptionLabelUsing(fn ($value): ?string => Country::firstWhere('id', $value)?->getAttribute('name')),
                 ]),
-            Forms\Components\TextInput::make('street')
+            TextInput::make('street')
                 ->label('Street address')
                 ->maxLength(255),
-            Forms\Components\Grid::make(3)
+            Grid::make(3)
                 ->schema([
-                    Forms\Components\TextInput::make('city')
+                    TextInput::make('city')
                         ->maxLength(255),
-                    Forms\Components\TextInput::make('state')
+                    TextInput::make('state')
                         ->label('State / Province')
                         ->maxLength(255),
-                    Forms\Components\TextInput::make('zip')
+                    TextInput::make('zip')
                         ->label('Zip / Postal code')
                         ->maxLength(255),
                 ]),
@@ -68,7 +73,7 @@ class AddressForm extends Forms\Components\Field
     {
         parent::setUp();
 
-        $this->afterStateHydrated(function (AddressForm $component, ?Model $record) {
+        $this->afterStateHydrated(function (AddressForm $component, ?Model $record): void {
             $address = $record?->getRelationValue($this->getRelationship());
 
             $component->state($address ? $address->toArray() : [
