@@ -20,7 +20,6 @@ use Filament\Schemas\Schema;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Contracts\Support\Htmlable;
 
 class ManagePostComments extends ManageRelatedRecords
 {
@@ -29,25 +28,6 @@ class ManagePostComments extends ManageRelatedRecords
     protected static string $relationship = 'comments';
 
     protected static string | BackedEnum | null $navigationIcon = 'heroicon-o-chat-bubble-left-ellipsis';
-
-    public function getTitle(): string | Htmlable
-    {
-        $recordTitle = $this->getRecordTitle();
-
-        $recordTitle = $recordTitle instanceof Htmlable ? $recordTitle->toHtml() : $recordTitle;
-
-        return "Manage {$recordTitle} Comments";
-    }
-
-    public function getBreadcrumb(): string
-    {
-        return 'Comments';
-    }
-
-    public static function getNavigationLabel(): string
-    {
-        return 'Manage Comments';
-    }
 
     public function form(Schema $schema): Schema
     {
