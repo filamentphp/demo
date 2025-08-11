@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -17,7 +18,11 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('type');
             $table->morphs('notifiable');
-            $table->text('data');
+            if (DB::getDriverName() === 'pgsql') {
+                $table->json('data');
+            } elseif (DB::getDriverName() === 'sqlite') {
+                $table->text('data');
+            }
             $table->timestamp('read_at')->nullable();
             $table->timestamps();
         });
