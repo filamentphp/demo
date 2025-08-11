@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\Console\Helper\ProgressBar;
 
@@ -41,7 +42,7 @@ class DatabaseSeeder extends Seeder
         $user = $this->withProgressBar(1, fn () => User::factory(1)->create([
             'name' => 'Demo User',
             'email' => 'admin@filamentphp.com',
-            'password' => bcrypt('wYnatErfIcti'),
+            'password' => Hash::make('demo.Filament@2021!'),
         ]));
         $this->command->info('Admin user created.');
 
