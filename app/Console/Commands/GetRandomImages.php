@@ -26,7 +26,7 @@ class GetRandomImages extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
         // Use an empty string to get random images
         // We could fine-tune with search terms, examples: 'nature', 'people', 'city', 'abstract', 'food', 'sports', 'technics', 'transport', 'animals'
@@ -46,7 +46,10 @@ class GetRandomImages extends Command
         }
     }
 
-    protected function getRandomImages($schema)
+    /**
+     * @param  array{amount: int, size: string, terms: string[]}  $schema
+     */
+    protected function getRandomImages(array $schema): void
     {
         ['amount' => $amount, 'size' => $size, 'terms' => $terms] = $schema;
 
@@ -60,6 +63,11 @@ class GetRandomImages extends Command
         foreach (range(1, $amount) as $i) {
             $url = "https://source.unsplash.com/{$size}/?img=1," . implode(',', $terms);
             $image = file_get_contents($url);
+            if ($image === false) {
+                $this->error("Failed to get image from URL: $url");
+
+                continue;
+            }
 
             File::ensureDirectoryExists(database_path('seeders/local_images/' . $size));
             $filename = Str::uuid() . '.jpg';
@@ -80,7 +88,10 @@ class GetRandomImages extends Command
         $this->info('Done!');
     }
 
-    protected function removeDuplicates($schema)
+    /**
+     * @param  array{size: string}  $schema
+     */
+    protected function removeDuplicates(array $schema): void
     {
         ['size' => $size] = $schema;
 
