@@ -122,6 +122,9 @@ class MigrateFilamentV3ToV4Command extends Command
         $this->info('Phpactor downloaded successfully to: ' . $this->phpactorPath);
     }
 
+    /**
+     * @param  class-string  $resourceClass
+     */
     protected function processResource(string $resourceClass, bool $isDryRun = false): void
     {
         $this->info('Processing resource: ' . $resourceClass);
@@ -129,6 +132,12 @@ class MigrateFilamentV3ToV4Command extends Command
         // Get the base path for the resource
         $resourceReflection = new ReflectionClass($resourceClass);
         $resourcePath = $resourceReflection->getFileName();
+
+        if ($resourcePath === false) {
+            $this->warn("Could not get file path for resource: {$resourceClass}");
+
+            return;
+        }
 
         // Skip if the resource is in vendor directory
         if ($this->isVendorPath($resourcePath)) {
@@ -167,6 +176,9 @@ class MigrateFilamentV3ToV4Command extends Command
         $this->moveClass($resourcePath, $newResourcePath, $isDryRun);
     }
 
+    /**
+     * @param  class-string  $clusterClass
+     */
     protected function processCluster(string $clusterClass, bool $isDryRun = false): void
     {
         $this->info('Processing cluster: ' . $clusterClass);
@@ -174,6 +186,12 @@ class MigrateFilamentV3ToV4Command extends Command
         // Get the base path for the cluster
         $clusterReflection = new ReflectionClass($clusterClass);
         $clusterPath = $clusterReflection->getFileName();
+
+        if ($clusterPath === false) {
+            $this->warn("Could not get file path for cluster: {$clusterClass}");
+
+            return;
+        }
 
         // Skip if the cluster is in vendor directory
         if ($this->isVendorPath($clusterPath)) {
@@ -289,6 +307,12 @@ class MigrateFilamentV3ToV4Command extends Command
         return str_contains($path, '/vendor/');
     }
 
+    /**
+     * Find all PHP files in a directory
+     *
+     * @param  string  $directory  The directory to search in
+     * @return array<int, string> Array of file paths
+     */
     protected function findPhpFiles(string $directory): array
     {
         $files = [];
