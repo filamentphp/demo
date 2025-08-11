@@ -52,7 +52,7 @@ class AddressesRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('city'),
 
                 Tables\Columns\TextColumn::make('country')
-                    ->formatStateUsing(fn ($state): ?string => Country::find($state)?->name ?? null),
+                    ->formatStateUsing(fn ($state): ?string => Country::find($state)->name ?? null),
             ])
             ->filters([
                 //

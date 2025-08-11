@@ -9,6 +9,7 @@ use BackedEnum;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Section;
@@ -62,13 +63,13 @@ class CustomerResource extends Resource
 
                 Section::make()
                     ->schema([
-                        Forms\Components\Placeholder::make('created_at')
+                        TextEntry::make('created_at')
                             ->label('Created at')
-                            ->content(fn (Customer $record): ?string => $record->created_at?->diffForHumans()),
+                            ->state(fn (Customer $record): ?string => $record->created_at?->diffForHumans()),
 
-                        Forms\Components\Placeholder::make('updated_at')
+                        TextEntry::make('updated_at')
                             ->label('Last modified at')
-                            ->content(fn (Customer $record): ?string => $record->updated_at?->diffForHumans()),
+                            ->state(fn (Customer $record): ?string => $record->updated_at?->diffForHumans()),
                     ])
                     ->columnSpan(['lg' => 1])
                     ->hidden(fn (?Customer $record) => $record === null),
@@ -88,7 +89,7 @@ class CustomerResource extends Resource
                     ->searchable(isIndividual: true, isGlobal: false)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('country')
-                    ->getStateUsing(fn ($record): ?string => Country::find($record->addresses->first()?->country)?->name ?? null),
+                    ->getStateUsing(fn ($record): ?string => Country::find($record->addresses->first()?->country)->name ?? null),
                 Tables\Columns\TextColumn::make('phone')
                     ->searchable()
                     ->sortable(),

@@ -24,7 +24,7 @@ class User extends Authenticatable implements FilamentUser, HasTenants, MustVeri
     use Notifiable;
 
     /**
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $hidden = [
         'password',

@@ -24,7 +24,7 @@ class Order extends Model
     protected $table = 'shop_orders';
 
     /**
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $fillable = [
         'number',
