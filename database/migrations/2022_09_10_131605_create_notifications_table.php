@@ -20,7 +20,7 @@ return new class extends Migration
             $table->morphs('notifiable');
             if (DB::getDriverName() === 'pgsql') {
                 $table->json('data');
-            } elseif (DB::getDriverName() === 'sqlite') {
+            } else {
                 $table->text('data');
             }
             $table->timestamp('read_at')->nullable();
