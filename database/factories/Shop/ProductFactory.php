@@ -6,8 +6,10 @@ use App\Models\Shop\Product;
 use Database\Seeders\LocalImages;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\UnreachableUrl;
 
+/**
+ * @extends Factory<Product>
+ */
 class ProductFactory extends Factory
 {
     /**
@@ -40,14 +42,10 @@ class ProductFactory extends Factory
     public function configure(): ProductFactory
     {
         return $this->afterCreating(function (Product $product): void {
-            try {
-                $product
-                    ->addMedia(LocalImages::getRandomFile())
-                    ->preservingOriginal()
-                    ->toMediaCollection('product-images');
-            } catch (UnreachableUrl $exception) {
-                return;
-            }
+            $product
+                ->addMedia(LocalImages::getRandomFile(LocalImages::SIZE_200x200))
+                ->preservingOriginal()
+                ->toMediaCollection('product-images');
         });
     }
 }

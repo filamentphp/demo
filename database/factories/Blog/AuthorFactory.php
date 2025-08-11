@@ -5,6 +5,9 @@ namespace Database\Factories\Blog;
 use App\Models\Blog\Author;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends Factory<Author>
+ */
 class AuthorFactory extends Factory
 {
     /**

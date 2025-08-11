@@ -6,6 +6,9 @@ use Akaunting\Money\Currency;
 use App\Models\Shop\Payment;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends Factory<Payment>
+ */
 class PaymentFactory extends Factory
 {
     protected $model = Payment::class;

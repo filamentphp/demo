@@ -17,7 +17,6 @@ return new class extends Migration
             $table->json('title');
             $table->json('description');
             $table->string('color');
-            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

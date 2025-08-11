@@ -14,12 +14,12 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\SpatieTagsInput;
 use Filament\Forms\Components\TextInput;
-use Filament\Infolists\Components\ImageEntry;
+use Filament\Infolists\Components\SpatieMediaLibraryImageEntry;
 use Filament\Infolists\Components\SpatieTagsEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Notifications\Notification;
@@ -32,7 +32,7 @@ use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
-use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
@@ -100,9 +100,10 @@ class PostResource extends Resource
 
                 Section::make('Image')
                     ->schema([
-                        FileUpload::make('image')
-                            ->image()
-                            ->hiddenLabel(),
+                        SpatieMediaLibraryFileUpload::make('image')
+                            ->collection('post-images')
+                            ->hiddenLabel()
+                            ->acceptedFileTypes(['image/jpeg']),
                     ])
                     ->collapsible(),
             ]);
@@ -112,8 +113,10 @@ class PostResource extends Resource
     {
         return $table
             ->columns([
-                ImageColumn::make('image')
-                    ->label('Image'),
+                SpatieMediaLibraryImageColumn::make('image')
+                    ->label('Image')
+                    ->collection('post-images')
+                    ->conversion('thumb'),
 
                 TextColumn::make('title')
                     ->searchable()
@@ -223,7 +226,8 @@ class PostResource extends Resource
                                         SpatieTagsEntry::make('tags'),
                                     ]),
                                 ]),
-                            ImageEntry::make('image')
+                            SpatieMediaLibraryImageEntry::make('image')
+                                ->collection('post-images')
                                 ->hiddenLabel()
                                 ->grow(false),
                         ])->from('lg'),

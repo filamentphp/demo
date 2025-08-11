@@ -5,6 +5,9 @@ namespace Database\Factories\Shop;
 use App\Models\Shop\OrderAddress;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends Factory<OrderAddress>
+ */
 class OrderAddressFactory extends Factory
 {
     protected $model = OrderAddress::class;

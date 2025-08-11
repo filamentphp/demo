@@ -92,6 +92,8 @@ class ProductResource extends Resource
                                     ->collection('product-images')
                                     ->multiple()
                                     ->maxFiles(5)
+                                    ->reorderable()
+                                    ->acceptedFileTypes(['image/jpeg'])
                                     ->hiddenLabel(),
                             ])
                             ->collapsible(),
@@ -196,7 +198,8 @@ class ProductResource extends Resource
             ->columns([
                 SpatieMediaLibraryImageColumn::make('product-image')
                     ->label('Image')
-                    ->collection('product-images'),
+                    ->collection('product-images')
+                    ->conversion('thumb'),
 
                 TextColumn::make('name')
                     ->label('Name')

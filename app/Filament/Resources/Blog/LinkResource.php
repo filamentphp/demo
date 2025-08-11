@@ -13,21 +13,21 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\ColorPicker;
-use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\ColorEntry;
-use Filament\Infolists\Components\ImageEntry;
+use Filament\Infolists\Components\SpatieMediaLibraryImageEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Enums\FontWeight;
 use Filament\Tables\Columns\ColorColumn;
-use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\Layout\Panel;
 use Filament\Tables\Columns\Layout\Split;
 use Filament\Tables\Columns\Layout\Stack;
+use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use LaraZeus\SpatieTranslatable\Resources\Concerns\Translatable;
@@ -65,8 +65,9 @@ class LinkResource extends Resource
                     ->required()
                     ->maxLength(255)
                     ->columnSpanFull(),
-                FileUpload::make('image')
-                    ->image(),
+                SpatieMediaLibraryFileUpload::make('image')
+                    ->collection('link-images')
+                    ->acceptedFileTypes(['image/jpeg']),
             ]);
     }
 
@@ -82,7 +83,9 @@ class LinkResource extends Resource
                     ->label('URL')
                     ->columnSpanFull()
                     ->url(fn (Link $record): string => '#' . urlencode($record->url)),
-                ImageEntry::make('image'),
+                SpatieMediaLibraryImageEntry::make('image')
+                    ->collection('link-images')
+                    ->conversion('thumb'),
             ]);
     }
 
@@ -91,9 +94,11 @@ class LinkResource extends Resource
         return $table
             ->columns([
                 Stack::make([
-                    ImageColumn::make('image')
+                    SpatieMediaLibraryImageColumn::make('image')
+                        ->collection('link-images')
+                        ->conversion('thumb')
                         ->imageHeight('100%')
-                        ->width('100%'),
+                        ->imageWidth('100%'),
                     Stack::make([
                         TextColumn::make('title')
                             ->weight(FontWeight::Bold),

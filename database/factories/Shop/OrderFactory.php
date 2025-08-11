@@ -5,6 +5,9 @@ namespace Database\Factories\Shop;
 use App\Models\Shop\Order;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends Factory<Order>
+ */
 class OrderFactory extends Factory
 {
     /**
