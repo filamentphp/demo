@@ -20,7 +20,8 @@ class BrandExporter extends Exporter
             ExportColumn::make('slug'),
             ExportColumn::make('website'),
             ExportColumn::make('created_at'),
-            ExportColumn::make('updated_at'),
+            ExportColumn::make('updated_at')
+                ->label('Last modified at'),
         ];
     }
 

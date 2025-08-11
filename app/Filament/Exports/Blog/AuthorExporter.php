@@ -20,11 +20,11 @@ class AuthorExporter extends Exporter
             ExportColumn::make('email')
                 ->label('Email address'),
             ExportColumn::make('github_handle')
-                ->label('GitHub'),
-            ExportColumn::make('twitter_handle')
-                ->label('Twitter'),
+                ->label('GitHub handle'),
+            ExportColumn::make('twitter_handle'),
             ExportColumn::make('created_at'),
-            ExportColumn::make('updated_at'),
+            ExportColumn::make('updated_at')
+                ->label('Last modified at'),
         ];
     }
 
