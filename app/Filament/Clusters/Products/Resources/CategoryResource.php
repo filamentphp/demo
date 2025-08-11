@@ -65,7 +65,6 @@ class CategoryResource extends Resource
                             ]),
 
                         Select::make('parent_id')
-                            ->label('Parent')
                             ->relationship('parent', 'name', fn (Builder $query) => $query->where('parent_id', null))
                             ->searchable()
                             ->placeholder('Select parent category'),

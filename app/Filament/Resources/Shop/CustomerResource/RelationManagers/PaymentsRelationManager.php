@@ -30,7 +30,6 @@ class PaymentsRelationManager extends RelationManager
         return $schema
             ->components([
                 Select::make('order_id')
-                    ->label('Order')
                     ->relationship(
                         'order',
                         'number',

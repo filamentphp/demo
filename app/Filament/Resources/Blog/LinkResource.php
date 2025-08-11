@@ -105,7 +105,7 @@ class LinkResource extends Resource
                         TextColumn::make('url')
                             ->formatStateUsing(fn (string $state): string => str($state)->after('://')->ltrim('www.')->trim('/'))
                             ->color('gray')
-                            ->limit(30),
+                            ->lineClamp(1),
                     ]),
                 ])->space(3),
                 Panel::make([

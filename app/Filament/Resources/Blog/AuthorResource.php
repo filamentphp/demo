@@ -88,7 +88,6 @@ class AuthorResource extends Resource
 
                         TextColumn::make('twitter_handle')
                             ->icon('icon-twitter')
-                            ->label('Twitter handle')
                             ->alignLeft(),
                     ])->space(2),
                 ])->from('md'),

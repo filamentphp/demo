@@ -114,7 +114,6 @@ class PostResource extends Resource
         return $table
             ->columns([
                 SpatieMediaLibraryImageColumn::make('image')
-                    ->label('Image')
                     ->collection('post-images')
                     ->conversion('thumb'),
 
