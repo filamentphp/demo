@@ -56,7 +56,6 @@ class AuthorResource extends Resource
                     ->maxLength(255),
 
                 TextInput::make('twitter_handle')
-                    ->label('Twitter handle')
                     ->maxLength(255),
             ]);
     }
@@ -84,12 +83,12 @@ class AuthorResource extends Resource
                     Stack::make([
                         TextColumn::make('github_handle')
                             ->icon('icon-github')
-                            ->label('GitHub')
+                            ->label('GitHub handle')
                             ->alignLeft(),
 
                         TextColumn::make('twitter_handle')
                             ->icon('icon-twitter')
-                            ->label('Twitter')
+                            ->label('Twitter handle')
                             ->alignLeft(),
                     ])->space(2),
                 ])->from('md'),

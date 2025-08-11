@@ -59,7 +59,7 @@ class CategoryResource extends Resource
                     ->columnSpan('full'),
 
                 Toggle::make('is_visible')
-                    ->label('Visible to customers.')
+                    ->label('Visibility')
                     ->default(true),
             ]);
     }
@@ -77,7 +77,7 @@ class CategoryResource extends Resource
                 IconColumn::make('is_visible')
                     ->label('Visibility'),
                 TextColumn::make('updated_at')
-                    ->label('Last Updated')
+                    ->label('Last modified at')
                     ->date(),
             ])
             ->filters([
@@ -109,6 +109,7 @@ class CategoryResource extends Resource
                 IconEntry::make('is_visible')
                     ->label('Visibility'),
                 TextEntry::make('updated_at')
+                    ->label('Last modified at')
                     ->dateTime(),
             ])
             ->columns(1)

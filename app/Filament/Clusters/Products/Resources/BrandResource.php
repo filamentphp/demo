@@ -68,17 +68,15 @@ class BrandResource extends Resource
                             ->url(),
 
                         Toggle::make('is_visible')
-                            ->label('Visible to customers.')
+                            ->label('Visibility')
                             ->default(true),
 
-                        RichEditor::make('description')
-                            ->label('Description'),
+                        RichEditor::make('description'),
                     ])
                     ->columnSpan(['lg' => fn (?Brand $record) => $record === null ? 3 : 2]),
                 Section::make()
                     ->schema([
                         TextEntry::make('created_at')
-                            ->label('Created at')
                             ->state(fn (Brand $record): ?string => $record->created_at?->diffForHumans()),
 
                         TextEntry::make('updated_at')
@@ -96,18 +94,16 @@ class BrandResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->label('Name')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('website')
-                    ->label('Website')
                     ->searchable()
                     ->sortable(),
                 IconColumn::make('is_visible')
                     ->label('Visibility')
                     ->sortable(),
                 TextColumn::make('updated_at')
-                    ->label('Updated Date')
+                    ->label('Last modified at')
                     ->date()
                     ->sortable(),
             ])

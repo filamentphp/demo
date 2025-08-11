@@ -164,12 +164,12 @@ class ProductResource extends Resource
                         Section::make('Status')
                             ->schema([
                                 Toggle::make('is_visible')
-                                    ->label('Visible')
+                                    ->label('Visibility')
                                     ->helperText('This product will be hidden from all sales channels.')
                                     ->default(true),
 
                                 DatePicker::make('published_at')
-                                    ->label('Availability')
+                                    ->label('Publishing date')
                                     ->default(now())
                                     ->required(),
                             ]),
@@ -196,13 +196,11 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                SpatieMediaLibraryImageColumn::make('product-image')
-                    ->label('Image')
+                SpatieMediaLibraryImageColumn::make('image')
                     ->collection('product-images')
                     ->conversion('thumb'),
 
                 TextColumn::make('name')
-                    ->label('Name')
                     ->searchable()
                     ->sortable(),
 
@@ -217,7 +215,6 @@ class ProductResource extends Resource
                     ->toggleable(),
 
                 TextColumn::make('price')
-                    ->label('Price')
                     ->searchable()
                     ->sortable(),
 
@@ -240,7 +237,7 @@ class ProductResource extends Resource
                     ->toggledHiddenByDefault(),
 
                 TextColumn::make('published_at')
-                    ->label('Publish Date')
+                    ->label('Publishing date')
                     ->date()
                     ->sortable()
                     ->toggleable()
@@ -273,7 +270,8 @@ class ProductResource extends Resource
                         BooleanConstraint::make('backorder'),
                         BooleanConstraint::make('requires_shipping')
                             ->icon('heroicon-m-truck'),
-                        DateConstraint::make('published_at'),
+                        DateConstraint::make('published_at')
+                            ->label('Publishing date'),
                     ])
                     ->constraintPickerColumns(2),
             ], layout: FiltersLayout::AboveContentCollapsible)

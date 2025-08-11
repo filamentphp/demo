@@ -92,7 +92,7 @@ class PostResource extends Resource
                             ->required(),
 
                         DatePicker::make('published_at')
-                            ->label('Published Date'),
+                            ->label('Publishing date'),
 
                         SpatieTagsInput::make('tags'),
                     ])
@@ -145,11 +145,11 @@ class PostResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
 
                 TextColumn::make('published_at')
-                    ->label('Published Date')
+                    ->label('Publishing date')
                     ->date(),
 
                 TextColumn::make('comments.customer.name')
-                    ->label('Comment Authors')
+                    ->label('Comment authors')
                     ->listWithLineBreaks()
                     ->limitList(2)
                     ->expandableLimitedList(),
@@ -216,6 +216,7 @@ class PostResource extends Resource
                                         TextEntry::make('title'),
                                         TextEntry::make('slug'),
                                         TextEntry::make('published_at')
+                                            ->label('Publishing date')
                                             ->badge()
                                             ->date()
                                             ->color('success'),

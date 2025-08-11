@@ -69,7 +69,6 @@ class CustomerResource extends Resource
                 Section::make()
                     ->schema([
                         TextEntry::make('created_at')
-                            ->label('Created at')
                             ->state(fn (Customer $record): ?string => $record->created_at?->diffForHumans()),
 
                         TextEntry::make('updated_at')

@@ -71,17 +71,15 @@ class CategoryResource extends Resource
                             ->placeholder('Select parent category'),
 
                         Toggle::make('is_visible')
-                            ->label('Visible to customers.')
+                            ->label('Visibility')
                             ->default(true),
 
-                        RichEditor::make('description')
-                            ->label('Description'),
+                        RichEditor::make('description'),
                     ])
                     ->columnSpan(['lg' => fn (?Category $record) => $record === null ? 3 : 2]),
                 Section::make()
                     ->schema([
                         TextEntry::make('created_at')
-                            ->label('Created at')
                             ->state(fn (Category $record): ?string => $record->created_at?->diffForHumans()),
 
                         TextEntry::make('updated_at')
@@ -99,18 +97,16 @@ class CategoryResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->label('Name')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('parent.name')
-                    ->label('Parent')
                     ->searchable()
                     ->sortable(),
                 IconColumn::make('is_visible')
                     ->label('Visibility')
                     ->sortable(),
                 TextColumn::make('updated_at')
-                    ->label('Updated Date')
+                    ->label('Last modified at')
                     ->date()
                     ->sortable(),
             ])

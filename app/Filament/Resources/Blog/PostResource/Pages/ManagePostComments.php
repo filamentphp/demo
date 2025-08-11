@@ -62,12 +62,11 @@ class ManagePostComments extends ManageRelatedRecords
                     ->required(),
 
                 Toggle::make('is_visible')
-                    ->label('Approved for public')
+                    ->label('Public visibility')
                     ->default(true),
 
                 RichEditor::make('content')
-                    ->required()
-                    ->label('Content'),
+                    ->required(),
             ])
             ->columns(1);
     }
@@ -80,7 +79,7 @@ class ManagePostComments extends ManageRelatedRecords
                 TextEntry::make('title'),
                 TextEntry::make('customer.name'),
                 IconEntry::make('is_visible')
-                    ->label('Visibility'),
+                    ->label('Public visibility'),
                 TextEntry::make('content')
                     ->markdown(),
             ]);
@@ -92,17 +91,15 @@ class ManagePostComments extends ManageRelatedRecords
             ->recordTitleAttribute('title')
             ->columns([
                 TextColumn::make('title')
-                    ->label('Title')
                     ->searchable()
                     ->sortable(),
 
                 TextColumn::make('customer.name')
-                    ->label('Customer')
                     ->searchable()
                     ->sortable(),
 
                 IconColumn::make('is_visible')
-                    ->label('Visibility')
+                    ->label('Public visibility')
                     ->sortable(),
             ])
             ->filters([

@@ -41,12 +41,11 @@ class CommentsRelationManager extends RelationManager
                     ->required(),
 
                 Toggle::make('is_visible')
-                    ->label('Approved for public')
+                    ->label('Public visibility')
                     ->default(true),
 
                 RichEditor::make('content')
-                    ->required()
-                    ->label('Content'),
+                    ->required(),
             ]);
     }
 
@@ -58,7 +57,7 @@ class CommentsRelationManager extends RelationManager
                 TextEntry::make('title'),
                 TextEntry::make('customer.name'),
                 IconEntry::make('is_visible')
-                    ->label('Visibility'),
+                    ->label('Public visibility'),
                 TextEntry::make('content')
                     ->markdown(),
             ]);
@@ -69,17 +68,15 @@ class CommentsRelationManager extends RelationManager
         return $table
             ->columns([
                 TextColumn::make('title')
-                    ->label('Title')
                     ->searchable()
                     ->sortable(),
 
                 TextColumn::make('customer.name')
-                    ->label('Customer')
                     ->searchable()
                     ->sortable(),
 
                 IconColumn::make('is_visible')
-                    ->label('Visibility')
+                    ->label('Public visibility')
                     ->sortable(),
             ])
             ->filters([

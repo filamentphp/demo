@@ -86,7 +86,7 @@ class OrderResource extends Resource
                 Section::make()
                     ->schema([
                         TextEntry::make('created_at')
-                            ->label('Created at')
+                            ->label('Order date')
                             ->state(fn (Order $record): ?string => $record->created_at?->diffForHumans()),
 
                         TextEntry::make('updated_at')
@@ -134,7 +134,7 @@ class OrderResource extends Resource
                             ->money(),
                     ]),
                 TextColumn::make('created_at')
-                    ->label('Order Date')
+                    ->label('Order date')
                     ->date()
                     ->toggleable(),
             ])
@@ -142,6 +142,7 @@ class OrderResource extends Resource
                 TrashedFilter::make(),
 
                 Filter::make('created_at')
+                    ->label('Order date')
                     ->schema([
                         DatePicker::make('created_from')
                             ->placeholder(fn ($state): string => 'Dec 18, ' . now()->subYear()->format('Y')),
@@ -185,7 +186,7 @@ class OrderResource extends Resource
             ])
             ->groups([
                 Tables\Grouping\Group::make('created_at')
-                    ->label('Order Date')
+                    ->label('Order date')
                     ->date()
                     ->collapsible(),
             ]);
@@ -334,7 +335,6 @@ class OrderResource extends Resource
                     ->required(),
 
                 TextInput::make('unit_price')
-                    ->label('Unit Price')
                     ->disabled()
                     ->dehydrated()
                     ->numeric()
