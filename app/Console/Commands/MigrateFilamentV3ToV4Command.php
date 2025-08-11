@@ -133,6 +133,7 @@ class MigrateFilamentV3ToV4Command extends Command
         // Skip if the resource is in vendor directory
         if ($this->isVendorPath($resourcePath)) {
             $this->warn("Skipping resource in vendor directory: {$resourcePath}");
+
             return;
         }
 
@@ -152,6 +153,7 @@ class MigrateFilamentV3ToV4Command extends Command
         // Skip if the new resource directory would be in vendor
         if ($this->isVendorPath($newResourceDir)) {
             $this->warn("Skipping resource with destination in vendor directory: {$newResourceDir}");
+
             return;
         }
 
@@ -176,6 +178,7 @@ class MigrateFilamentV3ToV4Command extends Command
         // Skip if the cluster is in vendor directory
         if ($this->isVendorPath($clusterPath)) {
             $this->warn("Skipping cluster in vendor directory: {$clusterPath}");
+
             return;
         }
 
@@ -202,6 +205,7 @@ class MigrateFilamentV3ToV4Command extends Command
         // Skip if the new cluster directory would be in vendor
         if ($this->isVendorPath($newClusterDir)) {
             $this->warn("Skipping cluster with destination in vendor directory: {$newClusterDir}");
+
             return;
         }
 
@@ -219,7 +223,7 @@ class MigrateFilamentV3ToV4Command extends Command
         $this->moveClass($clusterPath, $newClusterPath, $isDryRun);
 
         // Note: We don't process any other files for clusters as they are already in the correct place
-        $this->info("Cluster processed successfully. No other files were moved as they are already in the correct place.");
+        $this->info('Cluster processed successfully. No other files were moved as they are already in the correct place.');
     }
 
     protected function findAndMoveRelatedClasses(string $resourceClass, string $resourceDir, string $newResourceDir, string $resourceBaseName, bool $isDryRun = false): void
@@ -296,6 +300,7 @@ class MigrateFilamentV3ToV4Command extends Command
         // Skip if the directory is in vendor
         if ($this->isVendorPath($directory)) {
             $this->warn("Skipping vendor directory: {$directory}");
+
             return $files;
         }
 
@@ -307,6 +312,7 @@ class MigrateFilamentV3ToV4Command extends Command
             // Skip files in vendor directory
             if ($this->isVendorPath($pathname)) {
                 $this->info("Skipping vendor file: {$pathname}");
+
                 continue;
             }
 
@@ -323,11 +329,13 @@ class MigrateFilamentV3ToV4Command extends Command
         // Safety check: Never touch files in the vendor directory
         if ($this->isVendorPath($sourcePath)) {
             $this->warn("Skipping file in vendor directory: {$sourcePath}");
+
             return;
         }
 
         if ($this->isVendorPath($destinationPath)) {
             $this->warn("Skipping move to vendor directory: {$destinationPath}");
+
             return;
         }
 
