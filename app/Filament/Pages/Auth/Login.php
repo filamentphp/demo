@@ -10,7 +10,7 @@ class Login extends \Filament\Auth\Pages\Login
 
         $this->form->fill([
             'email' => 'admin@filamentphp.com',
-            'password' => 'password',
+            'password' => 'demo.Filament@2021!',
             'remember' => true,
         ]);
     }
