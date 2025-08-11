@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Filament\Resources\Shop\OrderResource;
+use App\Filament\Resources\Shop\Orders\OrderResource;
 use App\Models\Address;
 use App\Models\Blog\Author;
 use App\Models\Blog\Category as BlogCategory;

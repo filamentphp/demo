@@ -2,7 +2,7 @@
 
 namespace App\Filament\Widgets;
 
-use App\Filament\Resources\Shop\OrderResource;
+use App\Filament\Resources\Shop\Orders\OrderResource;
 use App\Models\Shop\Order;
 use Filament\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
