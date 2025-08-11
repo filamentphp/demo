@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Blog\Post>
+ * @extends Factory<Post>
  */
 class PostFactory extends Factory
 {
@@ -31,7 +31,7 @@ class PostFactory extends Factory
 
     public function configure(): PostFactory
     {
-        return $this->afterCreating(function (Post $product) {
+        return $this->afterCreating(function (Post $product): void {
             $product
                 ->addMedia(LocalImages::getRandomFile(LocalImages::SIZE_200x200))
                 ->preservingOriginal()

@@ -2,12 +2,10 @@
 
 namespace App\Filament\Resources\Blog;
 
-use App\Filament\Resources\Blog\Forms\Components\SpatieMediaLibraryFileUpload;
 use App\Filament\Resources\Blog\LinkResource\Pages\CreateLink;
 use App\Filament\Resources\Blog\LinkResource\Pages\EditLink;
 use App\Filament\Resources\Blog\LinkResource\Pages\ListLinks;
 use App\Filament\Resources\Blog\LinkResource\Pages\ViewLink;
-use App\Filament\Resources\Blog\Tables\Columns\SpatieMediaLibraryImageColumn;
 use App\Models\Blog\Link;
 use BackedEnum;
 use Filament\Actions\Action;
@@ -15,6 +13,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\ColorPicker;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\ColorEntry;
@@ -28,6 +27,7 @@ use Filament\Tables\Columns\ColorColumn;
 use Filament\Tables\Columns\Layout\Panel;
 use Filament\Tables\Columns\Layout\Split;
 use Filament\Tables\Columns\Layout\Stack;
+use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use LaraZeus\SpatieTranslatable\Resources\Concerns\Translatable;
@@ -97,8 +97,8 @@ class LinkResource extends Resource
                     SpatieMediaLibraryImageColumn::make('image')
                         ->collection('link-images')
                         ->conversion('thumb')
-                        ->height('100%')
-                        ->width('100%'),
+                        ->imageHeight('100%')
+                        ->imageWidth('100%'),
                     Stack::make([
                         TextColumn::make('title')
                             ->weight(FontWeight::Bold),

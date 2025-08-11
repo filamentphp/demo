@@ -2,13 +2,11 @@
 
 namespace App\Filament\Resources\Blog;
 
-use App\Filament\Resources\Blog\Forms\Components\SpatieMediaLibraryFileUpload;
 use App\Filament\Resources\Blog\PostResource\Pages\CreatePost;
 use App\Filament\Resources\Blog\PostResource\Pages\EditPost;
 use App\Filament\Resources\Blog\PostResource\Pages\ListPosts;
 use App\Filament\Resources\Blog\PostResource\Pages\ManagePostComments;
 use App\Filament\Resources\Blog\PostResource\Pages\ViewPost;
-use App\Filament\Resources\Blog\Tables\Columns\SpatieMediaLibraryImageColumn;
 use App\Models\Blog\Post;
 use BackedEnum;
 use Filament\Actions\DeleteAction;
@@ -18,6 +16,7 @@ use Filament\Actions\ViewAction;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\SpatieTagsInput;
 use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\SpatieMediaLibraryImageEntry;
@@ -33,6 +32,7 @@ use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
+use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;

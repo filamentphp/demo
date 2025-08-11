@@ -33,7 +33,7 @@ class Link extends Model implements HasMedia
             ->useDisk('link-images')
             ->acceptsMimeTypes(['image/jpeg'])
             ->singleFile()
-            ->registerMediaConversions(function (Media $media) {
+            ->registerMediaConversions(function (Media $media): void {
                 $this
                     ->addMediaConversion('thumb')
                     ->width(256)
