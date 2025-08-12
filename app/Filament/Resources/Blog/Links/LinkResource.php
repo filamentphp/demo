@@ -6,29 +6,13 @@ use App\Filament\Resources\Blog\Links\Pages\CreateLink;
 use App\Filament\Resources\Blog\Links\Pages\EditLink;
 use App\Filament\Resources\Blog\Links\Pages\ListLinks;
 use App\Filament\Resources\Blog\Links\Pages\ViewLink;
+use App\Filament\Resources\Blog\Links\Schemas\LinkForm;
+use App\Filament\Resources\Blog\Links\Schemas\LinkInfolist;
+use App\Filament\Resources\Blog\Links\Tables\LinksTable;
 use App\Models\Blog\Link;
 use BackedEnum;
-use Filament\Actions\Action;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
-use Filament\Forms\Components\ColorPicker;
-use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\TextInput;
-use Filament\Infolists\Components\ColorEntry;
-use Filament\Infolists\Components\SpatieMediaLibraryImageEntry;
-use Filament\Infolists\Components\TextEntry;
-use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Enums\FontWeight;
-use Filament\Tables\Columns\ColorColumn;
-use Filament\Tables\Columns\Layout\Panel;
-use Filament\Tables\Columns\Layout\Split;
-use Filament\Tables\Columns\Layout\Stack;
-use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
-use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use LaraZeus\SpatieTranslatable\Resources\Concerns\Translatable;
 use UnitEnum;
@@ -47,108 +31,17 @@ class LinkResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        return $schema
-            ->components([
-                TextInput::make('title')
-                    ->maxLength(255)
-                    ->required(),
-                ColorPicker::make('color')
-                    ->required()
-                    ->hex()
-                    ->hexColor(),
-                Textarea::make('description')
-                    ->maxLength(1024)
-                    ->required()
-                    ->columnSpanFull(),
-                TextInput::make('url')
-                    ->label('URL')
-                    ->required()
-                    ->maxLength(255)
-                    ->columnSpanFull(),
-                SpatieMediaLibraryFileUpload::make('image')
-                    ->collection('link-images')
-                    ->acceptedFileTypes(['image/jpeg']),
-            ]);
+        return LinkForm::configure($schema);
     }
 
     public static function infolist(Schema $schema): Schema
     {
-        return $schema
-            ->components([
-                TextEntry::make('title'),
-                ColorEntry::make('color'),
-                TextEntry::make('description')
-                    ->columnSpanFull(),
-                TextEntry::make('url')
-                    ->label('URL')
-                    ->columnSpanFull()
-                    ->url(fn (Link $record): string => '#' . urlencode($record->url)),
-                SpatieMediaLibraryImageEntry::make('image')
-                    ->collection('link-images')
-                    ->conversion('thumb'),
-            ]);
+        return LinkInfolist::configure($schema);
     }
 
     public static function table(Table $table): Table
     {
-        return $table
-            ->columns([
-                Stack::make([
-                    SpatieMediaLibraryImageColumn::make('image')
-                        ->collection('link-images')
-                        ->conversion('thumb')
-                        ->imageHeight('100%')
-                        ->imageWidth('100%'),
-                    Stack::make([
-                        TextColumn::make('title')
-                            ->weight(FontWeight::Bold),
-                        TextColumn::make('url')
-                            ->formatStateUsing(fn (string $state): string => str($state)->after('://')->ltrim('www.')->trim('/'))
-                            ->color('gray')
-                            ->lineClamp(1),
-                    ]),
-                ])->space(3),
-                Panel::make([
-                    Split::make([
-                        ColorColumn::make('color')
-                            ->grow(false),
-                        TextColumn::make('description')
-                            ->color('gray'),
-                    ]),
-                ])->collapsible(),
-            ])
-            ->filters([
-                //
-            ])
-            ->contentGrid([
-                'md' => 2,
-                'xl' => 3,
-            ])
-            ->paginated([
-                18,
-                36,
-                72,
-                'all',
-            ])
-            ->recordActions([
-                Action::make('visit')
-                    ->label('Visit link')
-                    ->icon('heroicon-m-arrow-top-right-on-square')
-                    ->color('gray')
-                    ->url(fn (Link $record): string => '#' . urlencode($record->url)),
-                EditAction::make(),
-            ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make()
-                        ->action(function (): void {
-                            Notification::make()
-                                ->title('Now, now, don\'t be cheeky, leave some records for others to play with!')
-                                ->warning()
-                                ->send();
-                        }),
-                ]),
-            ]);
+        return LinksTable::configure($table);
     }
 
     public static function getPages(): array
