@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Shop\Orders\Pages;
 
 use App\Filament\Resources\Shop\Orders\OrderResource;
+use App\Filament\Resources\Shop\Orders\Schemas\OrderForm;
 use App\Models\Shop\Order;
 use App\Models\User;
 use Filament\Actions\Action;
@@ -53,20 +54,23 @@ class CreateOrder extends CreateRecord
             ->sendToDatabase($user);
     }
 
-    /** @return Step[] */
+    /**
+     * @return array<Step>
+     */
     protected function getSteps(): array
     {
         return [
             Step::make('Order Details')
                 ->schema([
-                    Section::make()->schema(OrderResource::getDetailsFormSchema())->columns(),
+                    Section::make()
+                        ->schema(OrderForm::getDetailsComponents())
+                        ->columns(),
                 ]),
 
             Step::make('Order Items')
                 ->schema([
-                    Section::make()->schema([
-                        OrderResource::getItemsRepeater(),
-                    ]),
+                    Section::make()
+                        ->schema([OrderForm::getItemsRepeater()]),
                 ]),
         ];
     }
