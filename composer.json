@@ -18,6 +18,7 @@
         "lara-zeus/spatie-translatable": "^1.0@alpha",
         "laravel/framework": "^12.0",
         "laravel/horizon": "^5.21",
+        "laravel/nightwatch": "^1.12",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.8",
         "squirephp/countries-en": "^3.3",
