@@ -35,7 +35,7 @@ class OrderForm
                             ->columns(2),
 
                         Section::make('Order items')
-                            ->headerActions([
+                            ->afterHeader([
                                 Action::make('reset')
                                     ->modalHeading('Are you sure?')
                                     ->modalDescription('All existing items will be removed from the order.')
