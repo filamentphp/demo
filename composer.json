@@ -17,7 +17,6 @@
         "guzzlehttp/guzzle": "^7.2",
         "lara-zeus/spatie-translatable": "^1.0@alpha",
         "laravel/framework": "^12.0",
-        "laravel/horizon": "^5.21",
         "laravel/nightwatch": "^1.12",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.8",
