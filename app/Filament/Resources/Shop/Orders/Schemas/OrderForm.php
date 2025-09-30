@@ -62,7 +62,7 @@ class OrderForm
                     ->columnSpan(['lg' => 1])
                     ->hidden(fn (?Order $record) => $record === null),
             ])
-            ->columns(3);
+            ->columns([fn (?Order $record) => $record === null ? 1 : 3]);
     }
 
     /**
