@@ -5,6 +5,8 @@ namespace App\Filament\Widgets;
 use App\Filament\Resources\Shop\Orders\OrderResource;
 use App\Models\Shop\Order;
 use Filament\Actions\Action;
+use Filament\CustomDashboardsPlugin\Widgets\Concerns\InteractsWithCustomDashboards;
+use Filament\CustomDashboardsPlugin\Widgets\Contracts\CustomDashboardWidget;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
@@ -12,6 +14,8 @@ use Squire\Models\Currency;
 
 class LatestOrders extends BaseWidget
 {
+    use InteractsWithCustomDashboards;
+
     protected int | string | array $columnSpan = 'full';
 
     protected static ?int $sort = 2;
@@ -50,5 +54,15 @@ class LatestOrders extends BaseWidget
                 Action::make('open')
                     ->url(fn (Order $record): string => OrderResource::getUrl('edit', ['record' => $record])),
             ]);
+    }
+
+    public static function getCustomDashboardLabel(): string
+    {
+        return 'Latest orders table';
+    }
+
+    public static function getCustomDashboardDescription(): ?string
+    {
+        return 'A table of the latest orders, including the customer name, order status, and total price.';
     }
 }

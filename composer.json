@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
+        "filament/custom-dashboards-plugin": "*",
         "filament/filament": "*",
         "filament/spatie-laravel-media-library-plugin": "*",
         "filament/spatie-laravel-settings-plugin": "*",
@@ -21,6 +22,8 @@
         "laravel/nightwatch": "^1.12",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.8",
+        "livewire/livewire": "v3.7.0-beta.2",
+        "predis/predis": "^3.2",
         "squirephp/countries-en": "^3.3",
         "squirephp/currencies-en": "^3.3"
     },
@@ -82,6 +85,10 @@
         {
             "type": "path",
             "url": "../filament/packages/*"
+        },
+        {
+            "type": "path",
+            "url": "../custom-dashboards-plugin"
         }
     ],
     "config": {

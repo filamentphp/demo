@@ -2,10 +2,14 @@
 
 namespace App\Filament\Widgets;
 
+use Filament\CustomDashboardsPlugin\Widgets\Concerns\InteractsWithCustomDashboards;
+use Filament\CustomDashboardsPlugin\Widgets\Contracts\CustomDashboardWidget;
 use Filament\Widgets\ChartWidget;
 
 class CustomersChart extends ChartWidget
 {
+    use InteractsWithCustomDashboards;
+
     protected ?string $heading = 'Total customers';
 
     protected static ?int $sort = 2;
@@ -27,5 +31,15 @@ class CustomersChart extends ChartWidget
             ],
             'labels' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
         ];
+    }
+
+    public static function getCustomDashboardLabel(): string
+    {
+        return 'Customers chart';
+    }
+
+    public static function getCustomDashboardDescription(): ?string
+    {
+        return 'A chart of total customers over time, grouped by month.';
     }
 }

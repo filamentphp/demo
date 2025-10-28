@@ -3,6 +3,8 @@
 namespace App\Filament\Widgets;
 
 use Carbon\Carbon;
+use Filament\CustomDashboardsPlugin\Widgets\Concerns\InteractsWithCustomDashboards;
+use Filament\CustomDashboardsPlugin\Widgets\Contracts\CustomDashboardWidget;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
@@ -10,6 +12,7 @@ use Illuminate\Support\Number;
 
 class StatsOverviewWidget extends BaseWidget
 {
+    use InteractsWithCustomDashboards;
     use InteractsWithPageFilters;
 
     protected static ?int $sort = 0;
@@ -67,5 +70,15 @@ class StatsOverviewWidget extends BaseWidget
                 ->chart([15, 4, 10, 2, 12, 4, 12])
                 ->color('success'),
         ];
+    }
+
+    public static function getCustomDashboardLabel(): string
+    {
+        return 'Shop stats overview';
+    }
+
+    public static function getCustomDashboardDescription(): ?string
+    {
+        return 'An overview of key shop statistics: revenue, new customers, and new orders.';
     }
 }
