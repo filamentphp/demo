@@ -1183,7 +1183,7 @@
         },
         {
             "name": "filament/actions",
-            "version": "4.x-dev",
+            "version": "5.x-dev",
             "dist": {
                 "type": "path",
                 "url": "../filament/packages/actions",
@@ -1231,10 +1231,10 @@
             "dist": {
                 "type": "path",
                 "url": "../custom-dashboards-plugin",
-                "reference": "21fe4566980761a37f2559985533d48aedbb7a65"
+                "reference": "d6a41b4d888cb3517154251ed75149810591aea8"
             },
             "require": {
-                "filament/filament": "^4.0",
+                "filament/filament": "^4.0|^5.0",
                 "php": "^8.2"
             },
             "require-dev": {
@@ -1298,7 +1298,7 @@
         },
         {
             "name": "filament/filament",
-            "version": "4.x-dev",
+            "version": "5.x-dev",
             "dist": {
                 "type": "path",
                 "url": "../filament/packages/panels",
@@ -1350,7 +1350,7 @@
         },
         {
             "name": "filament/forms",
-            "version": "4.x-dev",
+            "version": "5.x-dev",
             "dist": {
                 "type": "path",
                 "url": "../filament/packages/forms",
@@ -1395,7 +1395,7 @@
         },
         {
             "name": "filament/infolists",
-            "version": "4.x-dev",
+            "version": "5.x-dev",
             "dist": {
                 "type": "path",
                 "url": "../filament/packages/infolists",
@@ -1435,7 +1435,7 @@
         },
         {
             "name": "filament/notifications",
-            "version": "4.x-dev",
+            "version": "5.x-dev",
             "dist": {
                 "type": "path",
                 "url": "../filament/packages/notifications",
@@ -1477,7 +1477,7 @@
         },
         {
             "name": "filament/query-builder",
-            "version": "4.x-dev",
+            "version": "5.x-dev",
             "dist": {
                 "type": "path",
                 "url": "../filament/packages/query-builder",
@@ -1518,7 +1518,7 @@
         },
         {
             "name": "filament/schemas",
-            "version": "4.x-dev",
+            "version": "5.x-dev",
             "dist": {
                 "type": "path",
                 "url": "../filament/packages/schemas",
@@ -1558,7 +1558,7 @@
         },
         {
             "name": "filament/spatie-laravel-media-library-plugin",
-            "version": "4.x-dev",
+            "version": "5.x-dev",
             "dist": {
                 "type": "path",
                 "url": "../filament/packages/spatie-laravel-media-library-plugin",
@@ -1590,7 +1590,7 @@
         },
         {
             "name": "filament/spatie-laravel-settings-plugin",
-            "version": "4.x-dev",
+            "version": "5.x-dev",
             "dist": {
                 "type": "path",
                 "url": "../filament/packages/spatie-laravel-settings-plugin",
@@ -1629,7 +1629,7 @@
         },
         {
             "name": "filament/spatie-laravel-tags-plugin",
-            "version": "4.x-dev",
+            "version": "5.x-dev",
             "dist": {
                 "type": "path",
                 "url": "../filament/packages/spatie-laravel-tags-plugin",
@@ -1661,11 +1661,11 @@
         },
         {
             "name": "filament/support",
-            "version": "4.x-dev",
+            "version": "5.x-dev",
             "dist": {
                 "type": "path",
                 "url": "../filament/packages/support",
-                "reference": "3024a6e3ddcabbd24f3335cc68cdce6d05e33a05"
+                "reference": "9cefe2ef695ecf91de58bd5214d67fe76ba79e77"
             },
             "require": {
                 "blade-ui-kit/blade-heroicons": "^2.5",
@@ -1674,7 +1674,7 @@
                 "illuminate/contracts": "^11.28|^12.0",
                 "kirschbaum-development/eloquent-power-joins": "^4.0",
                 "league/uri-components": "^7.0",
-                "livewire/livewire": "^3.5",
+                "livewire/livewire": "^4.0@beta",
                 "nette/php-generator": "^4.0",
                 "php": "^8.2",
                 "ryangjchandler/blade-capture-directive": "^1.0",
@@ -1714,7 +1714,7 @@
         },
         {
             "name": "filament/tables",
-            "version": "4.x-dev",
+            "version": "5.x-dev",
             "dist": {
                 "type": "path",
                 "url": "../filament/packages/tables",
@@ -1755,7 +1755,7 @@
         },
         {
             "name": "filament/widgets",
-            "version": "4.x-dev",
+            "version": "5.x-dev",
             "dist": {
                 "type": "path",
                 "url": "../filament/packages/widgets",
@@ -3759,16 +3759,16 @@
         },
         {
             "name": "livewire/livewire",
-            "version": "v3.6.4",
+            "version": "v4.0.0-beta.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/livewire/livewire.git",
-                "reference": "ef04be759da41b14d2d129e670533180a44987dc"
+                "reference": "1a6b9c954c8dfff30428b7f54199bae854d9fe34"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/livewire/livewire/zipball/ef04be759da41b14d2d129e670533180a44987dc",
-                "reference": "ef04be759da41b14d2d129e670533180a44987dc",
+                "url": "https://api.github.com/repos/livewire/livewire/zipball/1a6b9c954c8dfff30428b7f54199bae854d9fe34",
+                "reference": "1a6b9c954c8dfff30428b7f54199bae854d9fe34",
                 "shasum": ""
             },
             "require": {
@@ -3823,7 +3823,7 @@
             "description": "A front-end framework for Laravel.",
             "support": {
                 "issues": "https://github.com/livewire/livewire/issues",
-                "source": "https://github.com/livewire/livewire/tree/v3.6.4"
+                "source": "https://github.com/livewire/livewire/tree/v4.0.0-beta.2"
             },
             "funding": [
                 {
@@ -3831,7 +3831,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-07-17T05:12:15+00:00"
+            "time": "2025-10-31T12:33:14+00:00"
         },
         {
             "name": "maennchen/zipstream-php",
