@@ -16,9 +16,7 @@
         "filament/spatie-laravel-tags-plugin": "*",
         "flowframe/laravel-trend": "^0.4.0",
         "guzzlehttp/guzzle": "^7.2",
-        "lara-zeus/spatie-translatable": "^1.0@alpha",
         "laravel/framework": "^12.0",
-        "laravel/horizon": "^5.21",
         "laravel/nightwatch": "^1.12",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.8",
@@ -66,6 +64,14 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
+        ],
+        "setup": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
+            "@php artisan key:generate --ansi",
+            "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
+            "@php artisan migrate --ansi",
+            "@php artisan db:seed --ansi",
+            "@php artisan storage:link --ansi"
         ],
         "cs": [
             "pint"
