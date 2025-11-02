@@ -15,7 +15,6 @@
         "filament/spatie-laravel-tags-plugin": "^4.0",
         "flowframe/laravel-trend": "^0.4.0",
         "guzzlehttp/guzzle": "^7.2",
-        "lara-zeus/spatie-translatable": "^1.0@alpha",
         "laravel/framework": "^12.0",
         "laravel/nightwatch": "^1.12",
         "laravel/sanctum": "^4.0",

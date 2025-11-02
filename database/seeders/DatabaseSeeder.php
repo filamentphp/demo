@@ -6,7 +6,6 @@ use App\Filament\Resources\Shop\Orders\OrderResource;
 use App\Models\Address;
 use App\Models\Blog\Author;
 use App\Models\Blog\Category as BlogCategory;
-use App\Models\Blog\Link;
 use App\Models\Blog\Post;
 use App\Models\Comment;
 use App\Models\Shop\Brand;
@@ -123,12 +122,6 @@ class DatabaseSeeder extends Seeder
             )
             ->create());
         $this->command->info('Blog authors and posts created.');
-
-        $this->command->warn(PHP_EOL . 'Creating blog links...');
-        $this->withProgressBar(20, fn () => Link::factory(1)
-            ->count(20)
-            ->create());
-        $this->command->info('Blog links created.');
     }
 
     protected function withProgressBar(int $amount, Closure $createCollectionOfOne): Collection
