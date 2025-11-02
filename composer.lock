@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f7d9f03ec3427906b032ecd62e45be61",
+    "content-hash": "35cd13ccbf17d6de0b57b4131d16c5c4",
     "packages": [
         {
             "name": "akaunting/laravel-money",
@@ -1183,17 +1183,11 @@
         },
         {
             "name": "filament/actions",
-            "version": "v4.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/filamentphp/actions.git",
-                "reference": "63058c9123407559a3066f7877147a556753b0f3"
-            },
+            "version": "4.x-dev",
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/actions/zipball/63058c9123407559a3066f7877147a556753b0f3",
-                "reference": "63058c9123407559a3066f7877147a556753b0f3",
-                "shasum": ""
+                "type": "path",
+                "url": "../filament/packages/actions",
+                "reference": "0d607f3ac423e4fa6d60630bf975359781de647e"
             },
             "require": {
                 "anourvalar/eloquent-serialize": "^1.2",
@@ -1218,7 +1212,6 @@
                     "Filament\\Actions\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1228,21 +1221,17 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2025-11-02T17:19:49+00:00"
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "filament/filament",
-            "version": "v4.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/filamentphp/panels.git",
-                "reference": "0877be87a523a469544f4e9c866ac1ead0e206ab"
-            },
+            "version": "4.x-dev",
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/panels/zipball/0877be87a523a469544f4e9c866ac1ead0e206ab",
-                "reference": "0877be87a523a469544f4e9c866ac1ead0e206ab",
-                "shasum": ""
+                "type": "path",
+                "url": "../filament/packages/panels",
+                "reference": "f3f6d76ce35aced7482ed19652d24b33e9b70117"
             },
             "require": {
                 "chillerlan/php-qrcode": "^5.0",
@@ -1275,7 +1264,6 @@
                     "Filament\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1285,21 +1273,17 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2025-11-02T17:20:20+00:00"
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "filament/forms",
-            "version": "v4.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/filamentphp/forms.git",
-                "reference": "aa46c3985d2c5d6f1a415618b7f095bacf812a95"
-            },
+            "version": "4.x-dev",
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/forms/zipball/aa46c3985d2c5d6f1a415618b7f095bacf812a95",
-                "reference": "aa46c3985d2c5d6f1a415618b7f095bacf812a95",
-                "shasum": ""
+                "type": "path",
+                "url": "../filament/packages/forms",
+                "reference": "417ca0cea85db0e7a39bcad58115461c85b0198e"
             },
             "require": {
                 "danharrin/date-format-converter": "^0.3",
@@ -1325,7 +1309,6 @@
                     "Filament\\Forms\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1335,21 +1318,17 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2025-11-02T17:19:59+00:00"
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "filament/infolists",
-            "version": "v4.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/filamentphp/infolists.git",
-                "reference": "024a9e74dd21436d11c65bb4c4f283be09951794"
-            },
+            "version": "4.x-dev",
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/infolists/zipball/024a9e74dd21436d11c65bb4c4f283be09951794",
-                "reference": "024a9e74dd21436d11c65bb4c4f283be09951794",
-                "shasum": ""
+                "type": "path",
+                "url": "../filament/packages/infolists",
+                "reference": "e3ee63d9fff03d8f01574c8825f759a4d80ff2c4"
             },
             "require": {
                 "filament/actions": "self.version",
@@ -1370,7 +1349,6 @@
                     "Filament\\Infolists\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1380,21 +1358,17 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2025-10-21T10:01:54+00:00"
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "filament/notifications",
-            "version": "v4.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/filamentphp/notifications.git",
-                "reference": "3d7fc952a2610b78d4f95c6a6688674d4f1d4098"
-            },
+            "version": "4.x-dev",
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/notifications/zipball/3d7fc952a2610b78d4f95c6a6688674d4f1d4098",
-                "reference": "3d7fc952a2610b78d4f95c6a6688674d4f1d4098",
-                "shasum": ""
+                "type": "path",
+                "url": "../filament/packages/notifications",
+                "reference": "c8d55cbc130ea9312a86e1e7c949d1c8509eb149"
             },
             "require": {
                 "filament/actions": "self.version",
@@ -1410,14 +1384,13 @@
                 }
             },
             "autoload": {
-                "files": [
-                    "src/Testing/helpers.php"
-                ],
                 "psr-4": {
                     "Filament\\Notifications\\": "src"
-                }
+                },
+                "files": [
+                    "src/Testing/helpers.php"
+                ]
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1427,21 +1400,17 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2025-11-02T17:19:40+00:00"
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "filament/query-builder",
-            "version": "v4.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/filamentphp/query-builder.git",
-                "reference": "9304ff5fbe7480e7ed06269aa0168dfac716b8a2"
-            },
+            "version": "4.x-dev",
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/query-builder/zipball/9304ff5fbe7480e7ed06269aa0168dfac716b8a2",
-                "reference": "9304ff5fbe7480e7ed06269aa0168dfac716b8a2",
-                "shasum": ""
+                "type": "path",
+                "url": "../filament/packages/query-builder",
+                "reference": "3712bad0234b9921c0da8643bf22a6d40cf4c3a4"
             },
             "require": {
                 "filament/actions": "self.version",
@@ -1463,7 +1432,6 @@
                     "Filament\\QueryBuilder\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1473,21 +1441,17 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2025-11-02T16:56:49+00:00"
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "filament/schemas",
-            "version": "v4.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/filamentphp/schemas.git",
-                "reference": "157e01ad569225b304e5b28ea3bde8f8cc6d2192"
-            },
+            "version": "4.x-dev",
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/schemas/zipball/157e01ad569225b304e5b28ea3bde8f8cc6d2192",
-                "reference": "157e01ad569225b304e5b28ea3bde8f8cc6d2192",
-                "shasum": ""
+                "type": "path",
+                "url": "../filament/packages/schemas",
+                "reference": "5569ca5a405f948d591275ced13e0e1ecf665254"
             },
             "require": {
                 "danharrin/date-format-converter": "^0.3",
@@ -1508,7 +1472,6 @@
                     "Filament\\Schemas\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1518,21 +1481,17 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2025-11-02T17:20:05+00:00"
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "filament/spatie-laravel-media-library-plugin",
-            "version": "v4.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/filamentphp/spatie-laravel-media-library-plugin.git",
-                "reference": "389e8af1038ba7a76931e6cd0eef057ae0c2241f"
-            },
+            "version": "4.x-dev",
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/spatie-laravel-media-library-plugin/zipball/389e8af1038ba7a76931e6cd0eef057ae0c2241f",
-                "reference": "389e8af1038ba7a76931e6cd0eef057ae0c2241f",
-                "shasum": ""
+                "type": "path",
+                "url": "../filament/packages/spatie-laravel-media-library-plugin",
+                "reference": "f40b592e048f9bb334abaeb6899e72277c503600"
             },
             "require": {
                 "filament/support": "self.version",
@@ -1545,7 +1504,6 @@
                     "Filament\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1555,21 +1513,17 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2025-10-12T16:21:26+00:00"
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "filament/spatie-laravel-settings-plugin",
-            "version": "v4.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/filamentphp/spatie-laravel-settings-plugin.git",
-                "reference": "66c6344067caac2d690cc821806ff3352de4e714"
-            },
+            "version": "4.x-dev",
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/spatie-laravel-settings-plugin/zipball/66c6344067caac2d690cc821806ff3352de4e714",
-                "reference": "66c6344067caac2d690cc821806ff3352de4e714",
-                "shasum": ""
+                "type": "path",
+                "url": "../filament/packages/spatie-laravel-settings-plugin",
+                "reference": "4f556e94b08e88c2f9ddd662cdd9f662d072367f"
             },
             "require": {
                 "filament/filament": "self.version",
@@ -1589,7 +1543,6 @@
                     "Filament\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1599,21 +1552,17 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2025-09-21T21:07:59+00:00"
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "filament/spatie-laravel-tags-plugin",
-            "version": "v4.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/filamentphp/spatie-laravel-tags-plugin.git",
-                "reference": "cb2a1ffbe97aff98e1e7dcb6cd291bd54b5ed407"
-            },
+            "version": "4.x-dev",
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/spatie-laravel-tags-plugin/zipball/cb2a1ffbe97aff98e1e7dcb6cd291bd54b5ed407",
-                "reference": "cb2a1ffbe97aff98e1e7dcb6cd291bd54b5ed407",
-                "shasum": ""
+                "type": "path",
+                "url": "../filament/packages/spatie-laravel-tags-plugin",
+                "reference": "0f4ddb64054ea3e21cc67edb513f0fb41d6d6efc"
             },
             "require": {
                 "filament/support": "self.version",
@@ -1626,7 +1575,6 @@
                     "Filament\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1636,21 +1584,17 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2025-10-12T16:21:24+00:00"
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "filament/support",
-            "version": "v4.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/filamentphp/support.git",
-                "reference": "06bafcfc604fe4acc5494cd5193909b51911aeeb"
-            },
+            "version": "4.x-dev",
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/support/zipball/06bafcfc604fe4acc5494cd5193909b51911aeeb",
-                "reference": "06bafcfc604fe4acc5494cd5193909b51911aeeb",
-                "shasum": ""
+                "type": "path",
+                "url": "../filament/packages/support",
+                "reference": "3024a6e3ddcabbd24f3335cc68cdce6d05e33a05"
             },
             "require": {
                 "blade-ui-kit/blade-heroicons": "^2.5",
@@ -1684,7 +1628,6 @@
                     "Filament\\Support\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1694,21 +1637,17 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2025-11-02T17:20:06+00:00"
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "filament/tables",
-            "version": "v4.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/filamentphp/tables.git",
-                "reference": "8ff5191cc7a33db20856600cd5b1f5f137847111"
-            },
+            "version": "4.x-dev",
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/tables/zipball/8ff5191cc7a33db20856600cd5b1f5f137847111",
-                "reference": "8ff5191cc7a33db20856600cd5b1f5f137847111",
-                "shasum": ""
+                "type": "path",
+                "url": "../filament/packages/tables",
+                "reference": "e8991e3a6b0887a073962d68024cce5d3f955b69"
             },
             "require": {
                 "filament/actions": "self.version",
@@ -1730,7 +1669,6 @@
                     "Filament\\Tables\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1740,21 +1678,17 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2025-11-02T17:20:05+00:00"
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "filament/widgets",
-            "version": "v4.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/filamentphp/widgets.git",
-                "reference": "9ad4b80ae890768f38bc5e773fde7fc980375f22"
-            },
+            "version": "4.x-dev",
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/widgets/zipball/9ad4b80ae890768f38bc5e773fde7fc980375f22",
-                "reference": "9ad4b80ae890768f38bc5e773fde7fc980375f22",
-                "shasum": ""
+                "type": "path",
+                "url": "../filament/packages/widgets",
+                "reference": "090e314e0f6b5408a0b39fe3650928053e90ecb7"
             },
             "require": {
                 "filament/schemas": "self.version",
@@ -1774,7 +1708,6 @@
                     "Filament\\Widgets\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1784,7 +1717,9 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2025-10-21T10:01:25+00:00"
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "flowframe/laravel-trend",
@@ -13026,7 +12961,7 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
