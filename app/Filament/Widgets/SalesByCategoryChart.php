@@ -14,8 +14,6 @@ class SalesByCategoryChart extends ChartWidget
 
     protected static ?int $sort = 3;
 
-    protected ?string $maxHeight = '150px';
-
     protected function getType(): string
     {
         return 'bar';

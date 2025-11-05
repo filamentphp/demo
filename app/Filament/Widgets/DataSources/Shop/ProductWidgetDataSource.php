@@ -5,7 +5,7 @@ namespace App\Filament\Widgets\DataSources\Shop;
 use App\Models\Shop\Order;
 use App\Models\Shop\Product;
 use Filament\CustomDashboardsPlugin\Widgets\DataSources\Attributes\Attribute;
-use Filament\CustomDashboardsPlugin\Widgets\DataSources\Attributes\DateAttribute;
+use Filament\CustomDashboardsPlugin\Widgets\DataSources\Attributes\DateTimeAttribute;
 use Filament\CustomDashboardsPlugin\Widgets\DataSources\Attributes\NumericAttribute;
 use Filament\CustomDashboardsPlugin\Widgets\DataSources\EloquentWidgetDataSource;
 use Filament\QueryBuilder\Constraints\RelationshipConstraint;
@@ -34,9 +34,9 @@ class ProductWidgetDataSource extends EloquentWidgetDataSource
                 ->money(),
             NumericAttribute::make('cost')
                 ->money(),
-            DateAttribute::make('created_at')
+            DateTimeAttribute::make('created_at')
                 ->label('Created date'),
-            DateAttribute::make('updated_at')
+            DateTimeAttribute::make('updated_at')
                 ->label('Last updated date'),
         ];
     }
