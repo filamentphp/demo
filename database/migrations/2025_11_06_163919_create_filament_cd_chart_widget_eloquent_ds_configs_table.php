@@ -11,14 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('custom_dashboard_scatter_chart_widget_eloquent_data_source_configurations', function (Blueprint $table) {
+        Schema::create('filament_cd_doughnut_chart_widget_eloquent_ds_configs', function (Blueprint $table) {
             $table->id();
-            $table->string('operator')->nullable();
+            $table->string('operator');
             $table->string('dimension_attribute');
-            $table->string('min_dimension')->nullable();
-            $table->string('max_dimension')->nullable();
-            $table->integer('dimension_relative_date_value')->nullable();
-            $table->string('dimension_relative_date_unit')->nullable();
             $table->string('measure_attribute')->nullable();
             $table->boolean('is_cumulative')->default(false);
             $table->jsonb('filters')->nullable();
@@ -32,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('custom_dashboard_scatter_chart_widget_eloquent_data_source_configurations');
+        Schema::dropIfExists('filament_cd_doughnut_chart_widget_eloquent_ds_configs');
     }
 };

@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('custom_dashboard_stats_overview_widget_stat_configurations', function (Blueprint $table) {
+        Schema::create('filament_cd_stats_overview_widget_stat_configs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('stats_overview_widget_configuration_id')->constrained('custom_dashboard_stats_overview_widget_configurations')->cascadeOnDelete();
+            $table->foreignId('stats_overview_widget_config_id')->constrained('filament_cd_stats_overview_widget_configs', indexName: 'filament_cd_stats_overview_widget_config_id_foreign')->cascadeOnDelete();
             $table->string('label');
             $table->string('data_source');
-            $table->nullableMorphs('data_source_configuration');
+            $table->nullableMorphs('data_source_config', indexName: 'filament_cd_stats_overview_widget_stats_data_source_config_index');
             $table->unsignedInteger('sort');
             $table->timestamps();
         });
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('custom_dashboard_stats_overview_widget_stat_configurations');
+        Schema::dropIfExists('filament_cd_stats_overview_widget_stat_configs');
     }
 };

@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('custom_dashboard_user', function (Blueprint $table) {
+        Schema::create('filament_cd_dashboard_user', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('custom_dashboard_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('dashboard_id')->constrained('filament_cd_dashboards')->cascadeOnDelete();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->boolean('has_navigation_item')->default(true);
             $table->string('navigation_icon')->nullable();
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('custom_dashboard_user');
+        Schema::dropIfExists('filament_cd_dashboard_user');
     }
 };

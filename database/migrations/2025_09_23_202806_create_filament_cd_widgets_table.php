@@ -11,17 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('custom_dashboard_widgets', function (Blueprint $table) {
+        Schema::create('filament_cd_widgets', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('custom_dashboard_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('dashboard_id')->constrained('filament_cd_dashboards')->cascadeOnDelete();
             $table->string('label')->nullable();
             $table->text('thumbnail_image')->nullable();
             $table->string('type')->nullable();
-            $table->nullableMorphs('configuration');
+            $table->nullableMorphs('config', indexName: 'filament_cd_widgets_config_index');
             $table->unsignedInteger('sort');
             $table->jsonb('column_span');
             $table->timestamp('enabled_at')->nullable()->useCurrent();
-            $table->foreignId('previous_version_id')->nullable()->constrained('custom_dashboard_widgets')->nullOnDelete();
+            $table->foreignId('previous_version_id')->nullable()->constrained('filament_cd_widgets', indexName: 'filament_cd_widget_previous_version_id_foreign')->nullOnDelete();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('custom_dashboard_widgets');
+        Schema::dropIfExists('filament_cd_widgets');
     }
 };

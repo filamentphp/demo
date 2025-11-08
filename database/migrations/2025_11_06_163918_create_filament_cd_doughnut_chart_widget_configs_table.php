@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('custom_dashboard_bar_chart_widget_configurations', function (Blueprint $table) {
+        Schema::create('filament_cd_doughnut_chart_widget_configs', function (Blueprint $table) {
             $table->id();
             $table->string('heading');
             $table->string('data_source');
             $table->string('data_label')->nullable();
-            $table->jsonb('bar_colors')->nullable();
-            $table->nullableMorphs('data_source_configuration');
+            $table->jsonb('slice_colors')->nullable();
+            $table->nullableMorphs('data_source_config', indexName: 'filament_cd_doughnut_chart_widgets_data_source_config_index');
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('custom_dashboard_bar_chart_widget_configurations');
+        Schema::dropIfExists('filament_cd_doughnut_chart_widget_configs');
     }
 };

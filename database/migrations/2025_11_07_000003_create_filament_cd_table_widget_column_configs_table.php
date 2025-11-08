@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('custom_dashboard_table_widget_column_configurations', function (Blueprint $table) {
+        Schema::create('filament_cd_table_widget_column_configs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('table_widget_configuration_id')->constrained('custom_dashboard_table_widget_configurations')->cascadeOnDelete();
-            $table->nullableMorphs('data_source_configuration');
+            $table->foreignId('table_widget_config_id')->constrained('filament_cd_table_widget_configs', indexName: 'filament_cd_table_widget_config_id_foreign')->cascadeOnDelete();
+            $table->nullableMorphs('data_source_config', indexName: 'filament_cd_table_widget_columns_data_source_config_index');
             $table->string('label');
             $table->boolean('is_searchable')->default(false);
             $table->boolean('is_sortable')->default(false);
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('custom_dashboard_table_widget_column_configurations');
+        Schema::dropIfExists('filament_cd_table_widget_column_configs');
     }
 };

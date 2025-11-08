@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('custom_dashboard_stats_overview_widget_stat_eloquent_data_source_configurations', function (Blueprint $table) {
+        Schema::create('filament_cd_table_widget_configs', function (Blueprint $table) {
             $table->id();
-            $table->string('operator');
-            $table->string('attribute')->nullable();
-            $table->jsonb('filters')->nullable();
+            $table->string('heading');
+            $table->string('data_source');
+            $table->nullableMorphs('data_source_config', indexName: 'filament_cd_table_widgets_data_source_config_index');
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('custom_dashboard_stats_overview_widget_stat_eloquent_data_source_configurations');
+        Schema::dropIfExists('filament_cd_table_widget_configs');
     }
 };

@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('custom_dashboard_line_chart_widget_eloquent_data_source_configurations', function (Blueprint $table) {
+        Schema::create('filament_cd_line_chart_widget_eloquent_ds_configs', function (Blueprint $table) {
             $table->id();
             $table->string('operator');
             $table->string('dimension_attribute');
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('custom_dashboard_line_chart_widget_eloquent_data_source_configurations');
+        Schema::dropIfExists('filament_cd_line_chart_widget_eloquent_ds_configs');
     }
 };

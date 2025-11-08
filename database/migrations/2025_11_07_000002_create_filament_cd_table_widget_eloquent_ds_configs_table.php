@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('custom_dashboard_stats_overview_widget_configurations', function (Blueprint $table) {
+        Schema::create('filament_cd_table_widget_eloquent_ds_configs', function (Blueprint $table) {
             $table->id();
+            $table->jsonb('filters')->nullable();
             $table->timestamps();
         });
     }
@@ -22,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('custom_dashboard_stats_overview_widget_configurations');
+        Schema::dropIfExists('filament_cd_table_widget_eloquent_ds_configs');
     }
 };
