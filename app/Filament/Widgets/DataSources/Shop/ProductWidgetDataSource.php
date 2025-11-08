@@ -5,8 +5,10 @@ namespace App\Filament\Widgets\DataSources\Shop;
 use App\Models\Shop\Order;
 use App\Models\Shop\Product;
 use Filament\CustomDashboardsPlugin\Widgets\DataSources\Attributes\Attribute;
+use Filament\CustomDashboardsPlugin\Widgets\DataSources\Attributes\BooleanAttribute;
+use Filament\CustomDashboardsPlugin\Widgets\DataSources\Attributes\DateAttribute;
 use Filament\CustomDashboardsPlugin\Widgets\DataSources\Attributes\DateTimeAttribute;
-use Filament\CustomDashboardsPlugin\Widgets\DataSources\Attributes\NumericAttribute;
+use Filament\CustomDashboardsPlugin\Widgets\DataSources\Attributes\NumberAttribute;
 use Filament\CustomDashboardsPlugin\Widgets\DataSources\EloquentWidgetDataSource;
 use Filament\QueryBuilder\Constraints\RelationshipConstraint;
 use Filament\QueryBuilder\Constraints\RelationshipConstraint\Operators\IsRelatedToOperator;
@@ -25,19 +27,20 @@ class ProductWidgetDataSource extends EloquentWidgetDataSource
     public function getAttributes(): array
     {
         return [
-            NumericAttribute::make('qty')
+            NumberAttribute::make('qty')
                 ->label('Quantity')
                 ->decimalPlaces(0),
-            NumericAttribute::make('security_stock')
+            NumberAttribute::make('security_stock')
                 ->decimalPlaces(0),
-            NumericAttribute::make('price')
+            NumberAttribute::make('price')
                 ->money(),
-            NumericAttribute::make('cost')
+            NumberAttribute::make('cost')
                 ->money(),
-            DateTimeAttribute::make('created_at')
+            DateAttribute::make('created_at')
                 ->label('Created date'),
-            DateTimeAttribute::make('updated_at')
+            DateAttribute::make('updated_at')
                 ->label('Last updated date'),
+            BooleanAttribute::make('featured'),
         ];
     }
 

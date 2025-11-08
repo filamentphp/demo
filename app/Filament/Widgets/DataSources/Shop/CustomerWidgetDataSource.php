@@ -18,11 +18,12 @@ class CustomerWidgetDataSource extends EloquentWidgetDataSource
     public function getAttributes(): array
     {
         return [
-            DateTimeAttribute::make('created_at')
+            DateAttribute::make('created_at')
                 ->label('Created date'),
-            DateTimeAttribute::make('updated_at')
+            DateAttribute::make('updated_at')
                 ->label('Last updated date'),
-            DateAttribute::make('birthday'),
+            DateAttribute::make('birthday')
+                ->time(false),
         ];
     }
 }

@@ -4,9 +4,12 @@ namespace App\Filament\Widgets\DataSources\Shop;
 
 use App\Models\Shop\Brand;
 use App\Models\Shop\Order;
+use Dom\Attr;
 use Filament\CustomDashboardsPlugin\Widgets\DataSources\Attributes\Attribute;
+use Filament\CustomDashboardsPlugin\Widgets\DataSources\Attributes\DateAttribute;
 use Filament\CustomDashboardsPlugin\Widgets\DataSources\Attributes\DateTimeAttribute;
-use Filament\CustomDashboardsPlugin\Widgets\DataSources\Attributes\NumericAttribute;
+use Filament\CustomDashboardsPlugin\Widgets\DataSources\Attributes\NumberAttribute;
+use Filament\CustomDashboardsPlugin\Widgets\DataSources\Attributes\TextAttribute;
 use Filament\CustomDashboardsPlugin\Widgets\DataSources\EloquentWidgetDataSource;
 
 class OrderWidgetDataSource extends EloquentWidgetDataSource
@@ -19,13 +22,14 @@ class OrderWidgetDataSource extends EloquentWidgetDataSource
     public function getAttributes(): array
     {
         return [
-            NumericAttribute::make('total_price')
+            TextAttribute::make('status'),
+            NumberAttribute::make('total_price')
                 ->money(),
-            NumericAttribute::make('shipping_price')
+            NumberAttribute::make('shipping_price')
                 ->money(),
-            DateTimeAttribute::make('created_at')
+            DateAttribute::make('created_at')
                 ->label('Created date'),
-            DateTimeAttribute::make('updated_at')
+            DateAttribute::make('updated_at')
                 ->label('Last updated date'),
         ];
     }
