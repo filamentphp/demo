@@ -15,6 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug');
+            $table->string('default_role')->nullable();
+            $table->boolean('has_navigation_item')->default(true);
+            $table->string('navigation_icon')->nullable();
+            $table->string('navigation_label')->nullable();
+            $table->string('navigation_group')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
