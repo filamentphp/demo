@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('dashboard_id')->constrained('filament_cd_dashboards')->cascadeOnDelete();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->string('role');
             $table->boolean('has_navigation_item')->default(true);
             $table->string('navigation_icon')->nullable();
             $table->timestamps();

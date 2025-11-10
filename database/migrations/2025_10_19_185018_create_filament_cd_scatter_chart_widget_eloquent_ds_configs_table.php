@@ -20,7 +20,6 @@ return new class extends Migration
             $table->integer('dimension_relative_date_value')->nullable();
             $table->string('dimension_relative_date_unit')->nullable();
             $table->string('measure_attribute')->nullable();
-            $table->boolean('is_cumulative')->default(false);
             $table->jsonb('filters')->nullable();
 
             $table->timestamps();

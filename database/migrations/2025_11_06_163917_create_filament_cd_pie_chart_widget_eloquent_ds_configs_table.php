@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('operator');
             $table->string('dimension_attribute');
             $table->string('measure_attribute')->nullable();
-            $table->boolean('is_cumulative')->default(false);
             $table->jsonb('filters')->nullable();
 
             $table->timestamps();
