@@ -3,12 +3,16 @@
 namespace App\Filament\Resources\Blog\Posts\Tables;
 
 use App\Models\Blog\Post;
+use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Forms\Components\DatePicker;
 use Filament\Notifications\Notification;
+use Filament\Support\Enums\FontWeight;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
@@ -28,7 +32,8 @@ class PostsTable
 
                 TextColumn::make('title')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->weight(FontWeight::Medium),
 
                 TextColumn::make('slug')
                     ->searchable()
@@ -47,7 +52,7 @@ class PostsTable
                         'success' => 'Published',
                     ]),
 
-                TextColumn::make('category.name')
+                TextColumn::make('postCategory.name')
                     ->searchable()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -88,11 +93,31 @@ class PostsTable
                     }),
             ])
             ->recordActions([
-                ViewAction::make(),
+                ActionGroup::make([
+                    Action::make('toggle_publish')
+                        ->icon(fn (Post $record): Heroicon => $record->published_at?->isPast() ? Heroicon::XCircle : Heroicon::RocketLaunch)
+                        ->label(fn (Post $record): string => $record->published_at?->isPast() ? 'Unpublish' : 'Publish')
+                        ->color(fn (Post $record): string => $record->published_at?->isPast() ? 'warning' : 'success')
+                        ->action(function (Post $record): void {
+                            $record->update([
+                                'published_at' => $record->published_at?->isPast() ? null : now(),
+                            ]);
 
-                EditAction::make(),
-
-                DeleteAction::make(),
+                            Notification::make()
+                                ->title($record->published_at ? 'Post published' : 'Post unpublished')
+                                ->success()
+                                ->send();
+                        }),
+                    ViewAction::make(),
+                    EditAction::make(),
+                    DeleteAction::make()
+                        ->action(function (): void {
+                            Notification::make()
+                                ->title('Now, now, don\'t be cheeky, leave some records for others to play with!')
+                                ->warning()
+                                ->send();
+                        }),
+                ]),
             ])
             ->groupedBulkActions([
                 DeleteBulkAction::make()

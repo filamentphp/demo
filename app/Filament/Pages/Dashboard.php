@@ -2,33 +2,25 @@
 
 namespace App\Filament\Pages;
 
-use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Select;
+use App\Filament\Widgets\FeaturesOverview;
 use Filament\Pages\Dashboard as BaseDashboard;
-use Filament\Schemas\Components\Section;
-use Filament\Schemas\Components\Utilities\Get;
-use Filament\Schemas\Schema;
+use Filament\Widgets\AccountWidget;
+use Filament\Widgets\FilamentInfoWidget;
 
 class Dashboard extends BaseDashboard
 {
-    use BaseDashboard\Concerns\HasFiltersForm;
+    protected static ?int $navigationSort = -2;
 
-    public function filtersForm(Schema $schema): Schema
+    protected static ?string $title = 'Welcome';
+
+    protected ?string $heading = 'Welcome to the Filament Demo!';
+
+    public function getWidgets(): array
     {
-        return $schema
-            ->components([
-                Section::make()
-                    ->schema([
-                        Select::make('businessCustomersOnly')
-                            ->boolean(),
-                        DatePicker::make('startDate')
-                            ->maxDate(fn (Get $get) => $get('endDate') ?: now()),
-                        DatePicker::make('endDate')
-                            ->minDate(fn (Get $get) => $get('startDate') ?: now())
-                            ->maxDate(now()),
-                    ])
-                    ->columns(3)
-                    ->columnSpanFull(),
-            ]);
+        return [
+            AccountWidget::class,
+            FilamentInfoWidget::class,
+            FeaturesOverview::class,
+        ];
     }
 }

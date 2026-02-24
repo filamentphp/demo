@@ -23,7 +23,7 @@ class Product extends Model implements HasMedia
     /**
      * @var string
      */
-    protected $table = 'shop_products';
+    protected $table = 'products';
 
     /**
      * @var array<string, string>
@@ -39,13 +39,13 @@ class Product extends Model implements HasMedia
     /** @return BelongsTo<Brand, $this> */
     public function brand(): BelongsTo
     {
-        return $this->belongsTo(Brand::class, 'shop_brand_id');
+        return $this->belongsTo(Brand::class, 'brand_id');
     }
 
-    /** @return BelongsToMany<Category, $this> */
-    public function categories(): BelongsToMany
+    /** @return BelongsToMany<ProductCategory, $this> */
+    public function productCategories(): BelongsToMany
     {
-        return $this->belongsToMany(Category::class, 'shop_category_product', 'shop_product_id', 'shop_category_id')->withTimestamps();
+        return $this->belongsToMany(ProductCategory::class, 'product_category_product', 'product_id', 'product_category_id')->withTimestamps();
     }
 
     /** @return MorphMany<Comment, $this> */

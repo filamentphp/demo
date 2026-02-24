@@ -14,7 +14,8 @@ class CategoryInfolist
             ->components([
                 TextEntry::make('name'),
                 TextEntry::make('slug'),
-                TextEntry::make('description'),
+                TextEntry::make('description')
+                    ->placeholder('No description'),
                 IconEntry::make('is_visible')
                     ->label('Visibility'),
                 TextEntry::make('updated_at')

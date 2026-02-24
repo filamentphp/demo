@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\CountryCode;
 use App\Models\Shop\Brand;
 use App\Models\Shop\Customer;
 use Database\Factories\AddressFactory;
@@ -15,6 +16,14 @@ class Address extends Model
     use HasFactory;
 
     protected $table = 'addresses';
+
+    /** @return array<string, string> */
+    protected function casts(): array
+    {
+        return [
+            'country' => CountryCode::class,
+        ];
+    }
 
     /** @return MorphToMany<Customer, $this> */
     public function customers(): MorphToMany

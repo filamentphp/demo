@@ -29,11 +29,14 @@ class PostInfolist
                                             ->label('Publishing date')
                                             ->badge()
                                             ->date()
-                                            ->color('success'),
+                                            ->color('success')
+                                            ->placeholder('Not published'),
                                     ]),
                                     Group::make([
-                                        TextEntry::make('author.name'),
-                                        TextEntry::make('category.name'),
+                                        TextEntry::make('author.name')
+                                            ->placeholder('No author'),
+                                        TextEntry::make('postCategory.name')
+                                            ->placeholder('Uncategorized'),
                                         SpatieTagsEntry::make('tags'),
                                     ]),
                                 ]),

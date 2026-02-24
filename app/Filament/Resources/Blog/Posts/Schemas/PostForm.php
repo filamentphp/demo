@@ -39,13 +39,13 @@ class PostForm
                             ->required()
                             ->columnSpan('full'),
 
-                        Select::make('blog_author_id')
+                        Select::make('author_id')
                             ->relationship('author', 'name')
                             ->searchable()
                             ->required(),
 
-                        Select::make('blog_category_id')
-                            ->relationship('category', 'name')
+                        Select::make('post_category_id')
+                            ->relationship('postCategory', 'name')
                             ->searchable()
                             ->required(),
 

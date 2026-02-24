@@ -15,7 +15,7 @@ class OrderAddressFactory extends Factory
     public function definition(): array
     {
         return [
-            'country' => strtolower($this->faker->countryCode()),
+            'country' => $this->faker->randomElement(['us', 'gb', 'de', 'fr', 'ca', 'au', 'nl', 'br', 'jp', 'in']),
             'street' => $this->faker->streetAddress(),
             'state' => $this->faker->state(),
             'city' => $this->faker->city(),

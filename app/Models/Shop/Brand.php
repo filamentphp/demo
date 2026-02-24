@@ -21,7 +21,7 @@ class Brand extends Model implements HasMedia
     /**
      * @var string
      */
-    protected $table = 'shop_brands';
+    protected $table = 'brands';
 
     /**
      * @var array<string, string>
@@ -39,6 +39,6 @@ class Brand extends Model implements HasMedia
     /** @return HasMany<Product, $this> */
     public function products(): HasMany
     {
-        return $this->hasMany(Product::class, 'shop_brand_id');
+        return $this->hasMany(Product::class, 'brand_id');
     }
 }

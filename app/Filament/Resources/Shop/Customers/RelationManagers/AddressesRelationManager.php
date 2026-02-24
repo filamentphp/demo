@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Shop\Customers\RelationManagers;
 
+use App\Enums\CountryCode;
 use Filament\Actions\AttachAction;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
@@ -13,9 +14,9 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
+use Filament\Support\Enums\FontWeight;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Squire\Models\Country;
 
 class AddressesRelationManager extends RelationManager
 {
@@ -36,9 +37,8 @@ class AddressesRelationManager extends RelationManager
                 TextInput::make('state'),
 
                 Select::make('country')
-                    ->searchable()
-                    ->getSearchResultsUsing(fn (string $query) => Country::where('name', 'like', "%{$query}%")->pluck('name', 'id'))
-                    ->getOptionLabelUsing(fn ($value): ?string => Country::firstWhere('id', $value)?->getAttribute('name')),
+                    ->options(CountryCode::class)
+                    ->searchable(),
             ]);
     }
 
@@ -46,14 +46,14 @@ class AddressesRelationManager extends RelationManager
     {
         return $table
             ->columns([
-                TextColumn::make('street'),
+                TextColumn::make('street')
+                    ->weight(FontWeight::Medium),
 
                 TextColumn::make('zip'),
 
                 TextColumn::make('city'),
 
-                TextColumn::make('country')
-                    ->formatStateUsing(fn ($state): ?string => Country::find($state)->name ?? null),
+                TextColumn::make('country'),
             ])
             ->filters([
                 //

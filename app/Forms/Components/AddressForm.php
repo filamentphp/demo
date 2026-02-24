@@ -2,12 +2,12 @@
 
 namespace App\Forms\Components;
 
+use App\Enums\CountryCode;
 use Filament\Forms\Components\Field;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Grid;
 use Illuminate\Database\Eloquent\Model;
-use Squire\Models\Country;
 
 class AddressForm extends Field
 {
@@ -48,9 +48,8 @@ class AddressForm extends Field
             Grid::make()
                 ->schema([
                     Select::make('country')
-                        ->searchable()
-                        ->getSearchResultsUsing(fn (string $query) => Country::where('name', 'like', "%{$query}%")->pluck('name', 'id'))
-                        ->getOptionLabelUsing(fn ($value): ?string => Country::firstWhere('id', $value)?->getAttribute('name')),
+                        ->options(CountryCode::class)
+                        ->searchable(),
                 ]),
             TextInput::make('street')
                 ->label('Street address')

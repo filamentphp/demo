@@ -2,14 +2,14 @@
 
 namespace App\Filament\Imports\Blog;
 
-use App\Models\Blog\Category;
+use App\Models\Blog\PostCategory;
 use Filament\Actions\Imports\ImportColumn;
 use Filament\Actions\Imports\Importer;
 use Filament\Actions\Imports\Models\Import;
 
 class CategoryImporter extends Importer
 {
-    protected static ?string $model = Category::class;
+    protected static ?string $model = PostCategory::class;
 
     public static function getColumns(): array
     {
@@ -41,9 +41,9 @@ class CategoryImporter extends Importer
         ];
     }
 
-    public function resolveRecord(): ?Category
+    public function resolveRecord(): ?PostCategory
     {
-        return Category::firstOrNew([
+        return PostCategory::firstOrNew([
             'slug' => $this->data['slug'],
         ]);
     }

@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\Blog\Categories\Schemas;
 
-use App\Models\Blog\Category;
+use App\Models\Blog\PostCategory;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -27,7 +27,7 @@ class CategoryForm
                     ->dehydrated()
                     ->required()
                     ->maxLength(255)
-                    ->unique(Category::class, 'slug', ignoreRecord: true),
+                    ->unique(PostCategory::class, 'slug', ignoreRecord: true),
 
                 RichEditor::make('description')
                     ->columnSpan('full'),

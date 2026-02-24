@@ -2,7 +2,8 @@
 
 namespace App\Filament\Resources\Shop\Customers\RelationManagers;
 
-use Akaunting\Money\Currency;
+use App\Enums\CurrencyCode;
+use App\Enums\PaymentMethod;
 use App\Filament\Resources\Shop\Orders\OrderResource;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
@@ -13,6 +14,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\ToggleButtons;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
+use Filament\Support\Enums\FontWeight;
 use Filament\Tables\Columns\ColumnGroup;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -45,11 +47,13 @@ class PaymentsRelationManager extends RelationManager
 
                 TextInput::make('amount')
                     ->numeric()
+                    ->minValue(0)
+                    ->maxValue(99999999.99)
                     ->rules(['regex:/^\d{1,6}(\.\d{0,2})?$/'])
                     ->required(),
 
                 Select::make('currency')
-                    ->options(collect(Currency::getCurrencies())->mapWithKeys(fn ($item, $key) => [$key => data_get($item, 'name')]))
+                    ->options(CurrencyCode::class)
                     ->searchable()
                     ->required(),
 
@@ -64,11 +68,7 @@ class PaymentsRelationManager extends RelationManager
 
                 ToggleButtons::make('method')
                     ->inline()
-                    ->options([
-                        'credit_card' => 'Credit card',
-                        'bank_transfer' => 'Bank transfer',
-                        'paypal' => 'PayPal',
-                    ])
+                    ->options(PaymentMethod::class)
                     ->required(),
             ]);
     }
@@ -80,7 +80,8 @@ class PaymentsRelationManager extends RelationManager
                 TextColumn::make('order.number')
                     ->url(fn ($record) => OrderResource::getUrl('edit', [$record->order]))
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->weight(FontWeight::Medium),
 
                 ColumnGroup::make('Details')
                     ->columns([
@@ -89,7 +90,7 @@ class PaymentsRelationManager extends RelationManager
 
                         TextColumn::make('amount')
                             ->sortable()
-                            ->money(fn ($record) => $record->currency),
+                            ->money(fn ($record) => $record->currency->value),
                     ]),
 
                 ColumnGroup::make('Context')

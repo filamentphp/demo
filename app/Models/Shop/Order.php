@@ -2,6 +2,7 @@
 
 namespace App\Models\Shop;
 
+use App\Enums\CurrencyCode;
 use App\Enums\OrderStatus;
 use Database\Factories\Shop\OrderFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -21,7 +22,7 @@ class Order extends Model
     /**
      * @var string
      */
-    protected $table = 'shop_orders';
+    protected $table = 'orders';
 
     /**
      * @var list<string>
@@ -37,6 +38,7 @@ class Order extends Model
     ];
 
     protected $casts = [
+        'currency' => CurrencyCode::class,
         'status' => OrderStatus::class,
     ];
 
@@ -49,13 +51,13 @@ class Order extends Model
     /** @return BelongsTo<Customer, $this> */
     public function customer(): BelongsTo
     {
-        return $this->belongsTo(Customer::class, 'shop_customer_id');
+        return $this->belongsTo(Customer::class, 'customer_id');
     }
 
     /** @return HasMany<OrderItem, $this> */
-    public function items(): HasMany
+    public function orderItems(): HasMany
     {
-        return $this->hasMany(OrderItem::class, 'shop_order_id');
+        return $this->hasMany(OrderItem::class, 'order_id');
     }
 
     /** @return HasMany<Payment, $this> */

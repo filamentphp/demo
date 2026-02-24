@@ -16,6 +16,7 @@ use Filament\Pages\Enums\SubNavigationPosition;
 use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -31,7 +32,7 @@ class PostResource extends Resource
 
     protected static string | UnitEnum | null $navigationGroup = 'Blog';
 
-    protected static string | BackedEnum | null $navigationIcon = 'heroicon-o-document-text';
+    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedDocumentText;
 
     protected static ?int $navigationSort = 0;
 
@@ -80,12 +81,12 @@ class PostResource extends Resource
     /** @return Builder<Post> */
     public static function getGlobalSearchEloquentQuery(): Builder
     {
-        return parent::getGlobalSearchEloquentQuery()->with(['author', 'category']);
+        return parent::getGlobalSearchEloquentQuery()->with(['author', 'postCategory']);
     }
 
     public static function getGloballySearchableAttributes(): array
     {
-        return ['title', 'slug', 'author.name', 'category.name'];
+        return ['title', 'slug', 'author.name', 'postCategory.name'];
     }
 
     public static function getGlobalSearchResultDetails(Model $record): array
@@ -97,8 +98,8 @@ class PostResource extends Resource
             $details['Author'] = $record->author->name;
         }
 
-        if ($record->category) {
-            $details['Category'] = $record->category->name;
+        if ($record->postCategory) {
+            $details['Category'] = $record->postCategory->name;
         }
 
         return $details;

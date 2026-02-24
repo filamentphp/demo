@@ -22,8 +22,8 @@ class CustomerFactory extends Factory
             'email' => $this->faker->unique()->safeEmail(),
             'phone' => $this->faker->phoneNumber(),
             'birthday' => $this->faker->dateTimeBetween('-35 years', '-18 years'),
-            'created_at' => $this->faker->dateTimeBetween('-1 year', '-6 month'),
-            'updated_at' => $this->faker->dateTimeBetween('-5 month', 'now'),
+            'created_at' => $createdAt = $this->faker->dateTimeBetween('-1 year', 'now'),
+            'updated_at' => $this->faker->dateTimeBetween($createdAt, 'now'),
         ];
     }
 }

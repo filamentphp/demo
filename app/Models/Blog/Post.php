@@ -24,7 +24,7 @@ class Post extends Model implements HasMedia
     /**
      * @var string
      */
-    protected $table = 'blog_posts';
+    protected $table = 'posts';
 
     /**
      * @var array<string, string>
@@ -36,13 +36,13 @@ class Post extends Model implements HasMedia
     /** @return BelongsTo<Author, $this> */
     public function author(): BelongsTo
     {
-        return $this->belongsTo(Author::class, 'blog_author_id');
+        return $this->belongsTo(Author::class, 'author_id');
     }
 
-    /** @return BelongsTo<Category, $this> */
-    public function category(): BelongsTo
+    /** @return BelongsTo<PostCategory, $this> */
+    public function postCategory(): BelongsTo
     {
-        return $this->belongsTo(Category::class, 'blog_category_id');
+        return $this->belongsTo(PostCategory::class, 'post_category_id');
     }
 
     /** @return MorphMany<Comment, $this> */

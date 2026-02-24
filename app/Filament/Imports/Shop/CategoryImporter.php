@@ -2,14 +2,14 @@
 
 namespace App\Filament\Imports\Shop;
 
-use App\Models\Shop\Category;
+use App\Models\Shop\ProductCategory;
 use Filament\Actions\Imports\ImportColumn;
 use Filament\Actions\Imports\Importer;
 use Filament\Actions\Imports\Models\Import;
 
 class CategoryImporter extends Importer
 {
-    protected static ?string $model = Category::class;
+    protected static ?string $model = ProductCategory::class;
 
     public static function getColumns(): array
     {
@@ -49,9 +49,9 @@ class CategoryImporter extends Importer
         ];
     }
 
-    public function resolveRecord(): ?Category
+    public function resolveRecord(): ?ProductCategory
     {
-        return Category::firstOrNew([
+        return ProductCategory::firstOrNew([
             'slug' => $this->data['slug'],
         ]);
     }

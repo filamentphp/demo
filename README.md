@@ -1,67 +1,86 @@
-# Filament Demo App
+# Filament Demo
 
-A demo application to illustrate how Filament works.
+A full-featured demo app built with Filament. It covers a realistic spread of admin panel patterns across three modules, an e-commerce shop, a blog, and an HR suite, so you can see how Filament handles real-world use cases.
 
-![Filament Demo](https://github.com/filamentphp/demo/assets/171715/899161a9-3c85-4dc9-9599-13928d3a4412)
+## Getting started
 
-[Open in Gitpod](https://gitpod.io/#https://github.com/filamentphp/demo) to edit it and preview your changes with no setup required.
-
-## Installation
-
-Clone the repo locally:
+Clone and install:
 
 ```sh
-git clone https://github.com/laravel-filament/demo.git filament-demo && cd filament-demo
-```
-
-Install PHP dependencies:
-
-```sh
+git clone https://github.com/filamentphp/demo.git filament-demo && cd filament-demo
 composer install
-```
-
-Setup project:
-
-```sh
 composer setup
 ```
 
-Run the dev server (the output will give the address):
+Start the dev server:
 
 ```sh
 php artisan serve
 ```
 
-You're ready to go! Visit the url in your browser, and login with:
+Then log in at the URL shown in the terminal:
 
--   **Username:** admin@filamentphp.com
--   **Password:** password
+- **Email:** admin@filamentphp.com
+- **Password:** password
 
-## Features to explore
+## What's in the box
 
-### Relations
+### Shop
 
-#### BelongsTo
-- ProductResource
-- OrderResource
-- PostResource
+Products, orders, customers, brands, and categories: the kind of CRUD you'd find in any e-commerce admin. The shop module demonstrates:
 
-#### BelongsToMany
-- CategoryResource\RelationManagers\ProductsRelationManager
+- **Order wizard**: multi-step create form with inline customer creation
+- **Repeaters**: line items on orders and expenses with reactive totals
+- **Query builder filters**: advanced filtering with text, number, date, and boolean constraints
+- **Column summarizers**: footer totals for prices and quantities
+- **Table grouping**: group orders by status, customer, or date
+- **Drag-and-drop reordering**: sortable brand list
+- **Media uploads**: multiple product images via Spatie Media Library
+- **Soft deletes**: restore and force-delete on orders and customers
+- **Dashboard**: filterable stats, charts, and a latest orders widget with live polling
 
-#### HasMany
-- OrderResource\RelationManagers\PaymentsRelationManager
+### Blog
 
-#### HasManyThrough
-- CustomerResource\RelationManagers\PaymentsRelationManager
+Posts, authors, and categories with a focus on content management patterns:
 
-#### MorphOne
-- OrderResource -> Address
+- **Rich text editing**: WYSIWYG content editor with prose rendering on the view page
+- **Sub-navigation**: tabbed navigation between View, Edit, and Comments on posts
+- **Manage related records**: dedicated comments page without leaving the post context
+- **Tags**: Spatie Tags integration on posts
+- **Import and export actions**: CSV import on categories, export on authors
+- **Column layouts**: split and stack layouts on the authors table
+- **Simple resources**: authors and categories managed with modals, no separate pages
 
-#### MorphMany
-- ProductResource\RelationManagers\CommentsRelationManager
-- PostResource\RelationManagers\CommentsRelationManager
+### HR
 
-#### MorphToMany
-- BrandResource\RelationManagers\AddressRelationManager
-- CustomerResource\RelationManagers\AddressRelationManager
+Employees, departments, projects, tasks, timesheets, leave requests, and expenses: a more complex module showing how Filament scales:
+
+- **Tabbed forms**: Personal, Employment, and Documents tabs on employees
+- **Builder blocks**: milestone, task group, and checkpoint blocks in the project plan
+- **Conditional fields**: salary vs. hourly rate based on employment type
+- **Inline editing**: change leave request status directly in the table
+- **Status workflows**: expense approval, rejection, and reimbursement actions
+- **Expense line items**: repeatable entries with table layout in the infolist
+- **Key-value editor**: freeform metadata on employees
+- **Checkbox lists**: multi-select skills grid
+- **Dashboard**: headcount stats, leave overview, timesheet trends, and budget charts
+
+## Patterns worth looking at
+
+Here are some specific things to poke at if you're learning Filament:
+
+| Pattern | Where to find it |
+|---|---|
+| Wizard form | Create a new order |
+| Reactive calculations | Edit an expense's line items |
+| Builder blocks | Edit a project's Plan tab |
+| Action groups with custom actions | Any table row with "..." menu |
+| Slide-over modals | Ship an order |
+| Modal forms with actions | Send email to a customer |
+| Infolist with repeatable entries | View an expense |
+| Sub-navigation | View or edit any post |
+| Conditional field visibility | Change employment type on an employee |
+| Dashboard filters | Shop dashboard date range and customer type |
+| Global search | Press Cmd+K anywhere |
+| Keyboard shortcuts | Cmd+Shift+P to quick-publish a post |
+| Navigation badges | Check sidebar counts on orders, leave requests, and expenses |

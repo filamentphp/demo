@@ -13,6 +13,7 @@ use App\Models\Shop\Order;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -29,7 +30,7 @@ class OrderResource extends Resource
 
     protected static string | UnitEnum | null $navigationGroup = 'Shop';
 
-    protected static string | BackedEnum | null $navigationIcon = 'heroicon-o-shopping-bag';
+    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedShoppingBag;
 
     protected static ?int $navigationSort = 1;
 
@@ -67,9 +68,12 @@ class OrderResource extends Resource
     }
 
     /** @return Builder<Order> */
-    public static function getEloquentQuery(): Builder
+    public static function getRecordRouteBindingEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->withoutGlobalScope(SoftDeletingScope::class);
+        return parent::getRecordRouteBindingEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 
     public static function getGloballySearchableAttributes(): array
@@ -89,7 +93,7 @@ class OrderResource extends Resource
     /** @return Builder<Order> */
     public static function getGlobalSearchEloquentQuery(): Builder
     {
-        return parent::getGlobalSearchEloquentQuery()->with(['customer', 'items']);
+        return parent::getGlobalSearchEloquentQuery()->with(['customer']);
     }
 
     public static function getNavigationBadge(): ?string

@@ -9,6 +9,7 @@ use App\Models\Blog\Author;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use UnitEnum;
 
@@ -22,7 +23,7 @@ class AuthorResource extends Resource
 
     protected static string | UnitEnum | null $navigationGroup = 'Blog';
 
-    protected static string | BackedEnum | null $navigationIcon = 'heroicon-o-users';
+    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedUsers;
 
     protected static ?int $navigationSort = 2;
 

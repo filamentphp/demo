@@ -12,6 +12,7 @@ use Filament\Resources\Pages\CreateRecord;
 use Filament\Resources\Pages\CreateRecord\Concerns\HasWizard;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Wizard\Step;
+use Filament\Support\Icons\Heroicon;
 
 class CreateOrder extends CreateRecord
 {
@@ -50,8 +51,8 @@ class CreateOrder extends CreateRecord
 
         Notification::make()
             ->title('New order')
-            ->icon('heroicon-o-shopping-bag')
-            ->body("**{$order->customer?->name} ordered {$order->items->count()} products.**")
+            ->icon(Heroicon::ShoppingBag)
+            ->body("**{$order->customer?->name} ordered {$order->orderItems->count()} products.**")
             ->actions([
                 Action::make('View')
                     ->url(OrderResource::getUrl('edit', ['record' => $order])),

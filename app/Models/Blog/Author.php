@@ -15,11 +15,11 @@ class Author extends Model
     /**
      * @var string
      */
-    protected $table = 'blog_authors';
+    protected $table = 'authors';
 
     /** @return HasMany<Post, $this> */
     public function posts(): HasMany
     {
-        return $this->hasMany(Post::class, 'blog_author_id');
+        return $this->hasMany(Post::class, 'author_id');
     }
 }

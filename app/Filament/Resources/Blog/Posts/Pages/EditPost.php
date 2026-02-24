@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Blog\Posts\Pages;
 use App\Filament\Resources\Blog\Posts\PostResource;
 use App\Models\Blog\Post;
 use Filament\Actions\DeleteAction;
+use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Contracts\Support\Htmlable;
 
@@ -23,6 +24,7 @@ class EditPost extends EditRecord
     protected function getActions(): array
     {
         return [
+            ViewAction::make(),
             DeleteAction::make(),
         ];
     }
