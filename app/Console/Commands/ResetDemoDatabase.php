@@ -14,6 +14,8 @@ class ResetDemoDatabase extends Command
 
     protected $description = 'Reset the demo database using database swapping for near-zero downtime.';
 
+    private const LOCK_KEY = 'demo-database-reset';
+
     public function handle(): int
     {
         $prepareOnly = $this->option('prepare');
@@ -25,18 +27,30 @@ class ResetDemoDatabase extends Command
             return self::FAILURE;
         }
 
-        if (! $swapOnly) {
-            $this->prepare();
+        $lock = cache()->lock(self::LOCK_KEY, 300);
+
+        if (! $lock->get()) {
+            $this->warn('Another reset is already in progress. Skipping.');
+
+            return self::SUCCESS;
         }
 
-        if (! $prepareOnly) {
-            if (! $this->freshDatabaseExists()) {
-                $this->error('Fresh database does not exist. Run with --prepare first.');
-
-                return self::FAILURE;
+        try {
+            if (! $swapOnly) {
+                $this->prepare();
             }
 
-            $this->swap();
+            if (! $prepareOnly) {
+                if (! $this->freshDatabaseExists()) {
+                    $this->error('Fresh database does not exist. Run with --prepare first.');
+
+                    return self::FAILURE;
+                }
+
+                $this->swap();
+            }
+        } finally {
+            $lock->release();
         }
 
         return self::SUCCESS;
@@ -82,13 +96,13 @@ class ResetDemoDatabase extends Command
         DB::purge();
 
         $this->onPostgresConnection(function () use ($database) {
-            // Terminate remaining connections to the app database
-            DB::statement('
+            // Terminate remaining connections to both databases
+            DB::statement("
                 SELECT pg_terminate_backend(pid)
                 FROM pg_stat_activity
-                WHERE datname = ?
+                WHERE datname IN (?, 'fresh')
                   AND pid != pg_backend_pid()
-            ', [$database]);
+            ", [$database]);
 
             $this->info('Swapping databases...');
 
