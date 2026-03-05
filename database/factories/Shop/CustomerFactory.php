@@ -22,7 +22,7 @@ class CustomerFactory extends Factory
             'email' => $this->faker->unique()->safeEmail(),
             'phone' => $this->faker->phoneNumber(),
             'birthday' => $this->faker->dateTimeBetween('-35 years', '-18 years'),
-            'created_at' => $createdAt = $this->faker->dateTimeBetween('-1 year', 'now'),
+            'created_at' => $createdAt = $this->faker->dateTimeBetween('-2 years', 'now'),
             'updated_at' => $this->faker->dateTimeBetween($createdAt, 'now'),
         ];
     }

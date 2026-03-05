@@ -76,7 +76,47 @@ class DatabaseSeeder extends Seeder
         $this->command->info('Product categories created.');
 
         $this->command->warn(PHP_EOL . 'Creating customers...');
+
+        // Weighted monthly distribution for realistic customer growth chart.
+        // Index 0 = 24 months ago → index 23 = this month.
+        // Slow early trickle → steady ramp → recent acceleration with seasonal dips.
+        $customerMonthlyWeights = [
+            // 24–13 months ago (early days, slow organic growth)
+            8, 10, 12, 14, 18, 22, 20, 25, 28, 24, 35, 15,
+            // 12–1 months ago (growth phase after marketing push)
+            38, 30, 50, 55, 70, 85, 95, 80, 100, 75, 130, 45,
+        ];
+        $customerTotalWeight = array_sum($customerMonthlyWeights);
+
+        $pickCustomerMonth = function () use ($customerMonthlyWeights, $customerTotalWeight): int {
+            $rand = rand(1, $customerTotalWeight);
+            $cumulative = 0;
+
+            foreach ($customerMonthlyWeights as $i => $weight) {
+                $cumulative += $weight;
+
+                if ($rand <= $cumulative) {
+                    return $i;
+                }
+            }
+
+            return count($customerMonthlyWeights) - 1;
+        };
+
         $customers = $this->withProgressBar($vary(1000), fn () => Customer::factory(1)
+            ->state(function () use ($pickCustomerMonth) {
+                $monthIndex = $pickCustomerMonth();
+                $monthsAgo = 23 - $monthIndex;
+                $start = now()->subMonths($monthsAgo)->startOfMonth();
+                $end = min(now(), now()->subMonths($monthsAgo)->endOfMonth());
+
+                $createdAt = fake()->dateTimeBetween($start, $end);
+
+                return [
+                    'created_at' => $createdAt,
+                    'updated_at' => fake()->dateTimeBetween($createdAt, 'now'),
+                ];
+            })
             ->has(Address::factory()->count(rand(1, 3)))
             ->create());
         $this->command->info('Customers created.');
