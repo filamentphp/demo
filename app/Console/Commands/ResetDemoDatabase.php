@@ -77,6 +77,7 @@ class ResetDemoDatabase extends Command
         $this->info('Preparing fresh database...');
 
         $this->onPostgresConnection(function () {
+            DB::statement('DROP DATABASE IF EXISTS old');
             DB::statement('DROP DATABASE IF EXISTS fresh');
             DB::statement('CREATE DATABASE fresh');
         });
@@ -136,18 +137,6 @@ class ResetDemoDatabase extends Command
         Artisan::call('up');
 
         $this->info('Demo database has been reset.');
-
-        $this->onPostgresConnection(function () {
-            DB::statement("
-                SELECT pg_terminate_backend(pid)
-                FROM pg_stat_activity
-                WHERE datname = 'old'
-                  AND pid != pg_backend_pid()
-            ");
-            DB::statement('DROP DATABASE IF EXISTS old');
-        });
-
-        $this->info('Old database dropped.');
     }
 
     protected function databaseExists(string $name): bool
