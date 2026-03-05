@@ -28,7 +28,7 @@ class ResetDemoDatabase extends Command
             return self::FAILURE;
         }
 
-        $lock = cache()->lock(self::LOCK_KEY, 300);
+        $lock = cache()->lock(self::LOCK_KEY, 600);
 
         if (! $lock->get()) {
             $this->warn('Another reset is already in progress. Skipping.');
@@ -102,13 +102,16 @@ class ResetDemoDatabase extends Command
         $database = config('database.connections.pgsql.database');
 
         Artisan::call('down', ['--render' => 'maintenance']);
-        $this->info('Maintenance mode enabled, waiting for connections to finish...');
+        $this->info('Maintenance mode enabled, waiting for in-flight requests...');
 
-        sleep(1);
+        sleep(2);
 
         DB::purge();
 
         $this->onPostgresConnection(function () use ($database) {
+            // Terminate idle connections held by PHP-FPM workers and queue workers.
+            // Maintenance mode prevents new requests, so these are all idle.
+            // FPM workers survive this and will lazily reconnect on the next request.
             DB::statement("
                 SELECT pg_terminate_backend(pid)
                 FROM pg_stat_activity
@@ -135,6 +138,7 @@ class ResetDemoDatabase extends Command
         DB::reconnect();
 
         Artisan::call('up');
+        Artisan::call('queue:restart');
 
         $this->info('Demo database has been reset.');
     }
