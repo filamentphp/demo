@@ -9,10 +9,10 @@ use Illuminate\Support\Facades\DB;
 class ResetDemoDatabase extends Command
 {
     protected $signature = 'app:reset-demo-database
-        {--prepare : Only prepare the fresh schema (migrate + seed) without swapping}
-        {--swap : Only swap the previously prepared fresh schema into public}';
+        {--prepare : Only prepare the fresh database (migrate + seed) without swapping}
+        {--swap : Only swap the previously prepared fresh database into use}';
 
-    protected $description = 'Reset the demo database using schema swapping for near-zero downtime.';
+    protected $description = 'Reset the demo database using database swapping for near-zero downtime.';
 
     public function handle(): int
     {
@@ -30,8 +30,8 @@ class ResetDemoDatabase extends Command
         }
 
         if (! $prepareOnly) {
-            if (! $this->freshSchemaExists()) {
-                $this->error('Fresh schema does not exist. Run with --prepare first.');
+            if (! $this->freshDatabaseExists()) {
+                $this->error('Fresh database does not exist. Run with --prepare first.');
 
                 return self::FAILURE;
             }
@@ -44,21 +44,27 @@ class ResetDemoDatabase extends Command
 
     protected function prepare(): void
     {
-        $this->info('Preparing fresh schema...');
+        $this->info('Preparing fresh database...');
 
-        DB::statement('DROP SCHEMA IF EXISTS fresh CASCADE');
-        DB::statement('CREATE SCHEMA fresh');
+        // Connect to the maintenance `postgres` database for DDL operations
+        $this->onPostgresConnection(function () {
+            DB::statement('DROP DATABASE IF EXISTS fresh');
+            DB::statement('CREATE DATABASE fresh');
+        });
 
-        config(['database.connections.pgsql.search_path' => 'fresh']);
+        // Point the app connection at the fresh database for migrations
+        $database = config('database.connections.pgsql.database');
+        config(['database.connections.pgsql.database' => 'fresh']);
         DB::purge();
         DB::reconnect();
 
-        $this->info('Running migrations and seeders in fresh schema...');
+        $this->info('Running migrations and seeders...');
 
         Artisan::call('migrate', ['--seed' => true, '--force' => true]);
         $this->info(Artisan::output());
 
-        config(['database.connections.pgsql.search_path' => 'public']);
+        // Restore the original database connection
+        config(['database.connections.pgsql.database' => $database]);
         DB::purge();
         DB::reconnect();
     }
@@ -72,29 +78,71 @@ class ResetDemoDatabase extends Command
 
         sleep(1);
 
-        DB::statement('
-            SELECT pg_terminate_backend(pid)
-            FROM pg_stat_activity
-            WHERE datname = ?
-              AND pid != pg_backend_pid()
-        ', [$database]);
+        // Disconnect from the app database so we can rename it
+        DB::purge();
 
-        $this->info('Swapping schemas...');
+        $this->onPostgresConnection(function () use ($database) {
+            // Terminate remaining connections to the app database
+            DB::statement('
+                SELECT pg_terminate_backend(pid)
+                FROM pg_stat_activity
+                WHERE datname = ?
+                  AND pid != pg_backend_pid()
+            ', [$database]);
 
-        DB::transaction(function () {
-            DB::statement('ALTER SCHEMA public RENAME TO old');
-            DB::statement('ALTER SCHEMA fresh RENAME TO public');
+            $this->info('Swapping databases...');
+
+            DB::statement("ALTER DATABASE \"{$database}\" RENAME TO old");
+            DB::statement("ALTER DATABASE fresh RENAME TO \"{$database}\"");
         });
 
-        DB::statement('DROP SCHEMA IF EXISTS old CASCADE');
+        // Reconnect to the now-swapped database
+        DB::reconnect();
 
         Artisan::call('up');
 
         $this->info('Demo database has been reset.');
+
+        // Drop the old database in the background — no autovacuum triggered
+        $this->onPostgresConnection(function () {
+            DB::statement('
+                SELECT pg_terminate_backend(pid)
+                FROM pg_stat_activity
+                WHERE datname = \'old\'
+                  AND pid != pg_backend_pid()
+            ');
+            DB::statement('DROP DATABASE IF EXISTS old');
+        });
+
+        $this->info('Old database dropped.');
     }
 
-    protected function freshSchemaExists(): bool
+    protected function freshDatabaseExists(): bool
     {
-        return DB::scalar("SELECT EXISTS (SELECT 1 FROM information_schema.schemata WHERE schema_name = 'fresh')");
+        return DB::scalar("SELECT EXISTS (SELECT 1 FROM pg_database WHERE datname = 'fresh')");
+    }
+
+    /**
+     * Execute a callback on the `postgres` maintenance database.
+     *
+     * Database-level DDL (CREATE/DROP/ALTER DATABASE) cannot target
+     * the database you're currently connected to, so we temporarily
+     * connect to the default `postgres` database instead.
+     */
+    protected function onPostgresConnection(callable $callback): void
+    {
+        $original = config('database.connections.pgsql.database');
+
+        config(['database.connections.pgsql.database' => 'postgres']);
+        DB::purge();
+        DB::reconnect();
+
+        try {
+            $callback();
+        } finally {
+            config(['database.connections.pgsql.database' => $original]);
+            DB::purge();
+            DB::reconnect();
+        }
     }
 }
