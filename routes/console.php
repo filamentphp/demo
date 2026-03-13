@@ -4,8 +4,7 @@ use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
 
-Schedule::command('app:reset-demo-database')->hourly()
-    ->then(fn () => exec('sudo -S service php' . PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION . '-fpm reload'));
+Schedule::command('app:reset-demo-database')->hourly();
 
 Artisan::command('inspire', function (): void {
     $this->comment(Inspiring::quote());

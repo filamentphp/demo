@@ -55,7 +55,6 @@ class Post extends Model implements HasMedia
     {
         $this
             ->addMediaCollection('post-images')
-            ->useDisk('post-images')
             ->acceptsMimeTypes(['image/jpeg'])
             ->singleFile()
             ->registerMediaConversions(function (Media $media): void {

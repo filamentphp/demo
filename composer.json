@@ -19,6 +19,7 @@
         "laravel/framework": "^12.0",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.8",
+        "league/flysystem-aws-s3-v3": "^3.32",
         "spatie/laravel-flare": "^2.2",
         "squirephp/countries-en": "^3.3",
         "squirephp/currencies-en": "^3.3"

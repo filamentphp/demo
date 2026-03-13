@@ -58,7 +58,6 @@ class Product extends Model implements HasMedia
     {
         $this
             ->addMediaCollection('product-images')
-            ->useDisk('product-images')
             ->acceptsMimeTypes(['image/jpeg'])
             ->registerMediaConversions(function (Media $media): void {
                 $this

@@ -48,7 +48,9 @@ class DatabaseSeeder extends Seeder
         $vary = fn (int $n): int => rand($n, (int) ceil($n * 1.1));
 
         // Clear images
-        Storage::deleteDirectory('public');
+        $publicDisk = Storage::disk('public');
+        collect($publicDisk->allDirectories())->each(fn ($dir) => $publicDisk->deleteDirectory($dir));
+        collect($publicDisk->allFiles())->each(fn ($file) => $publicDisk->delete($file));
 
         // Admin
         $this->command->warn(PHP_EOL . 'Creating admin user...');
