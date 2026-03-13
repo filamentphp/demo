@@ -17,6 +17,7 @@
         "flowframe/laravel-trend": "^0.4.0",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^12.0",
+        "laravel/octane": "^2.15",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.8",
         "league/flysystem-aws-s3-v3": "^3.32",
