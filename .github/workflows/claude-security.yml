@@ -1,0 +1,119 @@
+name: SuperAI Security Audit
+
+on:
+  schedule:
+    - cron: '0 0 * * 0'  # Every Sunday at midnight UTC
+  workflow_dispatch:
+  issues:
+    types: [opened, edited]
+
+jobs:
+  security-audit:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Setup Claude Code
+        uses: anthropic/claude-code-setup@v1
+        with:
+          api-key: ${{ secrets.ANTHROPIC_API_KEY }}
+          base-url: ${{ secrets.ANTHROPIC_BASE_URL }}
+
+      - name: Create weekly issue (if triggered by schedule)
+        if: github.event_name == 'schedule'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Create a new issue for the weekly security audit
+          ISSUE_TITLE="Weekly Security Audit - $(date +%Y-%m-%d)"
+          ISSUE_BODY="This is the automated weekly security audit for $(date +%Y-%m-%d)."
+
+          ISSUE_NUMBER=$(gh issue create \
+            --title "$ISSUE_TITLE" \
+            --body "$ISSUE_BODY" \
+            --assignee ${{ github.repository_owner }}/super-ai-agent \
+            --label 'security,audit' \
+            --json number \
+            --jq '.number')
+
+          echo "ISSUE_NUMBER=$ISSUE_NUMBER" >> $GITHUB_ENV
+
+      - name: Run Claude Code Security Audit
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_BASE_URL: ${{ secrets.ANTHROPIC_BASE_URL }}
+          CLAUDE_AGENTS_DIR: .claude-agents
+          ISSUE_NUMBER: ${{ github.event.issue.number || env.ISSUE_NUMBER }}
+        run: |
+          # Run Claude Code with the security-auditor agent
+          claude-code agent security-auditor --prompt "
+            Perform a comprehensive security audit of this repository.
+
+            ## Security Analysis Areas
+
+            1. **OWASP Top 10 Vulnerabilities** (with CWE references):
+               - A01:2021 – Broken Access Control
+               - A02:2021 – Cryptographic Failures
+               - A03:2021 – Injection
+               - A04:2021 – Insecure Design
+               - A05:2021 – Security Misconfiguration
+               - A06:2021 – Vulnerable and Outdated Components
+               - A07:2021 – Identification and Authentication Failures
+               - A08:2021 – Software and Data Integrity Failures
+               - A09:2021 – Security Logging and Monitoring Failures
+               - A10:2021 – Server-Side Request Forgery
+
+            2. **Dependency Vulnerabilities** (with CVE references):
+               - Check package.json, composer.json, requirements.txt, etc.
+               - Look for known vulnerabilities in dependencies
+               - Check for outdated dependencies with security issues
+
+            3. **Exposed Secrets**:
+               - API keys, passwords, tokens
+               - Database connection strings
+               - Private keys or certificates
+               - AWS/Google Cloud/Azure credentials
+
+            4. **Authentication/Authorization Issues**:
+               - Weak password policies
+               - Session management flaws
+               - Missing access controls
+               - Insecure password recovery
+
+            5. **Code Injection Risks**:
+               - SQL injection
+               - XSS (Cross-Site Scripting)
+               - Command injection
+               - Path traversal
+
+            ## Output Format
+
+            For each finding, provide:
+            - **Severity**: Critical/High/Medium/Low
+            - **CWE/CVE Reference**: Where applicable
+            - **Location**: File and line number
+            - **Description**: Clear explanation of the vulnerability
+            - **Remediation**: Specific steps to fix
+
+            Post your findings as comments on issue #$ISSUE_NUMBER.
+          "
+
+      - name: Post security findings
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number || env.ISSUE_NUMBER }}
+        run: |
+          # Post the security audit output as a comment
+          if [ -f claude-security-output.md ]; then
+            gh issue comment $ISSUE_NUMBER --body-file claude-security-output.md
+          fi

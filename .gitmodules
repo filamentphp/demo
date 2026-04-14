@@ -1,0 +1,3 @@
+[submodule ".super-ai-github"]
+	path = .super-ai-github
+	url = https://github.com/enact-on/super-ai-github.git

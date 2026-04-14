@@ -1,0 +1,90 @@
+name: SuperAI Comment
+
+on:
+  issue_comment:
+    types: [created, edited]
+  pull_request_review_comment:
+    types: [created, edited]
+  workflow_dispatch:
+
+jobs:
+  comment-response:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Check for trigger commands
+        id: check
+        env:
+          COMMENT_BODY: ${{ github.event.comment.body }}
+        run: |
+          # Check if comment contains trigger commands
+          if echo "$COMMENT_BODY" | grep -qE "^/(superai|sai|claude)"; then
+            echo "triggered=true" >> $GITHUB_OUTPUT
+            echo "Extract command:"
+            echo "$COMMENT_BODY" | grep -oE "^/(superai|sai|claude).*"
+          else
+            echo "triggered=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Setup Claude Code
+        if: steps.check.outputs.triggered == 'true'
+        uses: anthropic/claude-code-setup@v1
+        with:
+          api-key: ${{ secrets.ANTHROPIC_API_KEY }}
+          base-url: ${{ secrets.ANTHROPIC_BASE_URL }}
+
+      - name: Run Claude Code Response
+        if: steps.check.outputs.triggered == 'true'
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_BASE_URL: ${{ secrets.ANTHROPIC_BASE_URL }}
+          CLAUDE_AGENTS_DIR: .claude-agents
+          COMMENT_BODY: ${{ github.event.comment.body }}
+          COMMENT_AUTHOR: ${{ github.event.comment.user.login }}
+          ISSUE_NUMBER: ${{ github.event.issue.number || github.event.pull_request.number }}
+        run: |
+          # Extract the actual command after the trigger
+          COMMAND=$(echo "$COMMENT_BODY" | sed -E 's/^/(superai|sai|claude)\s*//')
+
+          # Run Claude Code with the orchestrator agent
+          claude-code agent orchestrator --prompt "
+            User request: $COMMAND
+
+            Context:
+            - Comment Author: $COMMENT_AUTHOR
+            - Issue/PR Number: #$ISSUE_NUMBER
+            - Repository: ${{ github.repository }}
+
+            Please help with this request. You can:
+            - Analyze code
+            - Suggest improvements
+            - Create implementation plans
+            - Review code changes
+            - Answer questions
+
+            Post your response as a comment on issue/PR #$ISSUE_NUMBER.
+          "
+
+      - name: Post response comment
+        if: steps.check.outputs.triggered == 'true' && always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number || github.event.pull_request.number }}
+        run: |
+          # Post the response as a comment
+          if [ -f claude-response-output.md ]; then
+            if [ -n "${{ github.event.issue.number }}" ]; then
+              gh issue comment $ISSUE_NUMBER --body-file claude-response-output.md
+            else
+              gh pr comment $ISSUE_NUMBER --body-file claude-response-output.md
+            fi
+          fi

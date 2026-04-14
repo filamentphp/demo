@@ -1,0 +1,199 @@
+{
+  "description": "SuperAI GitHub - Self-contained agent configuration that never modifies user's .claude directory",
+  "version": "1.0.0",
+  "model": "claude-opus-4-6",
+  "anthropic": {
+    "api_key_env": "ANTHROPIC_API_KEY",
+    "base_url_env": "ANTHROPIC_BASE_URL",
+    "default_base_url": "https://api.anthropic.com",
+    "custom_base_url": "https://api.z.ai/api/anthropic"
+  },
+  "github": {
+    "enabled": true,
+    "bot_account": "super-ai-agent",
+    "workflows": {
+      "review": ".github/workflows/claude-review.yml",
+      "security": ".github/workflows/claude-security.yml",
+      "issues": ".github/workflows/claude-issues.yml",
+      "comment": ".github/workflows/claude-comment.yml"
+    },
+    "required_secrets": {
+      "anthropic_api_key": "ANTHROPIC_API_KEY",
+      "custom_base_url": "ANTHROPIC_BASE_URL"  // Optional: for custom providers
+    }
+  },
+  "agents": {
+    "orchestrator": {
+      "file": ".claude-agents/agents/orchestrator.md",
+      "role": "primary",
+      "description": "Team lead that analyzes requirements and delegates to specialists"
+    },
+    "code-reviewer": {
+      "file": ".claude-agents/agents/code-reviewer.md",
+      "role": "reviewer",
+      "description": "Reviews code for quality, maintainability, and best practices"
+    },
+    "security-auditor": {
+      "file": ".claude-agents/agents/security-auditor.md",
+      "role": "security",
+      "description": "Performs security analysis with OWASP/CWE/CVE references"
+    },
+    "implementation": {
+      "file": ".claude-agents/agents/implementation.md",
+      "role": "implementation",
+      "description": "Executes implementation tasks and creates pull requests"
+    },
+    "frontend-specialist": {
+      "file": ".claude-agents/agents/frontend-specialist.md",
+      "role": "specialist",
+      "tech_stack": ["react", "vue", "nextjs", "typescript"],
+      "description": "Specializes in React, Vue, and UI/UX development"
+    },
+    "backend-specialist": {
+      "file": ".claude-agents/agents/backend-specialist.md",
+      "role": "specialist",
+      "tech_stack": ["nodejs", "nestjs", "laravel", "python"],
+      "description": "Specializes in API design and server-side logic"
+    },
+    "database-expert": {
+      "file": ".claude-agents/agents/database-expert.md",
+      "role": "specialist",
+      "tech_stack": ["postgresql", "mysql", "mongodb", "redis"],
+      "description": "Expert in database design, queries, and migrations"
+    },
+    "testing-specialist": {
+      "file": ".claude-agents/agents/testing-specialist.md",
+      "role": "specialist",
+      "tech_stack": ["jest", "vitest", "cypress", "playwright"],
+      "description": "Specializes in unit, integration, and E2E testing"
+    },
+    "devops-specialist": {
+      "file": ".claude-agents/agents/devops-specialist.md",
+      "role": "specialist",
+      "tech_stack": ["docker", "kubernetes", "github-actions"],
+      "description": "Expert in Docker, Kubernetes, and CI/CD pipelines"
+    },
+    "documentation-writer": {
+      "file": ".claude-agents/agents/documentation-writer.md",
+      "role": "documentation",
+      "description": "Creates and maintains technical documentation"
+    }
+  },
+  "skills": {
+    "react": {
+      "file": ".claude-agents/skills/react/SKILL.md",
+      "tech_stack": ["react", "nextjs", "typescript"],
+      "description": "React ecosystem patterns and best practices"
+    },
+    "vue": {
+      "file": ".claude-agents/skills/vue/SKILL.md",
+      "tech_stack": ["vue", "nuxt"],
+      "description": "Vue.js ecosystem patterns and best practices"
+    },
+    "nextjs": {
+      "file": ".claude-agents/skills/nextjs/SKILL.md",
+      "tech_stack": ["nextjs"],
+      "description": "Next.js 14+ App Router and Server Components"
+    },
+    "laravel": {
+      "file": ".claude-agents/skills/laravel/SKILL.md",
+      "tech_stack": ["laravel", "php"],
+      "description": "Laravel PHP framework patterns"
+    },
+    "nodejs": {
+      "file": ".claude-agents/skills/nodejs/SKILL.md",
+      "tech_stack": ["nodejs", "express"],
+      "description": "Node.js and Express patterns"
+    },
+    "nestjs": {
+      "file": ".claude-agents/skills/nestjs/SKILL.md",
+      "tech_stack": ["nestjs"],
+      "description": "NestJS enterprise patterns"
+    },
+    "python": {
+      "file": ".claude-agents/skills/python/SKILL.md",
+      "tech_stack": ["python", "fastapi", "django"],
+      "description": "Python backend development"
+    },
+    "typescript": {
+      "file": ".claude-agents/skills/typescript/SKILL.md",
+      "tech_stack": ["typescript"],
+      "description": "TypeScript patterns and type safety"
+    },
+    "testing": {
+      "file": ".claude-agents/skills/testing/SKILL.md",
+      "tech_stack": ["jest", "vitest", "pytest"],
+      "description": "Testing strategies and frameworks"
+    },
+    "docker-k8s": {
+      "file": ".claude-agents/skills/docker-k8s/SKILL.md",
+      "tech_stack": ["docker", "kubernetes"],
+      "description": "Docker and Kubernetes patterns"
+    },
+    "api-design": {
+      "file": ".claude-agents/skills/api-design/SKILL.md",
+      "tech_stack": ["rest", "graphql"],
+      "description": "API design patterns and best practices"
+    },
+    "documentation": {
+      "file": ".claude-agents/skills/documentation/SKILL.md",
+      "description": "Documentation standards and patterns"
+    },
+    "frontend-design": {
+      "file": ".claude-agents/skills/frontend-design/SKILL.md",
+      "description": "UI/UX design patterns"
+    },
+    "code-review": {
+      "file": ".claude-agents/skills/code-review/SKILL.md",
+      "description": "Code review patterns and guidelines"
+    },
+    "security-guidance": {
+      "file": ".claude-agents/skills/security-guidance/SKILL.md",
+      "description": "Security best practices and guidance"
+    }
+  },
+  "tech_stack_mapping": {
+    "package.json": {
+      "react": ["react", "react-dom"],
+      "nextjs": ["next"],
+      "vue": ["vue", "nuxt"],
+      "nodejs": ["express"],
+      "nestjs": ["@nestjs/core"],
+      "typescript": ["typescript"],
+      "jest": ["jest", "@types/jest"],
+      "vitest": ["vitest"],
+      "cypress": ["cypress"],
+      "playwright": ["playwright"]
+    },
+    "composer.json": {
+      "laravel": ["laravel/framework", "laravel/lumen-framework"],
+      "filament": ["filament/filament"],
+      "php": ["php"]
+    },
+    "requirements.txt": {
+      "python": ["django", "fastapi", "flask"],
+      "django": ["django"],
+      "fastapi": ["fastapi"],
+      "flask": ["flask"],
+      "pytest": ["pytest"]
+    },
+    "go.mod": {
+      "go": ["go"]
+    },
+    "Cargo.toml": {
+      "rust": ["rust"]
+    },
+    "pom.xml": {
+      "java": ["maven"]
+    },
+    "build.gradle": {
+      "java": ["gradle"]
+    }
+  },
+  "install": {
+    "mode": "submodule",
+    "directory": ".super-ai-github",
+    "auto_detect": true,
+    "selective_install": true
+  }
+}

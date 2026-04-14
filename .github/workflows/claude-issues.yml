@@ -1,0 +1,111 @@
+name: SuperAI Issue Triage
+
+on:
+  issues:
+    types: [opened, edited]
+  workflow_dispatch:
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+      issues: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Search for related issues
+        id: search
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: |
+          # Extract keywords from issue title (remove common words)
+          keywords=$(echo "$ISSUE_TITLE" | sed -e 's/\bthe\|a\|an\|to\|for\|in\|on\|at\|by\|with\|from\|as\|is\|are\|was\|were\|be\|been\|being//gi' -E 's/\s+/+/g')
+
+          # Search for related open issues
+          echo "related_issues=$(gh issue list \
+            --search "$keywords" \
+            --state open \
+            --limit 5 \
+            --json title,number,state,url \
+            --jq '.')" >> $GITHUB_OUTPUT
+
+          echo "Related issues found:"
+          echo "$related_issues"
+
+      - name: Setup Claude Code
+        uses: anthropic/claude-code-setup@v1
+        with:
+          api-key: ${{ secrets.ANTHROPIC_API_KEY }}
+          base-url: ${{ secrets.ANTHROPIC_BASE_URL }}
+
+      - name: Run Claude Code Issue Triage
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_BASE_URL: ${{ secrets.ANTHROPIC_BASE_URL }}
+          CLAUDE_AGENTS_DIR: .claude-agents
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_AUTHOR: ${{ github.event.user.login }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          RELATED_ISSUES: ${{ steps.search.outputs.related_issues }}
+        run: |
+          # Run Claude Code with the orchestrator agent for triage
+          claude-code agent orchestrator --prompt "
+            A new issue has been reported. Help triage it by:
+
+            ## Current Issue
+            Title: $ISSUE_TITLE
+            Body: $ISSUE_BODY
+            Author: $ISSUE_AUTHOR
+            Number: #$ISSUE_NUMBER
+
+            ## Related Issues Found
+            $RELATED_ISSUES
+
+            ## Instructions
+
+            1. **Check for Duplicates** - Review the related issues above. If this is a duplicate, mention it and reference the original issue number.
+
+            2. **Understand the Issue** - Analyze what the user is reporting
+
+            3. **Identify the Type** - Classify as: bug, feature request, question, or performance issue
+
+            4. **Assess Priority** - Determine: critical, high, medium, or low
+
+            5. **Suggest Labels** - Propose appropriate GitHub labels (e.g., bug, enhancement, documentation, good first issue, help wanted)
+
+            6. **Provide Initial Response** - If it's a common issue or duplicate, provide a helpful response
+
+            For bugs, suggest:
+            - Possible root causes
+            - Information needed to reproduce
+            - Temporary workarounds if known
+
+            For feature requests, assess:
+            - Alignment with project goals
+            - Estimated complexity
+            - Potential impact
+
+            Keep responses concise and helpful. Add appropriate labels to the issue using:
+            gh issue edit $ISSUE_NUMBER --add-labels 'label1,label2'
+
+            Post your triage response as a comment on the issue.
+          "
+
+      - name: Post triage comment
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          # Post the triage output as a comment
+          if [ -f claude-triage-output.md ]; then
+            gh issue comment $ISSUE_NUMBER --body-file claude-triage-output.md
+          fi

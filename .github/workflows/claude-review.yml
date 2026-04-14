@@ -1,0 +1,105 @@
+name: SuperAI Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_dispatch:
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
+      issues: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Get PR context
+        id: context
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          # Get changed files
+          echo "changed_files=$(gh pr view $PR_NUMBER --json files --jq '.files[].path' | tr '\n' ',')" >> $GITHUB_OUTPUT
+
+          # Get associated issues (if any are linked via "fixes #123" or similar)
+          echo "linked_issues=$(gh pr view $PR_NUMBER --json body --jq '.body' | grep -oE '#[0-9]+' | tr -d '#' | tr '\n' ',' || echo 'none')" >> $GITHUB_OUTPUT
+
+      - name: Setup Claude Code
+        uses: anthropic/claude-code-setup@v1
+        with:
+          api-key: ${{ secrets.ANTHROPIC_API_KEY }}
+          base-url: ${{ secrets.ANTHROPIC_BASE_URL }}
+
+      - name: Run Claude Code Review
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_BASE_URL: ${{ secrets.ANTHROPIC_BASE_URL }}
+          CLAUDE_AGENTS_DIR: .claude-agents
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+          CHANGED_FILES: ${{ steps.context.outputs.changed_files }}
+          LINKED_ISSUES: ${{ steps.context.outputs.linked_issues }}
+        run: |
+          # Run Claude Code with the orchestrator agent
+          claude-code agent orchestrator --prompt "
+            Review this pull request focusing on the changed files.
+
+            ## PR Details
+            Title: $PR_TITLE
+            Body: $PR_BODY
+            Author: $PR_AUTHOR
+            Changed Files: $CHANGED_FILES
+            Linked Issues: $LINKED_ISSUES
+
+            First, get the diff of changes:
+            git diff origin/main...HEAD --name-only
+
+            Then analyze each changed file:
+
+            1. **Code Quality** - Check for:
+               - Readability and maintainability
+               - Consistent naming conventions
+               - Proper error handling
+               - Code duplication
+
+            2. **Potential Issues** - Look for:
+               - Edge cases and null checks
+               - Race conditions or async issues
+               - Resource leaks (unclosed connections, memory)
+               - Performance bottlenecks
+
+            3. **Testing** - Verify:
+               - New code has test coverage
+               - Tests cover edge cases
+               - Test naming is descriptive
+
+            4. **Documentation** - Check:
+               - Complex logic is commented
+               - API changes are documented
+               - Breaking changes are noted
+
+            5. **Linked Issues** - If issues are linked, verify the PR addresses them
+
+            Post your review as a comment on the PR using the GitHub CLI.
+          "
+
+      - name: Post review comment
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          # Post the review output as a comment
+          if [ -f claude-review-output.md ]; then
+            gh pr comment $PR_NUMBER --body-file claude-review-output.md
+          fi
