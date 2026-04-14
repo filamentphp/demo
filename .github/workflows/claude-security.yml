@@ -4,116 +4,134 @@ on:
   schedule:
     - cron: '0 0 * * 0'  # Every Sunday at midnight UTC
   workflow_dispatch:
-  issues:
-    types: [opened, edited]
 
 jobs:
   security-audit:
     runs-on: ubuntu-latest
     permissions:
-      id-token: write
       contents: read
       issues: write
-      pull-requests: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-          persist-credentials: false
 
-      - name: Setup Claude Code
-        uses: anthropic/claude-code-setup@v1
-        with:
-          api-key: ${{ secrets.ANTHROPIC_API_KEY }}
-          base-url: ${{ secrets.ANTHROPIC_BASE_URL }}
-
-      - name: Create weekly issue (if triggered by schedule)
-        if: github.event_name == 'schedule'
-        env:
-          GH_TOKEN: ${{ github.token }}
+      - name: Detect tech stack
+        id: detect
         run: |
-          # Create a new issue for the weekly security audit
-          ISSUE_TITLE="Weekly Security Audit - $(date +%Y-%m-%d)"
-          ISSUE_BODY="This is the automated weekly security audit for $(date +%Y-%m-%d)."
+          TECH_STACK=""
 
-          ISSUE_NUMBER=$(gh issue create \
-            --title "$ISSUE_TITLE" \
-            --body "$ISSUE_BODY" \
-            --assignee ${{ github.repository_owner }}/super-ai-agent \
-            --label 'security,audit' \
-            --json number \
-            --jq '.number')
+          # Detect Laravel/PHP
+          if [ -f "composer.json" ]; then
+            if grep -q '"laravel"' composer.json 2>/dev/null; then
+              TECH_STACK="$TECH_STACK Laravel,PHP"
+            fi
+          fi
 
-          echo "ISSUE_NUMBER=$ISSUE_NUMBER" >> $GITHUB_ENV
+          # Detect Node.js frameworks
+          if [ -f "package.json" ]; then
+            if grep -q '"react"' package.json 2>/dev/null; then
+              TECH_STACK="$TECH_STACK React"
+            fi
+            if grep -q '"next"' package.json 2>/dev/null || [ -f "next.config.js" ]; then
+              TECH_STACK="$TECH_STACK Next.js"
+            fi
+            if grep -q '"vue"' package.json 2>/dev/null; then
+              TECH_STACK="$TECH_STACK Vue"
+            fi
+            if grep -q '"@vitejs"' package.json 2>/dev/null || [ -f "vite.config.js" ]; then
+              TECH_STACK="$TECH_STACK Vite"
+            fi
+          fi
 
-      - name: Run Claude Code Security Audit
+          echo "tech_stack=$TECH_STACK" >> $GITHUB_OUTPUT
+
+      - name: Run Security Audit
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           ANTHROPIC_BASE_URL: ${{ secrets.ANTHROPIC_BASE_URL }}
-          CLAUDE_AGENTS_DIR: .claude-agents
-          ISSUE_NUMBER: ${{ github.event.issue.number || env.ISSUE_NUMBER }}
+          TECH_STACK: ${{ steps.detect.outputs.tech_stack }}
         run: |
-          # Run Claude Code with the security-auditor agent
-          claude-code agent security-auditor --prompt "
-            Perform a comprehensive security audit of this repository.
+          # Read the security auditor agent
+          SECURITY_PROMPT=""
+          if [ -f ".claude-agents/agents/security-auditor.md" ]; then
+            SECURITY_PROMPT=$(cat .claude-agents/agents/security-auditor.md)
+          fi
 
-            ## Security Analysis Areas
+          # Read security guidance skills
+          SKILLS_PROMPT=""
+          if [ -f ".claude-agents/skills/security-guidance/SKILL.md" ]; then
+            SKILLS_PROMPT=$(cat .claude-agents/skills/security-guidance/SKILL.md)
+          fi
 
-            1. **OWASP Top 10 Vulnerabilities** (with CWE references):
-               - A01:2021 – Broken Access Control
-               - A02:2021 – Cryptographic Failures
-               - A03:2021 – Injection
-               - A04:2021 – Insecure Design
-               - A05:2021 – Security Misconfiguration
-               - A06:2021 – Vulnerable and Outdated Components
-               - A07:2021 – Identification and Authentication Failures
-               - A08:2021 – Software and Data Integrity Failures
-               - A09:2021 – Security Logging and Monitoring Failures
-               - A10:2021 – Server-Side Request Forgery
+          # Get recent commits
+          COMMITS=$(git log --since="1 week ago" --pretty=format:"- %s (%h)" || echo "No recent commits")
 
-            2. **Dependency Vulnerabilities** (with CVE references):
-               - Check package.json, composer.json, requirements.txt, etc.
-               - Look for known vulnerabilities in dependencies
-               - Check for outdated dependencies with security issues
+          # Build the prompt
+          PROMPT="Perform a comprehensive security audit of this codebase.
 
-            3. **Exposed Secrets**:
-               - API keys, passwords, tokens
-               - Database connection strings
-               - Private keys or certificates
-               - AWS/Google Cloud/Azure credentials
+          ## Technology Stack
+          $TECH_STACK
 
-            4. **Authentication/Authorization Issues**:
-               - Weak password policies
-               - Session management flaws
-               - Missing access controls
-               - Insecure password recovery
+          ## Recent Activity
+          $COMMITS
 
-            5. **Code Injection Risks**:
-               - SQL injection
-               - XSS (Cross-Site Scripting)
-               - Command injection
-               - Path traversal
+          $SECURITY_PROMPT
 
-            ## Output Format
+          $SKILLS_PROMPT
 
-            For each finding, provide:
-            - **Severity**: Critical/High/Medium/Low
-            - **CWE/CVE Reference**: Where applicable
-            - **Location**: File and line number
-            - **Description**: Clear explanation of the vulnerability
-            - **Remediation**: Specific steps to fix
+          Please analyze the codebase for:
 
-            Post your findings as comments on issue #$ISSUE_NUMBER.
+          1. **OWASP Top 10** vulnerabilities
+          2. **Injection attacks** (SQL, NoSQL, command, LDAP)
+          3. **Authentication & Authorization** issues
+          4. **Sensitive data exposure**
+          5. **Dependencies** with known CVEs
+          6. **Configuration** security issues
+          7. **API security** concerns
+          8. **Framework-specific** vulnerabilities for $TECH_STACK
+
+          Format your response as a security report with:
+- Executive Summary
+- Detailed Findings (with severity levels)
+- Remediation Steps
+- Priority Recommendations
           "
 
-      - name: Post security findings
-        if: always()
+          # Call Anthropic API
+          BASE_URL="${ANTHROPIC_BASE_URL:-https://api.anthropic.com}"
+
+          RESPONSE=$(curl -s -X POST "$BASE_URL/v1/messages" \
+            -H "x-api-key: $ANTHROPIC_API_KEY" \
+            -H "anthropic-version: 2023-06-01" \
+            -H "content-type: application/json" \
+            -d '{
+              "model": "claude-sonnet-4-6",
+              "max_tokens": 8192,
+              "messages": [
+                {
+                  "role": "user",
+                  "content": "'"$(echo "$PROMPT" | jq -Rs .)"'"
+                }
+              ]
+            }')
+
+          # Extract the response text
+          AUDIT_TEXT=$(echo "$RESPONSE" | jq -r '.content[0].text')
+
+          # Save to file
+          echo "$AUDIT_TEXT" > security-audit.md
+
+      - name: Create security issue
         env:
           GH_TOKEN: ${{ github.token }}
-          ISSUE_NUMBER: ${{ github.event.issue.number || env.ISSUE_NUMBER }}
         run: |
-          # Post the security audit output as a comment
-          if [ -f claude-security-output.md ]; then
-            gh issue comment $ISSUE_NUMBER --body-file claude-security-output.md
+          # Create a new issue with the security audit
+          DATE=$(date +%Y-%m-%d)
+          TITLE="Weekly Security Audit - $DATE"
+
+          if [ -f security-audit.md ]; then
+            gh issue create \
+              --title "$TITLE" \
+              --label "security,audit" \
+              --body-file security-audit.md
           fi

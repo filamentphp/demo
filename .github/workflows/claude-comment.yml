@@ -2,89 +2,234 @@ name: SuperAI Comment
 
 on:
   issue_comment:
-    types: [created, edited]
-  pull_request_review_comment:
-    types: [created, edited]
+    types: [created]
   workflow_dispatch:
 
 jobs:
-  comment-response:
+  comment:
+    if: |
+      (github.event.issue && github.event.comment.user.login == github.event.issue.user.login) ||
+      (github.event.pull_request && github.event.comment.user.login == github.event.pull_request.user.login)
     runs-on: ubuntu-latest
     permissions:
-      id-token: write
       contents: read
       issues: write
       pull-requests: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
-        with:
-          persist-credentials: false
 
-      - name: Check for trigger commands
-        id: check
+      - name: Check for command
+        id: command
         env:
           COMMENT_BODY: ${{ github.event.comment.body }}
         run: |
-          # Check if comment contains trigger commands
-          if echo "$COMMENT_BODY" | grep -qE "^/(superai|sai|claude)"; then
+          # Check if comment contains SuperAI commands
+          if echo "$COMMENT_BODY" | grep -qiE "(/superai|/sai|/claude)"; then
             echo "triggered=true" >> $GITHUB_OUTPUT
-            echo "Extract command:"
-            echo "$COMMENT_BODY" | grep -oE "^/(superai|sai|claude).*"
+
+            # Extract the command
+            if echo "$COMMENT_BODY" | grep -qi "/superai"; then
+              COMMAND=$(echo "$COMMENT_BODY" | grep -oP "/superai \K.*" | head -1)
+            elif echo "$COMMENT_BODY" | grep -qi "/sai"; then
+              COMMAND=$(echo "$COMMENT_BODY" | grep -oP "/sai \K.*" | head -1)
+            elif echo "$COMMENT_BODY" | grep -qi "/claude"; then
+              COMMAND=$(echo "$COMMENT_BODY" | grep -oP "/claude \K.*" | head -1)
+            fi
+
+            echo "command=${COMMAND:-help}" >> $GITHUB_OUTPUT
           else
             echo "triggered=false" >> $GITHUB_OUTPUT
           fi
 
-      - name: Setup Claude Code
-        if: steps.check.outputs.triggered == 'true'
-        uses: anthropic/claude-code-setup@v1
-        with:
-          api-key: ${{ secrets.ANTHROPIC_API_KEY }}
-          base-url: ${{ secrets.ANTHROPIC_BASE_URL }}
+      - name: Get context
+        id: context
+        if: steps.command.outputs.triggered == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ "${{ github.event.issue }}" ]; then
+            echo "type=issue" >> $GITHUB_OUTPUT
+            echo "number=${{ github.event.issue.number }}" >> $GITHUB_OUTPUT
+            echo "title=$(gh issue view ${{ github.event.issue.number }} --json title --jq '.title')" >> $GITHUB_OUTPUT
+            echo "body=$(gh issue view ${{ github.event.issue.number }} --json body --jq '.body')" >> $GITHUB_OUTPUT
+          else
+            echo "type=pr" >> $GITHUB_OUTPUT
+            echo "number=${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
+            echo "title=$(gh pr view ${{ github.event.pull_request.number }} --json title --jq '.title')" >> $GITHUB_OUTPUT
+            echo "body=$(gh pr view ${{ github.event.pull_request.number }} --json body --jq '.body')" >> $GITHUB_OUTPUT
+          fi
 
-      - name: Run Claude Code Response
-        if: steps.check.outputs.triggered == 'true'
+      - name: Detect tech stack
+        id: detect
+        if: steps.command.outputs.triggered == 'true'
+        run: |
+          TECH_STACK=""
+
+          # Detect Laravel/PHP
+          if [ -f "composer.json" ]; then
+            if grep -q '"laravel"' composer.json 2>/dev/null; then
+              TECH_STACK="$TECH_STACK Laravel,PHP"
+            fi
+          fi
+
+          # Detect Node.js frameworks
+          if [ -f "package.json" ]; then
+            if grep -q '"react"' package.json 2>/dev/null; then
+              TECH_STACK="$TECH_STACK React"
+            fi
+            if grep -q '"next"' package.json 2>/dev/null || [ -f "next.config.js" ]; then
+              TECH_STACK="$TECH_STACK Next.js"
+            fi
+            if grep -q '"vue"' package.json 2>/dev/null; then
+              TECH_STACK="$TECH_STACK Vue"
+            fi
+            if grep -q '"@vitejs"' package.json 2>/dev/null || [ -f "vite.config.js" ]; then
+              TECH_STACK="$TECH_STACK Vite"
+            fi
+          fi
+
+          echo "tech_stack=$TECH_STACK" >> $GITHUB_OUTPUT
+
+      - name: Run AI assistance
+        if: steps.command.outputs.triggered == 'true'
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           ANTHROPIC_BASE_URL: ${{ secrets.ANTHROPIC_BASE_URL }}
-          CLAUDE_AGENTS_DIR: .claude-agents
-          COMMENT_BODY: ${{ github.event.comment.body }}
-          COMMENT_AUTHOR: ${{ github.event.comment.user.login }}
-          ISSUE_NUMBER: ${{ github.event.issue.number || github.event.pull_request.number }}
+          COMMAND: ${{ steps.command.outputs.command }}
+          CONTEXT_TYPE: ${{ steps.context.outputs.type }}
+          CONTEXT_NUMBER: ${{ steps.context.outputs.number }}
+          CONTEXT_TITLE: ${{ steps.context.outputs.title }}
+          CONTEXT_BODY: ${{ steps.context.outputs.body }}
+          TECH_STACK: ${{ steps.detect.outputs.tech_stack }}
         run: |
-          # Extract the actual command after the trigger
-          COMMAND=$(echo "$COMMENT_BODY" | sed -E 's/^/(superai|sai|claude)\s*//')
+          # Read the orchestrator agent
+          ORCHESTRATOR_PROMPT=""
+          if [ -f ".claude-agents/agents/orchestrator.md" ]; then
+            ORCHESTRATOR_PROMPT=$(cat .claude-agents/agents/orchestrator.md)
+          fi
 
-          # Run Claude Code with the orchestrator agent
-          claude-code agent orchestrator --prompt "
-            User request: $COMMAND
+          # Build the prompt based on command
+          case "$COMMAND" in
+            *help*)
+              PROMPT="Available SuperAI commands:
+              - /superai review - Review the code
+              - /superai explain - Explain how the code works
+              - /superai improve - Suggest improvements
+              - /superai test - Suggest tests to add
+              - /superai fix - Help fix a problem"
+              ;;
+            *review*)
+              PROMPT="Review this $CONTEXT_TYPE titled '$CONTEXT_TITLE'.
 
-            Context:
-            - Comment Author: $COMMENT_AUTHOR
-            - Issue/PR Number: #$ISSUE_NUMBER
-            - Repository: ${{ github.repository }}
+              Description: $CONTEXT_BODY
 
-            Please help with this request. You can:
-            - Analyze code
-            - Suggest improvements
-            - Create implementation plans
-            - Review code changes
-            - Answer questions
+              Technology Stack: $TECH_STACK
 
-            Post your response as a comment on issue/PR #$ISSUE_NUMBER.
-          "
+              $ORCHESTRATOR_PROMPT
 
-      - name: Post response comment
-        if: steps.check.outputs.triggered == 'true' && always()
+              Please provide a code review covering:
+              1. Code quality and best practices
+              2. Potential issues or bugs
+              3. Security concerns
+              4. Performance considerations
+              5. Testing recommendations"
+              ;;
+            *explain*)
+              PROMPT="Explain this $CONTEXT_TYPE titled '$CONTEXT_TITLE'.
+
+              Description: $CONTEXT_BODY
+
+              Technology Stack: $TECH_STACK
+
+              $ORCHESTRATOR_PROMPT
+
+              Please explain:
+              1. What this code/issue is about
+              2. How it works
+              3. Key components and their roles
+              4. Technologies used"
+              ;;
+            *improve*)
+              PROMPT="Suggest improvements for this $CONTEXT_TYPE titled '$CONTEXT_TITLE'.
+
+              Description: $CONTEXT_BODY
+
+              Technology Stack: $TECH_STACK
+
+              $ORCHESTRATOR_PROMPT
+
+              Please suggest:
+              1. Code quality improvements
+              2. Performance optimizations
+              3. Better patterns or practices
+              4. Security enhancements
+              5. Documentation improvements"
+              ;;
+            *test*)
+              PROMPT="Suggest tests for this $CONTEXT_TYPE titled '$CONTEXT_TITLE'.
+
+              Description: $CONTEXT_BODY
+
+              Technology Stack: $TECH_STACK
+
+              $ORCHESTRATOR_PROMPT
+
+              Please suggest:
+              1. Unit tests to add
+              2. Integration tests to consider
+              3. Edge cases to cover
+              4. Test organization and structure"
+              ;;
+            *)
+              PROMPT="Help with this $CONTEXT_TYPE titled '$CONTEXT_TITLE'.
+
+              Description: $CONTEXT_BODY
+
+              Command: $COMMAND
+
+              Technology Stack: $TECH_STACK
+
+              $ORCHESTRATOR_PROMPT
+
+              Please provide helpful assistance."
+              ;;
+          esac
+
+          # Call Anthropic API
+          BASE_URL="${ANTHROPIC_BASE_URL:-https://api.anthropic.com}"
+
+          RESPONSE=$(curl -s -X POST "$BASE_URL/v1/messages" \
+            -H "x-api-key: $ANTHROPIC_API_KEY" \
+            -H "anthropic-version: 2023-06-01" \
+            -H "content-type: application/json" \
+            -d '{
+              "model": "claude-sonnet-4-6",
+              "max_tokens": 4096,
+              "messages": [
+                {
+                  "role": "user",
+                  "content": "'"$(echo "$PROMPT" | jq -Rs .)"'"
+                }
+              ]
+            }')
+
+          # Extract the response text
+          RESPONSE_TEXT=$(echo "$RESPONSE" | jq -r '.content[0].text')
+
+          # Save to file
+          echo "$RESPONSE_TEXT" > response-output.md
+
+      - name: Post response
+        if: steps.command.outputs.triggered == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
-          ISSUE_NUMBER: ${{ github.event.issue.number || github.event.pull_request.number }}
         run: |
           # Post the response as a comment
-          if [ -f claude-response-output.md ]; then
-            if [ -n "${{ github.event.issue.number }}" ]; then
-              gh issue comment $ISSUE_NUMBER --body-file claude-response-output.md
+          if [ -f response-output.md ]; then
+            if [ "${{ steps.context.outputs.type }}" == "issue" ]; then
+              gh issue comment ${{ steps.context.outputs.number }} --body-file response-output.md
             else
-              gh pr comment $ISSUE_NUMBER --body-file claude-response-output.md
+              gh pr comment ${{ steps.context.outputs.number }} --body-file response-output.md
             fi
           fi

@@ -9,7 +9,6 @@ jobs:
   review:
     runs-on: ubuntu-latest
     permissions:
-      id-token: write
       contents: read
       pull-requests: write
       issues: read
@@ -18,7 +17,6 @@ jobs:
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
-          persist-credentials: false
 
       - name: Get PR context
         id: context
@@ -27,79 +25,139 @@ jobs:
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
           # Get changed files
-          echo "changed_files=$(gh pr view $PR_NUMBER --json files --jq '.files[].path' | tr '\n' ',')" >> $GITHUB_OUTPUT
+          echo "changed_files=$(gh pr view $PR_NUMBER --json files --jq '.files[].path' | tr '\n' ' ')" >> $GITHUB_OUTPUT
 
-          # Get associated issues (if any are linked via "fixes #123" or similar)
-          echo "linked_issues=$(gh pr view $PR_NUMBER --json body --jq '.body' | grep -oE '#[0-9]+' | tr -d '#' | tr '\n' ',' || echo 'none')" >> $GITHUB_OUTPUT
+          # Get PR diff
+          gh pr diff $PR_NUMBER > pr-diff.txt
 
-      - name: Setup Claude Code
-        uses: anthropic/claude-code-setup@v1
-        with:
-          api-key: ${{ secrets.ANTHROPIC_API_KEY }}
-          base-url: ${{ secrets.ANTHROPIC_BASE_URL }}
+          # Get PR title and body
+          echo "pr_title=$(gh pr view $PR_NUMBER --json title --jq '.title')" >> $GITHUB_OUTPUT
+          echo "pr_body=$(gh pr view $PR_NUMBER --json body --jq '.body')" >> $GITHUB_OUTPUT
+          echo "pr_author=$(gh pr view $PR_NUMBER --json author --jq '.author.login')" >> $GITHUB_OUTPUT
 
-      - name: Run Claude Code Review
+      - name: Detect tech stack
+        id: detect
+        run: |
+          TECH_STACK=""
+
+          # Detect Laravel/PHP
+          if [ -f "composer.json" ]; then
+            if grep -q '"laravel"' composer.json 2>/dev/null; then
+              TECH_STACK="$TECH_STACK Laravel,PHP"
+            fi
+          fi
+
+          # Detect Node.js frameworks
+          if [ -f "package.json" ]; then
+            if grep -q '"react"' package.json 2>/dev/null; then
+              TECH_STACK="$TECH_STACK React"
+            fi
+            if grep -q '"next"' package.json 2>/dev/null || [ -f "next.config.js" ]; then
+              TECH_STACK="$TECH_STACK Next.js"
+            fi
+            if grep -q '"vue"' package.json 2>/dev/null; then
+              TECH_STACK="$TECH_STACK Vue"
+            fi
+            if grep -q '"@vitejs"' package.json 2>/dev/null || [ -f "vite.config.js" ]; then
+              TECH_STACK="$TECH_STACK Vite"
+            fi
+          fi
+
+          echo "tech_stack=$TECH_STACK" >> $GITHUB_OUTPUT
+          echo "Detected: $TECH_STACK"
+
+      - name: Run AI Code Review
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           ANTHROPIC_BASE_URL: ${{ secrets.ANTHROPIC_BASE_URL }}
-          CLAUDE_AGENTS_DIR: .claude-agents
           PR_NUMBER: ${{ github.event.pull_request.number }}
-          PR_TITLE: ${{ github.event.pull_request.title }}
-          PR_BODY: ${{ github.event.pull_request.body }}
-          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+          PR_TITLE: ${{ steps.context.outputs.pr_title }}
+          PR_BODY: ${{ steps.context.outputs.pr_body }}
+          PR_AUTHOR: ${{ steps.context.outputs.pr_author }}
           CHANGED_FILES: ${{ steps.context.outputs.changed_files }}
-          LINKED_ISSUES: ${{ steps.context.outputs.linked_issues }}
+          TECH_STACK: ${{ steps.detect.outputs.tech_stack }}
         run: |
-          # Run Claude Code with the orchestrator agent
-          claude-code agent orchestrator --prompt "
-            Review this pull request focusing on the changed files.
+          # Read the orchestrator agent
+          ORCHESTRATOR_PROMPT=""
+          if [ -f ".claude-agents/agents/orchestrator.md" ]; then
+            ORCHESTRATOR_PROMPT=$(cat .claude-agents/agents/orchestrator.md)
+          fi
 
-            ## PR Details
-            Title: $PR_TITLE
-            Body: $PR_BODY
-            Author: $PR_AUTHOR
-            Changed Files: $CHANGED_FILES
-            Linked Issues: $LINKED_ISSUES
+          # Read the code reviewer agent
+          REVIEWER_PROMPT=""
+          if [ -f ".claude-agents/agents/code-reviewer.md" ]; then
+            REVIEWER_PROMPT=$(cat .claude-agents/agents/code-reviewer.md)
+          fi
 
-            First, get the diff of changes:
-            git diff origin/main...HEAD --name-only
+          # Read tech-specific skills if available
+          SKILLS_PROMPT=""
+          if [ -f ".claude-agents/skills/laravel/SKILL.md" ]; then
+            SKILLS_PROMPT="$SKILLS_PROMPT\n\n$(cat .claude-agents/skills/laravel/SKILL.md)"
+          fi
 
-            Then analyze each changed file:
+          # Build the prompt
+          PROMPT="You are a code reviewer analyzing a Pull Request.
 
-            1. **Code Quality** - Check for:
-               - Readability and maintainability
-               - Consistent naming conventions
-               - Proper error handling
-               - Code duplication
+          ## Technology Stack
+          $TECH_STACK
 
-            2. **Potential Issues** - Look for:
-               - Edge cases and null checks
-               - Race conditions or async issues
-               - Resource leaks (unclosed connections, memory)
-               - Performance bottlenecks
+          ## PR Details
+          - Title: $PR_TITLE
+          - Author: $PR_AUTHOR
+          - Body: $PR_BODY
+          - Changed Files: $CHANGED_FILES
 
-            3. **Testing** - Verify:
-               - New code has test coverage
-               - Tests cover edge cases
-               - Test naming is descriptive
+          ## Code Changes
+          $(cat pr-diff.txt)
 
-            4. **Documentation** - Check:
-               - Complex logic is commented
-               - API changes are documented
-               - Breaking changes are noted
+          $ORCHESTRATOR_PROMPT
 
-            5. **Linked Issues** - If issues are linked, verify the PR addresses them
+          $REVIEWER_PROMPT
 
-            Post your review as a comment on the PR using the GitHub CLI.
+          $SKILLS_PROMPT
+
+          Please provide a comprehensive code review covering:
+          1. **Code Quality** - Readability, maintainability, naming conventions
+          2. **Potential Issues** - Edge cases, null checks, performance issues
+          3. **Security** - Common vulnerabilities for $TECH_STACK
+          4. **Testing** - Test coverage and quality
+          5. **Documentation** - Comments and API docs
+          6. **Best Practices** - Framework-specific recommendations
+
+          Format your response as a GitHub comment with clear sections.
+          Keep it concise but actionable.
           "
 
+          # Call Anthropic API
+          BASE_URL="${ANTHROPIC_BASE_URL:-https://api.anthropic.com}"
+
+          RESPONSE=$(curl -s -X POST "$BASE_URL/v1/messages" \
+            -H "x-api-key: $ANTHROPIC_API_KEY" \
+            -H "anthropic-version: 2023-06-01" \
+            -H "content-type: application/json" \
+            -d '{
+              "model": "claude-sonnet-4-6",
+              "max_tokens": 4096,
+              "messages": [
+                {
+                  "role": "user",
+                  "content": "'"$(echo "$PROMPT" | jq -Rs .)"'"
+                }
+              ]
+            }')
+
+          # Extract the response text
+          REVIEW_TEXT=$(echo "$RESPONSE" | jq -r '.content[0].text')
+
+          # Save to file
+          echo "$REVIEW_TEXT" > review-output.md
+
       - name: Post review comment
-        if: always()
         env:
           GH_TOKEN: ${{ github.token }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
-          # Post the review output as a comment
-          if [ -f claude-review-output.md ]; then
-            gh pr comment $PR_NUMBER --body-file claude-review-output.md
+          # Post the review as a comment
+          if [ -f review-output.md ]; then
+            gh pr comment $PR_NUMBER --body-file review-output.md
           fi

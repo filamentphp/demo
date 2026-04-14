@@ -9,103 +9,188 @@ jobs:
   triage:
     runs-on: ubuntu-latest
     permissions:
-      id-token: write
       contents: read
       issues: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
-        with:
-          persist-credentials: false
 
-      - name: Search for related issues
-        id: search
+      - name: Get issue context
+        id: context
         env:
           GH_TOKEN: ${{ github.token }}
-          ISSUE_TITLE: ${{ github.event.issue.title }}
-          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
         run: |
-          # Extract keywords from issue title (remove common words)
-          keywords=$(echo "$ISSUE_TITLE" | sed -e 's/\bthe\|a\|an\|to\|for\|in\|on\|at\|by\|with\|from\|as\|is\|are\|was\|were\|be\|been\|being//gi' -E 's/\s+/+/g')
+          # Get issue details
+          echo "title=$(gh issue view $ISSUE_NUMBER --json title --jq '.title')" >> $GITHUB_OUTPUT
+          echo "body=$(gh issue view $ISSUE_NUMBER --json body --jq '.body')" >> $GITHUB_OUTPUT
+          echo "author=$(gh issue view $ISSUE_NUMBER --json author --jq '.author.login')" >> $GITHUB_OUTPUT
 
-          # Search for related open issues
-          echo "related_issues=$(gh issue list \
-            --search "$keywords" \
-            --state open \
-            --limit 5 \
-            --json title,number,state,url \
-            --jq '.')" >> $GITHUB_OUTPUT
+          # Get existing labels
+          echo "labels=$(gh issue view $ISSUE_NUMBER --json labels --jq '.labels[].name' | tr '\n' ',' | sed 's/,$//')" >> $GITHUB_OUTPUT
 
-          echo "Related issues found:"
-          echo "$related_issues"
+      - name: Detect tech stack
+        id: detect
+        run: |
+          TECH_STACK=""
 
-      - name: Setup Claude Code
-        uses: anthropic/claude-code-setup@v1
-        with:
-          api-key: ${{ secrets.ANTHROPIC_API_KEY }}
-          base-url: ${{ secrets.ANTHROPIC_BASE_URL }}
+          # Detect Laravel/PHP
+          if [ -f "composer.json" ]; then
+            if grep -q '"laravel"' composer.json 2>/dev/null; then
+              TECH_STACK="$TECH_STACK Laravel,PHP"
+            fi
+          fi
 
-      - name: Run Claude Code Issue Triage
+          # Detect Node.js frameworks
+          if [ -f "package.json" ]; then
+            if grep -q '"react"' package.json 2>/dev/null; then
+              TECH_STACK="$TECH_STACK React"
+            fi
+            if grep -q '"next"' package.json 2>/dev/null || [ -f "next.config.js" ]; then
+              TECH_STACK="$TECH_STACK Next.js"
+            fi
+            if grep -q '"vue"' package.json 2>/dev/null; then
+              TECH_STACK="$TECH_STACK Vue"
+            fi
+            if grep -q '"@vitejs"' package.json 2>/dev/null || [ -f "vite.config.js" ]; then
+              TECH_STACK="$TECH_STACK Vite"
+            fi
+          fi
+
+          echo "tech_stack=$TECH_STACK" >> $GITHUB_OUTPUT
+
+      - name: Analyze and triage issue
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           ANTHROPIC_BASE_URL: ${{ secrets.ANTHROPIC_BASE_URL }}
-          CLAUDE_AGENTS_DIR: .claude-agents
-          ISSUE_TITLE: ${{ github.event.issue.title }}
-          ISSUE_BODY: ${{ github.event.issue.body }}
-          ISSUE_AUTHOR: ${{ github.event.user.login }}
-          ISSUE_NUMBER: ${{ github.event.issue.number }}
-          RELATED_ISSUES: ${{ steps.search.outputs.related_issues }}
+          ISSUE_TITLE: ${{ steps.context.outputs.title }}
+          ISSUE_BODY: ${{ steps.context.outputs.body }}
+          ISSUE_AUTHOR: ${{ steps.context.outputs.author }}
+          EXISTING_LABELS: ${{ steps.context.outputs.labels }}
+          TECH_STACK: ${{ steps.detect.outputs.tech_stack }}
         run: |
-          # Run Claude Code with the orchestrator agent for triage
-          claude-code agent orchestrator --prompt "
-            A new issue has been reported. Help triage it by:
+          # Build the prompt
+          PROMPT="Analyze this GitHub issue and provide triage information.
 
-            ## Current Issue
-            Title: $ISSUE_TITLE
-            Body: $ISSUE_BODY
-            Author: $ISSUE_AUTHOR
-            Number: #$ISSUE_NUMBER
+          ## Issue Details
+          Title: $ISSUE_TITLE
+          Author: $ISSUE_AUTHOR
+          Body: $ISSUE_BODY
 
-            ## Related Issues Found
-            $RELATED_ISSUES
+          ## Technology Stack
+          $TECH_STACK
 
-            ## Instructions
+          ## Existing Labels
+          $EXISTING_LABELS
 
-            1. **Check for Duplicates** - Review the related issues above. If this is a duplicate, mention it and reference the original issue number.
+          Please analyze and provide:
 
-            2. **Understand the Issue** - Analyze what the user is reporting
+          1. **Issue Type** (bug, feature, enhancement, documentation, question)
+          2. **Priority** (low, medium, high, critical)
+          3. **Complexity** (simple, medium, complex)
+          4. **Suggested Labels** (comma-separated)
+          5. **Duplicate Check** - mention if this seems like a duplicate
+          6. **Related Areas** - which parts of the codebase this affects
+          7. **Initial Assessment** - brief summary of the issue
 
-            3. **Identify the Type** - Classify as: bug, feature request, question, or performance issue
-
-            4. **Assess Priority** - Determine: critical, high, medium, or low
-
-            5. **Suggest Labels** - Propose appropriate GitHub labels (e.g., bug, enhancement, documentation, good first issue, help wanted)
-
-            6. **Provide Initial Response** - If it's a common issue or duplicate, provide a helpful response
-
-            For bugs, suggest:
-            - Possible root causes
-            - Information needed to reproduce
-            - Temporary workarounds if known
-
-            For feature requests, assess:
-            - Alignment with project goals
-            - Estimated complexity
-            - Potential impact
-
-            Keep responses concise and helpful. Add appropriate labels to the issue using:
-            gh issue edit $ISSUE_NUMBER --add-labels 'label1,label2'
-
-            Post your triage response as a comment on the issue.
+          Format your response as JSON:
+          {
+            \"type\": \"bug|feature|enhancement|documentation|question\",
+            \"priority\": \"low|medium|high|critical\",
+            \"complexity\": \"simple|medium|complex\",
+            \"labels\": [\"label1\", \"label2\"],
+            \"is_duplicate\": true/false,
+            \"duplicate_of\": \"issue number if duplicate\",
+            \"related_areas\": [\"area1\", \"area2\"],
+            \"assessment\": \"brief summary\"
+          }
           "
 
-      - name: Post triage comment
-        if: always()
+          # Call Anthropic API
+          BASE_URL="${ANTHROPIC_BASE_URL:-https://api.anthropic.com}"
+
+          RESPONSE=$(curl -s -X POST "$BASE_URL/v1/messages" \
+            -H "x-api-key: $ANTHROPIC_API_KEY" \
+            -H "anthropic-version: 2023-06-01" \
+            -H "content-type: application/json" \
+            -d '{
+              "model": "claude-sonnet-4-6",
+              "max_tokens": 2048,
+              "messages": [
+                {
+                  "role": "user",
+                  "content": "'"$(echo "$PROMPT" | jq -Rs .)"'"
+                }
+              ]
+            }')
+
+          # Extract and save the response
+          echo "$RESPONSE" > triage-response.json
+
+          # Extract the text content
+          TRIAGE_TEXT=$(echo "$RESPONSE" | jq -r '.content[0].text')
+          echo "$TRIAGE_TEXT" > triage-output.md
+
+      - name: Parse triage results
+        id: parse
+        run: |
+          # Try to extract JSON from the response
+          TRIAGE_JSON=$(cat triage-output.md | grep -oP '\{[^}]+\}' | head -1 || echo '{}')
+
+          if [ "$TRIAGE_JSON" != "{}" ]; then
+            # Extract values
+            ISSUE_TYPE=$(echo "$TRIAGE_JSON" | jq -r '.type // ""' | tr '[:upper:]' '[:lower:]')
+            PRIORITY=$(echo "$TRIAGE_JSON" | jq -r '.priority // "medium"' | tr '[:upper:]' '[:lower:]')
+            COMPLEXITY=$(echo "$TRIAGE_JSON" | jq -r '.complexity // ""' | tr '[:upper:]' '[:lower:]')
+            LABELS=$(echo "$TRIAGE_JSON" | jq -r '.labels // []' | jq -r 'join(",")')
+            IS_DUPLICATE=$(echo "$TRIAGE_JSON" | jq -r '.is_duplicate // false')
+
+            echo "type=$ISSUE_TYPE" >> $GITHUB_OUTPUT
+            echo "priority=$PRIORITY" >> $GITHUB_OUTPUT
+            echo "complexity=$COMPLEXITY" >> $GITHUB_OUTPUT
+            echo "labels=$LABELS" >> $GITHUB_OUTPUT
+            echo "is_duplicate=$IS_DUPLICATE" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Apply labels and comment
         env:
           GH_TOKEN: ${{ github.token }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
         run: |
-          # Post the triage output as a comment
-          if [ -f claude-triage-output.md ]; then
-            gh issue comment $ISSUE_NUMBER --body-file claude-triage-output.md
+          # Build labels array
+          LABELS_TO_ADD=""
+
+          # Add type label
+          if [ -n "${{ steps.parse.outputs.type }}" ]; then
+            LABELS_TO_ADD="$LABELS_TO_ADD --label ${{ steps.parse.outputs.type }}"
+          fi
+
+          # Add priority label
+          if [ -n "${{ steps.parse.outputs.priority }}" ]; then
+            LABELS_TO_ADD="$LABELS_TO_ADD --label priority:${{ steps.parse.outputs.priority }}"
+          fi
+
+          # Add complexity label
+          if [ -n "${{ steps.parse.outputs.complexity }}" ]; then
+            LABELS_TO_ADD="$LABELS_TO_ADD --label complexity:${{ steps.parse.outputs.complexity }}"
+          fi
+
+          # Add suggested labels
+          if [ -n "${{ steps.parse.outputs.labels }}" ]; then
+            IFS=',' read -ra ADDR <<< "${{ steps.parse.outputs.labels }}"
+            for label in "${ADDR[@]}"; do
+              LABELS_TO_ADD="$LABELS_TO_ADD --label \"$label\""
+            done
+          fi
+
+          # Apply labels
+          if [ -n "$LABELS_TO_ADD" ]; then
+            eval "gh issue edit $ISSUE_NUMBER $LABELS_TO_ADD" || true
+          fi
+
+          # Add comment with triage information
+          if [ -f triage-output.md ]; then
+            gh issue comment $ISSUE_NUMBER --body "## 🤖 SuperAI Issue Triage
+
+$(cat triage-output.md)"
           fi
