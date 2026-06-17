@@ -16,6 +16,6 @@
         "postcss-nesting": "^12.0.1",
         "tailwindcss": "^4.1.18",
         "tippy.js": "^6.3.7",
-        "vite": "^8.0.14"
+        "vite": "^8.0.16"
     }
 }
