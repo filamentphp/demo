@@ -58,6 +58,8 @@ class AddressesRelationManager extends RelationManager
             ->filters([
                 //
             ])
+            ->defaultSort('city')
+            ->stackedOnMobile()
             ->headerActions([
                 AttachAction::make(),
                 CreateAction::make(),

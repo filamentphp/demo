@@ -135,6 +135,7 @@ class DatabaseSeeder extends Seeder
                     ]),
             )
             ->create());
+        $products->first()->update(['is_visible' => true]);
         $this->command->info('Products created.');
 
         // Anomaly products for interesting scatter chart (Price vs Stock Quantity)
@@ -168,7 +169,7 @@ class DatabaseSeeder extends Seeder
             // 24–13 months ago (historical baseline, lower volume)
             25, 20, 30, 35, 45, 55, 65, 60, 50, 40, 80, 30,
             // 12–1 months ago (recent year, higher volume)
-            40, 30, 45, 60, 75, 90, 110, 100, 80, 65, 130, 50,
+            32, 46, 38, 72, 58, 96, 122, 88, 64, 110, 150, 54,
         ];
         $totalWeight = array_sum($monthlyWeights);
 

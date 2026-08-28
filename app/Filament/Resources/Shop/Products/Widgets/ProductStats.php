@@ -6,6 +6,7 @@ use App\Filament\Resources\Shop\Products\Pages\ListProducts;
 use Filament\Widgets\Concerns\InteractsWithPageTable;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
+use Illuminate\Support\Number;
 
 class ProductStats extends BaseWidget
 {
@@ -21,9 +22,9 @@ class ProductStats extends BaseWidget
     protected function getStats(): array
     {
         return [
-            Stat::make('Total Products', $this->getPageTableQuery()->count()),
-            Stat::make('Product Inventory', $this->getPageTableQuery()->sum('qty')),
-            Stat::make('Average price', number_format((float) $this->getPageTableQuery()->avg('price'), 2)),
+            Stat::make('Total products', $this->getPageTableQuery()->count()),
+            Stat::make('Product inventory', $this->getPageTableQuery()->sum('qty')),
+            Stat::make('Average price', Number::currency((float) $this->getPageTableQuery()->avg('price'), in: 'USD')),
         ];
     }
 }

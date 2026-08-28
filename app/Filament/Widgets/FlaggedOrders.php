@@ -38,6 +38,7 @@ class FlaggedOrders extends BaseWidget
                 TextColumn::make('number')
                     ->searchable()
                     ->sortable()
+                    ->copyable()
                     ->weight(FontWeight::Medium),
                 TextColumn::make('customer.name')
                     ->searchable()
@@ -45,10 +46,12 @@ class FlaggedOrders extends BaseWidget
                 TextColumn::make('status')
                     ->badge(),
                 TextColumn::make('total_price')
-                    ->money('USD')
+                    ->money()
+                    ->alignEnd()
                     ->sortable(),
                 TextColumn::make('days_old')
-                    ->label('Days Old')
+                    ->label('Days old')
+                    ->alignEnd()
                     ->state(fn (Order $record): int => (int) $record->created_at?->diffInDays(now()))
                     ->sortable(query: fn (Builder $query, string $direction): Builder => $query->orderBy('created_at', $direction === 'asc' ? 'desc' : 'asc'))
                     ->weight(FontWeight::Bold),

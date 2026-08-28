@@ -51,6 +51,7 @@ class LeaveRequestsTable
 
                 TextColumn::make('days_requested')
                     ->numeric(1)
+                    ->alignEnd()
                     ->sortable()
                     ->summarize(Sum::make()),
 

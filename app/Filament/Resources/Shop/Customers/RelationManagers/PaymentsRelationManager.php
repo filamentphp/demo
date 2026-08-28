@@ -86,11 +86,13 @@ class PaymentsRelationManager extends RelationManager
                 ColumnGroup::make('Details')
                     ->columns([
                         TextColumn::make('reference')
-                            ->searchable(),
+                            ->searchable()
+                            ->copyable(),
 
                         TextColumn::make('amount')
                             ->sortable()
-                            ->money(fn ($record) => $record->currency->value),
+                            ->money(fn ($record) => $record->currency->value)
+                            ->alignEnd(),
                     ]),
 
                 ColumnGroup::make('Context')
@@ -107,6 +109,7 @@ class PaymentsRelationManager extends RelationManager
             ->filters([
                 //
             ])
+            ->defaultSort('created_at', 'desc')
             ->headerActions([
                 CreateAction::make(),
             ])

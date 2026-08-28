@@ -29,7 +29,7 @@ class ExpenseFactory extends Factory
             'category' => $this->faker->randomElement(ExpenseCategory::cases()),
             'description' => $this->faker->sentence(),
             'total_amount' => 0,
-            'currency' => $this->faker->randomElement(['USD', 'USD', 'USD', 'EUR', 'GBP', 'CAD']),
+            'currency' => 'USD',
             'submitted_at' => in_array($status, [ExpenseStatus::Submitted, ExpenseStatus::Approved, ExpenseStatus::Reimbursed])
                 ? $this->faker->dateTimeBetween($createdAt, 'now')
                 : null,

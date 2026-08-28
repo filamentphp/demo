@@ -3,12 +3,12 @@
 namespace App\Filament\Resources\Shop\Orders\Widgets;
 
 use App\Filament\Resources\Shop\Orders\Pages\ListOrders;
-use App\Models\Shop\Order;
 use Filament\Widgets\Concerns\InteractsWithPageTable;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Flowframe\Trend\Trend;
 use Flowframe\Trend\TrendValue;
+use Illuminate\Support\Number;
 
 class OrderStats extends BaseWidget
 {
@@ -23,23 +23,49 @@ class OrderStats extends BaseWidget
 
     protected function getStats(): array
     {
-        $orderData = Trend::model(Order::class)
+        $end = now();
+        $start = $end->copy()->subYear();
+        $tableQuery = $this->getPageTableQuery();
+
+        $orderData = Trend::query((clone $tableQuery)->reorder())
             ->between(
-                start: now()->subYear(),
-                end: now(),
+                start: $start,
+                end: $end,
             )
             ->perMonth()
             ->count();
+        $openOrderData = Trend::query(
+            (clone $tableQuery)
+                ->reorder()
+                ->whereIn('status', ['new', 'processing'])
+        )
+            ->between(start: $start, end: $end)
+            ->perMonth()
+            ->count();
+        $averagePriceData = Trend::query((clone $tableQuery)->reorder())
+            ->between(start: $start, end: $end)
+            ->perMonth()
+            ->average('total_price');
 
         return [
-            Stat::make('Orders', $this->getPageTableQuery()->count())
+            Stat::make('Orders', (clone $tableQuery)->count())
                 ->chart(
                     $orderData
                         ->map(fn (TrendValue $value) => $value->aggregate)
                         ->toArray()
                 ),
-            Stat::make('Open orders', $this->getPageTableQuery()->whereIn('status', ['open', 'processing'])->count()),
-            Stat::make('Average price', number_format((float) $this->getPageTableQuery()->avg('total_price'), 2)),
+            Stat::make('Open orders', (clone $tableQuery)->whereIn('status', ['new', 'processing'])->count())
+                ->chart(
+                    $openOrderData
+                        ->map(fn (TrendValue $value) => $value->aggregate)
+                        ->toArray()
+                ),
+            Stat::make('Average order value', Number::currency((float) (clone $tableQuery)->avg('total_price'), in: 'USD'))
+                ->chart(
+                    $averagePriceData
+                        ->map(fn (TrendValue $value) => (float) $value->aggregate)
+                        ->toArray()
+                ),
         ];
     }
 }

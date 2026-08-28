@@ -59,6 +59,7 @@ class EmployeesTable
 
                 TextColumn::make('salary')
                     ->money('usd')
+                    ->alignEnd()
                     ->sortable()
                     ->toggleable(),
 
@@ -76,6 +77,7 @@ class EmployeesTable
                     ->boolean()
                     ->sortable(),
             ])
+            ->defaultSort('name')
             ->filters([
                 SelectFilter::make('employment_type')
                     ->options(EmploymentType::class),
@@ -91,13 +93,14 @@ class EmployeesTable
                 ActionGroup::make([
                     Action::make('view_profile')
                         ->icon(Heroicon::Eye)
-                        ->color('primary')
+                        ->color('gray')
                         ->slideOver()
                         ->schema([
                             TextEntry::make('name'),
                             TextEntry::make('email'),
                             TextEntry::make('phone'),
                             TextEntry::make('department.name')
+                                ->label('Department')
                                 ->placeholder('No department'),
                             TextEntry::make('job_title'),
                             TextEntry::make('employment_type')
@@ -119,7 +122,7 @@ class EmployeesTable
                         ->action(fn (Employee $record) => $record->update(['is_active' => ! $record->is_active])),
                     Action::make('change_department')
                         ->icon(Heroicon::BuildingOffice2)
-                        ->color('primary')
+                        ->color('gray')
                         ->modalWidth(Width::Medium)
                         ->modalSubmitActionLabel('Save')
                         ->fillForm(fn (Employee $record): array => [
@@ -145,7 +148,7 @@ class EmployeesTable
             ->groupedBulkActions([
                 BulkAction::make('change_department')
                     ->icon(Heroicon::BuildingOffice2)
-                    ->color('primary')
+                    ->color('gray')
                     ->schema([
                         Select::make('department_id')
                             ->relationship('department', 'name')

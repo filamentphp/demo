@@ -32,6 +32,7 @@ class LeaveRequestsRelationManager extends RelationManager
 
                 TextColumn::make('days_requested')
                     ->numeric(1)
+                    ->alignEnd()
                     ->sortable(),
             ])
             ->defaultSort('start_date', 'desc');

@@ -22,7 +22,7 @@ class ViewProject extends ViewRecord
         return [
             Action::make('change_status')
                 ->icon(Heroicon::ArrowPathRoundedSquare)
-                ->color('primary')
+                ->color('gray')
                 ->modalWidth(Width::Medium)
                 ->modalSubmitActionLabel('Save')
                 ->stickyModalFooter()

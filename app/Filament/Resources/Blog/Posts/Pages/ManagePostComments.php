@@ -61,6 +61,7 @@ class ManagePostComments extends ManageRelatedRecords
                 TextEntry::make('title')
                     ->placeholder('Untitled'),
                 TextEntry::make('customer.name')
+                    ->label('Customer')
                     ->placeholder('No customer'),
                 IconEntry::make('is_visible')
                     ->label('Public visibility'),
@@ -90,6 +91,7 @@ class ManagePostComments extends ManageRelatedRecords
             ->filters([
                 //
             ])
+            ->defaultSort('created_at', 'desc')
             ->headerActions([
                 CreateAction::make(),
             ])

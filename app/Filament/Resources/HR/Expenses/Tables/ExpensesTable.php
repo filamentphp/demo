@@ -29,6 +29,7 @@ class ExpensesTable
                 TextColumn::make('expense_number')
                     ->searchable()
                     ->sortable()
+                    ->copyable()
                     ->weight(FontWeight::Medium),
 
                 TextColumn::make('employee.name')
@@ -43,6 +44,7 @@ class ExpensesTable
 
                 TextColumn::make('total_amount')
                     ->money('usd')
+                    ->alignEnd()
                     ->sortable()
                     ->summarize(Sum::make()->money('usd')),
 
@@ -129,7 +131,7 @@ class ExpensesTable
                         }),
                     Action::make('reimburse')
                         ->icon(Heroicon::Banknotes)
-                        ->color('primary')
+                        ->color('success')
                         ->visible(fn (Expense $record): bool => $record->status === ExpenseStatus::Approved)
                         ->requiresConfirmation()
                         ->action(function (Expense $record): void {

@@ -1,6 +1,5 @@
 <?php
 
-use App\Enums\CurrencyCode;
 use App\Enums\OrderStatus;
 use App\Filament\Resources\Shop\Orders\Pages\CreateOrder;
 use App\Models\Shop\Customer;
@@ -24,7 +23,6 @@ it('can create a record', function () {
         ->fillForm([
             'customer_id' => $customer->id,
             'status' => OrderStatus::New,
-            'currency' => CurrencyCode::Usd,
             'items' => [
                 [
                     'product_id' => $product->id,
@@ -52,7 +50,6 @@ it('sends database notification after order creation', function () {
         ->fillForm([
             'customer_id' => $customer->id,
             'status' => OrderStatus::New,
-            'currency' => CurrencyCode::Usd,
             'items' => [
                 [
                     'product_id' => $product->id,
@@ -82,7 +79,6 @@ it('validates order item numeric fields', function (array $itemData, array $erro
         ->fillForm([
             'customer_id' => $customer->id,
             'status' => OrderStatus::New,
-            'currency' => CurrencyCode::Usd,
             'items' => [
                 [
                     'product_id' => $product->id,
@@ -109,7 +105,6 @@ it('validates the form data', function (array $data, array $errors) {
         ->fillForm([
             'customer_id' => $customer->id,
             'status' => OrderStatus::New,
-            'currency' => CurrencyCode::Usd,
             ...$data,
         ])
         ->call('create')
@@ -119,5 +114,4 @@ it('validates the form data', function (array $data, array $errors) {
 })->with([
     '`customer_id` is required' => [['customer_id' => null], ['customer_id' => 'required']],
     '`status` is required' => [['status' => null], ['status' => 'required']],
-    '`currency` is required' => [['currency' => null], ['currency' => 'required']],
 ]);

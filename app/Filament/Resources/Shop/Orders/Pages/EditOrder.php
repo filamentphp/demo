@@ -18,6 +18,7 @@ class EditOrder extends EditRecord
     {
         return [
             ReplicateAction::make()
+                ->color('gray')
                 ->requiresConfirmation()
                 ->excludeAttributes(['id', 'number', 'status', 'created_at', 'updated_at', 'deleted_at'])
                 ->mutateRecordDataUsing(function (array $data): array {

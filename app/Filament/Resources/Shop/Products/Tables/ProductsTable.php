@@ -53,6 +53,8 @@ class ProductsTable
                     ->toggleable(),
 
                 TextColumn::make('price')
+                    ->money()
+                    ->alignEnd()
                     ->searchable()
                     ->sortable(),
 
@@ -60,15 +62,20 @@ class ProductsTable
                     ->label('SKU')
                     ->searchable()
                     ->sortable()
+                    ->copyable()
                     ->toggleable(),
 
                 TextColumn::make('qty')
                     ->label('Quantity')
+                    ->numeric()
+                    ->alignEnd()
                     ->searchable()
                     ->sortable()
                     ->toggleable(),
 
                 TextColumn::make('security_stock')
+                    ->numeric()
+                    ->alignEnd()
                     ->searchable()
                     ->sortable()
                     ->toggleable()
@@ -113,6 +120,7 @@ class ProductsTable
                     ])
                     ->constraintPickerColumns(2),
             ], layout: FiltersLayout::AboveContentCollapsible)
+            ->defaultSort('name')
             ->deferFilters()
             ->recordActions([
                 ActionGroup::make([

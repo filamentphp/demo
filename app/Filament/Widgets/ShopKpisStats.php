@@ -11,6 +11,7 @@ use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Number;
 
 class ShopKpisStats extends BaseWidget
 {
@@ -126,8 +127,8 @@ class ShopKpisStats extends BaseWidget
                 ->descriptionIcon(Heroicon::XCircle)
                 ->chart($cancellationChart)
                 ->color($cancellationRate > 10 ? 'danger' : 'warning'),
-            Stat::make('Revenue / Customer', '$' . number_format($revenuePerCustomer, 2))
-                ->description('$' . number_format($totalRevenue, 0) . ' total revenue')
+            Stat::make('Revenue / Customer', Number::currency($revenuePerCustomer, in: 'USD'))
+                ->description(Number::currency($totalRevenue, in: 'USD', precision: 0) . ' total revenue')
                 ->descriptionIcon(Heroicon::CurrencyDollar)
                 ->chart($revenueChart)
                 ->color('success'),

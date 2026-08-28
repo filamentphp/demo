@@ -52,6 +52,7 @@ class AuthorsTable
             ->filters([
                 //
             ])
+            ->defaultSort('name')
             ->recordActions([
                 ActionGroup::make([
                     Action::make('view_github')

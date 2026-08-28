@@ -18,8 +18,10 @@ class ExpenseInfolist
                     ->columns(3)
                     ->columnSpanFull()
                     ->schema([
-                        TextEntry::make('expense_number'),
-                        TextEntry::make('employee.name'),
+                        TextEntry::make('expense_number')
+                            ->copyable(),
+                        TextEntry::make('employee.name')
+                            ->label('Employee'),
                         TextEntry::make('category')
                             ->badge(),
                         TextEntry::make('status')
@@ -28,6 +30,7 @@ class ExpenseInfolist
                             ->money('usd'),
                         TextEntry::make('currency'),
                         TextEntry::make('project.name')
+                            ->label('Project')
                             ->placeholder('No project'),
                         TextEntry::make('submitted_at')
                             ->dateTime()
@@ -60,7 +63,8 @@ class ExpenseInfolist
                             ])
                             ->schema([
                                 TextEntry::make('description'),
-                                TextEntry::make('quantity'),
+                                TextEntry::make('quantity')
+                                    ->numeric(),
                                 TextEntry::make('unit_price')
                                     ->money('usd'),
                                 TextEntry::make('amount')

@@ -38,6 +38,7 @@ class PostsTable
                 TextColumn::make('slug')
                     ->searchable()
                     ->sortable()
+                    ->copyable()
                     ->toggleable(isToggledHiddenByDefault: true),
 
                 TextColumn::make('author.name')
@@ -59,7 +60,8 @@ class PostsTable
 
                 TextColumn::make('published_at')
                     ->label('Publishing date')
-                    ->date(),
+                    ->date()
+                    ->sortable(),
             ])
             ->filters([
                 Filter::make('published_at')
@@ -92,6 +94,7 @@ class PostsTable
                         return $indicators;
                     }),
             ])
+            ->defaultSort('published_at', 'desc')
             ->recordActions([
                 ActionGroup::make([
                     Action::make('toggle_publish')

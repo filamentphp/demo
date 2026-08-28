@@ -46,15 +46,18 @@ class ProjectsTable
 
                 TextColumn::make('budget')
                     ->money('usd')
+                    ->alignEnd()
                     ->sortable()
                     ->summarize(Sum::make()->money('usd')),
 
                 TextColumn::make('spent')
                     ->money('usd')
+                    ->alignEnd()
                     ->sortable()
                     ->summarize(Sum::make()->money('usd')),
 
                 TextColumn::make('progress')
+                    ->alignEnd()
                     ->state(fn (Project $record): string => $record->estimated_hours > 0
                         ? number_format(($record->actual_hours / $record->estimated_hours) * 100, 0) . '%'
                         : '0%'),
@@ -69,6 +72,7 @@ class ProjectsTable
                     ->sortable()
                     ->toggleable(),
             ])
+            ->defaultSort('start_date', 'desc')
             ->filters([
                 SelectFilter::make('status')
                     ->options(ProjectStatus::class),
@@ -87,7 +91,7 @@ class ProjectsTable
                     EditAction::make(),
                     Action::make('change_status')
                         ->icon(Heroicon::ArrowPathRoundedSquare)
-                        ->color('primary')
+                        ->color('gray')
                         ->modalWidth(Width::Medium)
                         ->modalSubmitActionLabel('Save')
                         ->stickyModalFooter()

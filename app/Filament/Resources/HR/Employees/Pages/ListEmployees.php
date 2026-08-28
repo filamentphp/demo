@@ -5,6 +5,7 @@ namespace App\Filament\Resources\HR\Employees\Pages;
 use App\Enums\LeaveStatus;
 use App\Filament\Resources\HR\Employees\EmployeeResource;
 use App\Filament\Resources\HR\LeaveRequests\LeaveRequestResource;
+use App\Models\HR\Employee;
 use App\Models\HR\LeaveRequest;
 use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
@@ -23,7 +24,7 @@ class ListEmployees extends ListRecords
     {
         return [
             Action::make('leave_requests')
-                ->label('Leave Requests')
+                ->label('Leave requests')
                 ->color('gray')
                 ->icon(Heroicon::Calendar)
                 ->badge((string) LeaveRequest::query()->where('status', LeaveStatus::Pending)->count())
@@ -41,10 +42,18 @@ class ListEmployees extends ListRecords
     public function getTabs(): array
     {
         return [
-            null => Tab::make('All'),
+            null => Tab::make('All')
+                ->badge(static fn (): int => Employee::query()->count())
+                ->deferBadge(),
             'active' => Tab::make('Active')
+                ->badge(static fn (): int => Employee::query()->where('is_active', true)->count())
+                ->badgeColor('success')
+                ->deferBadge()
                 ->query(fn ($query) => $query->where('is_active', true)),
             'inactive' => Tab::make('Inactive')
+                ->badge(static fn (): int => Employee::query()->where('is_active', false)->count())
+                ->badgeColor('gray')
+                ->deferBadge()
                 ->query(fn ($query) => $query->where('is_active', false)),
         ];
     }

@@ -24,7 +24,8 @@ class PostInfolist
                                 ->schema([
                                     Group::make([
                                         TextEntry::make('title'),
-                                        TextEntry::make('slug'),
+                                        TextEntry::make('slug')
+                                            ->copyable(),
                                         TextEntry::make('published_at')
                                             ->label('Publishing date')
                                             ->badge()
@@ -34,8 +35,10 @@ class PostInfolist
                                     ]),
                                     Group::make([
                                         TextEntry::make('author.name')
+                                            ->label('Author')
                                             ->placeholder('No author'),
                                         TextEntry::make('postCategory.name')
+                                            ->label('Category')
                                             ->placeholder('Uncategorized'),
                                         SpatieTagsEntry::make('tags'),
                                     ]),

@@ -16,7 +16,8 @@ class LeaveRequestInfolist
                     ->columns(3)
                     ->columnSpanFull()
                     ->schema([
-                        TextEntry::make('employee.name'),
+                        TextEntry::make('employee.name')
+                            ->label('Employee'),
                         TextEntry::make('type')
                             ->badge(),
                         TextEntry::make('status')
@@ -44,6 +45,7 @@ class LeaveRequestInfolist
                     ->columnSpanFull()
                     ->schema([
                         TextEntry::make('approver.name')
+                            ->label('Approver')
                             ->placeholder('Not yet assigned'),
                         TextEntry::make('reviewed_at')
                             ->label('Reviewed at')

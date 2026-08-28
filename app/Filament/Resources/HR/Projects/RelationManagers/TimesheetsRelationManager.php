@@ -27,6 +27,7 @@ class TimesheetsRelationManager extends RelationManager
 
                 TextColumn::make('hours')
                     ->numeric(1)
+                    ->alignEnd()
                     ->sortable()
                     ->summarize(Sum::make()->label('Total hours')),
 
@@ -36,6 +37,7 @@ class TimesheetsRelationManager extends RelationManager
 
                 TextColumn::make('total_cost')
                     ->money('usd')
+                    ->alignEnd()
                     ->sortable()
                     ->summarize(Sum::make()->money('usd')->label('Total cost')),
             ])

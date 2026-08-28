@@ -25,14 +25,17 @@ class BrandsTable
                     ->weight(FontWeight::Medium),
                 TextColumn::make('website')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(),
                 IconColumn::make('is_visible')
                     ->label('Visibility')
                     ->sortable(),
                 TextColumn::make('updated_at')
                     ->label('Last modified at')
                     ->date()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable()
+                    ->toggledHiddenByDefault(),
             ])
             ->filters([
                 //

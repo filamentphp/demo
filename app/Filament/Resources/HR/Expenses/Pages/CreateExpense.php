@@ -147,11 +147,11 @@ class CreateExpense extends CreateRecord
                         ->required()
                         ->options([
                             'USD' => 'USD',
-                            'EUR' => 'EUR',
-                            'GBP' => 'GBP',
-                            'CAD' => 'CAD',
                         ])
-                        ->default('USD'),
+                        ->default('USD')
+                        ->disabled()
+                        ->dehydrated()
+                        ->rules(['in:USD']),
 
                     FileUpload::make('receipt_path')
                         ->directory('expense-receipts'),

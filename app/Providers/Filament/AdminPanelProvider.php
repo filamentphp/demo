@@ -39,6 +39,8 @@ class AdminPanelProvider extends PanelProvider
                 'Blog',
             ])
             ->databaseNotifications()
+            ->globalSearchKeyBindings(['command+k', 'ctrl+k'])
+            ->globalSearchFieldKeyBindingSuffix()
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

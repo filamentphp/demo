@@ -13,7 +13,8 @@ class CategoryInfolist
         return $schema
             ->components([
                 TextEntry::make('name'),
-                TextEntry::make('slug'),
+                TextEntry::make('slug')
+                    ->copyable(),
                 TextEntry::make('description')
                     ->placeholder('No description'),
                 IconEntry::make('is_visible')

@@ -29,13 +29,18 @@ class CustomersTable
                 TextColumn::make('email')
                     ->label('Email address')
                     ->searchable(isIndividual: true, isGlobal: false)
-                    ->sortable(),
+                    ->sortable()
+                    ->copyable(),
                 TextColumn::make('country')
-                    ->getStateUsing(fn ($record): ?string => $record->addresses->first()?->country?->getLabel()),
+                    ->getStateUsing(fn ($record): ?string => $record->addresses->first()?->country?->getLabel())
+                    ->toggleable(),
                 TextColumn::make('phone')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(),
             ])
+            ->defaultSort('name')
+            ->stackedOnMobile()
             ->filters([
                 TrashedFilter::make(),
             ])

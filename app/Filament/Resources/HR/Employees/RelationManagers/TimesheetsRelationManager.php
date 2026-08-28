@@ -26,6 +26,7 @@ class TimesheetsRelationManager extends RelationManager
 
                 TextColumn::make('hours')
                     ->numeric(1)
+                    ->alignEnd()
                     ->sortable(),
 
                 IconColumn::make('is_billable')
@@ -34,6 +35,7 @@ class TimesheetsRelationManager extends RelationManager
 
                 TextColumn::make('total_cost')
                     ->money('usd')
+                    ->alignEnd()
                     ->sortable(),
             ])
             ->defaultSort('date', 'desc');

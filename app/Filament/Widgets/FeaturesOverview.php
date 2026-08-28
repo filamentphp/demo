@@ -11,6 +11,7 @@ use App\Filament\Resources\HR\Employees\EmployeeResource;
 use App\Filament\Resources\HR\Expenses\ExpenseResource;
 use App\Filament\Resources\HR\LeaveRequests\LeaveRequestResource;
 use App\Filament\Resources\HR\Projects\ProjectResource;
+use App\Filament\Resources\HR\Tasks\TaskResource;
 use App\Filament\Resources\Shop\Brands\BrandResource;
 use App\Filament\Resources\Shop\Customers\CustomerResource;
 use App\Filament\Resources\Shop\Orders\OrderResource;
@@ -69,8 +70,10 @@ class FeaturesOverview extends Widget
             'color' => 'blue',
             'features' => [
                 ['name' => 'Searchable & sortable', 'description' => 'Full-text search with sortable column headers', 'url' => ProductResource::getUrl('index'), 'resource' => 'Products'],
+                ['name' => 'Responsive mobile tables', 'description' => 'Text-heavy tables without special column alignment stack into readable record cards on small screens', 'url' => CustomerResource::getUrl('index'), 'resource' => 'Customers'],
                 ['name' => 'Image columns', 'description' => 'Thumbnails from Spatie Media Library', 'url' => ProductResource::getUrl('index'), 'resource' => 'Products'],
-                ['name' => 'Column summarizers', 'description' => 'Scroll to the table footer to see sum totals for price and shipping', 'url' => OrderResource::getUrl('index'), 'resource' => 'Orders'],
+                ['name' => 'USD money formatting', 'description' => 'Order amounts use consistent USD formatting without a redundant currency field', 'url' => OrderResource::getUrl('index'), 'resource' => 'Orders'],
+                ['name' => 'Column summarizers', 'description' => 'Scroll to the table footer to see summed order totals and shipping costs', 'url' => OrderResource::getUrl('index'), 'resource' => 'Orders'],
                 ['name' => 'Inline editing', 'description' => 'Click a status cell to change it inline', 'url' => LeaveRequestResource::getUrl('index'), 'resource' => 'Leave Requests'],
                 ['name' => 'Table grouping', 'description' => 'Toggle grouping using the group icon in table header', 'url' => OrderResource::getUrl('index'), 'resource' => 'Orders'],
                 ['name' => 'Live polling', 'description' => 'Table data auto-refreshes every 30 seconds in the background', 'url' => ExpenseResource::getUrl('index'), 'resource' => 'Expenses'],
@@ -78,7 +81,8 @@ class FeaturesOverview extends Widget
                 ['name' => 'Color columns', 'description' => 'Hidden by default — enable "Team color" via the column toggle icon to see swatches', 'url' => EmployeeResource::getUrl('index'), 'resource' => 'Employees'],
                 ['name' => 'Column layouts', 'description' => 'Custom multi-row layouts with split and stack', 'url' => AuthorResource::getUrl('index'), 'resource' => 'Authors'],
                 ['name' => 'Drag-and-drop reordering', 'description' => 'Click the reorder toggle in the table header, then drag rows', 'url' => BrandResource::getUrl('index'), 'resource' => 'Brands'],
-                ['name' => 'Copyable columns', 'description' => 'Click any email cell to copy the value to your clipboard', 'url' => EmployeeResource::getUrl('index'), 'resource' => 'Employees'],
+                ['name' => 'Truncated text tooltips', 'description' => 'Hover over a shortened task title to reveal the complete value', 'url' => TaskResource::getUrl('index'), 'resource' => 'Tasks'],
+                ['name' => 'Copyable columns', 'description' => 'Click identifiers such as order numbers, SKUs, references, and emails to copy them', 'url' => OrderResource::getUrl('index'), 'resource' => 'Orders'],
             ],
         ];
     }
@@ -143,7 +147,7 @@ class FeaturesOverview extends Widget
                 $post ? ['name' => 'Keyboard shortcuts', 'description' => 'Press Cmd+Shift+P on the view page to quick-publish (only on unpublished posts)', 'url' => PostResource::getUrl('view', ['record' => $post]), 'resource' => 'Posts'] : null,
                 ['name' => 'Export action', 'description' => 'Click "Export" in the page header', 'url' => AuthorResource::getUrl('index'), 'resource' => 'Authors'],
                 ['name' => 'Import action', 'description' => 'Click "Import" in the page header', 'url' => BlogCategoryResource::getUrl('index'), 'resource' => 'Blog Categories'],
-                ['name' => 'Badge on action', 'description' => 'Dynamic count badge on action buttons — see "Leave Requests" in the page header', 'url' => EmployeeResource::getUrl('index'), 'resource' => 'Employees'],
+                ['name' => 'Badge on action', 'description' => 'Dynamic count badge on action buttons — see "Leave requests" in the page header', 'url' => EmployeeResource::getUrl('index'), 'resource' => 'Employees'],
                 $expense ? ['name' => 'Status workflow', 'description' => 'Actions shown depend on expense status — try a submitted expense\'s view page', 'url' => ExpenseResource::getUrl('view', ['record' => $expense]), 'resource' => 'Expenses'] : null,
             ])),
         ];
@@ -204,11 +208,12 @@ class FeaturesOverview extends Widget
                 ['name' => 'Navigation badges', 'description' => 'Live record counts on sidebar items', 'url' => OrderResource::getUrl('index'), 'resource' => 'Orders'],
                 $post ? ['name' => 'Sub-navigation', 'description' => 'See the tabs at the top switching between View, Edit, and Comments', 'url' => PostResource::getUrl('view', ['record' => $post]), 'resource' => 'Posts'] : null,
                 ['name' => 'Page tabs', 'description' => 'Filter table content with tab toggles', 'url' => EmployeeResource::getUrl('index'), 'resource' => 'Employees'],
+                ['name' => 'Deferred tab badges', 'description' => 'Status counts load after the page so tabs stay informative without delaying the table', 'url' => OrderResource::getUrl('index'), 'resource' => 'Orders'],
                 ['name' => 'Dashboard widgets', 'description' => 'See the stats, line charts, and order table on this page', 'url' => ShopDashboard::getUrl(), 'resource' => 'Shop'],
                 ['name' => 'Manage records', 'description' => 'Create, edit, and delete authors without leaving the list page', 'url' => AuthorResource::getUrl('index'), 'resource' => 'Authors'],
                 $product ? ['name' => 'Relation managers', 'description' => 'Scroll below the form to see the Comments relation manager', 'url' => ProductResource::getUrl('edit', ['record' => $product]), 'resource' => 'Products'] : null,
                 ['name' => 'Soft deletes', 'description' => 'See Restore & Force Delete in the edit page header, and TrashedFilter in filters', 'url' => OrderResource::getUrl('index'), 'resource' => 'Orders'],
-                ['name' => 'Global search', 'description' => 'Use the search bar (Cmd+K) in the top navigation', 'url' => ProductResource::getUrl('index'), 'resource' => 'Try it!'],
+                ['name' => 'Global search', 'description' => 'Open the top navigation search with Cmd+K or Ctrl+K', 'url' => ProductResource::getUrl('index'), 'resource' => 'Try it!'],
                 $post ? ['name' => 'Manage related records', 'description' => 'Dedicated page for child records — see the Comments tab in sub-navigation', 'url' => PostResource::getUrl('comments', ['record' => $post]), 'resource' => 'Posts'] : null,
             ])),
         ];

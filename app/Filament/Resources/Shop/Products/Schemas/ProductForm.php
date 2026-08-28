@@ -113,7 +113,7 @@ class ProductForm
                                     ->required(),
 
                                 TextInput::make('security_stock')
-                                    ->helperText('The safety stock is the limit stock for your products which alerts you if the product stock will soon be out of stock.')
+                                    ->helperText('The minimum quantity to keep before a low-stock warning is shown.')
                                     ->numeric()
                                     ->minValue(0)
                                     ->maxValue(18446744073709551615)
@@ -125,7 +125,7 @@ class ProductForm
                         Section::make('Shipping')
                             ->schema([
                                 Checkbox::make('backorder')
-                                    ->label('This product can be returned'),
+                                    ->label('Allow purchases when out of stock'),
 
                                 Checkbox::make('requires_shipping')
                                     ->label('This product will be shipped'),
@@ -140,7 +140,7 @@ class ProductForm
                             ->schema([
                                 Toggle::make('is_visible')
                                     ->label('Visibility')
-                                    ->helperText('This product will be hidden from all sales channels.')
+                                    ->helperText('Controls whether this product appears in sales channels.')
                                     ->default(true),
 
                                 DatePicker::make('published_at')

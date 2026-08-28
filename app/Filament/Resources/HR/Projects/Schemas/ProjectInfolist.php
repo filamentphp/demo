@@ -22,8 +22,10 @@ class ProjectInfolist
                             ->columns(2)
                             ->schema([
                                 TextEntry::make('name'),
-                                TextEntry::make('slug'),
+                                TextEntry::make('slug')
+                                    ->copyable(),
                                 TextEntry::make('department.name')
+                                    ->label('Department')
                                     ->placeholder('No department'),
                                 TextEntry::make('status')
                                     ->badge(),
@@ -54,9 +56,11 @@ class ProjectInfolist
                                     ->money('usd')
                                     ->placeholder('$0.00'),
                                 TextEntry::make('estimated_hours')
+                                    ->numeric()
                                     ->suffix(' hours')
                                     ->placeholder('0'),
                                 TextEntry::make('actual_hours')
+                                    ->numeric()
                                     ->suffix(' hours')
                                     ->placeholder('0'),
                             ]),

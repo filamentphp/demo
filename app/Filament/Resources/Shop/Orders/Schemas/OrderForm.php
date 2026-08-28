@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\Shop\Orders\Schemas;
 
-use App\Enums\CurrencyCode;
 use App\Enums\OrderStatus;
 use App\Filament\Resources\Shop\Products\ProductResource;
 use App\Forms\Components\AddressForm;
@@ -110,11 +109,6 @@ class OrderForm
             ToggleButtons::make('status')
                 ->inline()
                 ->options(OrderStatus::class)
-                ->required(),
-
-            Select::make('currency')
-                ->options(CurrencyCode::class)
-                ->searchable()
                 ->required(),
 
             AddressForm::make('address')

@@ -54,7 +54,7 @@ class ShopDashboard extends BaseDashboard
                             ->options(fn (): array => ProductCategory::pluck('name', 'id')->all())
                             ->searchable(),
                     ])
-                    ->columns(4)
+                    ->columns(['md' => 2, 'xl' => 4])
                     ->columnSpanFull(),
             ]);
     }

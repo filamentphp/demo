@@ -32,6 +32,7 @@ class OrdersTable
                 TextColumn::make('number')
                     ->searchable()
                     ->sortable()
+                    ->copyable()
                     ->weight(FontWeight::Medium),
                 TextColumn::make('customer.name')
                     ->searchable()
@@ -39,31 +40,27 @@ class OrdersTable
                     ->toggleable(),
                 TextColumn::make('status')
                     ->badge(),
-                TextColumn::make('currency')
-                    ->searchable()
-                    ->sortable()
-                    ->toggleable(),
                 TextColumn::make('total_price')
+                    ->money()
+                    ->alignEnd()
                     ->searchable()
                     ->sortable()
-                    ->summarize([
-                        Sum::make()
-                            ->money(),
-                    ]),
+                    ->summarize(Sum::make()->money()),
                 TextColumn::make('shipping_price')
                     ->label('Shipping cost')
+                    ->money()
+                    ->alignEnd()
                     ->searchable()
                     ->sortable()
                     ->toggleable()
-                    ->summarize([
-                        Sum::make()
-                            ->money(),
-                    ]),
+                    ->summarize(Sum::make()->money()),
                 TextColumn::make('created_at')
                     ->label('Order date')
                     ->date()
+                    ->sortable()
                     ->toggleable(),
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([
                 TrashedFilter::make(),
 

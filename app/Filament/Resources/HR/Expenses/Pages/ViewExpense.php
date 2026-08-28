@@ -94,7 +94,7 @@ class ViewExpense extends ViewRecord
                 }),
             Action::make('reimburse')
                 ->icon(Heroicon::Banknotes)
-                ->color('primary')
+                ->color('success')
                 ->visible(fn (Expense $record): bool => $record->status === ExpenseStatus::Approved)
                 ->requiresConfirmation()
                 ->action(function (Expense $record): void {

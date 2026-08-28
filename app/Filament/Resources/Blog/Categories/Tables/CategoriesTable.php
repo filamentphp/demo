@@ -28,16 +28,21 @@ class CategoriesTable
                     ->weight(FontWeight::Medium),
                 TextColumn::make('slug')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->copyable()
+                    ->toggleable(),
                 IconColumn::make('is_visible')
                     ->label('Visibility'),
                 TextColumn::make('updated_at')
                     ->label('Last modified at')
-                    ->date(),
+                    ->date()
+                    ->toggleable()
+                    ->toggledHiddenByDefault(),
             ])
             ->filters([
                 //
             ])
+            ->defaultSort('name')
             ->recordActions([
                 ActionGroup::make([
                     Action::make('toggle_visibility')

@@ -59,6 +59,7 @@ class CommentsRelationManager extends RelationManager
                 TextEntry::make('title')
                     ->placeholder('Untitled'),
                 TextEntry::make('customer.name')
+                    ->label('Customer')
                     ->placeholder('No customer'),
                 IconEntry::make('is_visible')
                     ->label('Public visibility'),
@@ -88,6 +89,7 @@ class CommentsRelationManager extends RelationManager
             ->filters([
                 //
             ])
+            ->defaultSort('created_at', 'desc')
             ->headerActions([
                 CreateAction::make()
                     ->after(function ($record): void {

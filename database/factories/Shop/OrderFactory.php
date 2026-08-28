@@ -2,7 +2,6 @@
 
 namespace Database\Factories\Shop;
 
-use App\Enums\CurrencyCode;
 use App\Models\Shop\Order;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -20,7 +19,6 @@ class OrderFactory extends Factory
     {
         return [
             'number' => 'OR' . $this->faker->unique()->randomNumber(6),
-            'currency' => $this->faker->randomElement(CurrencyCode::cases())->value,
             'total_price' => $this->faker->randomFloat(2, 100, 2000),
             'status' => $this->faker->randomElement([
                 // Realistic distribution: ~40% delivered, ~20% shipped, ~15% processing, ~15% new, ~10% cancelled

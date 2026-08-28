@@ -32,14 +32,17 @@ class DepartmentsTable
                     ->weight(FontWeight::Medium),
 
                 TextColumn::make('parent.name')
-                    ->placeholder('Top Level'),
+                    ->toggleable()
+                    ->placeholder('Top level'),
 
                 TextColumn::make('employees_count')
                     ->counts('employees')
-                    ->label('Headcount'),
+                    ->label('Headcount')
+                    ->alignEnd(),
 
                 TextColumn::make('budget')
                     ->money('usd')
+                    ->alignEnd()
                     ->sortable(),
 
                 ColorColumn::make('color')
@@ -49,6 +52,7 @@ class DepartmentsTable
                     ->label('Active')
                     ->boolean(),
             ])
+            ->defaultSort('name')
             ->recordActions([
                 ActionGroup::make([
                     EditAction::make(),

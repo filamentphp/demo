@@ -21,12 +21,13 @@ use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 use Illuminate\Support\Collection;
 
 class TasksTable
 {
-    public static function configure(Table $table): Table
+    public static function configure(Table $table, bool $projectScoped = false): Table
     {
         return $table
             ->columns([
@@ -34,15 +35,19 @@ class TasksTable
                     ->searchable()
                     ->sortable()
                     ->weight(FontWeight::Medium)
-                    ->limit(40),
+                    ->limit(40)
+                    ->tooltip(fn (?string $state): ?string => filled($state) && mb_strlen($state) > 40 ? $state : null),
 
-                TextColumn::make('project.name')
-                    ->searchable()
-                    ->sortable(),
+                ...($projectScoped ? [] : [
+                    TextColumn::make('project.name')
+                        ->searchable()
+                        ->sortable(),
+                ]),
 
                 TextColumn::make('assignee.name')
                     ->searchable()
                     ->sortable()
+                    ->toggleable()
                     ->placeholder('Unassigned'),
 
                 TextColumn::make('status')
@@ -53,12 +58,25 @@ class TasksTable
 
                 TextColumn::make('estimated_hours')
                     ->numeric(1)
+                    ->alignEnd()
                     ->sortable()
                     ->toggleable(),
 
                 TextColumn::make('due_date')
                     ->date()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(),
+            ])
+            ->defaultSort('created_at', 'desc')
+            ->groups([
+                ...($projectScoped ? [] : [
+                    Group::make('project.name')
+                        ->label('Project'),
+                ]),
+                Group::make('status'),
+                Group::make('priority'),
+                Group::make('assignee.name')
+                    ->label('Assignee'),
             ])
             ->filters([
                 SelectFilter::make('status')
@@ -67,8 +85,10 @@ class TasksTable
                 SelectFilter::make('priority')
                     ->options(TaskPriority::class),
 
-                SelectFilter::make('project')
-                    ->relationship('project', 'name'),
+                ...($projectScoped ? [] : [
+                    SelectFilter::make('project')
+                        ->relationship('project', 'name'),
+                ]),
 
                 SelectFilter::make('assignee')
                     ->relationship('assignee', 'name'),
@@ -90,7 +110,7 @@ class TasksTable
                         }),
                     Action::make('send_to_review')
                         ->icon(Heroicon::Eye)
-                        ->color('primary')
+                        ->color('info')
                         ->visible(fn (Task $record): bool => $record->status === TaskStatus::InProgress)
                         ->action(function (Task $record): void {
                             $record->update(['status' => TaskStatus::InReview]);
@@ -168,7 +188,7 @@ class TasksTable
             ->groupedBulkActions([
                 BulkAction::make('set_status')
                     ->icon(Heroicon::ArrowPathRoundedSquare)
-                    ->color('primary')
+                    ->color('gray')
                     ->schema([
                         ToggleButtons::make('status')
                             ->options(TaskStatus::class)
@@ -207,7 +227,7 @@ class TasksTable
                     }),
             ])
             ->recordClasses(fn (Task $record) => match (true) {
-                $record->status === TaskStatus::Completed => 'opacity-60',
+                $record->status === TaskStatus::Completed => null,
                 $record->due_date !== null && $record->due_date->isPast() => 'bg-danger-50 dark:bg-danger-950/50',
                 default => null,
             });

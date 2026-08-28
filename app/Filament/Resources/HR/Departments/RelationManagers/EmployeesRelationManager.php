@@ -24,10 +24,12 @@ class EmployeesRelationManager extends RelationManager
                     ->weight(FontWeight::Medium),
 
                 TextColumn::make('email')
-                    ->searchable(),
+                    ->searchable()
+                    ->copyable(),
 
                 TextColumn::make('job_title')
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(),
 
                 TextColumn::make('employment_type')
                     ->badge(),
@@ -35,6 +37,7 @@ class EmployeesRelationManager extends RelationManager
                 IconColumn::make('is_active')
                     ->label('Active')
                     ->boolean(),
-            ]);
+            ])
+            ->defaultSort('name');
     }
 }

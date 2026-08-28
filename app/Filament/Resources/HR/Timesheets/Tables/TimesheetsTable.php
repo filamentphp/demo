@@ -45,6 +45,7 @@ class TimesheetsTable
                 TextColumn::make('task.title')
                     ->searchable()
                     ->limit(30)
+                    ->tooltip(fn (?string $state): ?string => filled($state) && mb_strlen($state) > 30 ? $state : null)
                     ->toggleable()
                     ->placeholder('No task'),
 
@@ -55,6 +56,7 @@ class TimesheetsTable
 
                 TextColumn::make('hours')
                     ->numeric(1)
+                    ->alignEnd()
                     ->sortable()
                     ->summarize([
                         Sum::make()->label('Total'),
@@ -68,12 +70,14 @@ class TimesheetsTable
 
                 TextColumn::make('hourly_rate')
                     ->money('usd')
+                    ->alignEnd()
                     ->sortable()
                     ->toggleable()
                     ->copyable(),
 
                 TextColumn::make('total_cost')
                     ->money('usd')
+                    ->alignEnd()
                     ->sortable()
                     ->summarize(Sum::make()->money('usd')),
             ])
