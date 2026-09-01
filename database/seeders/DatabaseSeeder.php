@@ -32,7 +32,6 @@ use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -42,8 +41,6 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::raw('SET time_zone=\'+00:00\'');
-
         // +10% random variation so seeded counts aren't perfectly round
         $vary = fn (int $n): int => rand($n, (int) ceil($n * 1.1));
 
