@@ -1,0 +1,163 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+export DEBIAN_FRONTEND=noninteractive
+
+repository_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+run_step() {
+    local description="$1"
+
+    shift
+    printf '\n==> %s\n' "$description"
+    time "$@"
+}
+
+install_php() {
+    local php_packages=(
+        php8.4-bcmath
+        php8.4-cli
+        php8.4-curl
+        php8.4-gd
+        php8.4-intl
+        php8.4-mbstring
+        php8.4-mysql
+        php8.4-pgsql
+        php8.4-sqlite3
+        php8.4-xml
+        php8.4-zip
+    )
+    local missing_php_packages=()
+    local php_package
+
+    for php_package in "${php_packages[@]}"; do
+        if ! dpkg-query -W -f='${Status}' "$php_package" 2>/dev/null | grep -Fq 'install ok installed'; then
+            missing_php_packages+=("$php_package")
+        fi
+    done
+
+    if (( ${#missing_php_packages[@]} > 0 )); then
+        sudo --preserve-env=DEBIAN_FRONTEND apt-get update
+        sudo --preserve-env=DEBIAN_FRONTEND apt-get install -y --no-install-recommends apt-transport-https ca-certificates curl lsb-release
+
+        if ! dpkg-query -W -f='${Status}' debsuryorg-archive-keyring 2>/dev/null | grep -Fq 'install ok installed'; then
+            curl -fsSL https://packages.sury.org/debsuryorg-archive-keyring.deb -o /tmp/debsuryorg-archive-keyring.deb
+            sudo --preserve-env=DEBIAN_FRONTEND dpkg -i /tmp/debsuryorg-archive-keyring.deb
+            rm /tmp/debsuryorg-archive-keyring.deb
+        fi
+
+        if [[ ! -f /etc/apt/sources.list.d/php.sources ]]; then
+            sudo tee /etc/apt/sources.list.d/php.sources >/dev/null <<EOF
+Types: deb
+URIs: https://packages.sury.org/php/
+Suites: $(lsb_release -sc)
+Components: main
+Signed-By: /usr/share/keyrings/debsuryorg-archive-keyring.gpg
+EOF
+        fi
+
+        sudo --preserve-env=DEBIAN_FRONTEND apt-get update
+        sudo --preserve-env=DEBIAN_FRONTEND apt-get install -y --no-install-recommends "${missing_php_packages[@]}"
+    fi
+
+    sudo update-alternatives --set php /usr/bin/php8.4
+}
+
+install_composer() {
+    if command -v composer >/dev/null; then
+        local composer_version
+
+        composer_version="$(composer --version 2>/dev/null | sed -nE 's/^Composer version ([^ ]+).*/\1/p')"
+
+        if php -r 'exit(version_compare($argv[1], "2.8.0", ">=") ? 0 : 1);' "$composer_version"; then
+            return
+        fi
+    fi
+
+    local expected_checksum
+    local actual_checksum
+
+    expected_checksum="$(curl -fsSL https://composer.github.io/installer.sig)"
+    curl -fsSL https://getcomposer.org/installer -o /tmp/composer-setup.php
+    actual_checksum="$(php -r "echo hash_file('sha384', '/tmp/composer-setup.php');")"
+
+    if [[ "$expected_checksum" != "$actual_checksum" ]]; then
+        echo 'Composer installer checksum verification failed.' >&2
+        rm /tmp/composer-setup.php
+        return 1
+    fi
+
+    sudo php /tmp/composer-setup.php --quiet --install-dir=/usr/local/bin --filename=composer
+    rm /tmp/composer-setup.php
+}
+
+configure_portal_proxy() {
+    local excluded_path='/config/trustedproxy.php'
+
+    if ! grep -Fqx "$excluded_path" "$repository_root/.git/info/exclude" 2>/dev/null; then
+        printf '%s\n' "$excluded_path" >> "$repository_root/.git/info/exclude"
+    fi
+
+    if [[ -e "$repository_root/config/trustedproxy.php" ]]; then
+        return
+    fi
+
+    cat > "$repository_root/config/trustedproxy.php" <<'PHP'
+<?php
+
+return [
+    'proxies' => 'REMOTE_ADDR',
+];
+PHP
+}
+
+initialize_application() {
+    local database_was_created=false
+    local database_path="$repository_root/database/database.sqlite"
+    local initialization_marker="$repository_root/database/database.sqlite.initializing"
+
+    if [[ ! -f "$repository_root/.env" ]]; then
+        cp "$repository_root/.env.example" "$repository_root/.env"
+    fi
+
+    if [[ -e "$initialization_marker" ]]; then
+        printf 'Removing the incompletely initialized demo database.\n'
+        rm -f "$database_path"
+    fi
+
+    if [[ ! -s "$database_path" ]]; then
+        mkdir -p "$repository_root/database"
+        touch "$initialization_marker"
+        touch "$database_path"
+        database_was_created=true
+    fi
+
+    if ! grep -Eq '^APP_KEY=base64:.+' "$repository_root/.env"; then
+        php "$repository_root/artisan" key:generate --force
+    fi
+
+    if [[ "$database_was_created" == true ]]; then
+        php "$repository_root/artisan" migrate --force
+        php "$repository_root/artisan" db:seed --force
+        rm "$initialization_marker"
+    else
+        php "$repository_root/artisan" migrate --force
+    fi
+
+    if [[ ! -L "$repository_root/public/storage" ]]; then
+        php "$repository_root/artisan" storage:link
+    fi
+}
+
+cd "$repository_root"
+
+run_step 'Installing PHP 8.4 and extensions' install_php
+run_step 'Installing Composer' install_composer
+run_step 'Installing Composer dependencies' composer install --prefer-dist --no-interaction
+run_step 'Installing Node.js dependencies' npm ci --ignore-scripts
+run_step 'Building frontend assets' npm run build
+run_step 'Configuring the demo portal proxy' configure_portal_proxy
+run_step 'Initializing the Laravel application' initialize_application
+
+printf '\nOrb setup complete.\n'
