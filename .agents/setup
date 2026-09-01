@@ -114,14 +114,22 @@ PHP
 
 initialize_application() {
     local database_was_created=false
+    local database_path="$repository_root/database/database.sqlite"
+    local initialization_marker="$repository_root/database/database.sqlite.initializing"
 
     if [[ ! -f "$repository_root/.env" ]]; then
         cp "$repository_root/.env.example" "$repository_root/.env"
     fi
 
-    if [[ ! -s "$repository_root/database/database.sqlite" ]]; then
+    if [[ -e "$initialization_marker" ]]; then
+        printf 'Removing the incompletely initialized demo database.\n'
+        rm -f "$database_path"
+    fi
+
+    if [[ ! -s "$database_path" ]]; then
         mkdir -p "$repository_root/database"
-        touch "$repository_root/database/database.sqlite"
+        touch "$initialization_marker"
+        touch "$database_path"
         database_was_created=true
     fi
 
@@ -132,6 +140,7 @@ initialize_application() {
     if [[ "$database_was_created" == true ]]; then
         php "$repository_root/artisan" migrate --force
         php "$repository_root/artisan" db:seed --force
+        rm "$initialization_marker"
     else
         php "$repository_root/artisan" migrate --force
     fi
