@@ -3,6 +3,7 @@
 namespace App\Models\Shop;
 
 use App\Enums\CurrencyCode;
+use App\Enums\PaymentMethod;
 use Database\Factories\Shop\PaymentFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -19,6 +20,7 @@ class Payment extends Model
 
     protected $casts = [
         'currency' => CurrencyCode::class,
+        'method' => PaymentMethod::class,
     ];
 
     /** @return BelongsTo<Order, $this> */

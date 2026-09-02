@@ -102,7 +102,6 @@ class PaymentsRelationManager extends RelationManager
                             ->sortable(),
 
                         TextColumn::make('method')
-                            ->formatStateUsing(fn ($state) => Str::headline($state))
                             ->sortable(),
                     ]),
             ])
