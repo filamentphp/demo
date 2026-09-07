@@ -24,7 +24,9 @@ it('describes the theme choices and desktop-only density change', function (): v
     $this->withoutVite();
 
     $this->view('live-demo.toolbar')
-        ->assertSee('Official themes. Try them right here.')
+        ->assertSee('Switch theme')
+        ->assertSee('Filament themes')
+        ->assertSee('Choose a new look, a denser layout, or both.')
         ->assertSee('Default')
         ->assertSee('Precise & technical')
         ->assertSee('Warm & welcoming')

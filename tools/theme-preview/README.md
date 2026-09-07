@@ -43,7 +43,7 @@ On a caught installation failure, source files and both Composer manifests are r
 
 ## Preview behavior
 
-Fresh sessions use Stock without Compact, with “Explore themes” collapsed. Choose Stock, Sharp, Soft or Noir independently of Compact and Filament's light/dark preference: eight CSS hosts, sixteen appearance states. Only one host loads. CSS imports the installed `vendor/filament/*-theme` packages, with the layer declaration before Filament, then personality, then Compact.
+Fresh sessions use Stock without Compact, with “Switch theme” collapsed. Choose Stock, Sharp, Soft or Noir independently of Compact and Filament's light/dark preference: eight CSS hosts, sixteen appearance states. Only one host loads. CSS imports the installed `vendor/filament/*-theme` packages, with the layer declaration before Filament, then personality, then Compact.
 
 The amber circular launcher reveals its label on mouse hover or keyboard focus. It opens a native browser popover containing theme cards, a compact-layout switch and Light/Dark segments, with a separate close button. Opening/closing works even before the preview script loads; Escape and outside clicks also dismiss it. Native popover support is required (current Chrome, Firefox and Safari). Reduced-motion preferences suppress transitions, and the launcher stays clear of Amp's feedback bubble when present. Closing the panel remains respected during SPA navigation.
 

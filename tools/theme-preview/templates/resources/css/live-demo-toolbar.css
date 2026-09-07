@@ -100,7 +100,7 @@ body:has(#amp-portal-review-host) .live-demo-launcher {
 
 .live-demo-launcher:focus-visible .live-demo-launcher__label {
     max-width: 10rem;
-    margin-left: 0.625rem;
+    margin-right: 0.625rem;
     opacity: 1;
 }
 
@@ -114,7 +114,7 @@ body:has(#amp-portal-review-host) .live-demo-launcher {
 
     .live-demo-launcher:hover .live-demo-launcher__label {
         max-width: 10rem;
-        margin-left: 0.625rem;
+        margin-right: 0.625rem;
         opacity: 1;
     }
 }

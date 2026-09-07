@@ -12,10 +12,10 @@
         popovertarget="live-demo-toolbar-controls"
         popovertargetaction="toggle"
         data-live-demo-toolbar-toggle
-        aria-label="Explore themes"
+        aria-label="Switch theme"
     >
+        <span class="live-demo-launcher__label" aria-hidden="true">Switch theme</span>
         <x-filament::icon icon="heroicon-o-swatch" class="live-demo-launcher__icon" />
-        <span class="live-demo-launcher__label" aria-hidden="true">Explore themes</span>
     </button>
 
     <section
@@ -28,8 +28,8 @@
     >
         <header class="live-demo-studio__header">
             <div>
-                <h2 id="live-demo-studio-title">Find your Filament.</h2>
-                <p>Official themes. Try them right here.</p>
+                <h2 id="live-demo-studio-title">Filament themes</h2>
+                <p>Choose a new look, a denser layout, or both.</p>
             </div>
             <button
                 type="button"

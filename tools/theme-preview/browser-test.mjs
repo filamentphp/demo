@@ -126,6 +126,25 @@ try {
         (await launcher.boundingBox()).width > circle.width + 80,
         'hover smoothly reveals the label',
     )
+    assert.equal(
+        await page.$eval('[data-live-demo-toolbar-toggle]', (el) =>
+            el.getAttribute('aria-label'),
+        ),
+        'Switch theme',
+    )
+    assert.equal(
+        await page.evaluate(
+            () =>
+                document
+                    .querySelector('.live-demo-launcher__label')
+                    .getBoundingClientRect().right <
+                document
+                    .querySelector('.live-demo-launcher__icon')
+                    .getBoundingClientRect().left,
+        ),
+        true,
+        'trigger text sits left of its icon',
+    )
     await page.screenshot({ path: `${artifacts}/studio-hover.png` })
     await openPanel()
     await page.screenshot({ path: `${artifacts}/studio-light.png` })
