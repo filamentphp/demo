@@ -6,7 +6,7 @@
 @vite(['resources/css/live-demo-toolbar.css', 'resources/js/live-demo.js'])
 <link rel="stylesheet" href="https://fonts.bunny.net/css?family=albert-sans:400,500,600,700|lora:500,600&display=swap" />
 
-<aside class="live-demo-toolbar" data-live-demo-toolbar data-preview-theme="{{ $selection['theme'] }}" data-preview-compact="{{ $selection['compact'] ? 'true' : 'false' }}" aria-label="Theme preview">
+<aside class="live-demo-toolbar" data-live-demo-toolbar data-live-demo-dark="{{ session()->pull('live-demo.dark', false) ? 'true' : 'false' }}" data-preview-theme="{{ $selection['theme'] }}" data-preview-compact="{{ $selection['compact'] ? 'true' : 'false' }}" aria-label="Theme preview">
     <button
         class="live-demo-launcher"
         type="button"

@@ -668,6 +668,29 @@ try {
     assert.equal(await other.$('[data-live-demo-toolbar]'), null)
     await isolated.close()
 
+    await goto('/?theme=noir&compact=1')
+    assert.equal(new URL(page.url()).pathname, '/')
+    assert.equal(
+        await page.evaluate(() =>
+            document.documentElement.classList.contains('dark'),
+        ),
+        true,
+        'authenticated Noir root link selects dark mode',
+    )
+    await openPanel()
+    await page.click('[data-live-demo-scheme="light"]')
+    await Promise.all([
+        page.waitForNavigation({ waitUntil: 'networkidle0' }),
+        page.click('[data-live-demo-compact]'),
+    ])
+    assert.equal(
+        await page.evaluate(() =>
+            document.documentElement.classList.contains('dark'),
+        ),
+        false,
+        'Compact changes retain a manually selected light scheme',
+    )
+
     const firstVisit = await browser.createBrowserContext()
     const visitor = await firstVisit.newPage()
     await visitor.goto(new URL('/?theme=sharp&compact=1', base).href, {
@@ -693,11 +716,30 @@ try {
         waitUntil: 'networkidle0',
     })
     assert.equal(
+        await visitor.evaluate(
+            () =>
+                document.documentElement.classList.contains('dark') &&
+                localStorage.getItem('theme') === 'dark',
+        ),
+        true,
+        'Noir root link enables dark mode after login redirect',
+    )
+    assert.equal(
         await visitor.$eval('[data-live-demo-toolbar-controls]', (el) =>
             el.matches(':popover-open'),
         ),
         false,
         'returning visitor can select a combo without reopening',
+    )
+    await visitor.click('[data-live-demo-toolbar-toggle]')
+    await visitor.click('[data-live-demo-scheme="light"]')
+    await visitor.reload({ waitUntil: 'networkidle0' })
+    assert.equal(
+        await visitor.evaluate(() =>
+            document.documentElement.classList.contains('dark'),
+        ),
+        false,
+        'ordinary login reload preserves manually selected light mode',
     )
     await firstVisit.close()
 

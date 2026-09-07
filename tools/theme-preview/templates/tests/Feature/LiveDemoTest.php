@@ -227,6 +227,26 @@ it('does not reopen for a returning session or a persisted legacy expanded flag'
         ->assertSessionHas('live-demo.selection', ['theme' => 'noir', 'compact' => false]);
 });
 
+it('carries a Noir link dark-mode hint through login then consumes it', function (): void {
+    $this->withoutVite();
+    $this->get('/?theme=noir&compact=1')->assertRedirect();
+    $this->get('/login')
+        ->assertOk()
+        ->assertSee('data-live-demo-dark="true"', false)
+        ->assertSessionMissing('live-demo.dark');
+    $this->get('/login')
+        ->assertOk()
+        ->assertSee('data-live-demo-dark="false"', false);
+});
+
+it('does not force dark mode merely because Noir is saved', function (): void {
+    $this->withoutVite();
+    $this->withSession(['live-demo.selection' => ['theme' => 'noir', 'compact' => true]])
+        ->get('/login?theme[]=noir')
+        ->assertOk()
+        ->assertSee('data-live-demo-dark="false"', false);
+});
+
 it('keeps the second application panel stock', function (): void {
     $panel = app('filament')->getPanel('app');
 

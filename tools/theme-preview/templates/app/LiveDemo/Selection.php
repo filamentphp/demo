@@ -33,6 +33,7 @@ final class Selection
             if (in_array($theme, ['stock', 'sharp', 'soft', 'noir'], true)) {
                 $selection['theme'] = $theme;
                 $selection['expanded'] = $selection['expanded'] || $isFirstVisit;
+                $request->session()->put('live-demo.dark', $theme === 'noir');
             }
             if (in_array($compact, ['0', '1'], true)) {
                 $selection['compact'] = $compact === '1';

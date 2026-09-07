@@ -92,6 +92,18 @@ const initializeToolbar = () => {
     const controls = document.querySelector('[data-live-demo-toolbar-controls]')
     if (!controls) return
 
+    const toolbar = controls.closest(toolbarSelector)
+    if (toolbar.dataset.liveDemoDark === 'true') {
+        delete toolbar.dataset.liveDemoDark
+        if (sessionStorage.getItem('live-demo.reopen') !== location.href) {
+            localStorage.setItem('theme', 'dark')
+            document.documentElement.classList.add('dark')
+            window.dispatchEvent(
+                new CustomEvent('theme-changed', { detail: 'dark' }),
+            )
+        }
+    }
+
     if (controls.matches(':popover-open')) state.panelOpen = true
     state.panelOpen ??=
         controls.dataset.liveDemoOpen === 'true' ||
