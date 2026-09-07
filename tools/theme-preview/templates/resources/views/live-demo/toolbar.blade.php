@@ -1,5 +1,6 @@
 @php
     $selection = \App\LiveDemo\Selection::current();
+    session()->forget('live-demo.open');
 @endphp
 
 @vite(['resources/css/live-demo-toolbar.css', 'resources/js/live-demo.js'])
@@ -31,31 +32,29 @@
                 <h2 id="live-demo-studio-title">Filament themes</h2>
                 <p>Choose a new look, a denser layout, or both.</p>
             </div>
-            <button
-                type="button"
-                class="live-demo-studio__close fi-icon-btn"
+            <x-filament::icon-button
+                color="gray"
+                icon="heroicon-m-x-mark"
+                :icon-alias="\App\Filament\DemoIconAlias::THEME_PREVIEW_CLOSE"
+                class="live-demo-studio__close"
                 popovertarget="live-demo-toolbar-controls"
                 popovertargetaction="hide"
                 data-live-demo-close
-                aria-label="Close theme preview"
-            >
-                <x-filament::icon :alias="\App\Filament\DemoIconAlias::THEME_PREVIEW_CLOSE" icon="heroicon-m-x-mark" />
-            </button>
+                label="Close theme preview"
+            />
         </header>
 
         <div class="live-demo-studio__body">
             <fieldset class="live-demo-appearance">
                 <legend>Color scheme</legend>
-                <div class="live-demo-appearance__options" role="group" aria-label="Color scheme">
-                    <button type="button" data-live-demo-scheme="light" aria-pressed="false">
-                        <x-filament::icon :alias="\App\Filament\DemoIconAlias::THEME_PREVIEW_LIGHT" icon="heroicon-o-sun" />
+                <x-filament::tabs class="grid w-full grid-cols-2" label="Color scheme" role="group">
+                    <x-filament::tabs.item data-live-demo-scheme="light" aria-pressed="false" :icon="\Filament\Support\Facades\FilamentIcon::resolve(\App\Filament\DemoIconAlias::THEME_PREVIEW_LIGHT) ?? 'heroicon-o-sun'">
                         Light
-                    </button>
-                    <button type="button" data-live-demo-scheme="dark" aria-pressed="false">
-                        <x-filament::icon :alias="\App\Filament\DemoIconAlias::THEME_PREVIEW_DARK" icon="heroicon-o-moon" />
+                    </x-filament::tabs.item>
+                    <x-filament::tabs.item data-live-demo-scheme="dark" aria-pressed="false" :icon="\Filament\Support\Facades\FilamentIcon::resolve(\App\Filament\DemoIconAlias::THEME_PREVIEW_DARK) ?? 'heroicon-o-moon'">
                         Dark
-                    </button>
-                </div>
+                    </x-filament::tabs.item>
+                </x-filament::tabs>
             </fieldset>
 
             <fieldset class="live-demo-studio__themes">
@@ -79,14 +78,13 @@
                 </div>
             </fieldset>
 
-            <label class="live-demo-density">
+            <div class="live-demo-density">
                 <span>
-                    <span class="live-demo-studio__label">Add Compact <span class="live-demo-density__price">$29 USD</span></span>
-                    <span class="live-demo-studio__hint">More room on desktop. Same spacing on mobile.</span>
+                    <label for="live-demo-compact" class="live-demo-studio__label">Add Compact <span class="live-demo-density__price">$29 USD</span></label>
+                    <span id="live-demo-compact-hint" class="live-demo-studio__hint">More room on desktop. Same spacing on mobile.</span>
                 </span>
-                <input type="checkbox" role="switch" data-live-demo-compact @checked($selection['compact']) />
-                <span class="live-demo-density__switch" aria-hidden="true"></span>
-            </label>
+                <x-filament::toggle id="live-demo-compact" :state="$selection['compact'] ? 'true' : 'false'" data-live-demo-compact aria-describedby="live-demo-compact-hint" />
+            </div>
 
             <div class="live-demo-shop">
                 <a href="https://filamentphp.com/themes" target="_blank" rel="noopener" class="live-demo-shop__link" aria-label="Explore themes & pricing (opens in a new tab)">

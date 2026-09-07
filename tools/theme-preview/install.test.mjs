@@ -270,6 +270,9 @@ test('retains stock Vite inputs and generates CSS for all eight theme hosts', ()
             /vendor\/filament\/filament\/resources\/css\/theme\.css/,
         )
         assert.match(css, /@source '\.\.\/\.\.\/\.\.\/app\/Filament\/\*\*\/\*'/)
+        assert.ok(
+            css.includes("@source '../../../resources/views/live-demo/**/*';"),
+        )
     }
     assert.equal(
         (

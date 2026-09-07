@@ -18,11 +18,12 @@ final class Selection
         }
 
         $saved = $request->session()->get('live-demo.selection', []);
+        $isFirstVisit = ! $request->session()->has('live-demo.selection');
         if (is_array($saved) && in_array($saved['theme'] ?? null, ['stock', 'sharp', 'soft', 'noir'], true)) {
             $selection = [
                 'theme' => $saved['theme'],
                 'compact' => ($saved['compact'] ?? false) === true,
-                'expanded' => ($saved['expanded'] ?? false) === true,
+                'expanded' => $request->session()->get('live-demo.open', false) === true,
             ];
         }
 
@@ -31,15 +32,22 @@ final class Selection
             $compact = $request->query('compact');
             if (in_array($theme, ['stock', 'sharp', 'soft', 'noir'], true)) {
                 $selection['theme'] = $theme;
-                $selection['expanded'] = true;
+                $selection['expanded'] = $selection['expanded'] || $isFirstVisit;
             }
             if (in_array($compact, ['0', '1'], true)) {
                 $selection['compact'] = $compact === '1';
-                $selection['expanded'] = true;
+                $selection['expanded'] = $selection['expanded'] || $isFirstVisit;
             }
         }
 
-        $request->session()->put('live-demo.selection', $selection);
+        if ($selection['expanded']) {
+            $request->session()->put('live-demo.open', true);
+        }
+
+        $request->session()->put('live-demo.selection', [
+            'theme' => $selection['theme'],
+            'compact' => $selection['compact'],
+        ]);
         $request->attributes->set('live-demo.selection', $selection);
 
         return $selection;

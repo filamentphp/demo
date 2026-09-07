@@ -32,7 +32,10 @@ const goto = (path) =>
 const selection = () =>
     page.evaluate(() => ({
         theme: document.querySelector('[data-live-demo-theme]:checked').value,
-        compact: document.querySelector('[data-live-demo-compact]').checked,
+        compact:
+            document
+                .querySelector('[data-live-demo-compact]')
+                .getAttribute('aria-checked') === 'true',
         hosts: [...document.querySelectorAll('link[rel=stylesheet]')]
             .map((el) => el.href)
             .filter((url) => /\/(stock|sharp|soft|noir)(-|\.)/.test(url)),
@@ -66,7 +69,11 @@ const assertOverlayDoesNotExtendPage = async () => {
         height: document.documentElement.scrollHeight,
         padding: getComputedStyle(document.body).paddingBottom,
     }))
-    assert.equal(closed.padding, '0px', 'closed switcher adds no bottom padding')
+    assert.equal(
+        closed.padding,
+        '0px',
+        'closed switcher adds no bottom padding',
+    )
     await openPanel()
     assert.deepEqual(
         await page.evaluate(() => ({
@@ -210,12 +217,46 @@ try {
             const result = await selection()
             assert.equal(result.theme, theme)
             assert.equal(result.compact, compact)
+            assert.equal(
+                await page.$eval('[data-live-demo-compact]', (el) =>
+                    el.matches('button.fi-toggle[role="switch"]'),
+                ),
+                true,
+            )
+            assert.equal(
+                await page.$$eval(
+                    '.live-demo-appearance .fi-tabs-item',
+                    (els) => els.length,
+                ),
+                2,
+            )
+            assert.equal(
+                await page.$eval(
+                    '.live-demo-appearance .fi-tabs',
+                    (el) => getComputedStyle(el).display,
+                ),
+                'grid',
+            )
+            assert.equal(
+                await page.$$eval(
+                    '.live-demo-appearance .fi-tabs-item',
+                    (els) =>
+                        Math.abs(
+                            els[0].getBoundingClientRect().width -
+                                els[1].getBoundingClientRect().width,
+                        ) < 1,
+                ),
+                true,
+                'color scheme tabs fill equal columns',
+            )
             for (const selector of [
                 '.fi-sidebar a[href$="/shop/products"] svg',
                 '.live-demo-launcher svg',
             ]) {
                 assert.equal(
-                    await page.$eval(selector, (el) => el.getAttribute('viewBox')),
+                    await page.$eval(selector, (el) =>
+                        el.getAttribute('viewBox'),
+                    ),
                     theme === 'sharp' ? '0 -960 960 960' : '0 0 24 24',
                     'demo aliases use Material Sharp only in Sharp',
                 )
@@ -284,6 +325,15 @@ try {
                         dark,
                     {},
                     scheme === 'dark',
+                )
+                assert.equal(
+                    await page.$eval(
+                        `[data-live-demo-scheme="${scheme}"]`,
+                        (el) =>
+                            el.classList.contains('fi-active') &&
+                            el.getAttribute('aria-pressed') === 'true',
+                    ),
+                    true,
                 )
                 await page.evaluate(() => document.fonts.ready)
                 await new Promise((resolve) => setTimeout(resolve, 300))
@@ -514,6 +564,11 @@ try {
         'normal navigation stays SPA',
     )
     assert.equal((await selection()).theme, 'soft')
+    assert.equal(
+        await panelIsOpen(),
+        false,
+        'normal SPA navigation does not reopen the picker',
+    )
     await openPanel()
     await page.click('[data-live-demo-close]')
     await page.click('[data-live-demo-toolbar-toggle]')
@@ -524,6 +579,11 @@ try {
     )
 
     await goto('/shop/products/create')
+    assert.equal(
+        await panelIsOpen(),
+        false,
+        'normal full navigation does not reopen the picker',
+    )
     await page.type('input[id="form.name"]', 'Unsaved preview product')
     await openPanel()
     await page.waitForNetworkIdle()
@@ -587,14 +647,18 @@ try {
     })
     assert.match((await identity(other)).font, /Inter Variable/)
     assert.equal(
-        await other.$eval('.live-demo-launcher svg', (el) => el.getAttribute('viewBox')),
+        await other.$eval('.live-demo-launcher svg', (el) =>
+            el.getAttribute('viewBox'),
+        ),
         '0 -960 960 960',
     )
     await goto('/shop/products?theme=soft&compact=1')
     assert.notEqual((await identity(page)).primary, stockIdentity.primary)
     assert.match((await identity(page)).font, /Albert Sans/)
     assert.equal(
-        await page.$eval('.live-demo-launcher svg', (el) => el.getAttribute('viewBox')),
+        await page.$eval('.live-demo-launcher svg', (el) =>
+            el.getAttribute('viewBox'),
+        ),
         '0 0 24 24',
         'Sharp demo icons do not leak between sessions on the same worker',
     )
@@ -603,6 +667,39 @@ try {
     })
     assert.equal(await other.$('[data-live-demo-toolbar]'), null)
     await isolated.close()
+
+    const firstVisit = await browser.createBrowserContext()
+    const visitor = await firstVisit.newPage()
+    await visitor.goto(new URL('/?theme=sharp&compact=1', base).href, {
+        waitUntil: 'networkidle0',
+    })
+    assert.equal(new URL(visitor.url()).pathname, '/login')
+    assert.equal(
+        await visitor.$eval('[data-live-demo-toolbar-controls]', (el) =>
+            el.matches(':popover-open'),
+        ),
+        true,
+        'first-visit theme link opens through login redirect',
+    )
+    await visitor.reload({ waitUntil: 'networkidle0' })
+    assert.equal(
+        await visitor.$eval('[data-live-demo-toolbar-controls]', (el) =>
+            el.matches(':popover-open'),
+        ),
+        false,
+        'reloading does not reopen the picker',
+    )
+    await visitor.goto(new URL('/?theme=noir&compact=0', base).href, {
+        waitUntil: 'networkidle0',
+    })
+    assert.equal(
+        await visitor.$eval('[data-live-demo-toolbar-controls]', (el) =>
+            el.matches(':popover-open'),
+        ),
+        false,
+        'returning visitor can select a combo without reopening',
+    )
+    await firstVisit.close()
 
     await goto('/shop/products?theme=soft&compact=1')
     await openPanel()

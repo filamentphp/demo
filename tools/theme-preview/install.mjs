@@ -200,7 +200,10 @@ export function install(
                     "@import '../../../vendor/filament/compact-theme/resources/css/theme.css';",
                 )
             const path = `resources/css/live-demo/${theme}${compact ? '-compact' : ''}.css`
-            add(path, `${imports.join('\n')}\n\n${sources}\n`)
+            add(
+                path,
+                `${imports.join('\n')}\n\n${sources}\n@source '../../../resources/views/live-demo/**/*';\n`,
+            )
             inputs.push(path)
         }
     }

@@ -153,10 +153,10 @@ it('ignores invalid query arrays and values', function (): void {
         'compact' => true,
         'expanded' => true,
     ]])->getJson('/_live-demo-test?theme[]=sharp&compact[]=0')
-        ->assertJsonPath('selection', ['theme' => 'soft', 'compact' => true, 'expanded' => true]);
+        ->assertJsonPath('selection', ['theme' => 'soft', 'compact' => true, 'expanded' => false]);
 
     $this->getJson('/_live-demo-test?theme=unknown&compact=yes')
-        ->assertJsonPath('selection', ['theme' => 'soft', 'compact' => true, 'expanded' => true]);
+        ->assertJsonPath('selection', ['theme' => 'soft', 'compact' => true, 'expanded' => false]);
 
     $this->withSession(['live-demo.selection' => ['theme' => ['sharp'], 'compact' => true]])
         ->getJson('/_live-demo-test')
@@ -202,6 +202,29 @@ it('memoizes selection on the current request', function (): void {
         $this->assertSame($first, $request->attributes->get('live-demo.selection'));
         $this->assertSame('resources/css/live-demo/sharp.css', $previewPanel->getViteTheme());
     });
+});
+
+it('opens a first-visit theme link through the login redirect only once', function (): void {
+    $this->withoutVite();
+    $this->get('/?theme=sharp&compact=1')->assertRedirect();
+    $this->get('/login')
+        ->assertOk()
+        ->assertSee('data-live-demo-open="true"', false)
+        ->assertSee('fi-tabs-item', false)
+        ->assertSee('fi-toggle', false)
+        ->assertSessionMissing('live-demo.open');
+    $this->get('/login?theme=sharp&compact=1')
+        ->assertOk()
+        ->assertSee('data-live-demo-open="false"', false);
+});
+
+it('does not reopen for a returning session or a persisted legacy expanded flag', function (): void {
+    $this->withoutVite();
+    $this->withSession(['live-demo.selection' => ['theme' => 'soft', 'compact' => true, 'expanded' => true]])
+        ->get('/login?theme=noir&compact=0')
+        ->assertOk()
+        ->assertSee('data-live-demo-open="false"', false)
+        ->assertSessionHas('live-demo.selection', ['theme' => 'noir', 'compact' => false]);
 });
 
 it('keeps the second application panel stock', function (): void {

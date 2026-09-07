@@ -20,7 +20,10 @@ const navigateWithSelection = (changes) => {
     const theme = toolbar?.querySelector(
         '[data-live-demo-theme]:checked',
     )?.value
-    const compact = toolbar?.querySelector('[data-live-demo-compact]')?.checked
+    const compact =
+        toolbar
+            ?.querySelector('[data-live-demo-compact]')
+            ?.getAttribute('aria-checked') === 'true'
 
     if (theme) {
         url.searchParams.set('theme', theme)
@@ -52,6 +55,7 @@ const navigateWithSelection = (changes) => {
         .querySelector('[data-live-demo-toolbar-controls]')
         .setAttribute('aria-busy', 'true')
     toolbar.querySelector('[data-live-demo-loading]').hidden = false
+    sessionStorage.setItem('live-demo.reopen', url.href)
     window.location.assign(url.href)
 
     return true
@@ -73,6 +77,10 @@ const currentScheme = () => {
 
 const updateSchemeControls = (scheme = currentScheme()) => {
     document.querySelectorAll('[data-live-demo-scheme]').forEach((button) => {
+        button.classList.toggle(
+            'fi-active',
+            button.dataset.liveDemoScheme === scheme,
+        )
         button.setAttribute(
             'aria-pressed',
             String(button.dataset.liveDemoScheme === scheme),
@@ -85,7 +93,10 @@ const initializeToolbar = () => {
     if (!controls) return
 
     if (controls.matches(':popover-open')) state.panelOpen = true
-    state.panelOpen ??= controls.dataset.liveDemoOpen === 'true'
+    state.panelOpen ??=
+        controls.dataset.liveDemoOpen === 'true' ||
+        sessionStorage.getItem('live-demo.reopen') === location.href
+    sessionStorage.removeItem('live-demo.reopen')
     if (state.panelOpen && !controls.matches(':popover-open')) {
         controls.dataset.liveDemoInstant = 'true'
         controls.showPopover()
@@ -129,6 +140,21 @@ if (!state.listenersInstalled) {
         state.formIsDirty = false
     })
 
+    document.addEventListener(
+        'click',
+        (event) => {
+            const toggle = event.target.closest?.('[data-live-demo-compact]')
+            if (!toggle) return
+            event.preventDefault()
+            event.stopImmediatePropagation()
+            navigateWithSelection({
+                compact:
+                    toggle.getAttribute('aria-checked') === 'true' ? '0' : '1',
+            })
+        },
+        true,
+    )
+
     document.addEventListener('click', (event) => {
         const schemeButton = event.target.closest?.('[data-live-demo-scheme]')
 
@@ -152,22 +178,6 @@ if (!state.listenersInstalled) {
                         input.checked = input.defaultChecked
                     })
             }
-
-            return
-        }
-
-        const compactCheckbox = event.target.closest?.(
-            '[data-live-demo-compact]',
-        )
-
-        if (compactCheckbox) {
-            if (
-                !navigateWithSelection({
-                    compact: compactCheckbox.checked ? '1' : '0',
-                })
-            ) {
-                compactCheckbox.checked = !compactCheckbox.checked
-            }
         }
     })
 
@@ -178,6 +188,9 @@ if (!state.listenersInstalled) {
     document.addEventListener('alpine:initialized', () =>
         updateSchemeControls(),
     )
+    document.addEventListener('livewire:navigating', () => {
+        state.panelOpen = false
+    })
     document.addEventListener('livewire:navigated', initializeToolbar)
     document.addEventListener('DOMContentLoaded', initializeToolbar)
 

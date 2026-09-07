@@ -12,11 +12,9 @@ body:has(#amp-portal-review-host) .live-demo-launcher {
 
 .live-demo-toolbar {
     --studio-bg: #fff;
-    --studio-subtle: #fafafa;
     --studio-text: #18181b;
     --studio-muted: #71717a;
     --studio-border: #e4e4e7;
-    --studio-hover: #f4f4f5;
     --studio-amber: #f59e0b;
     --studio-selected: #fffbeb;
     --studio-radius: 0.75rem;
@@ -34,17 +32,14 @@ body:has(#amp-portal-review-host) .live-demo-launcher {
 
 .dark .live-demo-toolbar {
     --studio-bg: #18181b;
-    --studio-subtle: #1f1f23;
     --studio-text: #fafafa;
     --studio-muted: #a1a1aa;
     --studio-border: #3f3f46;
-    --studio-hover: #27272a;
     --studio-selected: #322719;
 }
 
 .live-demo-toolbar button {
     cursor: pointer;
-    font: inherit;
 }
 
 .live-demo-toolbar :focus-visible {
@@ -53,6 +48,7 @@ body:has(#amp-portal-review-host) .live-demo-launcher {
 }
 
 .live-demo-launcher {
+    font: inherit;
     display: flex;
     height: 3.5rem;
     min-width: 3.5rem;
@@ -182,28 +178,9 @@ body:has(#amp-portal-review-host) .live-demo-launcher {
 }
 
 .live-demo-studio__close {
-    display: grid;
     align-self: flex-start;
-    width: 2rem;
-    height: 2rem;
     flex: none;
     margin: 0 0 0 auto;
-    place-items: center;
-    border: 0;
-    border-radius: 0.5rem;
-    background: transparent;
-    color: var(--studio-muted);
-}
-
-.live-demo-studio__close:hover {
-    background: var(--studio-hover);
-    color: var(--studio-text);
-}
-
-.live-demo-studio__close svg,
-.live-demo-appearance svg {
-    width: 1.125rem;
-    height: 1.125rem;
 }
 
 .live-demo-studio__body {
@@ -362,81 +339,6 @@ body:has(#amp-portal-review-host) .live-demo-launcher {
     border-block: 1px solid var(--studio-border);
 }
 
-.live-demo-density input {
-    position: absolute;
-    right: 0;
-    width: 2.25rem;
-    height: 1.25rem;
-    margin: 0;
-    opacity: 0;
-    cursor: pointer;
-}
-
-.live-demo-density__switch {
-    width: 2.25rem;
-    height: 1.25rem;
-    flex: none;
-    padding: 0.125rem;
-    border-radius: 9999px;
-    background: var(--studio-border);
-    transition: background 150ms ease;
-    pointer-events: none;
-}
-
-.live-demo-density__switch::after {
-    content: '';
-    display: block;
-    width: 1rem;
-    height: 1rem;
-    border-radius: 50%;
-    background: #fff;
-    box-shadow: 0 1px 3px rgb(0 0 0 / 20%);
-    transition: transform 150ms ease;
-}
-
-.live-demo-density input:checked + span {
-    background: var(--studio-amber);
-}
-.live-demo-density input:checked + span::after {
-    transform: translateX(1rem);
-}
-.live-demo-density input:focus-visible + span {
-    outline: 2px solid var(--studio-amber);
-    outline-offset: 4px;
-}
-
-.live-demo-appearance__options {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.25rem;
-    border: 1px solid var(--studio-border);
-    border-radius: var(--studio-control-radius);
-    background: var(--studio-subtle);
-    padding: 0.25rem;
-}
-
-.live-demo-appearance button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    border: 0;
-    border-radius: var(--studio-control-radius);
-    padding: 0.4375rem;
-    background: transparent;
-    color: var(--studio-muted);
-    font-size: 0.8125rem;
-    font-weight: 500;
-}
-
-.live-demo-appearance button[aria-pressed='true'] {
-    background: var(--studio-bg);
-    color: var(--studio-text);
-    box-shadow:
-        0 1px 3px rgb(0 0 0 / 10%),
-        0 0 0 1px rgb(128 128 128 / 12%);
-}
-
 .live-demo-shop__link {
     display: flex;
     align-items: center;
@@ -469,7 +371,6 @@ body:has(#amp-portal-review-host) .live-demo-launcher {
     --studio-radius: var(--soft-theme-radius-container);
     --studio-control-radius: 9999px;
     --studio-bg: var(--soft-theme-chrome);
-    --studio-subtle: var(--soft-theme-input-fill);
     --studio-border: var(--soft-theme-table-rule);
     --studio-text: var(--gray-950);
     --studio-muted: var(--gray-600);
@@ -499,7 +400,6 @@ body:has(#amp-portal-review-host) .live-demo-launcher {
     --studio-radius: var(--noir-theme-radius-overlay, 0.5625rem);
     --studio-control-radius: var(--noir-theme-radius);
     --studio-bg: var(--noir-theme-surface-1);
-    --studio-subtle: var(--noir-theme-segment-track);
     --studio-border: var(--noir-theme-hairline-boundary);
     --studio-text: var(--noir-theme-text-primary);
     --studio-muted: var(--noir-theme-text-muted);
