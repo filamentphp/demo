@@ -17,7 +17,9 @@ const navigateWithSelection = (changes) => {
 
     const url = new URL(window.location.href)
     const toolbar = document.querySelector(toolbarSelector)
-    const theme = toolbar?.querySelector('[data-live-demo-theme]')?.value
+    const theme = toolbar?.querySelector(
+        '[data-live-demo-theme]:checked',
+    )?.value
     const compact = toolbar?.querySelector('[data-live-demo-compact]')?.checked
 
     if (theme) {
@@ -54,23 +56,39 @@ const currentScheme = () => {
 
 const updateSchemeControls = (scheme = currentScheme()) => {
     document.querySelectorAll('[data-live-demo-scheme]').forEach((button) => {
-        const isDark = scheme === 'dark'
-        button.setAttribute('aria-pressed', String(isDark))
         button.setAttribute(
-            'aria-label',
-            isDark ? 'Use light color scheme' : 'Use dark color scheme',
+            'aria-pressed',
+            String(button.dataset.liveDemoScheme === scheme),
         )
-
-        const label = button.querySelector('[data-live-demo-scheme-label]')
-
-        if (label) {
-            label.textContent = isDark ? 'Dark' : 'Light'
-        }
     })
+}
+
+const initializeToolbar = () => {
+    const controls = document.querySelector('[data-live-demo-toolbar-controls]')
+    if (!controls) return
+
+    if (controls.matches(':popover-open')) state.panelOpen = true
+    state.panelOpen ??= controls.dataset.liveDemoOpen === 'true'
+    if (state.panelOpen && !controls.matches(':popover-open'))
+        controls.showPopover()
+    updateSchemeControls()
 }
 
 if (!state.listenersInstalled) {
     state.listenersInstalled = true
+
+    document.addEventListener(
+        'toggle',
+        (event) => {
+            if (
+                event.target.matches?.('[data-live-demo-toolbar-controls]') &&
+                event.target.isConnected
+            ) {
+                state.panelOpen = event.newState === 'open'
+            }
+        },
+        true,
+    )
 
     document.addEventListener('input', (event) => {
         if (!isToolbarElement(event.target)) {
@@ -91,27 +109,10 @@ if (!state.listenersInstalled) {
     })
 
     document.addEventListener('click', (event) => {
-        const toggle = event.target.closest?.('[data-live-demo-toolbar-toggle]')
-
-        if (toggle) {
-            const controls = document.getElementById(
-                toggle.getAttribute('aria-controls'),
-            )
-            const expanded = toggle.getAttribute('aria-expanded') === 'true'
-
-            toggle.setAttribute('aria-expanded', String(!expanded))
-
-            if (controls) {
-                controls.hidden = !expanded
-            }
-
-            return
-        }
-
         const schemeButton = event.target.closest?.('[data-live-demo-scheme]')
 
         if (schemeButton) {
-            const scheme = currentScheme() === 'dark' ? 'light' : 'dark'
+            const scheme = schemeButton.dataset.liveDemoScheme
             window.dispatchEvent(
                 new CustomEvent('theme-changed', { detail: scheme }),
             )
@@ -120,14 +121,15 @@ if (!state.listenersInstalled) {
     })
 
     document.addEventListener('change', (event) => {
-        const themeSelect = event.target.closest?.('[data-live-demo-theme]')
+        const themeChoice = event.target.closest?.('[data-live-demo-theme]')
 
-        if (themeSelect) {
-            const previousValue =
-                themeSelect.querySelector('option[selected]')?.value
-
-            if (!navigateWithSelection({ theme: themeSelect.value })) {
-                themeSelect.value = previousValue ?? 'stock'
+        if (themeChoice) {
+            if (!navigateWithSelection({ theme: themeChoice.value })) {
+                document
+                    .querySelectorAll('[data-live-demo-theme]')
+                    .forEach((input) => {
+                        input.checked = input.defaultChecked
+                    })
             }
 
             return
@@ -155,10 +157,8 @@ if (!state.listenersInstalled) {
     document.addEventListener('alpine:initialized', () =>
         updateSchemeControls(),
     )
-    document.addEventListener('livewire:navigated', () =>
-        updateSchemeControls(),
-    )
-    document.addEventListener('DOMContentLoaded', () => updateSchemeControls())
+    document.addEventListener('livewire:navigated', initializeToolbar)
+    document.addEventListener('DOMContentLoaded', initializeToolbar)
 
     window.addEventListener('beforeunload', (event) => {
         if (state.formIsDirty) {
@@ -167,3 +167,5 @@ if (!state.listenersInstalled) {
         }
     })
 }
+
+initializeToolbar()

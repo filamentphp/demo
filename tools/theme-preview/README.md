@@ -45,6 +45,8 @@ On a caught installation failure, source files and both Composer manifests are r
 
 Fresh sessions use Stock without Compact, with “Explore themes” collapsed. Choose Stock, Sharp, Soft or Noir independently of Compact and Filament's light/dark preference: eight CSS hosts, sixteen appearance states. Only one host loads. CSS imports the installed `vendor/filament/*-theme` packages, with the layer declaration before Filament, then personality, then Compact.
 
+The amber circular launcher reveals its label on mouse hover or keyboard focus. It opens a native browser popover containing theme cards, a compact-layout switch and Light/Dark segments, with a separate close button. Opening/closing works even before the preview script loads; Escape and outside clicks also dismiss it. Native popover support is required (current Chrome, Firefox and Safari). Reduced-motion preferences suppress transitions, and the launcher stays clear of Amp's feedback bubble when present. Closing the panel remains respected during SPA navigation.
+
 Stock retains Albert Sans/Blue. Soft uses its PHP palette, Albert Sans and Lora; Sharp uses Inter and its Material Symbols aliases; Noir uses Inter and its PHP palette. The preview uses sidebar navigation consistently. The `/app` panel remains stock without a toolbar.
 
 `?theme=sharp&compact=1` selects a shareable style. Invalid inputs are ignored. Selection is session-backed and request-memoized, including Livewire requests, not stored on Octane's persistent panel. Style switches fully reload while preserving unrelated query parameters/fragments; ordinary navigation remains SPA. Unsaved input prompts before switching, and cancellation restores the controls. The floating toolbar can cover content at an intermediate scroll position; bottom padding lets pagination scroll clear on desktop/mobile, and the toolbar collapses.
@@ -69,6 +71,8 @@ THEME_PREVIEW_URL=https://your-preview-host \
 PUPPETEER_EXECUTABLE_PATH=/path/to/chrome \
 node tools/theme-preview/browser-test.mjs
 ```
+
+The hover checks require a mouse-capable browser. On Linux builds where headless Chrome reports no pointing device, run with `THEME_PREVIEW_HEADFUL=1 xvfb-run -a node tools/theme-preview/browser-test.mjs` (with the same URL and executable variables). This exercises actual desktop hover behavior under Xvfb rather than altering the application CSS for the test. The suite also checks first-click opening with the preview script blocked, keyboard opening, Escape, a separate close button, first-touch opening and reduced motion.
 
 For an authenticated Amp portal, the optional `THEME_PREVIEW_LOGIN_URL` and `THEME_PREVIEW_SECOND_LOGIN_URL` accept two freshly minted, single-use headless login URLs. Both are consumed at the start, one per isolated browser context. Never commit these URLs. Screenshots are written to `.amp/in/artifacts/theme-preview/`; inspect them, not just the browser test's exit code. The runner verifies all sixteen appearances, single-host loading, Livewire sorting, SPA persistence, full style reloads, query/hash preservation, dirty cancellation, isolated sessions on one worker, `/app`, mobile bounds and reachable pagination, with no JavaScript errors.
 
