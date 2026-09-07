@@ -24,6 +24,7 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('admin')
+            ->topbar(false)
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->login(Login::class)
             ->discoverClusters(in: app_path('Filament/Clusters'), for: 'App\\Filament\\Clusters')

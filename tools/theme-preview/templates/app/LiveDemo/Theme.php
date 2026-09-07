@@ -10,7 +10,6 @@ final class Theme
     public static function configure(Panel $panel): Panel
     {
         return PreviewPanel::make()
-            ->topbar(false)
             ->renderHook(PanelsRenderHook::BODY_END, fn () => view('live-demo.toolbar'));
     }
 }

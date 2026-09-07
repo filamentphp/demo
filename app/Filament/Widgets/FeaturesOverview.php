@@ -213,7 +213,7 @@ class FeaturesOverview extends Widget
                 ['name' => 'Manage records', 'description' => 'Create, edit, and delete authors without leaving the list page', 'url' => AuthorResource::getUrl('index'), 'resource' => 'Authors'],
                 $product ? ['name' => 'Relation managers', 'description' => 'Scroll below the form to see the Comments relation manager', 'url' => ProductResource::getUrl('edit', ['record' => $product]), 'resource' => 'Products'] : null,
                 ['name' => 'Soft deletes', 'description' => 'See Restore & Force Delete in the edit page header, and TrashedFilter in filters', 'url' => OrderResource::getUrl('index'), 'resource' => 'Orders'],
-                ['name' => 'Global search', 'description' => 'Open the top navigation search with Cmd+K or Ctrl+K', 'url' => ProductResource::getUrl('index'), 'resource' => 'Try it!'],
+                ['name' => 'Global search', 'description' => 'Focus the sidebar search with Cmd+K or Ctrl+K', 'url' => ProductResource::getUrl('index'), 'resource' => 'Try it!'],
                 $post ? ['name' => 'Manage related records', 'description' => 'Dedicated page for child records — see the Comments tab in sub-navigation', 'url' => PostResource::getUrl('comments', ['record' => $post]), 'resource' => 'Posts'] : null,
             ])),
         ];
