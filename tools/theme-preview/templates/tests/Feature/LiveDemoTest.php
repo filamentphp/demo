@@ -212,15 +212,41 @@ it('keeps the second application panel stock', function (): void {
     $this->assertSame([], $panel->getIcons());
 });
 
-it('provides a renderable Material Sharp icon for every demo alias', function (): void {
+it('provides renderable Sharp icons while preserving the original brand artwork', function (): void {
     $aliases = array_values((new ReflectionClass(DemoIconAlias::class))->getConstants());
+    $brands = [
+        DemoIconAlias::RESOURCES_BLOG_AUTHORS_FIELDS_GITHUB => 'icon-github',
+        DemoIconAlias::RESOURCES_BLOG_AUTHORS_ACTIONS_VIEW_GITHUB => 'icon-github',
+        DemoIconAlias::RESOURCES_BLOG_AUTHORS_FIELDS_TWITTER => 'icon-twitter',
+        DemoIconAlias::RESOURCES_BLOG_AUTHORS_ACTIONS_VIEW_TWITTER => 'icon-twitter',
+    ];
 
     expect(array_keys(DemoMaterialSymbols::Aliases))->toEqualCanonicalizing($aliases);
 
     foreach (DemoMaterialSymbols::Aliases as $alias => $icon) {
-        expect($icon)->toStartWith('gmsi-s-');
+        if (isset($brands[$alias])) {
+            expect($icon)->toBe($brands[$alias]);
+        } else {
+            expect($icon)->toStartWith('gmsi-s-');
+        }
+
         expect(svg($icon)->toHtml())->toContain('<svg');
     }
+});
+
+it('preserves the original symbols rather than reinterpreting their action names', function (): void {
+    expect(DemoMaterialSymbols::Aliases)
+        ->toMatchArray([
+            DemoIconAlias::RESOURCES_HR_EMPLOYEES_BULK_ACTIONS_TOGGLE_ACTIVE => 'gmsi-s-power_settings_new',
+            DemoIconAlias::WIDGETS_WORKFORCE_TURNOVER => 'gmsi-s-logout',
+            DemoIconAlias::WIDGETS_WORKFORCE_CAPACITY => 'gmsi-s-person_add',
+            DemoIconAlias::WIDGETS_WORKFORCE_CONTRACTORS => 'gmsi-s-work',
+            DemoIconAlias::WIDGETS_WORKFORCE_TENURE => 'gmsi-s-schedule',
+            DemoIconAlias::WIDGETS_FEATURES_HEADING => 'gmsi-s-stars_2',
+            DemoIconAlias::ENUMS_ORDER_STATUS_NEW => 'gmsi-s-stars_2',
+            DemoIconAlias::WIDGETS_FEATURES_LINK => 'gmsi-s-chevron_right',
+            DemoIconAlias::THEME_PREVIEW_PRICING => 'gmsi-s-north_east',
+        ]);
 });
 
 it('registers demo icons only when the actual panel boots Sharp', function (string $theme): void {
