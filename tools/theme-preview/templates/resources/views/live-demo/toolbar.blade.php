@@ -3,8 +3,9 @@
 @endphp
 
 @vite(['resources/css/live-demo-toolbar.css', 'resources/js/live-demo.js'])
+<link rel="stylesheet" href="https://fonts.bunny.net/css?family=albert-sans:400,500,600,700|lora:500,600&display=swap" />
 
-<aside class="live-demo-toolbar" data-live-demo-toolbar aria-label="Theme preview">
+<aside class="live-demo-toolbar" data-live-demo-toolbar data-preview-theme="{{ $selection['theme'] }}" data-preview-compact="{{ $selection['compact'] ? 'true' : 'false' }}" aria-label="Theme preview">
     <button
         class="live-demo-launcher"
         type="button"
@@ -26,12 +27,9 @@
         data-live-demo-open="{{ $selection['expanded'] ? 'true' : 'false' }}"
     >
         <header class="live-demo-studio__header">
-            <span class="live-demo-studio__badge" aria-hidden="true">
-                <x-filament::icon icon="heroicon-o-swatch" />
-            </span>
             <div>
-                <h2 id="live-demo-studio-title">Make it yours</h2>
-                <p>Same Filament. A different feel.</p>
+                <h2 id="live-demo-studio-title">Find your Filament.</h2>
+                <p>Official themes. Try them right here.</p>
             </div>
             <button
                 type="button"
@@ -46,40 +44,8 @@
         </header>
 
         <div class="live-demo-studio__body">
-            <fieldset class="live-demo-studio__themes">
-                <legend>Theme</legend>
-                <div class="live-demo-studio__theme-grid">
-                    @foreach (['stock' => ['Stock', 'The original', 'heroicon-o-squares-2x2'], 'sharp' => ['Sharp', 'Bold & precise', 'heroicon-o-square-3-stack-3d'], 'soft' => ['Soft', 'Warm & welcoming', 'heroicon-o-sparkles'], 'noir' => ['Noir', 'Quietly confident', 'heroicon-o-moon']] as $value => [$label, $description, $icon])
-                        <label class="live-demo-theme live-demo-theme--{{ $value }}">
-                            <input
-                                class="fi-radio-input"
-                                type="radio"
-                                name="live-demo-theme"
-                                value="{{ $value }}"
-                                data-live-demo-theme
-                                @checked($selection['theme'] === $value)
-                            />
-                            <span class="live-demo-theme__icon" aria-hidden="true">
-                                <x-filament::icon :icon="$icon" />
-                            </span>
-                            <span class="live-demo-theme__name">{{ $label }}</span>
-                            <span class="live-demo-theme__description">{{ $description }}</span>
-                        </label>
-                    @endforeach
-                </div>
-            </fieldset>
-
-            <label class="live-demo-density">
-                <span>
-                    <span class="live-demo-studio__label">Compact layout</span>
-                    <span class="live-demo-studio__hint">A little less space. More in view.</span>
-                </span>
-                <input type="checkbox" role="switch" data-live-demo-compact @checked($selection['compact']) />
-                <span class="live-demo-density__switch" aria-hidden="true"></span>
-            </label>
-
             <fieldset class="live-demo-appearance">
-                <legend>Appearance</legend>
+                <legend>Color scheme</legend>
                 <div class="live-demo-appearance__options" role="group" aria-label="Color scheme">
                     <button type="button" data-live-demo-scheme="light" aria-pressed="false">
                         <x-filament::icon icon="heroicon-o-sun" />
@@ -91,11 +57,44 @@
                     </button>
                 </div>
             </fieldset>
-        </div>
 
-        <footer class="live-demo-studio__footer">
-            <span class="live-demo-studio__status" aria-hidden="true"></span>
-            Previewing live on this demo
-        </footer>
+            <fieldset class="live-demo-studio__themes">
+                <legend>Choose a look</legend>
+                <div class="live-demo-studio__theme-grid">
+                    @foreach (['stock' => ['Default', 'Familiar Filament', 'Free'], 'sharp' => ['Sharp', 'Precise & technical', '$39'], 'soft' => ['Soft', 'Warm & welcoming', '$39'], 'noir' => ['Noir', 'Dark-first depth', '$39']] as $value => [$label, $description, $price])
+                        <label class="live-demo-theme live-demo-theme--{{ $value }}">
+                            <input
+                                class="fi-radio-input"
+                                type="radio"
+                                name="live-demo-theme"
+                                value="{{ $value }}"
+                                data-live-demo-theme
+                                @checked($selection['theme'] === $value)
+                            />
+                            <span class="live-demo-theme__name">{{ $label }}</span>
+                            <span class="live-demo-theme__description">{{ $description }}</span>
+                            <span class="live-demo-theme__price">{{ $price }}</span>
+                        </label>
+                    @endforeach
+                </div>
+            </fieldset>
+
+            <label class="live-demo-density">
+                <span>
+                    <span class="live-demo-studio__label">Add Compact <span class="live-demo-density__price">$29</span></span>
+                    <span class="live-demo-studio__hint">More room on desktop. Same spacing on mobile.</span>
+                </span>
+                <input type="checkbox" role="switch" data-live-demo-compact @checked($selection['compact']) />
+                <span class="live-demo-density__switch" aria-hidden="true"></span>
+            </label>
+
+            <div class="live-demo-shop">
+                <a href="https://filamentphp.com/themes" target="_blank" rel="noopener" class="live-demo-shop__link" aria-label="Explore themes & pricing (opens in a new tab)">
+                    Explore themes & pricing
+                    <x-filament::icon icon="heroicon-m-arrow-up-right" />
+                </a>
+                <p>USD · Single-project licenses</p>
+            </div>
+        </div>
     </section>
 </aside>

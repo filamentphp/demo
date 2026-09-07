@@ -135,6 +135,30 @@ try {
             const result = await selection()
             assert.equal(result.theme, theme)
             assert.equal(result.compact, compact)
+            const showroom = await page.evaluate(() => {
+                const style = (selector) =>
+                    getComputedStyle(document.querySelector(selector))
+                const link = document.querySelector('.live-demo-shop__link')
+                return {
+                    radius: style('.live-demo-studio').borderTopLeftRadius,
+                    spacing: style('.live-demo-studio__body').paddingTop,
+                    softFont: style(
+                        '.live-demo-theme--soft .live-demo-theme__name',
+                    ).fontFamily,
+                    sharpFont: style('.live-demo-theme--sharp').fontFamily,
+                    href: link.href,
+                    target: link.target,
+                    first: document.querySelector('.live-demo-studio__body')
+                        .firstElementChild.className,
+                }
+            })
+            assert.equal(showroom.spacing, compact ? '12px' : '20px')
+            assert.equal(showroom.radius === '0px', theme === 'sharp')
+            assert.match(showroom.softFont, /Lora/)
+            assert.match(showroom.sharpFont, /Inter Variable/)
+            assert.equal(showroom.href, 'https://filamentphp.com/themes')
+            assert.equal(showroom.target, '_blank')
+            assert.equal(showroom.first, 'live-demo-appearance')
             assert.equal(
                 result.hosts.length,
                 1,
@@ -159,6 +183,8 @@ try {
                     {},
                     scheme === 'dark',
                 )
+                await page.evaluate(() => document.fonts.ready)
+                await new Promise((resolve) => setTimeout(resolve, 300))
                 await page.screenshot({
                     path: `${artifacts}/${theme}${compact ? '-compact' : ''}-${scheme}.png`,
                 })
@@ -321,6 +347,15 @@ try {
     )
     await page.screenshot({ path: `${artifacts}/mobile-noir-compact.png` })
     await page.click('[data-live-demo-scheme="light"]')
+    await new Promise((resolve) => setTimeout(resolve, 300))
+    assert.equal(
+        await page.$eval(
+            '.live-demo-studio__body',
+            (el) => getComputedStyle(el).paddingTop,
+        ),
+        '20px',
+        'Compact keeps default mobile spacing',
+    )
     await page.screenshot({ path: `${artifacts}/studio-mobile-light.png` })
     assert.equal(
         await page.$eval(

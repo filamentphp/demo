@@ -20,6 +20,25 @@ use Tests\TestCase;
 
 uses(TestCase::class);
 
+it('describes the theme choices and desktop-only density change', function (): void {
+    $this->withoutVite();
+
+    $this->view('live-demo.toolbar')
+        ->assertSee('Official themes. Try them right here.')
+        ->assertSee('Default')
+        ->assertSee('Precise & technical')
+        ->assertSee('Warm & welcoming')
+        ->assertSee('Dark-first depth')
+        ->assertSee('Add Compact')
+        ->assertSee('More room on desktop. Same spacing on mobile.')
+        ->assertSee('$39')
+        ->assertSee('$29')
+        ->assertSee('Free')
+        ->assertSee('USD · Single-project licenses')
+        ->assertSee('https://filamentphp.com/themes')
+        ->assertDontSee('live-demo-studio__status');
+});
+
 beforeEach(function (): void {
     Route::middleware([StartSession::class, SubstituteBindings::class])
         ->match(['GET', 'POST'], '/_live-demo-test', fn () => response()->json([

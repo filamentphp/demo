@@ -49,6 +49,8 @@ The amber circular launcher reveals its label on mouse hover or keyboard focus. 
 
 Stock retains Albert Sans/Blue. Soft uses its PHP palette, Albert Sans and Lora; Sharp uses Inter and its Material Symbols aliases; Noir uses Inter and its PHP palette. The preview uses sidebar navigation consistently. The `/app` panel remains stock without a toolbar.
 
+The showroom follows the active theme's surface and radius tokens, with Compact spacing on desktop only. Its cards keep their own typography and visual identity. Inter is bundled from Filament; Albert Sans and Lora use the same Bunny Fonts service as the demo. Prices in the toolbar Blade template are advertised single-project USD prices ($39 per personality theme, $29 for Compact), not a live checkout quote; keep them aligned with the themes page when pricing changes. The pricing link opens `https://filamentphp.com/themes` in a new tab without interrupting the demo.
+
 `?theme=sharp&compact=1` selects a shareable style. Invalid inputs are ignored. Selection is session-backed and request-memoized, including Livewire requests, not stored on Octane's persistent panel. Style switches fully reload while preserving unrelated query parameters/fragments; ordinary navigation remains SPA. Unsaved input prompts before switching, and cancellation restores the controls. The floating toolbar can cover content at an intermediate scroll position; bottom padding lets pagination scroll clear on desktop/mobile, and the toolbar collapses.
 
 ## Verification and local Octane
