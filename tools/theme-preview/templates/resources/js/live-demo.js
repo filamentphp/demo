@@ -48,7 +48,10 @@ const navigateWithSelection = (changes) => {
     toolbar.querySelectorAll('button, input').forEach((control) => {
         control.disabled = true
     })
-    toolbar.querySelector('[data-live-demo-loading]').showModal()
+    toolbar
+        .querySelector('[data-live-demo-toolbar-controls]')
+        .setAttribute('aria-busy', 'true')
+    toolbar.querySelector('[data-live-demo-loading]').hidden = false
     window.location.assign(url.href)
 
     return true
@@ -83,8 +86,12 @@ const initializeToolbar = () => {
 
     if (controls.matches(':popover-open')) state.panelOpen = true
     state.panelOpen ??= controls.dataset.liveDemoOpen === 'true'
-    if (state.panelOpen && !controls.matches(':popover-open'))
+    if (state.panelOpen && !controls.matches(':popover-open')) {
+        controls.dataset.liveDemoInstant = 'true'
         controls.showPopover()
+        controls.getBoundingClientRect()
+        delete controls.dataset.liveDemoInstant
+    }
     updateSchemeControls()
 }
 
@@ -174,22 +181,25 @@ if (!state.listenersInstalled) {
     document.addEventListener('livewire:navigated', initializeToolbar)
     document.addEventListener('DOMContentLoaded', initializeToolbar)
 
-    document.addEventListener(
-        'cancel',
-        (event) => {
-            if (
-                event.target.matches?.('[data-live-demo-loading]') &&
-                state.isLoading
-            ) {
+    for (const eventName of ['pointerdown', 'pointerup', 'click', 'keydown']) {
+        document.addEventListener(
+            eventName,
+            (event) => {
+                if (!state.isLoading) return
                 event.preventDefault()
-            }
-        },
-        true,
-    )
+                event.stopImmediatePropagation()
+            },
+            true,
+        )
+    }
 
     window.addEventListener('pageshow', () => {
         state.isLoading = false
-        document.querySelector('[data-live-demo-loading]')?.close()
+        const loading = document.querySelector('[data-live-demo-loading]')
+        if (loading) loading.hidden = true
+        document
+            .querySelector('[data-live-demo-toolbar-controls]')
+            ?.removeAttribute('aria-busy')
         document
             .querySelectorAll(
                 `${toolbarSelector} button, ${toolbarSelector} input`,

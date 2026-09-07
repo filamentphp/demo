@@ -53,7 +53,7 @@ The showroom follows the active theme's surface and radius tokens, with Compact 
 
 Selecting Sharp or Soft in the showroom enables Light mode and Compact; selecting Noir enables Dark mode and Compact. Selecting Default preserves the current settings. Manual appearance/density controls and direct links retain their explicit choices; cancelling a dirty-form prompt applies none of the new theme's presets.
 
-Confirmed theme and Compact changes show a modal “Refreshing the demo…” spinner and disable the controls until navigation completes. The modal blocks interaction with the rest of the demo too. Browser Back restores usable controls, and reduced-motion preferences stop the spinner animation.
+Confirmed theme and Compact changes blur only the switcher popup behind a “Refreshing the demo…” spinner. Interaction is blocked until navigation completes, but the rest of the page stays visually unchanged. The popup stays open during switching and restores without an entry animation; manual opening/closing still animates. Browser Back restores usable controls, and reduced-motion preferences stop the spinner animation.
 
 `?theme=sharp&compact=1` selects a shareable style. Invalid inputs are ignored. Selection is session-backed and request-memoized, including Livewire requests, not stored on Octane's persistent panel. Style switches fully reload while preserving unrelated query parameters/fragments; ordinary navigation remains SPA. Unsaved input prompts before switching, and cancellation restores the controls. The floating toolbar can cover content at an intermediate scroll position; bottom padding lets pagination scroll clear on desktop/mobile, and the toolbar collapses.
 

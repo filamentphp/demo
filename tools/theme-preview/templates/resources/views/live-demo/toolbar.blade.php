@@ -95,10 +95,11 @@
                 </a>
             </div>
         </div>
+        <div class="live-demo-loading" data-live-demo-loading hidden>
+            <div role="status">
+                <span class="live-demo-loading__spinner" aria-hidden="true"></span>
+                <p>Refreshing the demo…</p>
+            </div>
+        </div>
     </section>
-
-    <dialog class="live-demo-loading" data-live-demo-loading aria-labelledby="live-demo-loading-message">
-        <span class="live-demo-loading__spinner" aria-hidden="true"></span>
-        <p id="live-demo-loading-message" role="status">Refreshing the demo…</p>
-    </dialog>
 </aside>

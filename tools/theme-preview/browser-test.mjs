@@ -17,6 +17,13 @@ const browser = await puppeteer.launch({
     args: ['--no-sandbox'],
 })
 const page = await browser.newPage()
+await page.evaluateOnNewDocument(() => {
+    window.liveDemoPopupTransitions = []
+    document.addEventListener('transitionrun', (event) => {
+        if (event.target.matches('.live-demo-studio'))
+            window.liveDemoPopupTransitions.push(event.propertyName)
+    })
+})
 await page.setViewport({ width: 1440, height: 1000 })
 const errors = []
 page.on('pageerror', (error) => errors.push(error.message))
@@ -122,11 +129,27 @@ try {
     await page.screenshot({ path: `${artifacts}/studio-hover.png` })
     await openPanel()
     await page.screenshot({ path: `${artifacts}/studio-light.png` })
+    assert.ok(
+        (await page.evaluate(() => window.liveDemoPopupTransitions)).includes(
+            'opacity',
+        ),
+        'manual opening still animates',
+    )
+    await page.evaluate(() => {
+        window.liveDemoPopupTransitions = []
+    })
     await page.click('[data-live-demo-toolbar-toggle]')
     assert.equal(
         await panelIsOpen(),
         false,
         'trigger also closes with preview JS',
+    )
+    await new Promise((resolve) => setTimeout(resolve, 300))
+    assert.ok(
+        (await page.evaluate(() => window.liveDemoPopupTransitions)).includes(
+            'opacity',
+        ),
+        'manual closing still animates',
     )
     await openPanel()
     await page.click('[data-live-demo-close]')
@@ -262,18 +285,32 @@ try {
                     .querySelector('[data-live-demo-theme][value="sharp"]')
                     .click()
                 document.querySelector('[data-live-demo-compact]').click()
-                const dialog = document.querySelector(
+                const overlay = document.querySelector(
                     '[data-live-demo-loading]',
                 )
+                const popup = document.querySelector(
+                    '[data-live-demo-toolbar-controls]',
+                )
+                const overlayBounds = overlay.getBoundingClientRect()
+                const popupBounds = popup.getBoundingClientRect()
                 return {
-                    modal: dialog.matches(':modal'),
+                    visible: !overlay.hidden && popup.matches(':popover-open'),
+                    contained:
+                        overlayBounds.top >= popupBounds.top &&
+                        overlayBounds.bottom <= popupBounds.bottom &&
+                        overlayBounds.left >= popupBounds.left &&
+                        overlayBounds.right <= popupBounds.right,
+                    pageBlur: getComputedStyle(document.body).filter,
                     disabled: [
                         ...document.querySelectorAll(
                             '[data-live-demo-toolbar] button, [data-live-demo-toolbar] input',
                         ),
                     ].every((control) => control.disabled),
-                    cancelPrevented: !dialog.dispatchEvent(
-                        new Event('cancel', { cancelable: true }),
+                    cancelPrevented: !document.dispatchEvent(
+                        new KeyboardEvent('keydown', {
+                            key: 'Escape',
+                            cancelable: true,
+                        }),
                     ),
                     unchanged:
                         JSON.stringify(before) === JSON.stringify(selected()),
@@ -284,7 +321,9 @@ try {
                 : '[data-live-demo-compact]',
         )
         assert.deepEqual(loading, {
-            modal: true,
+            visible: true,
+            contained: true,
+            pageBlur: 'none',
             disabled: true,
             cancelPrevented: true,
             unchanged: true,
@@ -311,14 +350,19 @@ try {
             change === 'theme' ? 'soft' : 'noir',
         )
         assert.equal(
-            await page.$eval('[data-live-demo-loading]', (el) => el.open),
-            false,
+            await page.$eval('[data-live-demo-loading]', (el) => el.hidden),
+            true,
+        )
+        assert.deepEqual(
+            await page.evaluate(() => window.liveDemoPopupTransitions),
+            [],
+            'restoring the popup after a switch does not animate',
         )
         await page.goBack({ waitUntil: 'networkidle0' })
         await page.waitForNetworkIdle()
         assert.equal(
-            await page.$eval('[data-live-demo-loading]', (el) => el.open),
-            false,
+            await page.$eval('[data-live-demo-loading]', (el) => el.hidden),
+            true,
             'Back restores usable controls',
         )
         assert.equal(
@@ -448,8 +492,8 @@ try {
     assert.equal(prompted, true)
     assert.deepEqual(await selection(), beforeCancelledTheme)
     assert.equal(
-        await page.$eval('[data-live-demo-loading]', (el) => el.open),
-        false,
+        await page.$eval('[data-live-demo-loading]', (el) => el.hidden),
+        true,
     )
     assert.equal(
         await page.$eval('[data-live-demo-compact]', (el) => el.disabled),

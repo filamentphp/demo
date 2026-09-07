@@ -157,8 +157,12 @@ body:has(#amp-portal-review-host) .live-demo-launcher {
     transform: translateY(0) scale(1);
 }
 
+.live-demo-studio[data-live-demo-instant] {
+    transition: none;
+}
+
 @starting-style {
-    .live-demo-studio:popover-open {
+    .live-demo-studio:popover-open:not([data-live-demo-instant]) {
         opacity: 0;
         transform: translateY(10px) scale(0.97);
     }
@@ -532,23 +536,21 @@ body:has(#amp-portal-review-host) .live-demo-launcher {
 }
 
 .live-demo-loading {
-    position: fixed;
+    position: absolute;
     inset: 0;
-    margin: auto;
-    width: max-content;
-    max-width: calc(100vw - 2rem);
+    z-index: 1;
+    align-items: center;
+    justify-content: center;
     padding: 1.5rem 2rem;
-    border: 1px solid var(--studio-border);
-    border-radius: var(--studio-radius);
-    background: var(--studio-bg);
+    border-radius: inherit;
+    background: color-mix(in srgb, var(--studio-bg) 75%, transparent);
+    backdrop-filter: blur(3px);
     color: var(--studio-text);
     text-align: center;
-    box-shadow: 0 16px 48px rgb(0 0 0 / 20%);
 }
 
-.live-demo-loading::backdrop {
-    background: rgb(0 0 0 / 25%);
-    backdrop-filter: blur(2px);
+.live-demo-loading:not([hidden]) {
+    display: flex;
 }
 
 .live-demo-loading p {
