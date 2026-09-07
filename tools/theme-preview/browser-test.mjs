@@ -59,6 +59,25 @@ const identity = (target) =>
         font: getComputedStyle(document.body).fontFamily,
     }))
 
+const assertOverlayDoesNotExtendPage = async () => {
+    await page.click('[data-live-demo-close]')
+    await new Promise((resolve) => setTimeout(resolve, 300))
+    const closed = await page.evaluate(() => ({
+        height: document.documentElement.scrollHeight,
+        padding: getComputedStyle(document.body).paddingBottom,
+    }))
+    assert.equal(closed.padding, '0px', 'closed switcher adds no bottom padding')
+    await openPanel()
+    assert.deepEqual(
+        await page.evaluate(() => ({
+            height: document.documentElement.scrollHeight,
+            padding: getComputedStyle(document.body).paddingBottom,
+        })),
+        closed,
+        'opening the popup does not extend the page',
+    )
+}
+
 try {
     assert.ok(
         await page.evaluate(
@@ -589,19 +608,8 @@ try {
     await openPanel()
     await page.click('[data-live-demo-scheme="dark"]')
     await page.screenshot({ path: `${artifacts}/studio-dark.png` })
+    await assertOverlayDoesNotExtendPage()
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))
-    assert.equal(
-        await page.evaluate(
-            () =>
-                document.querySelector('.fi-pagination').getBoundingClientRect()
-                    .bottom <
-                document
-                    .querySelector('[data-live-demo-toolbar-controls]')
-                    .getBoundingClientRect().top,
-        ),
-        true,
-        'pagination can scroll clear of the expanded toolbar',
-    )
     await page.screenshot({ path: `${artifacts}/soft-compact-footer.png` })
 
     await page.setViewport({
@@ -612,19 +620,8 @@ try {
     })
     await goto('/shop/products?theme=noir&compact=1')
     await openPanel()
+    await assertOverlayDoesNotExtendPage()
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))
-    assert.equal(
-        await page.evaluate(
-            () =>
-                document.querySelector('.fi-pagination').getBoundingClientRect()
-                    .bottom <
-                document
-                    .querySelector('[data-live-demo-toolbar-controls]')
-                    .getBoundingClientRect().top,
-        ),
-        true,
-        'mobile pagination remains reachable',
-    )
     await page.screenshot({ path: `${artifacts}/mobile-noir-compact.png` })
     await page.click('[data-live-demo-scheme="light"]')
     await new Promise((resolve) => setTimeout(resolve, 300))

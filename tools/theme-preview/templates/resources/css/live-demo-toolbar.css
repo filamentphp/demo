@@ -5,14 +5,6 @@
     box-sizing: border-box;
 }
 
-body:has(.live-demo-toolbar) {
-    padding-bottom: 6rem;
-}
-
-body:has(.live-demo-studio:popover-open) {
-    padding-bottom: 48rem;
-}
-
 /* Keep the portal's feedback button clear of the launcher. */
 body:has(#amp-portal-review-host) .live-demo-launcher {
     margin-right: 3rem;
