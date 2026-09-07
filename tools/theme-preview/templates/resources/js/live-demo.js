@@ -11,7 +11,7 @@ const confirmNavigation = () =>
     !state.formIsDirty || window.confirm('Discard your unsaved changes?')
 
 const navigateWithSelection = (changes) => {
-    if (!confirmNavigation()) {
+    if (state.isLoading || !confirmNavigation()) {
         return false
     }
 
@@ -34,7 +34,21 @@ const navigateWithSelection = (changes) => {
         url.searchParams.set(name, value)
     })
 
+    if (['sharp', 'soft', 'noir'].includes(changes.theme)) {
+        url.searchParams.set('compact', '1')
+        window.dispatchEvent(
+            new CustomEvent('theme-changed', {
+                detail: changes.theme === 'noir' ? 'dark' : 'light',
+            }),
+        )
+    }
+
     state.formIsDirty = false
+    state.isLoading = true
+    toolbar.querySelectorAll('button, input').forEach((control) => {
+        control.disabled = true
+    })
+    toolbar.querySelector('[data-live-demo-loading]').showModal()
     window.location.assign(url.href)
 
     return true
@@ -159,6 +173,31 @@ if (!state.listenersInstalled) {
     )
     document.addEventListener('livewire:navigated', initializeToolbar)
     document.addEventListener('DOMContentLoaded', initializeToolbar)
+
+    document.addEventListener(
+        'cancel',
+        (event) => {
+            if (
+                event.target.matches?.('[data-live-demo-loading]') &&
+                state.isLoading
+            ) {
+                event.preventDefault()
+            }
+        },
+        true,
+    )
+
+    window.addEventListener('pageshow', () => {
+        state.isLoading = false
+        document.querySelector('[data-live-demo-loading]')?.close()
+        document
+            .querySelectorAll(
+                `${toolbarSelector} button, ${toolbarSelector} input`,
+            )
+            .forEach((control) => {
+                control.disabled = false
+            })
+    })
 
     window.addEventListener('beforeunload', (event) => {
         if (state.formIsDirty) {

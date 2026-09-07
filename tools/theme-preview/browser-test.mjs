@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { mkdirSync } from 'node:fs'
+import { mkdirSync, writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import puppeteer from 'puppeteer-core'
 
@@ -91,6 +91,13 @@ try {
         true,
         'first click opens even before preview JavaScript loads',
     )
+    await page.click('[data-live-demo-toolbar-toggle]')
+    assert.equal(
+        await panelIsOpen(),
+        false,
+        'second trigger click closes without preview JS',
+    )
+    await page.click('[data-live-demo-toolbar-toggle]')
     await page.click('[data-live-demo-close]')
     assert.equal(await panelIsOpen(), false)
     await page.setRequestInterception(false)
@@ -115,6 +122,13 @@ try {
     await page.screenshot({ path: `${artifacts}/studio-hover.png` })
     await openPanel()
     await page.screenshot({ path: `${artifacts}/studio-light.png` })
+    await page.click('[data-live-demo-toolbar-toggle]')
+    assert.equal(
+        await panelIsOpen(),
+        false,
+        'trigger also closes with preview JS',
+    )
+    await openPanel()
     await page.click('[data-live-demo-close]')
     await page.focus('[data-live-demo-toolbar-toggle]')
     await page.keyboard.press('Enter')
@@ -140,6 +154,16 @@ try {
                     getComputedStyle(document.querySelector(selector))
                 const link = document.querySelector('.live-demo-shop__link')
                 return {
+                    closeTop: document
+                        .querySelector('[data-live-demo-close]')
+                        .getBoundingClientRect().top,
+                    headerContentTop: document
+                        .querySelector('.live-demo-studio__header > div')
+                        .getBoundingClientRect().top,
+                    launcherBorder: style('.live-demo-launcher').borderTopWidth,
+                    launcherShadow: style('.live-demo-launcher').boxShadow,
+                    launcherWeight: style('.live-demo-launcher__label')
+                        .fontWeight,
                     radius: style('.live-demo-studio').borderTopLeftRadius,
                     spacing: style('.live-demo-studio__body').paddingTop,
                     softFont: style(
@@ -152,6 +176,13 @@ try {
                         .firstElementChild.className,
                 }
             })
+            assert.ok(
+                Math.abs(showroom.closeTop - showroom.headerContentTop) < 1,
+                'close is top-aligned',
+            )
+            assert.equal(showroom.launcherBorder, '0px')
+            assert.doesNotMatch(showroom.launcherShadow, /inset/)
+            assert.equal(showroom.launcherWeight, '500')
             assert.equal(showroom.spacing, compact ? '12px' : '20px')
             assert.equal(showroom.radius === '0px', theme === 'sharp')
             assert.match(showroom.softFont, /Lora/)
@@ -192,6 +223,155 @@ try {
         }
     }
 
+    for (const change of ['theme', 'compact']) {
+        await goto(
+            `/shop/products?theme=${change === 'theme' ? 'stock' : 'noir'}&compact=0`,
+        )
+        await openPanel()
+        await page.click(
+            `[data-live-demo-scheme="${change === 'theme' ? 'light' : 'dark'}"]`,
+        )
+        if (change === 'compact')
+            await page.setViewport({ width: 390, height: 844 })
+        const cdp = await page.createCDPSession()
+        let heldRequest
+        const holdNavigation = (request) => {
+            if (
+                request.isNavigationRequest() &&
+                request.frame() === page.mainFrame()
+            ) {
+                heldRequest = request
+            } else {
+                request.continue()
+            }
+        }
+        await page.setRequestInterception(true)
+        page.on('request', holdNavigation)
+        const navigation = page.waitForNavigation({ waitUntil: 'networkidle0' })
+        const loading = await page.evaluate(
+            (selector) => {
+                document.querySelector(selector).click()
+                const selected = () =>
+                    [
+                        ...document.querySelectorAll(
+                            '[data-live-demo-toolbar] input',
+                        ),
+                    ].map((input) => input.checked)
+                const before = selected()
+                document
+                    .querySelector('[data-live-demo-theme][value="sharp"]')
+                    .click()
+                document.querySelector('[data-live-demo-compact]').click()
+                const dialog = document.querySelector(
+                    '[data-live-demo-loading]',
+                )
+                return {
+                    modal: dialog.matches(':modal'),
+                    disabled: [
+                        ...document.querySelectorAll(
+                            '[data-live-demo-toolbar] button, [data-live-demo-toolbar] input',
+                        ),
+                    ].every((control) => control.disabled),
+                    cancelPrevented: !dialog.dispatchEvent(
+                        new Event('cancel', { cancelable: true }),
+                    ),
+                    unchanged:
+                        JSON.stringify(before) === JSON.stringify(selected()),
+                }
+            },
+            change === 'theme'
+                ? '[data-live-demo-theme][value="soft"]'
+                : '[data-live-demo-compact]',
+        )
+        assert.deepEqual(loading, {
+            modal: true,
+            disabled: true,
+            cancelPrevented: true,
+            unchanged: true,
+        })
+        await new Promise((resolve) => setTimeout(resolve, 300))
+        const capture = await cdp.send('Page.captureScreenshot', {
+            format: 'png',
+        })
+        writeFileSync(
+            `${artifacts}/loading-${change}.png`,
+            Buffer.from(capture.data, 'base64'),
+        )
+        while (!heldRequest)
+            await new Promise((resolve) => setTimeout(resolve, 10))
+        page.off('request', holdNavigation)
+        await heldRequest.continue()
+        await page.setRequestInterception(false)
+        await navigation
+        await cdp.detach()
+        await page.setViewport({ width: 1440, height: 1000 })
+        assert.equal((await selection()).compact, true)
+        assert.equal(
+            (await selection()).theme,
+            change === 'theme' ? 'soft' : 'noir',
+        )
+        assert.equal(
+            await page.$eval('[data-live-demo-loading]', (el) => el.open),
+            false,
+        )
+        await page.goBack({ waitUntil: 'networkidle0' })
+        await page.waitForNetworkIdle()
+        assert.equal(
+            await page.$eval('[data-live-demo-loading]', (el) => el.open),
+            false,
+            'Back restores usable controls',
+        )
+        assert.equal(
+            await page.$eval('[data-live-demo-compact]', (el) => el.disabled),
+            false,
+        )
+        console.log(
+            `PASS: ${change} refresh blocks repeated selections and restores controls after Back`,
+        )
+    }
+
+    for (const theme of ['sharp', 'soft', 'noir']) {
+        const scheme = theme === 'noir' ? 'dark' : 'light'
+        const opposite = scheme === 'dark' ? 'light' : 'dark'
+        await goto('/shop/products?theme=stock&compact=0')
+        await openPanel()
+        await page.click(`[data-live-demo-scheme="${opposite}"]`)
+        await Promise.all([
+            page.waitForNavigation({ waitUntil: 'networkidle0' }),
+            page.click(`[data-live-demo-theme][value="${theme}"]`),
+        ])
+        assert.equal((await selection()).compact, true)
+        assert.equal(
+            await page.evaluate(() => localStorage.getItem('theme')),
+            scheme,
+        )
+        assert.equal(
+            await page.evaluate(() =>
+                document.documentElement.classList.contains('dark'),
+            ),
+            scheme === 'dark',
+        )
+        await Promise.all([
+            page.waitForNavigation({ waitUntil: 'networkidle0' }),
+            page.click('[data-live-demo-compact]'),
+        ])
+        await page.click(`[data-live-demo-scheme="${opposite}"]`)
+        await Promise.all([
+            page.waitForNavigation({ waitUntil: 'networkidle0' }),
+            page.click('[data-live-demo-theme][value="stock"]'),
+        ])
+        assert.equal(
+            (await selection()).compact,
+            false,
+            'Default preserves manual density',
+        )
+        assert.equal(
+            await page.evaluate(() => localStorage.getItem('theme')),
+            opposite,
+            'Default preserves manual color scheme',
+        )
+    }
+
     await goto('/shop/products?theme=sharp&compact=0&probe=keep#retained')
     const livewireResponse = page.waitForResponse(
         (response) =>
@@ -216,11 +396,12 @@ try {
     ])
     assert.equal(new URL(page.url()).searchParams.get('probe'), 'keep')
     assert.equal(new URL(page.url()).hash, '#retained')
+    assert.equal((await selection()).compact, true, 'Soft enables Compact')
     await Promise.all([
         page.waitForNavigation({ waitUntil: 'networkidle0' }),
         page.click('[data-live-demo-compact]'),
     ])
-    assert.equal((await selection()).compact, true)
+    assert.equal((await selection()).compact, false)
     assert.equal(new URL(page.url()).searchParams.get('probe'), 'keep')
     assert.equal(new URL(page.url()).hash, '#retained')
     assert.equal(
@@ -254,6 +435,10 @@ try {
     await page.type('input[id="form.name"]', 'Unsaved preview product')
     await openPanel()
     await page.waitForNetworkIdle()
+    const beforeCancelledTheme = await selection()
+    const schemeBeforeCancelledTheme = await page.evaluate(() =>
+        localStorage.getItem('theme'),
+    )
     let prompted = false
     page.once('dialog', async (dialog) => {
         prompted = true
@@ -261,6 +446,19 @@ try {
     })
     await page.click('[data-live-demo-theme][value="noir"]')
     assert.equal(prompted, true)
+    assert.deepEqual(await selection(), beforeCancelledTheme)
+    assert.equal(
+        await page.$eval('[data-live-demo-loading]', (el) => el.open),
+        false,
+    )
+    assert.equal(
+        await page.$eval('[data-live-demo-compact]', (el) => el.disabled),
+        false,
+    )
+    assert.equal(
+        await page.evaluate(() => localStorage.getItem('theme')),
+        schemeBeforeCancelledTheme,
+    )
     assert.equal(
         (await selection()).theme,
         'soft',

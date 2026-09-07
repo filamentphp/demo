@@ -31,10 +31,10 @@ it('describes the theme choices and desktop-only density change', function (): v
         ->assertSee('Dark-first depth')
         ->assertSee('Add Compact')
         ->assertSee('More room on desktop. Same spacing on mobile.')
-        ->assertSee('$39')
-        ->assertSee('$29')
+        ->assertSee('$39 USD')
+        ->assertSee('$29 USD')
         ->assertSee('Free')
-        ->assertSee('USD · Single-project licenses')
+        ->assertDontSee('Single-project licenses')
         ->assertSee('https://filamentphp.com/themes')
         ->assertDontSee('live-demo-studio__status');
 });

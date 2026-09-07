@@ -10,7 +10,7 @@
         class="live-demo-launcher"
         type="button"
         popovertarget="live-demo-toolbar-controls"
-        popovertargetaction="show"
+        popovertargetaction="toggle"
         data-live-demo-toolbar-toggle
         aria-label="Explore themes"
     >
@@ -61,7 +61,7 @@
             <fieldset class="live-demo-studio__themes">
                 <legend>Choose a look</legend>
                 <div class="live-demo-studio__theme-grid">
-                    @foreach (['stock' => ['Default', 'Familiar Filament', 'Free'], 'sharp' => ['Sharp', 'Precise & technical', '$39'], 'soft' => ['Soft', 'Warm & welcoming', '$39'], 'noir' => ['Noir', 'Dark-first depth', '$39']] as $value => [$label, $description, $price])
+                    @foreach (['stock' => ['Default', 'Familiar Filament', 'Free'], 'sharp' => ['Sharp', 'Precise & technical', '$39 USD'], 'soft' => ['Soft', 'Warm & welcoming', '$39 USD'], 'noir' => ['Noir', 'Dark-first depth', '$39 USD']] as $value => [$label, $description, $price])
                         <label class="live-demo-theme live-demo-theme--{{ $value }}">
                             <input
                                 class="fi-radio-input"
@@ -81,7 +81,7 @@
 
             <label class="live-demo-density">
                 <span>
-                    <span class="live-demo-studio__label">Add Compact <span class="live-demo-density__price">$29</span></span>
+                    <span class="live-demo-studio__label">Add Compact <span class="live-demo-density__price">$29 USD</span></span>
                     <span class="live-demo-studio__hint">More room on desktop. Same spacing on mobile.</span>
                 </span>
                 <input type="checkbox" role="switch" data-live-demo-compact @checked($selection['compact']) />
@@ -93,8 +93,12 @@
                     Explore themes & pricing
                     <x-filament::icon icon="heroicon-m-arrow-up-right" />
                 </a>
-                <p>USD · Single-project licenses</p>
             </div>
         </div>
     </section>
+
+    <dialog class="live-demo-loading" data-live-demo-loading aria-labelledby="live-demo-loading-message">
+        <span class="live-demo-loading__spinner" aria-hidden="true"></span>
+        <p id="live-demo-loading-message" role="status">Refreshing the demo…</p>
+    </dialog>
 </aside>
