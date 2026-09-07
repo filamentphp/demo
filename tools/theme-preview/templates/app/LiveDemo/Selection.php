@@ -30,14 +30,18 @@ final class Selection
         if ($request->isMethod('GET')) {
             $theme = $request->query('theme');
             $compact = $request->query('compact');
+            $scheme = $request->query('scheme');
             if (in_array($theme, ['stock', 'sharp', 'soft', 'noir'], true)) {
                 $selection['theme'] = $theme;
                 $selection['expanded'] = $selection['expanded'] || $isFirstVisit;
-                $request->session()->put('live-demo.dark', $theme === 'noir');
+                $request->session()->put('live-demo.scheme', $theme === 'noir' ? 'dark' : null);
             }
             if (in_array($compact, ['0', '1'], true)) {
                 $selection['compact'] = $compact === '1';
                 $selection['expanded'] = $selection['expanded'] || $isFirstVisit;
+            }
+            if (in_array($scheme, ['light', 'dark'], true)) {
+                $request->session()->put('live-demo.scheme', $scheme);
             }
         }
 

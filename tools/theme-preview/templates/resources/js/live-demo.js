@@ -16,6 +16,7 @@ const navigateWithSelection = (changes) => {
     }
 
     const url = new URL(window.location.href)
+    url.searchParams.delete('scheme')
     const toolbar = document.querySelector(toolbarSelector)
     const theme = toolbar?.querySelector(
         '[data-live-demo-theme]:checked',
@@ -93,13 +94,14 @@ const initializeToolbar = () => {
     if (!controls) return
 
     const toolbar = controls.closest(toolbarSelector)
-    if (toolbar.dataset.liveDemoDark === 'true') {
-        delete toolbar.dataset.liveDemoDark
+    const scheme = toolbar.dataset.liveDemoScheme
+    if (scheme === 'light' || scheme === 'dark') {
+        delete toolbar.dataset.liveDemoScheme
         if (sessionStorage.getItem('live-demo.reopen') !== location.href) {
-            localStorage.setItem('theme', 'dark')
-            document.documentElement.classList.add('dark')
+            localStorage.setItem('theme', scheme)
+            document.documentElement.classList.toggle('dark', scheme === 'dark')
             window.dispatchEvent(
-                new CustomEvent('theme-changed', { detail: 'dark' }),
+                new CustomEvent('theme-changed', { detail: scheme }),
             )
         }
     }

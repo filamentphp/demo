@@ -28,14 +28,11 @@ function replaceOnce(value, old, replacement, label) {
     return value.replace(old, replacement)
 }
 
-export function install(
-    root,
-    { vcs = false, production = false, run = execute } = {},
-) {
+export function install(root, { production = false, run = execute } = {}) {
     root = resolve(root)
     const statePath = join(root, '.theme-preview-install.json')
     const read = (path) => readFileSync(join(root, path), 'utf8')
-    const options = { vcs, production }
+    const options = { production }
     const saved = existsSync(statePath)
         ? JSON.parse(readFileSync(statePath, 'utf8'))
         : null
@@ -102,25 +99,9 @@ export function install(
     composer.require['kienso/blade-google-material-symbols'] = '^1.0'
     {
         const originalRepositories = composer.repositories ?? []
-        const entries = Object.entries(originalRepositories).filter(
-            ([, entry]) => !vcs || entry?.url?.replace(/\/$/, '') !== registry,
-        )
+        const entries = Object.entries(originalRepositories)
         const additions = []
-        if (vcs) {
-            const refs = JSON.parse(
-                readFileSync(join(directory, 'vcs-refs.json'), 'utf8'),
-            )
-            for (const theme of themes) {
-                if (!/^[a-f0-9]{40}$/.test(refs[theme]))
-                    throw new Error(`Invalid reviewed ref: ${theme}`)
-                additions.push({
-                    type: 'vcs',
-                    url: `https://github.com/filamentphp/${theme}-theme`,
-                })
-                composer.require[`filament/${theme}-theme`] =
-                    `1.x-dev#${refs[theme]}`
-            }
-        } else if (
+        if (
             !entries.some(
                 ([, entry]) =>
                     entry?.type === 'composer' &&
@@ -302,8 +283,7 @@ if (
         const options = {}
         for (let index = 2; index < process.argv.length; index++) {
             const arg = process.argv[index]
-            if (arg === '--vcs') options.vcs = true
-            else if (arg === '--production') options.production = true
+            if (arg === '--production') options.production = true
             else throw new Error(`Unknown or incomplete argument: ${arg}`)
         }
         install(resolve(directory, '../..'), options)
