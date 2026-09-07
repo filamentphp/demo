@@ -2,11 +2,13 @@
 
 namespace App\Filament\Resources\HR\Projects\Schemas;
 
+use App\Filament\DemoIconAlias;
 use Filament\Infolists\Components\ColorEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
 
 class ProjectInfolist
@@ -18,7 +20,7 @@ class ProjectInfolist
                 Tabs::make('Project')
                     ->schema([
                         Tab::make('Overview')
-                            ->icon(Heroicon::InformationCircle)
+                            ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_PROJECTS_INFOLIST_TABS_OVERVIEW) ?? Heroicon::InformationCircle)
                             ->columns(2)
                             ->schema([
                                 TextEntry::make('name'),
@@ -46,7 +48,7 @@ class ProjectInfolist
                             ]),
 
                         Tab::make('Budget')
-                            ->icon(Heroicon::CurrencyDollar)
+                            ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_PROJECTS_INFOLIST_TABS_BUDGET) ?? Heroicon::CurrencyDollar)
                             ->columns(2)
                             ->schema([
                                 TextEntry::make('budget')

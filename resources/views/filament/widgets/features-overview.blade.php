@@ -60,6 +60,7 @@
         <div class="flex items-center gap-4">
             <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary-500 to-primary-600 shadow-lg shadow-primary-500/20 dark:shadow-primary-500/10">
                 <x-filament::icon
+                    :alias="\App\Filament\DemoIconAlias::WIDGETS_FEATURES_HEADING"
                     icon="heroicon-o-sparkles"
                     class="h-6 w-6 text-white"
                 />
@@ -93,6 +94,7 @@
                     <div class="flex items-center gap-3 px-5 pt-4 pb-3">
                         <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ring-1 {{ $c['bg'] }} {{ $c['ring'] }}">
                             <x-filament::icon
+                                :alias="$category['iconAlias']"
                                 :icon="$category['icon']"
                                 class="h-5 w-5 {{ $c['text'] }}"
                             />
@@ -135,6 +137,7 @@
                                 </div>
 
                                 <x-filament::icon
+                                    :alias="\App\Filament\DemoIconAlias::WIDGETS_FEATURES_LINK"
                                     icon="heroicon-m-chevron-right"
                                     class="h-4 w-4 shrink-0 text-gray-300 opacity-0 transition-all duration-150 group-hover:translate-x-0.5 group-hover:opacity-100 rtl:group-hover:-translate-x-0.5 rtl:-scale-x-100 dark:text-gray-600"
                                 />

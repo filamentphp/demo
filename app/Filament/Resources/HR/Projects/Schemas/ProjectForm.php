@@ -4,6 +4,7 @@ namespace App\Filament\Resources\HR\Projects\Schemas;
 
 use App\Enums\ProjectStatus;
 use App\Enums\TaskPriority;
+use App\Filament\DemoIconAlias;
 use App\Models\HR\Employee;
 use App\Models\HR\Project;
 use Filament\Forms\Components\Builder;
@@ -21,6 +22,7 @@ use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Str;
 
@@ -33,7 +35,7 @@ class ProjectForm
                 Tabs::make('Project')
                     ->schema([
                         Tab::make('Overview')
-                            ->icon(Heroicon::InformationCircle)
+                            ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_PROJECTS_FORM_TABS_OVERVIEW) ?? Heroicon::InformationCircle)
                             ->columns(2)
                             ->schema([
                                 TextInput::make('name')
@@ -85,13 +87,13 @@ class ProjectForm
                             ]),
 
                         Tab::make('Plan')
-                            ->icon(Heroicon::ClipboardDocumentList)
+                            ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_PROJECTS_FORM_TABS_PLAN) ?? Heroicon::ClipboardDocumentList)
                             ->schema([
                                 Builder::make('plan')
                                     ->hiddenLabel()
                                     ->blocks([
                                         Block::make('milestone')
-                                            ->icon(Heroicon::Flag)
+                                            ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_PROJECTS_FORM_BLOCKS_MILESTONE) ?? Heroicon::Flag)
                                             ->schema([
                                                 TextInput::make('title')
                                                     ->required(),
@@ -103,7 +105,7 @@ class ProjectForm
 
                                         Block::make('task_group')
                                             ->label('Task group')
-                                            ->icon(Heroicon::ListBullet)
+                                            ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_PROJECTS_FORM_BLOCKS_TASK_GROUP) ?? Heroicon::ListBullet)
                                             ->schema([
                                                 TextInput::make('title')
                                                     ->required(),
@@ -114,7 +116,7 @@ class ProjectForm
                                             ]),
 
                                         Block::make('checkpoint')
-                                            ->icon(Heroicon::CheckCircle)
+                                            ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_PROJECTS_FORM_BLOCKS_CHECKPOINT) ?? Heroicon::CheckCircle)
                                             ->schema([
                                                 TextInput::make('title')
                                                     ->required(),
@@ -132,7 +134,7 @@ class ProjectForm
                             ]),
 
                         Tab::make('Budget')
-                            ->icon(Heroicon::CurrencyDollar)
+                            ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_PROJECTS_FORM_TABS_BUDGET) ?? Heroicon::CurrencyDollar)
                             ->columns(2)
                             ->schema([
                                 TextInput::make('budget')

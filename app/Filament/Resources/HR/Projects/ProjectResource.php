@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\HR\Projects;
 
 use App\Enums\ProjectStatus;
+use App\Filament\DemoIconAlias;
 use App\Filament\Resources\HR\Projects\Pages\CreateProject;
 use App\Filament\Resources\HR\Projects\Pages\EditProject;
 use App\Filament\Resources\HR\Projects\Pages\ListProjects;
@@ -17,8 +18,10 @@ use App\Models\HR\Project;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -31,8 +34,6 @@ class ProjectResource extends Resource
 {
     protected static ?string $model = Project::class;
 
-    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedFolder;
-
     protected static string | UnitEnum | null $navigationGroup = 'Projects';
 
     protected static ?int $navigationSort = 0;
@@ -40,6 +41,11 @@ class ProjectResource extends Resource
     protected static ?string $slug = 'projects';
 
     protected static ?string $recordTitleAttribute = 'name';
+
+    public static function getNavigationIcon(): string | BackedEnum | Htmlable | null
+    {
+        return FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_PROJECTS_NAVIGATION) ?? Heroicon::OutlinedFolder;
+    }
 
     public static function form(Schema $schema): Schema
     {

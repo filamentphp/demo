@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\HR\Expenses;
 
 use App\Enums\ExpenseStatus;
+use App\Filament\DemoIconAlias;
 use App\Filament\Resources\HR\Expenses\Pages\CreateExpense;
 use App\Filament\Resources\HR\Expenses\Pages\EditExpense;
 use App\Filament\Resources\HR\Expenses\Pages\ListExpenses;
@@ -15,8 +16,10 @@ use App\Models\HR\Expense;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Model;
 use UnitEnum;
 
@@ -29,13 +32,16 @@ class ExpenseResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'expense_number';
 
-    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedReceiptPercent;
-
     protected static string | UnitEnum | null $navigationGroup = 'HR';
 
     protected static ?int $navigationSort = 3;
 
     protected static ?string $slug = 'hr/expenses';
+
+    public static function getNavigationIcon(): string | BackedEnum | Htmlable | null
+    {
+        return FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_EXPENSES_NAVIGATION) ?? Heroicon::OutlinedReceiptPercent;
+    }
 
     public static function form(Schema $schema): Schema
     {

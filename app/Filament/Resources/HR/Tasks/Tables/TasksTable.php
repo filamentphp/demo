@@ -4,6 +4,7 @@ namespace App\Filament\Resources\HR\Tasks\Tables;
 
 use App\Enums\TaskPriority;
 use App\Enums\TaskStatus;
+use App\Filament\DemoIconAlias;
 use App\Models\HR\Task;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
@@ -18,6 +19,7 @@ use Filament\Forms\Components\ToggleButtons;
 use Filament\Notifications\Notification;
 use Filament\Support\Enums\FontWeight;
 use Filament\Support\Enums\Width;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -97,7 +99,7 @@ class TasksTable
                 ActionGroup::make([
                     EditAction::make(),
                     Action::make('start')
-                        ->icon(Heroicon::Play)
+                        ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_TASKS_ACTIONS_START) ?? Heroicon::Play)
                         ->color('success')
                         ->visible(fn (Task $record): bool => in_array($record->status, [TaskStatus::Backlog, TaskStatus::Todo]))
                         ->action(function (Task $record): void {
@@ -109,7 +111,7 @@ class TasksTable
                                 ->send();
                         }),
                     Action::make('send_to_review')
-                        ->icon(Heroicon::Eye)
+                        ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_TASKS_ACTIONS_SEND_TO_REVIEW) ?? Heroicon::Eye)
                         ->color('info')
                         ->visible(fn (Task $record): bool => $record->status === TaskStatus::InProgress)
                         ->action(function (Task $record): void {
@@ -121,7 +123,7 @@ class TasksTable
                                 ->send();
                         }),
                     Action::make('complete')
-                        ->icon(Heroicon::CheckCircle)
+                        ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_TASKS_ACTIONS_COMPLETE) ?? Heroicon::CheckCircle)
                         ->color('success')
                         ->modalWidth(Width::Medium)
                         ->modalSubmitActionLabel('Complete')
@@ -150,7 +152,7 @@ class TasksTable
                                 ->send();
                         }),
                     Action::make('assign')
-                        ->icon(Heroicon::UserPlus)
+                        ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_TASKS_ACTIONS_ASSIGN) ?? Heroicon::UserPlus)
                         ->modalWidth(Width::Medium)
                         ->modalSubmitActionLabel('Assign')
                         ->schema([
@@ -163,7 +165,7 @@ class TasksTable
                         ->action(fn (Task $record, array $data) => $record->update($data)),
                     Action::make('set_priority')
                         ->label('Set priority')
-                        ->icon(Heroicon::Flag)
+                        ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_TASKS_ACTIONS_SET_PRIORITY) ?? Heroicon::Flag)
                         ->modalWidth(Width::Medium)
                         ->modalSubmitActionLabel('Save')
                         ->schema([
@@ -187,7 +189,7 @@ class TasksTable
             ])
             ->groupedBulkActions([
                 BulkAction::make('set_status')
-                    ->icon(Heroicon::ArrowPathRoundedSquare)
+                    ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_TASKS_BULK_ACTIONS_SET_STATUS) ?? Heroicon::ArrowPathRoundedSquare)
                     ->color('gray')
                     ->schema([
                         ToggleButtons::make('status')
@@ -205,7 +207,7 @@ class TasksTable
                     })
                     ->deselectRecordsAfterCompletion(),
                 BulkAction::make('assign')
-                    ->icon(Heroicon::UserPlus)
+                    ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_TASKS_BULK_ACTIONS_ASSIGN) ?? Heroicon::UserPlus)
                     ->color('info')
                     ->schema([
                         Select::make('assigned_to')

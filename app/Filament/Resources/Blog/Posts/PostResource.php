@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Blog\Posts;
 
+use App\Filament\DemoIconAlias;
 use App\Filament\Resources\Blog\Posts\Pages\CreatePost;
 use App\Filament\Resources\Blog\Posts\Pages\EditPost;
 use App\Filament\Resources\Blog\Posts\Pages\ListPosts;
@@ -16,8 +17,10 @@ use Filament\Pages\Enums\SubNavigationPosition;
 use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use UnitEnum;
@@ -35,9 +38,12 @@ class PostResource extends Resource
 
     protected static string | UnitEnum | null $navigationGroup = 'Blog';
 
-    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedDocumentText;
-
     protected static ?int $navigationSort = 0;
+
+    public static function getNavigationIcon(): string | BackedEnum | Htmlable | null
+    {
+        return FilamentIcon::resolve(DemoIconAlias::RESOURCES_BLOG_POSTS_NAVIGATION) ?? Heroicon::OutlinedDocumentText;
+    }
 
     protected static ?SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
 

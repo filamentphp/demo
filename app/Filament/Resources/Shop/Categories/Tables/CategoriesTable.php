@@ -2,12 +2,14 @@
 
 namespace App\Filament\Resources\Shop\Categories\Tables;
 
+use App\Filament\DemoIconAlias;
 use App\Models\Shop\ProductCategory;
 use Filament\Actions\Action;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Notifications\Notification;
 use Filament\Support\Enums\FontWeight;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -44,7 +46,7 @@ class CategoriesTable
             ->recordActions([
                 Action::make('toggle_visibility')
                     ->link()
-                    ->icon(Heroicon::Eye)
+                    ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_SHOP_CATEGORIES_ACTIONS_TOGGLE_VISIBILITY) ?? Heroicon::Eye)
                     ->color('gray')
                     ->label(fn (ProductCategory $record): string => $record->is_visible ? 'Hide' : 'Show')
                     ->action(fn (ProductCategory $record) => $record->update(['is_visible' => ! $record->is_visible])),

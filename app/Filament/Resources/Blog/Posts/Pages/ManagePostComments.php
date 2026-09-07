@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Blog\Posts\Pages;
 
+use App\Filament\DemoIconAlias;
 use App\Filament\Resources\Blog\Posts\PostResource;
 use BackedEnum;
 use Filament\Actions\CreateAction;
@@ -18,10 +19,12 @@ use Filament\Infolists\Components\TextEntry;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ManageRelatedRecords;
 use Filament\Schemas\Schema;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
 
 class ManagePostComments extends ManageRelatedRecords
 {
@@ -29,7 +32,10 @@ class ManagePostComments extends ManageRelatedRecords
 
     protected static string $relationship = 'comments';
 
-    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedChatBubbleLeftEllipsis;
+    public static function getNavigationIcon(): string | BackedEnum | Htmlable | null
+    {
+        return FilamentIcon::resolve(DemoIconAlias::RESOURCES_BLOG_POSTS_COMMENTS_NAVIGATION) ?? Heroicon::OutlinedChatBubbleLeftEllipsis;
+    }
 
     public function form(Schema $schema): Schema
     {

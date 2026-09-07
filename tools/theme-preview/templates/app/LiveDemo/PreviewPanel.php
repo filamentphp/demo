@@ -57,7 +57,10 @@ final class PreviewPanel extends Panel
 
     public function getIcons(): array
     {
-        return Selection::current()['theme'] === 'sharp' ? SharpThemeMaterialSymbols::Aliases : [];
+        return Selection::current()['theme'] === 'sharp' ? [
+            ...SharpThemeMaterialSymbols::Aliases,
+            ...DemoMaterialSymbols::Aliases,
+        ] : [];
     }
 
     public function getFontFamily(): string

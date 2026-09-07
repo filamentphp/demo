@@ -3,8 +3,10 @@
 namespace App\Filament\Widgets;
 
 use App\Enums\EmploymentType;
+use App\Filament\DemoIconAlias;
 use App\Models\HR\Department;
 use App\Models\HR\Employee;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
@@ -40,19 +42,19 @@ class WorkforceInsightsStats extends BaseWidget
         return [
             Stat::make('Avg Tenure', $avgTenure . ' yrs')
                 ->description($totalActive . ' active employees')
-                ->descriptionIcon(Heroicon::Clock)
+                ->descriptionIcon(FilamentIcon::resolve(DemoIconAlias::WIDGETS_WORKFORCE_TENURE) ?? Heroicon::Clock)
                 ->color('primary'),
             Stat::make('Turnover Rate', $turnoverRate . '%')
                 ->description($inactiveCount . ' departed of ' . $totalCount)
-                ->descriptionIcon(Heroicon::ArrowRightOnRectangle)
+                ->descriptionIcon(FilamentIcon::resolve(DemoIconAlias::WIDGETS_WORKFORCE_TURNOVER) ?? Heroicon::ArrowRightOnRectangle)
                 ->color($turnoverRate > 20 ? 'danger' : 'warning'),
             Stat::make('Open Capacity', (string) $openCapacity)
                 ->description('Limit: ' . $headcountLimit . ', filled: ' . $totalActive)
-                ->descriptionIcon(Heroicon::UserPlus)
+                ->descriptionIcon(FilamentIcon::resolve(DemoIconAlias::WIDGETS_WORKFORCE_CAPACITY) ?? Heroicon::UserPlus)
                 ->color($openCapacity > 0 ? 'success' : 'gray'),
             Stat::make('Contractor Ratio', $contractorRatio . '%')
                 ->description($contractorCount . ' contractors')
-                ->descriptionIcon(Heroicon::Briefcase)
+                ->descriptionIcon(FilamentIcon::resolve(DemoIconAlias::WIDGETS_WORKFORCE_CONTRACTORS) ?? Heroicon::Briefcase)
                 ->color('info'),
         ];
     }

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Shop\Brands;
 
+use App\Filament\DemoIconAlias;
 use App\Filament\Resources\Shop\Brands\Pages\CreateBrand;
 use App\Filament\Resources\Shop\Brands\Pages\EditBrand;
 use App\Filament\Resources\Shop\Brands\Pages\ListBrands;
@@ -13,8 +14,10 @@ use App\Models\Shop\Brand;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
 use UnitEnum;
 
 /**
@@ -26,13 +29,16 @@ class BrandResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedBookmarkSquare;
-
     protected static string | UnitEnum | null $navigationGroup = 'Shop';
 
     protected static ?int $navigationSort = 3;
 
     protected static ?string $slug = 'shop/brands';
+
+    public static function getNavigationIcon(): string | BackedEnum | Htmlable | null
+    {
+        return FilamentIcon::resolve(DemoIconAlias::RESOURCES_SHOP_BRANDS_NAVIGATION) ?? Heroicon::OutlinedBookmarkSquare;
+    }
 
     public static function form(Schema $schema): Schema
     {

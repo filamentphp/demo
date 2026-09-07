@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\HR\LeaveRequests\Tables;
 
 use App\Enums\LeaveStatus;
+use App\Filament\DemoIconAlias;
 use App\Models\HR\LeaveRequest;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
@@ -15,6 +16,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Notifications\Notification;
 use Filament\Support\Enums\FontWeight;
 use Filament\Support\Enums\Width;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\Summarizers\Sum;
@@ -64,7 +66,7 @@ class LeaveRequestsTable
             ->recordActions([
                 ActionGroup::make([
                     Action::make('approve')
-                        ->icon(Heroicon::Check)
+                        ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_LEAVE_REQUESTS_ACTIONS_APPROVE) ?? Heroicon::Check)
                         ->color('success')
                         ->visible(fn (LeaveRequest $record): bool => $record->status === LeaveStatus::Pending)
                         ->requiresConfirmation()
@@ -80,7 +82,7 @@ class LeaveRequestsTable
                                 ->send();
                         }),
                     Action::make('reject')
-                        ->icon(Heroicon::XMark)
+                        ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_LEAVE_REQUESTS_ACTIONS_REJECT) ?? Heroicon::XMark)
                         ->color('danger')
                         ->visible(fn (LeaveRequest $record): bool => $record->status === LeaveStatus::Pending)
                         ->modalWidth(Width::Medium)
@@ -115,7 +117,7 @@ class LeaveRequestsTable
             ])
             ->groupedBulkActions([
                 BulkAction::make('approve')
-                    ->icon(Heroicon::Check)
+                    ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_LEAVE_REQUESTS_BULK_ACTIONS_APPROVE) ?? Heroicon::Check)
                     ->color('success')
                     ->requiresConfirmation()
                     ->action(function (Collection $records): void {
@@ -130,7 +132,7 @@ class LeaveRequestsTable
                     })
                     ->deselectRecordsAfterCompletion(),
                 BulkAction::make('reject')
-                    ->icon(Heroicon::XMark)
+                    ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_LEAVE_REQUESTS_BULK_ACTIONS_REJECT) ?? Heroicon::XMark)
                     ->color('danger')
                     ->schema([
                         Textarea::make('reviewer_notes')

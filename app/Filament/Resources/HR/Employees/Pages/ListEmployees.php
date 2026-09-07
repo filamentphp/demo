@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\HR\Employees\Pages;
 
 use App\Enums\LeaveStatus;
+use App\Filament\DemoIconAlias;
 use App\Filament\Resources\HR\Employees\EmployeeResource;
 use App\Filament\Resources\HR\LeaveRequests\LeaveRequestResource;
 use App\Models\HR\Employee;
@@ -12,6 +13,7 @@ use Filament\Actions\CreateAction;
 use Filament\Pages\Concerns\ExposesTableToWidgets;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
 
 class ListEmployees extends ListRecords
@@ -26,7 +28,7 @@ class ListEmployees extends ListRecords
             Action::make('leave_requests')
                 ->label('Leave requests')
                 ->color('gray')
-                ->icon(Heroicon::Calendar)
+                ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_EMPLOYEES_ACTIONS_LEAVE_REQUESTS) ?? Heroicon::Calendar)
                 ->badge((string) LeaveRequest::query()->where('status', LeaveStatus::Pending)->count())
                 ->badgeColor('warning')
                 ->url(LeaveRequestResource::getUrl('index')),

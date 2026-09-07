@@ -2,10 +2,14 @@
 
 namespace App\Enums;
 
+use App\Filament\DemoIconAlias;
+use BackedEnum;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Contracts\Support\Htmlable;
 
 enum ExpenseCategory: string implements HasColor, HasIcon, HasLabel
 {
@@ -44,15 +48,15 @@ enum ExpenseCategory: string implements HasColor, HasIcon, HasLabel
         };
     }
 
-    public function getIcon(): Heroicon
+    public function getIcon(): string | BackedEnum | Htmlable
     {
         return match ($this) {
-            self::Travel => Heroicon::GlobeAlt,
-            self::Meals => Heroicon::Cake,
-            self::Supplies => Heroicon::ShoppingCart,
-            self::Equipment => Heroicon::WrenchScrewdriver,
-            self::Software => Heroicon::ComputerDesktop,
-            self::Other => Heroicon::EllipsisHorizontal,
+            self::Travel => FilamentIcon::resolve(DemoIconAlias::ENUMS_EXPENSE_CATEGORY_TRAVEL) ?? Heroicon::GlobeAlt,
+            self::Meals => FilamentIcon::resolve(DemoIconAlias::ENUMS_EXPENSE_CATEGORY_MEALS) ?? Heroicon::Cake,
+            self::Supplies => FilamentIcon::resolve(DemoIconAlias::ENUMS_EXPENSE_CATEGORY_SUPPLIES) ?? Heroicon::ShoppingCart,
+            self::Equipment => FilamentIcon::resolve(DemoIconAlias::ENUMS_EXPENSE_CATEGORY_EQUIPMENT) ?? Heroicon::WrenchScrewdriver,
+            self::Software => FilamentIcon::resolve(DemoIconAlias::ENUMS_EXPENSE_CATEGORY_SOFTWARE) ?? Heroicon::ComputerDesktop,
+            self::Other => FilamentIcon::resolve(DemoIconAlias::ENUMS_EXPENSE_CATEGORY_OTHER) ?? Heroicon::EllipsisHorizontal,
         };
     }
 }

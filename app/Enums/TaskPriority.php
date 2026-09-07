@@ -2,10 +2,14 @@
 
 namespace App\Enums;
 
+use App\Filament\DemoIconAlias;
+use BackedEnum;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Contracts\Support\Htmlable;
 
 enum TaskPriority: string implements HasColor, HasIcon, HasLabel
 {
@@ -37,13 +41,13 @@ enum TaskPriority: string implements HasColor, HasIcon, HasLabel
         };
     }
 
-    public function getIcon(): Heroicon
+    public function getIcon(): string | BackedEnum | Htmlable
     {
         return match ($this) {
-            self::Low => Heroicon::ChevronDown,
-            self::Medium => Heroicon::Minus,
-            self::High => Heroicon::ChevronUp,
-            self::Critical => Heroicon::Fire,
+            self::Low => FilamentIcon::resolve(DemoIconAlias::ENUMS_TASK_PRIORITY_LOW) ?? Heroicon::ChevronDown,
+            self::Medium => FilamentIcon::resolve(DemoIconAlias::ENUMS_TASK_PRIORITY_MEDIUM) ?? Heroicon::Minus,
+            self::High => FilamentIcon::resolve(DemoIconAlias::ENUMS_TASK_PRIORITY_HIGH) ?? Heroicon::ChevronUp,
+            self::Critical => FilamentIcon::resolve(DemoIconAlias::ENUMS_TASK_PRIORITY_CRITICAL) ?? Heroicon::Fire,
         };
     }
 }

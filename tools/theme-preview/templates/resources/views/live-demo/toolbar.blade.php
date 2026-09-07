@@ -15,7 +15,7 @@
         aria-label="Switch theme"
     >
         <span class="live-demo-launcher__label" aria-hidden="true">Switch theme</span>
-        <x-filament::icon icon="heroicon-o-swatch" class="live-demo-launcher__icon" />
+        <x-filament::icon :alias="\App\Filament\DemoIconAlias::THEME_PREVIEW_TRIGGER" icon="heroicon-o-swatch" class="live-demo-launcher__icon" />
     </button>
 
     <section
@@ -39,7 +39,7 @@
                 data-live-demo-close
                 aria-label="Close theme preview"
             >
-                <x-filament::icon icon="heroicon-m-x-mark" />
+                <x-filament::icon :alias="\App\Filament\DemoIconAlias::THEME_PREVIEW_CLOSE" icon="heroicon-m-x-mark" />
             </button>
         </header>
 
@@ -48,11 +48,11 @@
                 <legend>Color scheme</legend>
                 <div class="live-demo-appearance__options" role="group" aria-label="Color scheme">
                     <button type="button" data-live-demo-scheme="light" aria-pressed="false">
-                        <x-filament::icon icon="heroicon-o-sun" />
+                        <x-filament::icon :alias="\App\Filament\DemoIconAlias::THEME_PREVIEW_LIGHT" icon="heroicon-o-sun" />
                         Light
                     </button>
                     <button type="button" data-live-demo-scheme="dark" aria-pressed="false">
-                        <x-filament::icon icon="heroicon-o-moon" />
+                        <x-filament::icon :alias="\App\Filament\DemoIconAlias::THEME_PREVIEW_DARK" icon="heroicon-o-moon" />
                         Dark
                     </button>
                 </div>
@@ -91,7 +91,7 @@
             <div class="live-demo-shop">
                 <a href="https://filamentphp.com/themes" target="_blank" rel="noopener" class="live-demo-shop__link" aria-label="Explore themes & pricing (opens in a new tab)">
                     Explore themes & pricing
-                    <x-filament::icon icon="heroicon-m-arrow-up-right" />
+                    <x-filament::icon :alias="\App\Filament\DemoIconAlias::THEME_PREVIEW_PRICING" icon="heroicon-m-arrow-up-right" />
                 </a>
             </div>
         </div>

@@ -2,7 +2,9 @@
 
 namespace App\Filament\Resources\HR\Departments\Tables;
 
+use App\Filament\DemoIconAlias;
 use App\Models\HR\Department;
+use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\DeleteAction;
@@ -13,11 +15,13 @@ use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Support\Enums\FontWeight;
 use Filament\Support\Enums\Width;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\ColorColumn;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Str;
 
 class DepartmentsTable
@@ -57,7 +61,7 @@ class DepartmentsTable
                 ActionGroup::make([
                     EditAction::make(),
                     Action::make('adjust_budget')
-                        ->icon(Heroicon::Banknotes)
+                        ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_DEPARTMENTS_ACTIONS_ADJUST_BUDGET) ?? Heroicon::Banknotes)
                         ->color('success')
                         ->modalWidth(Width::ExtraSmall)
                         ->modalSubmitActionLabel('Save')
@@ -74,7 +78,9 @@ class DepartmentsTable
                         ])
                         ->action(fn (Department $record, array $data) => $record->update($data)),
                     Action::make('toggle_active')
-                        ->icon(fn (Department $record): Heroicon => $record->is_active ? Heroicon::XMark : Heroicon::Check)
+                        ->icon(fn (Department $record): string | BackedEnum | Htmlable => $record->is_active
+                            ? (FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_DEPARTMENTS_ACTIONS_DEACTIVATE) ?? Heroicon::XMark)
+                            : (FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_DEPARTMENTS_ACTIONS_ACTIVATE) ?? Heroicon::Check))
                         ->label(fn (Department $record): string => $record->is_active ? 'Deactivate' : 'Activate')
                         ->color(fn (Department $record): string => $record->is_active ? 'danger' : 'success')
                         ->action(fn (Department $record) => $record->update(['is_active' => ! $record->is_active])),

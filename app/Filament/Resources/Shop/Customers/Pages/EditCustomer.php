@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Shop\Customers\Pages;
 
+use App\Filament\DemoIconAlias;
 use App\Filament\Resources\Shop\Customers\CustomerResource;
 use App\Models\Shop\Customer;
 use Filament\Actions\Action;
@@ -13,6 +14,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 use Filament\Support\Enums\Width;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
 
 class EditCustomer extends EditRecord
@@ -23,7 +25,7 @@ class EditCustomer extends EditRecord
     {
         return [
             Action::make('send_email')
-                ->icon(Heroicon::Envelope)
+                ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_SHOP_CUSTOMERS_ACTIONS_SEND_EMAIL) ?? Heroicon::Envelope)
                 ->color('info')
                 ->modalWidth(Width::Large)
                 ->modalSubmitActionLabel('Send')

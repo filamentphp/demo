@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\HR\Timesheets;
 
+use App\Filament\DemoIconAlias;
 use App\Filament\Resources\HR\Timesheets\Pages\CreateTimesheet;
 use App\Filament\Resources\HR\Timesheets\Pages\EditTimesheet;
 use App\Filament\Resources\HR\Timesheets\Pages\ListTimesheets;
@@ -12,8 +13,10 @@ use App\Models\HR\Timesheet;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
 use UnitEnum;
 
 /**
@@ -23,13 +26,16 @@ class TimesheetResource extends Resource
 {
     protected static ?string $model = Timesheet::class;
 
-    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedClock;
-
     protected static string | UnitEnum | null $navigationGroup = 'Projects';
 
     protected static ?int $navigationSort = 2;
 
     protected static ?string $slug = 'timesheets';
+
+    public static function getNavigationIcon(): string | BackedEnum | Htmlable | null
+    {
+        return FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_TIMESHEETS_NAVIGATION) ?? Heroicon::OutlinedClock;
+    }
 
     public static function form(Schema $schema): Schema
     {

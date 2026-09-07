@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\HR\Employees\Schemas;
 
 use App\Enums\EmploymentType;
+use App\Filament\DemoIconAlias;
 use App\Models\HR\Employee;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\ColorPicker;
@@ -16,6 +17,7 @@ use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
 
 class EmployeeForm
@@ -27,7 +29,7 @@ class EmployeeForm
                 Tabs::make('Employee')
                     ->schema([
                         Tab::make('Personal')
-                            ->icon(Heroicon::User)
+                            ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_EMPLOYEES_FORM_TABS_PERSONAL) ?? Heroicon::User)
                             ->schema([
                                 TextInput::make('name')
                                     ->required()
@@ -69,7 +71,7 @@ class EmployeeForm
                             ->columns(2),
 
                         Tab::make('Employment')
-                            ->icon(Heroicon::Briefcase)
+                            ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_EMPLOYEES_FORM_TABS_EMPLOYMENT) ?? Heroicon::Briefcase)
                             ->schema([
                                 Select::make('department_id')
                                     ->relationship('department', 'name')
@@ -124,7 +126,7 @@ class EmployeeForm
                             ->columns(2),
 
                         Tab::make('Documents & Metadata')
-                            ->icon(Heroicon::DocumentText)
+                            ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_EMPLOYEES_FORM_TABS_DOCUMENTS) ?? Heroicon::DocumentText)
                             ->schema([
                                 KeyValue::make('metadata')
                                     ->keyLabel('Property')

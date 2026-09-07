@@ -2,10 +2,14 @@
 
 namespace App\Enums;
 
+use App\Filament\DemoIconAlias;
+use BackedEnum;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Contracts\Support\Htmlable;
 
 enum TaskStatus: string implements HasColor, HasIcon, HasLabel
 {
@@ -45,15 +49,15 @@ enum TaskStatus: string implements HasColor, HasIcon, HasLabel
         };
     }
 
-    public function getIcon(): Heroicon
+    public function getIcon(): string | BackedEnum | Htmlable
     {
         return match ($this) {
-            self::Backlog => Heroicon::InboxStack,
-            self::Todo => Heroicon::QueueList,
-            self::InProgress => Heroicon::ArrowPath,
-            self::InReview => Heroicon::Eye,
-            self::Completed => Heroicon::CheckCircle,
-            self::Cancelled => Heroicon::XCircle,
+            self::Backlog => FilamentIcon::resolve(DemoIconAlias::ENUMS_TASK_STATUS_BACKLOG) ?? Heroicon::InboxStack,
+            self::Todo => FilamentIcon::resolve(DemoIconAlias::ENUMS_TASK_STATUS_TODO) ?? Heroicon::QueueList,
+            self::InProgress => FilamentIcon::resolve(DemoIconAlias::ENUMS_TASK_STATUS_IN_PROGRESS) ?? Heroicon::ArrowPath,
+            self::InReview => FilamentIcon::resolve(DemoIconAlias::ENUMS_TASK_STATUS_IN_REVIEW) ?? Heroicon::Eye,
+            self::Completed => FilamentIcon::resolve(DemoIconAlias::ENUMS_TASK_STATUS_COMPLETED) ?? Heroicon::CheckCircle,
+            self::Cancelled => FilamentIcon::resolve(DemoIconAlias::ENUMS_TASK_STATUS_CANCELLED) ?? Heroicon::XCircle,
         };
     }
 }

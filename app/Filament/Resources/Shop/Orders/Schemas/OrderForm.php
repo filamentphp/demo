@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Shop\Orders\Schemas;
 
 use App\Enums\OrderStatus;
+use App\Filament\DemoIconAlias;
 use App\Filament\Resources\Shop\Products\ProductResource;
 use App\Forms\Components\AddressForm;
 use App\Models\Shop\Order;
@@ -21,6 +22,7 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Filament\Support\Enums\Width;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
 
 class OrderForm
@@ -160,7 +162,7 @@ class OrderForm
             ->extraItemActions([
                 Action::make('openProduct')
                     ->tooltip('Open product')
-                    ->icon(Heroicon::ArrowTopRightOnSquare)
+                    ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_SHOP_ORDERS_FIELDS_ITEMS_ACTIONS_OPEN_PRODUCT) ?? Heroicon::ArrowTopRightOnSquare)
                     ->url(function (array $arguments, Repeater $component): ?string {
                         $itemData = $component->getRawItemState($arguments['item']);
 

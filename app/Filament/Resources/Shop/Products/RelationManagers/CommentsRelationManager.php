@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Shop\Products\RelationManagers;
 
+use App\Filament\DemoIconAlias;
 use App\Models\User;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
@@ -18,6 +19,7 @@ use Filament\Notifications\Notification;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
 use Filament\Support\Enums\FontWeight;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -98,7 +100,7 @@ class CommentsRelationManager extends RelationManager
 
                         Notification::make()
                             ->title('New comment')
-                            ->icon(Heroicon::ChatBubbleBottomCenterText)
+                            ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_SHOP_PRODUCTS_NOTIFICATIONS_NEW_COMMENT) ?? Heroicon::ChatBubbleBottomCenterText)
                             ->body("**{$record->customer->name} commented on product ({$record->commentable->name}).**")
                             ->sendToDatabase($user);
                     }),

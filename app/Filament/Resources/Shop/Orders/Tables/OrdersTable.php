@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Shop\Orders\Tables;
 
 use App\Enums\OrderStatus;
+use App\Filament\DemoIconAlias;
 use App\Models\Shop\Order;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
@@ -13,6 +14,7 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Textarea;
 use Filament\Notifications\Notification;
 use Filament\Support\Enums\FontWeight;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\TextColumn;
@@ -98,7 +100,7 @@ class OrdersTable
             ->recordActions([
                 ActionGroup::make([
                     Action::make('process')
-                        ->icon(Heroicon::ArrowPath)
+                        ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_SHOP_ORDERS_ACTIONS_PROCESS) ?? Heroicon::ArrowPath)
                         ->color('warning')
                         ->visible(fn (Order $record): bool => $record->status === OrderStatus::New)
                         ->action(function (Order $record): void {
@@ -110,7 +112,7 @@ class OrdersTable
                                 ->send();
                         }),
                     Action::make('ship')
-                        ->icon(Heroicon::Truck)
+                        ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_SHOP_ORDERS_ACTIONS_SHIP) ?? Heroicon::Truck)
                         ->color('success')
                         ->visible(fn (Order $record): bool => $record->status === OrderStatus::Processing)
                         ->slideOver()
@@ -148,7 +150,7 @@ class OrdersTable
                                 ->send();
                         }),
                     Action::make('deliver')
-                        ->icon(Heroicon::CheckBadge)
+                        ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_SHOP_ORDERS_ACTIONS_DELIVER) ?? Heroicon::CheckBadge)
                         ->color('success')
                         ->visible(fn (Order $record): bool => $record->status === OrderStatus::Shipped)
                         ->requiresConfirmation()
@@ -162,7 +164,7 @@ class OrdersTable
                         }),
                     EditAction::make(),
                     Action::make('cancel')
-                        ->icon(Heroicon::XCircle)
+                        ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_SHOP_ORDERS_ACTIONS_CANCEL) ?? Heroicon::XCircle)
                         ->color('danger')
                         ->visible(fn (Order $record): bool => ! in_array($record->status, [OrderStatus::Delivered, OrderStatus::Cancelled]))
                         ->disabled(fn (Order $record): bool => $record->status === OrderStatus::Shipped)

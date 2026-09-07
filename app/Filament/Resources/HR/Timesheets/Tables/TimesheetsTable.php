@@ -2,7 +2,9 @@
 
 namespace App\Filament\Resources\HR\Timesheets\Tables;
 
+use App\Filament\DemoIconAlias;
 use App\Models\HR\Timesheet;
+use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Actions\BulkAction;
 use Filament\Actions\DeleteBulkAction;
@@ -10,6 +12,7 @@ use Filament\Actions\EditAction;
 use Filament\Forms\Components\DatePicker;
 use Filament\Notifications\Notification;
 use Filament\Support\Enums\FontWeight;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\Summarizers\Average;
@@ -22,6 +25,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
@@ -134,7 +138,9 @@ class TimesheetsTable
             ->recordActions([
                 Action::make('toggle_billable')
                     ->iconButton()
-                    ->icon(fn (Timesheet $record): Heroicon => $record->is_billable ? Heroicon::CurrencyDollar : Heroicon::NoSymbol)
+                    ->icon(fn (Timesheet $record): string | BackedEnum | Htmlable => $record->is_billable
+                        ? (FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_TIMESHEETS_ACTIONS_MARK_NON_BILLABLE) ?? Heroicon::CurrencyDollar)
+                        : (FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_TIMESHEETS_ACTIONS_MARK_BILLABLE) ?? Heroicon::NoSymbol))
                     ->color(fn (Timesheet $record): string => $record->is_billable ? 'success' : 'gray')
                     ->disabled(fn (Timesheet $record): bool => $record->date->isBefore(now()->subDays(7)))
                     ->action(fn (Timesheet $record) => $record->update(['is_billable' => ! $record->is_billable])),
@@ -142,7 +148,7 @@ class TimesheetsTable
             ])
             ->groupedBulkActions([
                 BulkAction::make('mark_billable')
-                    ->icon(Heroicon::CurrencyDollar)
+                    ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_TIMESHEETS_BULK_ACTIONS_MARK_BILLABLE) ?? Heroicon::CurrencyDollar)
                     ->color('success')
                     ->requiresConfirmation()
                     ->action(function (Collection $records): void {
@@ -150,7 +156,7 @@ class TimesheetsTable
                     })
                     ->deselectRecordsAfterCompletion(),
                 BulkAction::make('mark_non_billable')
-                    ->icon(Heroicon::NoSymbol)
+                    ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_TIMESHEETS_BULK_ACTIONS_MARK_NON_BILLABLE) ?? Heroicon::NoSymbol)
                     ->color('gray')
                     ->requiresConfirmation()
                     ->action(function (Collection $records): void {

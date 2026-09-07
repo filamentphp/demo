@@ -1,5 +1,7 @@
 <?php
 
+use App\Filament\DemoIconAlias;
+use App\LiveDemo\DemoMaterialSymbols;
 use App\LiveDemo\PreviewPanel;
 use App\LiveDemo\Selection;
 use Filament\FontProviders\BunnyFontProvider;
@@ -138,7 +140,7 @@ it('matches palette, fonts, and sharp aliases to the theme packages', function (
     });
 
     withBoundRequest(['theme' => 'sharp'], function () use ($previewPanel): void {
-        $this->assertSame(SharpThemeMaterialSymbols::Aliases, $previewPanel->getIcons());
+        $this->assertSame([...SharpThemeMaterialSymbols::Aliases, ...DemoMaterialSymbols::Aliases], $previewPanel->getIcons());
         $this->assertSame(['primary' => Color::Blue], $previewPanel->getColors());
         $this->assertSame('Inter Variable', $previewPanel->getFontFamily());
         $this->assertSame(LocalFontProvider::class, $previewPanel->getFontProvider());
@@ -179,7 +181,7 @@ it('does not leak one preview panel identity between sequential sessions', funct
 
     withBoundRequest(['theme' => 'sharp', 'compact' => true], function () use ($previewPanel): void {
         $this->assertSame('resources/css/live-demo/sharp-compact.css', $previewPanel->getViteTheme());
-        $this->assertSame(SharpThemeMaterialSymbols::Aliases, $previewPanel->getIcons());
+        $this->assertSame([...SharpThemeMaterialSymbols::Aliases, ...DemoMaterialSymbols::Aliases], $previewPanel->getIcons());
     });
 
     withBoundRequest(['theme' => 'soft'], function () use ($previewPanel): void {
@@ -209,3 +211,27 @@ it('keeps the second application panel stock', function (): void {
     $this->assertNull($panel->getViteTheme());
     $this->assertSame([], $panel->getIcons());
 });
+
+it('provides a renderable Material Sharp icon for every demo alias', function (): void {
+    $aliases = array_values((new ReflectionClass(DemoIconAlias::class))->getConstants());
+
+    expect(array_keys(DemoMaterialSymbols::Aliases))->toEqualCanonicalizing($aliases);
+
+    foreach (DemoMaterialSymbols::Aliases as $alias => $icon) {
+        expect($icon)->toStartWith('gmsi-s-');
+        expect(svg($icon)->toHtml())->toContain('<svg');
+    }
+});
+
+it('registers demo icons only when the actual panel boots Sharp', function (string $theme): void {
+    $panel = app('filament')->getPanel('admin');
+    Route::middleware($panel->getMiddleware())
+        ->get('/_live-demo-icons-test', fn () => response()->json([
+            'icon' => FilamentIcon::resolve(DemoIconAlias::RESOURCES_SHOP_PRODUCTS_NAVIGATION),
+        ]));
+
+    $this->withSession(['live-demo.selection' => ['theme' => $theme]])
+        ->getJson('/_live-demo-icons-test')
+        ->assertOk()
+        ->assertExactJson(['icon' => $theme === 'sharp' ? 'gmsi-s-bolt' : null]);
+})->with(['stock', 'sharp', 'soft', 'noir']);

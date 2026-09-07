@@ -4,6 +4,7 @@ namespace App\Filament\Resources\HR\Expenses\Pages;
 
 use App\Enums\ExpenseCategory;
 use App\Enums\ExpenseStatus;
+use App\Filament\DemoIconAlias;
 use App\Filament\Resources\HR\Expenses\ExpenseResource;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
@@ -19,6 +20,7 @@ use Filament\Resources\Pages\CreateRecord\Concerns\HasWizard;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Components\Wizard\Step;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
 
 class CreateExpense extends CreateRecord
@@ -32,7 +34,7 @@ class CreateExpense extends CreateRecord
     {
         return [
             Step::make('Details')
-                ->icon(Heroicon::InformationCircle)
+                ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_EXPENSES_WIZARD_DETAILS) ?? Heroicon::InformationCircle)
                 ->schema([
                     TextInput::make('expense_number')
                         ->default(fn () => 'EXP-' . str_pad((string) random_int(1, 999999), 6, '0', STR_PAD_LEFT))
@@ -70,7 +72,7 @@ class CreateExpense extends CreateRecord
                 ->columns(2),
 
             Step::make('Line Items')
-                ->icon(Heroicon::ListBullet)
+                ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_EXPENSES_WIZARD_LINE_ITEMS) ?? Heroicon::ListBullet)
                 ->schema([
                     Repeater::make('expenseLines')
                         ->relationship()
@@ -133,7 +135,7 @@ class CreateExpense extends CreateRecord
                 ]),
 
             Step::make('Review')
-                ->icon(Heroicon::CheckCircle)
+                ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_EXPENSES_WIZARD_REVIEW) ?? Heroicon::CheckCircle)
                 ->schema([
                     TextInput::make('total_amount')
                         ->numeric()

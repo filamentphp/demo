@@ -3,6 +3,7 @@
 namespace App\Filament\Pages;
 
 use App\Enums\OrderStatus;
+use App\Filament\DemoIconAlias;
 use App\Filament\Widgets\CustomerGrowthChart;
 use App\Filament\Widgets\CustomerSegmentsChart;
 use App\Filament\Widgets\FlaggedOrders;
@@ -19,7 +20,9 @@ use Filament\Pages\Dashboard as BaseDashboard;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Contracts\Support\Htmlable;
 
 class ShopDashboard extends BaseDashboard
 {
@@ -29,9 +32,12 @@ class ShopDashboard extends BaseDashboard
 
     protected static ?string $title = 'Shop Dashboard';
 
-    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedShoppingCart;
-
     protected static ?int $navigationSort = 2;
+
+    public static function getNavigationIcon(): string | BackedEnum | Htmlable | null
+    {
+        return FilamentIcon::resolve(DemoIconAlias::PAGES_SHOP_DASHBOARD_NAVIGATION) ?? Heroicon::OutlinedShoppingCart;
+    }
 
     public function filtersForm(Schema $schema): Schema
     {

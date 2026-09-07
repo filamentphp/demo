@@ -2,10 +2,14 @@
 
 namespace App\Enums;
 
+use App\Filament\DemoIconAlias;
+use BackedEnum;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Contracts\Support\Htmlable;
 
 enum EmploymentType: string implements HasColor, HasIcon, HasLabel
 {
@@ -37,13 +41,13 @@ enum EmploymentType: string implements HasColor, HasIcon, HasLabel
         };
     }
 
-    public function getIcon(): Heroicon
+    public function getIcon(): string | BackedEnum | Htmlable
     {
         return match ($this) {
-            self::FullTime => Heroicon::UserGroup,
-            self::PartTime => Heroicon::Clock,
-            self::Contractor => Heroicon::Briefcase,
-            self::Intern => Heroicon::AcademicCap,
+            self::FullTime => FilamentIcon::resolve(DemoIconAlias::ENUMS_EMPLOYMENT_TYPE_FULL_TIME) ?? Heroicon::UserGroup,
+            self::PartTime => FilamentIcon::resolve(DemoIconAlias::ENUMS_EMPLOYMENT_TYPE_PART_TIME) ?? Heroicon::Clock,
+            self::Contractor => FilamentIcon::resolve(DemoIconAlias::ENUMS_EMPLOYMENT_TYPE_CONTRACTOR) ?? Heroicon::Briefcase,
+            self::Intern => FilamentIcon::resolve(DemoIconAlias::ENUMS_EMPLOYMENT_TYPE_INTERN) ?? Heroicon::AcademicCap,
         };
     }
 }

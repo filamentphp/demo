@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\HR\Projects\Pages;
 
 use App\Enums\ProjectStatus;
+use App\Filament\DemoIconAlias;
 use App\Filament\Resources\HR\Projects\ProjectResource;
 use App\Models\HR\Project;
 use Filament\Actions\Action;
@@ -11,6 +12,7 @@ use Filament\Forms\Components\ToggleButtons;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Support\Enums\Width;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
 
 class ViewProject extends ViewRecord
@@ -21,7 +23,7 @@ class ViewProject extends ViewRecord
     {
         return [
             Action::make('change_status')
-                ->icon(Heroicon::ArrowPathRoundedSquare)
+                ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_PROJECTS_ACTIONS_CHANGE_STATUS) ?? Heroicon::ArrowPathRoundedSquare)
                 ->color('gray')
                 ->modalWidth(Width::Medium)
                 ->modalSubmitActionLabel('Save')
@@ -40,13 +42,13 @@ class ViewProject extends ViewRecord
                     $this->refreshFormData(['status']);
                 }),
             Action::make('put_on_hold')
-                ->icon(Heroicon::Pause)
+                ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_PROJECTS_ACTIONS_HOLD) ?? Heroicon::Pause)
                 ->color('warning')
                 ->visible(fn (Project $record): bool => $record->status === ProjectStatus::Active)
                 ->requiresConfirmation()
                 ->modalHeading('Put Project On Hold')
                 ->modalDescription('This will pause all work on this project.')
-                ->modalIcon(Heroicon::ExclamationTriangle)
+                ->modalIcon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_PROJECTS_MODALS_HOLD_WARNING) ?? Heroicon::ExclamationTriangle)
                 ->modalIconColor('warning')
                 ->action(function (Project $record): void {
                     $record->update(['status' => ProjectStatus::OnHold]);
@@ -58,7 +60,7 @@ class ViewProject extends ViewRecord
                         ->send();
                 }),
             Action::make('resume')
-                ->icon(Heroicon::Play)
+                ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_PROJECTS_ACTIONS_RESUME) ?? Heroicon::Play)
                 ->color('success')
                 ->visible(fn (Project $record): bool => $record->status === ProjectStatus::OnHold)
                 ->action(function (Project $record): void {
@@ -71,7 +73,7 @@ class ViewProject extends ViewRecord
                         ->send();
                 }),
             Action::make('complete')
-                ->icon(Heroicon::CheckCircle)
+                ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_PROJECTS_ACTIONS_COMPLETE) ?? Heroicon::CheckCircle)
                 ->color('success')
                 ->visible(fn (Project $record): bool => in_array($record->status, [ProjectStatus::Active, ProjectStatus::OnHold]))
                 ->requiresConfirmation()

@@ -2,10 +2,14 @@
 
 namespace App\Enums;
 
+use App\Filament\DemoIconAlias;
+use BackedEnum;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Contracts\Support\Htmlable;
 
 enum ExpenseStatus: string implements HasColor, HasIcon, HasLabel
 {
@@ -41,14 +45,14 @@ enum ExpenseStatus: string implements HasColor, HasIcon, HasLabel
         };
     }
 
-    public function getIcon(): Heroicon
+    public function getIcon(): string | BackedEnum | Htmlable
     {
         return match ($this) {
-            self::Draft => Heroicon::Pencil,
-            self::Submitted => Heroicon::PaperAirplane,
-            self::Approved => Heroicon::Check,
-            self::Rejected => Heroicon::XMark,
-            self::Reimbursed => Heroicon::Banknotes,
+            self::Draft => FilamentIcon::resolve(DemoIconAlias::ENUMS_EXPENSE_STATUS_DRAFT) ?? Heroicon::Pencil,
+            self::Submitted => FilamentIcon::resolve(DemoIconAlias::ENUMS_EXPENSE_STATUS_SUBMITTED) ?? Heroicon::PaperAirplane,
+            self::Approved => FilamentIcon::resolve(DemoIconAlias::ENUMS_EXPENSE_STATUS_APPROVED) ?? Heroicon::Check,
+            self::Rejected => FilamentIcon::resolve(DemoIconAlias::ENUMS_EXPENSE_STATUS_REJECTED) ?? Heroicon::XMark,
+            self::Reimbursed => FilamentIcon::resolve(DemoIconAlias::ENUMS_EXPENSE_STATUS_REIMBURSED) ?? Heroicon::Banknotes,
         };
     }
 }

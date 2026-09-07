@@ -37,6 +37,7 @@ const variants = [
     'noir-compact',
 ]
 const templateFiles = [
+    'app/LiveDemo/DemoMaterialSymbols.php',
     'app/LiveDemo/PreviewPanel.php',
     'app/LiveDemo/Selection.php',
     'app/LiveDemo/Theme.php',

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Shop\Orders\Pages;
 
+use App\Filament\DemoIconAlias;
 use App\Filament\Resources\Shop\Orders\OrderResource;
 use App\Filament\Resources\Shop\Orders\Schemas\OrderForm;
 use App\Models\Shop\Order;
@@ -12,6 +13,7 @@ use Filament\Resources\Pages\CreateRecord;
 use Filament\Resources\Pages\CreateRecord\Concerns\HasWizard;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Wizard\Step;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
 
 class CreateOrder extends CreateRecord
@@ -51,7 +53,7 @@ class CreateOrder extends CreateRecord
 
         Notification::make()
             ->title('New order')
-            ->icon(Heroicon::ShoppingBag)
+            ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_SHOP_ORDERS_NOTIFICATIONS_NEW_ORDER) ?? Heroicon::ShoppingBag)
             ->body("**{$order->customer?->name} ordered {$order->orderItems->count()} products.**")
             ->actions([
                 Action::make('View')

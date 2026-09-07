@@ -2,6 +2,7 @@
 
 namespace App\Filament\Widgets;
 
+use App\Filament\DemoIconAlias;
 use App\Filament\Pages\ShopDashboard;
 use App\Filament\Resources\Blog\Authors\AuthorResource;
 use App\Filament\Resources\Blog\Categories\CategoryResource as BlogCategoryResource;
@@ -34,7 +35,7 @@ class FeaturesOverview extends Widget
     protected static bool $isLazy = false;
 
     /**
-     * @return array<int, array{name: string, icon: string, color: string, features: array<int, array{name: string, description: string, url: string, resource: string}>}>
+     * @return array<int, array{name: string, icon: string, iconAlias: string, color: string, features: array<int, array{name: string, description: string, url: string, resource: string}>}>
      */
     public function getCategories(): array
     {
@@ -60,13 +61,14 @@ class FeaturesOverview extends Widget
     }
 
     /**
-     * @return array{name: string, icon: string, color: string, features: list<array{name: string, description: string, url: string, resource: string}>}
+     * @return array{name: string, icon: string, iconAlias: string, color: string, features: list<array{name: string, description: string, url: string, resource: string}>}
      */
     protected function tablesCategory(): array
     {
         return [
             'name' => 'Tables & Columns',
             'icon' => 'heroicon-o-table-cells',
+            'iconAlias' => DemoIconAlias::WIDGETS_FEATURES_TABLES,
             'color' => 'blue',
             'features' => [
                 ['name' => 'Searchable & sortable', 'description' => 'Full-text search with sortable column headers', 'url' => ProductResource::getUrl('index'), 'resource' => 'Products'],
@@ -88,13 +90,14 @@ class FeaturesOverview extends Widget
     }
 
     /**
-     * @return array{name: string, icon: string, color: string, features: list<array{name: string, description: string, url: string, resource: string}>}
+     * @return array{name: string, icon: string, iconAlias: string, color: string, features: list<array{name: string, description: string, url: string, resource: string}>}
      */
     protected function filtersCategory(): array
     {
         return [
             'name' => 'Filters',
             'icon' => 'heroicon-o-funnel',
+            'iconAlias' => DemoIconAlias::WIDGETS_FEATURES_FILTERS,
             'color' => 'violet',
             'features' => [
                 ['name' => 'Query builder', 'description' => 'Click the filter icon above the table', 'url' => ProductResource::getUrl('index'), 'resource' => 'Products'],
@@ -107,13 +110,14 @@ class FeaturesOverview extends Widget
     }
 
     /**
-     * @return array{name: string, icon: string, color: string, features: list<array{name: string, description: string, url: string, resource: string}>}
+     * @return array{name: string, icon: string, iconAlias: string, color: string, features: list<array{name: string, description: string, url: string, resource: string}>}
      */
     protected function actionsCategory(): array
     {
         return [
             'name' => 'Table Actions',
             'icon' => 'heroicon-o-bolt',
+            'iconAlias' => DemoIconAlias::WIDGETS_FEATURES_TABLE_ACTIONS,
             'color' => 'amber',
             'features' => [
                 ['name' => 'Action groups', 'description' => 'Dropdown menu grouping multiple actions — click the "..." button on any row', 'url' => ProductResource::getUrl('index'), 'resource' => 'Products'],
@@ -134,13 +138,14 @@ class FeaturesOverview extends Widget
     }
 
     /**
-     * @return array{name: string, icon: string, color: string, features: list<array{name: string, description: string, url: string, resource: string}>}
+     * @return array{name: string, icon: string, iconAlias: string, color: string, features: list<array{name: string, description: string, url: string, resource: string}>}
      */
     protected function pageActionsCategory(?Model $order, ?Model $post, ?Model $expense): array
     {
         return [
             'name' => 'Page & Header Actions',
             'icon' => 'heroicon-o-rectangle-stack',
+            'iconAlias' => DemoIconAlias::WIDGETS_FEATURES_PAGE_ACTIONS,
             'color' => 'rose',
             'features' => array_values(array_filter([
                 $order ? ['name' => 'Replicate action', 'description' => 'Click "Replicate" in the edit page header', 'url' => OrderResource::getUrl('edit', ['record' => $order]), 'resource' => 'Orders'] : null,
@@ -154,13 +159,14 @@ class FeaturesOverview extends Widget
     }
 
     /**
-     * @return array{name: string, icon: string, color: string, features: list<array{name: string, description: string, url: string, resource: string}>}
+     * @return array{name: string, icon: string, iconAlias: string, color: string, features: list<array{name: string, description: string, url: string, resource: string}>}
      */
     protected function formsCategory(?Model $order, ?Model $post, ?Model $product, ?Model $project, ?Model $employee, ?Model $expense): array
     {
         return [
             'name' => 'Forms',
             'icon' => 'heroicon-o-pencil-square',
+            'iconAlias' => DemoIconAlias::WIDGETS_FEATURES_FORMS,
             'color' => 'emerald',
             'features' => array_values(array_filter([
                 ['name' => 'Wizard', 'description' => 'The create form uses a step wizard at the top', 'url' => OrderResource::getUrl('create'), 'resource' => 'Orders'],
@@ -179,13 +185,14 @@ class FeaturesOverview extends Widget
     }
 
     /**
-     * @return array{name: string, icon: string, color: string, features: list<array{name: string, description: string, url: string, resource: string}>}
+     * @return array{name: string, icon: string, iconAlias: string, color: string, features: list<array{name: string, description: string, url: string, resource: string}>}
      */
     protected function infolistsCategory(?Model $post, ?Model $expense): array
     {
         return [
             'name' => 'Infolists',
             'icon' => 'heroicon-o-eye',
+            'iconAlias' => DemoIconAlias::WIDGETS_FEATURES_INFOLISTS,
             'color' => 'cyan',
             'features' => array_values(array_filter([
                 $post ? ['name' => 'Rich text entries', 'description' => 'Formatted text, icons, badges & prose', 'url' => PostResource::getUrl('view', ['record' => $post]), 'resource' => 'Posts'] : null,
@@ -196,13 +203,14 @@ class FeaturesOverview extends Widget
     }
 
     /**
-     * @return array{name: string, icon: string, color: string, features: list<array{name: string, description: string, url: string, resource: string}>}
+     * @return array{name: string, icon: string, iconAlias: string, color: string, features: list<array{name: string, description: string, url: string, resource: string}>}
      */
     protected function navigationCategory(?Model $post, ?Model $product): array
     {
         return [
             'name' => 'Navigation & Pages',
             'icon' => 'heroicon-o-squares-2x2',
+            'iconAlias' => DemoIconAlias::WIDGETS_FEATURES_NAVIGATION,
             'color' => 'gray',
             'features' => array_values(array_filter([
                 ['name' => 'Navigation badges', 'description' => 'Live record counts on sidebar items', 'url' => OrderResource::getUrl('index'), 'resource' => 'Orders'],

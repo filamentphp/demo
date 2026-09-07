@@ -2,7 +2,9 @@
 
 namespace App\Filament\Resources\Shop\Products\Tables;
 
+use App\Filament\DemoIconAlias;
 use App\Models\Shop\Product;
+use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkAction;
@@ -14,6 +16,7 @@ use Filament\Forms\Components\ToggleButtons;
 use Filament\Notifications\Notification;
 use Filament\Support\Enums\FontWeight;
 use Filament\Support\Enums\Width;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
@@ -25,6 +28,7 @@ use Filament\Tables\Filters\QueryBuilder\Constraints\DateConstraint;
 use Filament\Tables\Filters\QueryBuilder\Constraints\NumberConstraint;
 use Filament\Tables\Filters\QueryBuilder\Constraints\TextConstraint;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Collection;
 
 class ProductsTable
@@ -100,12 +104,12 @@ class ProductsTable
                         TextConstraint::make('description'),
                         NumberConstraint::make('old_price')
                             ->label('Compare at price')
-                            ->icon(Heroicon::CurrencyDollar),
+                            ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_SHOP_PRODUCTS_FIELDS_OLD_PRICE) ?? Heroicon::CurrencyDollar),
                         NumberConstraint::make('price')
-                            ->icon(Heroicon::CurrencyDollar),
+                            ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_SHOP_PRODUCTS_FIELDS_PRICE) ?? Heroicon::CurrencyDollar),
                         NumberConstraint::make('cost')
                             ->label('Cost per item')
-                            ->icon(Heroicon::CurrencyDollar),
+                            ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_SHOP_PRODUCTS_FIELDS_COST) ?? Heroicon::CurrencyDollar),
                         NumberConstraint::make('qty')
                             ->label('Quantity'),
                         NumberConstraint::make('security_stock'),
@@ -114,7 +118,7 @@ class ProductsTable
                         BooleanConstraint::make('featured'),
                         BooleanConstraint::make('backorder'),
                         BooleanConstraint::make('requires_shipping')
-                            ->icon(Heroicon::Truck),
+                            ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_SHOP_PRODUCTS_FIELDS_REQUIRES_SHIPPING) ?? Heroicon::Truck),
                         DateConstraint::make('published_at')
                             ->label('Publishing date'),
                     ])
@@ -126,16 +130,18 @@ class ProductsTable
                 ActionGroup::make([
                     EditAction::make(),
                     Action::make('toggle_visibility')
-                        ->icon(fn (Product $record): Heroicon => $record->is_visible ? Heroicon::EyeSlash : Heroicon::Eye)
+                        ->icon(fn (Product $record): string | BackedEnum | Htmlable => $record->is_visible
+                            ? (FilamentIcon::resolve(DemoIconAlias::RESOURCES_SHOP_PRODUCTS_ACTIONS_HIDE) ?? Heroicon::EyeSlash)
+                            : (FilamentIcon::resolve(DemoIconAlias::RESOURCES_SHOP_PRODUCTS_ACTIONS_SHOW) ?? Heroicon::Eye))
                         ->label(fn (Product $record): string => $record->is_visible ? 'Hide' : 'Show')
                         ->color('gray')
                         ->action(fn (Product $record) => $record->update(['is_visible' => ! $record->is_visible])),
                     Action::make('adjust_price')
-                        ->icon(Heroicon::CurrencyDollar)
+                        ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_SHOP_PRODUCTS_ACTIONS_ADJUST_PRICE) ?? Heroicon::CurrencyDollar)
                         ->color('warning')
                         ->modalWidth(Width::Medium)
                         ->modalSubmitActionLabel('Save')
-                        ->modalIcon(Heroicon::CurrencyDollar)
+                        ->modalIcon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_SHOP_PRODUCTS_MODALS_ADJUST_PRICE) ?? Heroicon::CurrencyDollar)
                         ->modalIconColor('warning')
                         ->fillForm(fn (Product $record): array => [
                             'price' => $record->price,
@@ -157,7 +163,7 @@ class ProductsTable
                         ])
                         ->action(fn (Product $record, array $data) => $record->update($data)),
                     Action::make('adjust_stock')
-                        ->icon(Heroicon::CubeTransparent)
+                        ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_SHOP_PRODUCTS_ACTIONS_ADJUST_STOCK) ?? Heroicon::CubeTransparent)
                         ->color('info')
                         ->modalWidth(Width::Medium)
                         ->modalSubmitActionLabel('Save')
@@ -182,7 +188,7 @@ class ProductsTable
             ])
             ->groupedBulkActions([
                 BulkAction::make('toggle_visibility')
-                    ->icon(Heroicon::Eye)
+                    ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_SHOP_PRODUCTS_ACTIONS_BULK_TOGGLE_VISIBILITY) ?? Heroicon::Eye)
                     ->color('gray')
                     ->schema([
                         ToggleButtons::make('is_visible')

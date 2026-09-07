@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\HR\Tasks;
 
 use App\Enums\TaskStatus;
+use App\Filament\DemoIconAlias;
 use App\Filament\Resources\HR\Tasks\Pages\CreateTask;
 use App\Filament\Resources\HR\Tasks\Pages\EditTask;
 use App\Filament\Resources\HR\Tasks\Pages\ListTasks;
@@ -12,8 +13,10 @@ use App\Models\HR\Task;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Model;
 use UnitEnum;
 
@@ -24,8 +27,6 @@ class TaskResource extends Resource
 {
     protected static ?string $model = Task::class;
 
-    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedClipboardDocumentCheck;
-
     protected static string | UnitEnum | null $navigationGroup = 'Projects';
 
     protected static ?int $navigationSort = 1;
@@ -33,6 +34,11 @@ class TaskResource extends Resource
     protected static ?string $slug = 'tasks';
 
     protected static ?string $recordTitleAttribute = 'title';
+
+    public static function getNavigationIcon(): string | BackedEnum | Htmlable | null
+    {
+        return FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_TASKS_NAVIGATION) ?? Heroicon::OutlinedClipboardDocumentCheck;
+    }
 
     public static function form(Schema $schema): Schema
     {

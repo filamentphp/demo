@@ -2,7 +2,9 @@
 
 namespace App\Filament\Resources\Blog\Posts\Tables;
 
+use App\Filament\DemoIconAlias;
 use App\Models\Blog\Post;
+use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\DeleteAction;
@@ -12,11 +14,13 @@ use Filament\Actions\ViewAction;
 use Filament\Forms\Components\DatePicker;
 use Filament\Notifications\Notification;
 use Filament\Support\Enums\FontWeight;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 
@@ -98,7 +102,9 @@ class PostsTable
             ->recordActions([
                 ActionGroup::make([
                     Action::make('toggle_publish')
-                        ->icon(fn (Post $record): Heroicon => $record->published_at?->isPast() ? Heroicon::XCircle : Heroicon::RocketLaunch)
+                        ->icon(fn (Post $record): string | BackedEnum | Htmlable => $record->published_at?->isPast()
+                            ? (FilamentIcon::resolve(DemoIconAlias::RESOURCES_BLOG_POSTS_ACTIONS_UNPUBLISH) ?? Heroicon::XCircle)
+                            : (FilamentIcon::resolve(DemoIconAlias::RESOURCES_BLOG_POSTS_ACTIONS_PUBLISH) ?? Heroicon::RocketLaunch))
                         ->label(fn (Post $record): string => $record->published_at?->isPast() ? 'Unpublish' : 'Publish')
                         ->color(fn (Post $record): string => $record->published_at?->isPast() ? 'warning' : 'success')
                         ->action(function (Post $record): void {

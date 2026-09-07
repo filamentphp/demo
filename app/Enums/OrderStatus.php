@@ -2,10 +2,14 @@
 
 namespace App\Enums;
 
+use App\Filament\DemoIconAlias;
+use BackedEnum;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Contracts\Support\Htmlable;
 
 enum OrderStatus: string implements HasColor, HasIcon, HasLabel
 {
@@ -40,14 +44,14 @@ enum OrderStatus: string implements HasColor, HasIcon, HasLabel
         };
     }
 
-    public function getIcon(): Heroicon
+    public function getIcon(): string | BackedEnum | Htmlable
     {
         return match ($this) {
-            self::New => Heroicon::Sparkles,
-            self::Processing => Heroicon::ArrowPath,
-            self::Shipped => Heroicon::Truck,
-            self::Delivered => Heroicon::CheckBadge,
-            self::Cancelled => Heroicon::XCircle,
+            self::New => FilamentIcon::resolve(DemoIconAlias::ENUMS_ORDER_STATUS_NEW) ?? Heroicon::Sparkles,
+            self::Processing => FilamentIcon::resolve(DemoIconAlias::ENUMS_ORDER_STATUS_PROCESSING) ?? Heroicon::ArrowPath,
+            self::Shipped => FilamentIcon::resolve(DemoIconAlias::ENUMS_ORDER_STATUS_SHIPPED) ?? Heroicon::Truck,
+            self::Delivered => FilamentIcon::resolve(DemoIconAlias::ENUMS_ORDER_STATUS_DELIVERED) ?? Heroicon::CheckBadge,
+            self::Cancelled => FilamentIcon::resolve(DemoIconAlias::ENUMS_ORDER_STATUS_CANCELLED) ?? Heroicon::XCircle,
         };
     }
 }

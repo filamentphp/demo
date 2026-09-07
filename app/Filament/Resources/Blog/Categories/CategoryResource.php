@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Blog\Categories;
 
+use App\Filament\DemoIconAlias;
 use App\Filament\Resources\Blog\Categories\Pages\ManageCategories;
 use App\Filament\Resources\Blog\Categories\Schemas\CategoryForm;
 use App\Filament\Resources\Blog\Categories\Schemas\CategoryInfolist;
@@ -10,8 +11,10 @@ use App\Models\Blog\PostCategory;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
 use UnitEnum;
 
 /**
@@ -27,9 +30,12 @@ class CategoryResource extends Resource
 
     protected static string | UnitEnum | null $navigationGroup = 'Blog';
 
-    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedRectangleStack;
-
     protected static ?int $navigationSort = 1;
+
+    public static function getNavigationIcon(): string | BackedEnum | Htmlable | null
+    {
+        return FilamentIcon::resolve(DemoIconAlias::RESOURCES_BLOG_CATEGORIES_NAVIGATION) ?? Heroicon::OutlinedRectangleStack;
+    }
 
     public static function form(Schema $schema): Schema
     {

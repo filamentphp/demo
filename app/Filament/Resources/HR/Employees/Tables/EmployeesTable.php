@@ -3,7 +3,9 @@
 namespace App\Filament\Resources\HR\Employees\Tables;
 
 use App\Enums\EmploymentType;
+use App\Filament\DemoIconAlias;
 use App\Models\HR\Employee;
+use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkAction;
@@ -17,6 +19,7 @@ use Filament\Infolists\Components\TextEntry;
 use Filament\Notifications\Notification;
 use Filament\Support\Enums\FontWeight;
 use Filament\Support\Enums\Width;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\ColorColumn;
 use Filament\Tables\Columns\IconColumn;
@@ -25,6 +28,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Collection;
 
 class EmployeesTable
@@ -92,7 +96,7 @@ class EmployeesTable
             ->recordActions([
                 ActionGroup::make([
                     Action::make('view_profile')
-                        ->icon(Heroicon::Eye)
+                        ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_EMPLOYEES_ACTIONS_VIEW_PROFILE) ?? Heroicon::Eye)
                         ->color('gray')
                         ->slideOver()
                         ->schema([
@@ -115,13 +119,15 @@ class EmployeesTable
                         ->modalSubmitAction(false),
                     EditAction::make(),
                     Action::make('toggle_active')
-                        ->icon(fn (Employee $record): Heroicon => $record->is_active ? Heroicon::XMark : Heroicon::Check)
+                        ->icon(fn (Employee $record): string | BackedEnum | Htmlable => $record->is_active
+                            ? (FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_EMPLOYEES_ACTIONS_DEACTIVATE) ?? Heroicon::XMark)
+                            : (FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_EMPLOYEES_ACTIONS_ACTIVATE) ?? Heroicon::Check))
                         ->label(fn (Employee $record): string => $record->is_active ? 'Deactivate' : 'Activate')
                         ->color(fn (Employee $record): string => $record->is_active ? 'danger' : 'success')
                         ->requiresConfirmation()
                         ->action(fn (Employee $record) => $record->update(['is_active' => ! $record->is_active])),
                     Action::make('change_department')
-                        ->icon(Heroicon::BuildingOffice2)
+                        ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_EMPLOYEES_ACTIONS_CHANGE_DEPARTMENT) ?? Heroicon::BuildingOffice2)
                         ->color('gray')
                         ->modalWidth(Width::Medium)
                         ->modalSubmitActionLabel('Save')
@@ -147,7 +153,7 @@ class EmployeesTable
             ])
             ->groupedBulkActions([
                 BulkAction::make('change_department')
-                    ->icon(Heroicon::BuildingOffice2)
+                    ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_EMPLOYEES_BULK_ACTIONS_CHANGE_DEPARTMENT) ?? Heroicon::BuildingOffice2)
                     ->color('gray')
                     ->schema([
                         Select::make('department_id')
@@ -161,7 +167,7 @@ class EmployeesTable
                     })
                     ->deselectRecordsAfterCompletion(),
                 BulkAction::make('toggle_active')
-                    ->icon(Heroicon::Power)
+                    ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_EMPLOYEES_BULK_ACTIONS_TOGGLE_ACTIVE) ?? Heroicon::Power)
                     ->color('warning')
                     ->schema([
                         ToggleButtons::make('is_active')

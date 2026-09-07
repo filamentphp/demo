@@ -2,12 +2,14 @@
 
 namespace App\Filament\Resources\Blog\Posts\Pages;
 
+use App\Filament\DemoIconAlias;
 use App\Filament\Resources\Blog\Posts\PostResource;
 use App\Models\Blog\Post;
 use Filament\Actions\Action;
 use Filament\Actions\EditAction;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Contracts\Support\Htmlable;
 
@@ -27,7 +29,7 @@ class ViewPost extends ViewRecord
     {
         return [
             Action::make('quick_publish')
-                ->icon(Heroicon::RocketLaunch)
+                ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_BLOG_POSTS_ACTIONS_PUBLISH) ?? Heroicon::RocketLaunch)
                 ->color('success')
                 ->keyBindings(['mod+shift+p'])
                 ->visible(fn (Post $record): bool => ! $record->published_at?->isPast())
@@ -41,7 +43,7 @@ class ViewPost extends ViewRecord
                         ->send();
                 }),
             Action::make('unpublish')
-                ->icon(Heroicon::XCircle)
+                ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_BLOG_POSTS_ACTIONS_UNPUBLISH) ?? Heroicon::XCircle)
                 ->color('warning')
                 ->visible(fn (Post $record): bool => (bool) $record->published_at?->isPast())
                 ->action(function (Post $record): void {

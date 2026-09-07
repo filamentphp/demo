@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Blog\Authors\Tables;
 
+use App\Filament\DemoIconAlias;
 use App\Models\Blog\Author;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
@@ -10,6 +11,7 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Notifications\Notification;
 use Filament\Support\Enums\FontWeight;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Tables\Columns\Layout\Split;
 use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Columns\TextColumn;
@@ -39,12 +41,12 @@ class AuthorsTable
 
                     Stack::make([
                         TextColumn::make('github_handle')
-                            ->icon('icon-github')
+                            ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_BLOG_AUTHORS_FIELDS_GITHUB) ?? 'icon-github')
                             ->label('GitHub handle')
                             ->alignLeft(),
 
                         TextColumn::make('twitter_handle')
-                            ->icon('icon-twitter')
+                            ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_BLOG_AUTHORS_FIELDS_TWITTER) ?? 'icon-twitter')
                             ->alignLeft(),
                     ])->space(2),
                 ])->from('md'),
@@ -57,14 +59,14 @@ class AuthorsTable
                 ActionGroup::make([
                     Action::make('view_github')
                         ->label('View GitHub')
-                        ->icon('icon-github')
+                        ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_BLOG_AUTHORS_ACTIONS_VIEW_GITHUB) ?? 'icon-github')
                         ->color('gray')
                         ->url(fn (Author $record): string => "https://github.com/{$record->github_handle}")
                         ->openUrlInNewTab()
                         ->hidden(fn (Author $record): bool => blank($record->github_handle)),
                     Action::make('view_twitter')
                         ->label('View Twitter')
-                        ->icon('icon-twitter')
+                        ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_BLOG_AUTHORS_ACTIONS_VIEW_TWITTER) ?? 'icon-twitter')
                         ->color('gray')
                         ->url(fn (Author $record): string => "https://x.com/{$record->twitter_handle}")
                         ->openUrlInNewTab()

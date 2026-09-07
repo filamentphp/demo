@@ -3,9 +3,11 @@
 namespace App\Filament\Widgets;
 
 use App\Enums\OrderStatus;
+use App\Filament\DemoIconAlias;
 use App\Models\Shop\Customer;
 use App\Models\Shop\Order;
 use App\Models\Shop\OrderItem;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
@@ -114,22 +116,22 @@ class ShopKpisStats extends BaseWidget
         return [
             Stat::make('Repeat Customer Rate', $repeatRate . '%')
                 ->description($repeatCustomers . ' of ' . $totalCustomers . ' customers')
-                ->descriptionIcon(Heroicon::ArrowPath)
+                ->descriptionIcon(FilamentIcon::resolve(DemoIconAlias::WIDGETS_SHOP_KPIS_REPEAT_CUSTOMERS) ?? Heroicon::ArrowPath)
                 ->chart($repeatChart)
                 ->color('success'),
             Stat::make('Avg Items / Order', (string) $avgItemsPerOrder)
                 ->description($totalItems . ' items, ' . $totalOrders . ' orders')
-                ->descriptionIcon(Heroicon::ShoppingCart)
+                ->descriptionIcon(FilamentIcon::resolve(DemoIconAlias::WIDGETS_SHOP_KPIS_ITEMS_PER_ORDER) ?? Heroicon::ShoppingCart)
                 ->chart($avgItemsChart)
                 ->color('info'),
             Stat::make('Cancellation Rate', $cancellationRate . '%')
                 ->description($cancelledOrders . ' cancelled orders')
-                ->descriptionIcon(Heroicon::XCircle)
+                ->descriptionIcon(FilamentIcon::resolve(DemoIconAlias::WIDGETS_SHOP_KPIS_CANCELLATIONS) ?? Heroicon::XCircle)
                 ->chart($cancellationChart)
                 ->color($cancellationRate > 10 ? 'danger' : 'warning'),
             Stat::make('Revenue / Customer', Number::currency($revenuePerCustomer, in: 'USD'))
                 ->description(Number::currency($totalRevenue, in: 'USD', precision: 0) . ' total revenue')
-                ->descriptionIcon(Heroicon::CurrencyDollar)
+                ->descriptionIcon(FilamentIcon::resolve(DemoIconAlias::WIDGETS_SHOP_KPIS_REVENUE) ?? Heroicon::CurrencyDollar)
                 ->chart($revenueChart)
                 ->color('success'),
         ];

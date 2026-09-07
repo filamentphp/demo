@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Shop\Customers;
 
+use App\Filament\DemoIconAlias;
 use App\Filament\Resources\Shop\Customers\Pages\CreateCustomer;
 use App\Filament\Resources\Shop\Customers\Pages\EditCustomer;
 use App\Filament\Resources\Shop\Customers\Pages\ListCustomers;
@@ -13,8 +14,10 @@ use App\Models\Shop\Customer;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use UnitEnum;
@@ -32,9 +35,12 @@ class CustomerResource extends Resource
 
     protected static string | UnitEnum | null $navigationGroup = 'Shop';
 
-    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedUserGroup;
-
     protected static ?int $navigationSort = 2;
+
+    public static function getNavigationIcon(): string | BackedEnum | Htmlable | null
+    {
+        return FilamentIcon::resolve(DemoIconAlias::RESOURCES_SHOP_CUSTOMERS_NAVIGATION) ?? Heroicon::OutlinedUserGroup;
+    }
 
     public static function form(Schema $schema): Schema
     {

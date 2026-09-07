@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\HR\LeaveRequests;
 
 use App\Enums\LeaveStatus;
+use App\Filament\DemoIconAlias;
 use App\Filament\Resources\HR\LeaveRequests\Pages\CreateLeaveRequest;
 use App\Filament\Resources\HR\LeaveRequests\Pages\EditLeaveRequest;
 use App\Filament\Resources\HR\LeaveRequests\Pages\ListLeaveRequests;
@@ -14,8 +15,10 @@ use App\Models\HR\LeaveRequest;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Model;
 use UnitEnum;
 
@@ -26,13 +29,16 @@ class LeaveRequestResource extends Resource
 {
     protected static ?string $model = LeaveRequest::class;
 
-    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedCalendarDays;
-
     protected static string | UnitEnum | null $navigationGroup = 'HR';
 
     protected static ?int $navigationSort = 2;
 
     protected static ?string $slug = 'hr/leave-requests';
+
+    public static function getNavigationIcon(): string | BackedEnum | Htmlable | null
+    {
+        return FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_LEAVE_REQUESTS_NAVIGATION) ?? Heroicon::OutlinedCalendarDays;
+    }
 
     public static function form(Schema $schema): Schema
     {

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\HR\Departments;
 
+use App\Filament\DemoIconAlias;
 use App\Filament\Resources\HR\Departments\Pages\ManageDepartments;
 use App\Filament\Resources\HR\Departments\RelationManagers\EmployeesRelationManager;
 use App\Filament\Resources\HR\Departments\Schemas\DepartmentForm;
@@ -10,8 +11,10 @@ use App\Models\HR\Department;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
 use UnitEnum;
 
 /**
@@ -23,13 +26,16 @@ class DepartmentResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedBuildingOffice2;
-
     protected static string | UnitEnum | null $navigationGroup = 'HR';
 
     protected static ?int $navigationSort = 1;
 
     protected static ?string $slug = 'hr/departments';
+
+    public static function getNavigationIcon(): string | BackedEnum | Htmlable | null
+    {
+        return FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_DEPARTMENTS_NAVIGATION) ?? Heroicon::OutlinedBuildingOffice2;
+    }
 
     public static function form(Schema $schema): Schema
     {

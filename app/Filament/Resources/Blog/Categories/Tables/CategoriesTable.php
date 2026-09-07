@@ -2,7 +2,9 @@
 
 namespace App\Filament\Resources\Blog\Categories\Tables;
 
+use App\Filament\DemoIconAlias;
 use App\Models\Blog\PostCategory;
+use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\DeleteAction;
@@ -11,10 +13,12 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Notifications\Notification;
 use Filament\Support\Enums\FontWeight;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
 
 class CategoriesTable
 {
@@ -46,7 +50,9 @@ class CategoriesTable
             ->recordActions([
                 ActionGroup::make([
                     Action::make('toggle_visibility')
-                        ->icon(fn (PostCategory $record): Heroicon => $record->is_visible ? Heroicon::EyeSlash : Heroicon::Eye)
+                        ->icon(fn (PostCategory $record): string | BackedEnum | Htmlable => $record->is_visible
+                            ? (FilamentIcon::resolve(DemoIconAlias::RESOURCES_BLOG_CATEGORIES_ACTIONS_HIDE) ?? Heroicon::EyeSlash)
+                            : (FilamentIcon::resolve(DemoIconAlias::RESOURCES_BLOG_CATEGORIES_ACTIONS_SHOW) ?? Heroicon::Eye))
                         ->color('gray')
                         ->label(fn (PostCategory $record): string => $record->is_visible ? 'Hide category' : 'Show category')
                         ->action(fn (PostCategory $record) => $record->update(['is_visible' => ! $record->is_visible])),

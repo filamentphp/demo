@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Shop\Customers\Tables;
 
+use App\Filament\DemoIconAlias;
 use App\Models\Shop\Customer;
 use Filament\Actions\Action;
 use Filament\Actions\DeleteBulkAction;
@@ -11,6 +12,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Support\Enums\FontWeight;
 use Filament\Support\Enums\Width;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TrashedFilter;
@@ -46,7 +48,7 @@ class CustomersTable
             ])
             ->recordActions([
                 Action::make('send_email')
-                    ->icon(Heroicon::Envelope)
+                    ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_SHOP_CUSTOMERS_ACTIONS_SEND_EMAIL) ?? Heroicon::Envelope)
                     ->color('info')
                     ->modalWidth(Width::Large)
                     ->modalSubmitActionLabel('Send')

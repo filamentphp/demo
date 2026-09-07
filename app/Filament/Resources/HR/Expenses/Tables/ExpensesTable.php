@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\HR\Expenses\Tables;
 
 use App\Enums\ExpenseStatus;
+use App\Filament\DemoIconAlias;
 use App\Models\HR\Expense;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
@@ -14,6 +15,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Notifications\Notification;
 use Filament\Support\Enums\FontWeight;
 use Filament\Support\Enums\Width;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\TextColumn;
@@ -65,7 +67,7 @@ class ExpensesTable
                     ViewAction::make(),
                     EditAction::make(),
                     Action::make('approve')
-                        ->icon(Heroicon::Check)
+                        ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_EXPENSES_ACTIONS_APPROVE) ?? Heroicon::Check)
                         ->color('success')
                         ->visible(fn (Expense $record): bool => $record->status === ExpenseStatus::Submitted)
                         ->requiresConfirmation()
@@ -81,7 +83,7 @@ class ExpensesTable
                                 ->send();
                         }),
                     Action::make('reject')
-                        ->icon(Heroicon::XMark)
+                        ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_EXPENSES_ACTIONS_REJECT) ?? Heroicon::XMark)
                         ->color('danger')
                         ->visible(fn (Expense $record): bool => $record->status === ExpenseStatus::Submitted)
                         ->modalWidth(Width::Medium)
@@ -103,7 +105,7 @@ class ExpensesTable
                                 ->send();
                         }),
                     Action::make('submit')
-                        ->icon(Heroicon::PaperAirplane)
+                        ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_EXPENSES_ACTIONS_SUBMIT) ?? Heroicon::PaperAirplane)
                         ->color('info')
                         ->visible(fn (Expense $record): bool => $record->status === ExpenseStatus::Draft)
                         ->requiresConfirmation()
@@ -130,7 +132,7 @@ class ExpensesTable
                                 ->send();
                         }),
                     Action::make('reimburse')
-                        ->icon(Heroicon::Banknotes)
+                        ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_EXPENSES_ACTIONS_REIMBURSE) ?? Heroicon::Banknotes)
                         ->color('success')
                         ->visible(fn (Expense $record): bool => $record->status === ExpenseStatus::Approved)
                         ->requiresConfirmation()
@@ -143,7 +145,7 @@ class ExpensesTable
                                 ->send();
                         }),
                     Action::make('flag')
-                        ->icon(Heroicon::Flag)
+                        ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_EXPENSES_ACTIONS_FLAG) ?? Heroicon::Flag)
                         ->color('warning')
                         ->modalWidth(Width::Medium)
                         ->modalSubmitActionLabel('Flag')

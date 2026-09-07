@@ -2,10 +2,14 @@
 
 namespace App\Enums;
 
+use App\Filament\DemoIconAlias;
+use BackedEnum;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Contracts\Support\Htmlable;
 
 enum LeaveType: string implements HasColor, HasIcon, HasLabel
 {
@@ -41,14 +45,14 @@ enum LeaveType: string implements HasColor, HasIcon, HasLabel
         };
     }
 
-    public function getIcon(): Heroicon
+    public function getIcon(): string | BackedEnum | Htmlable
     {
         return match ($this) {
-            self::Annual => Heroicon::Sun,
-            self::Sick => Heroicon::Heart,
-            self::Personal => Heroicon::User,
-            self::Unpaid => Heroicon::Banknotes,
-            self::Parental => Heroicon::Gift,
+            self::Annual => FilamentIcon::resolve(DemoIconAlias::ENUMS_LEAVE_TYPE_ANNUAL) ?? Heroicon::Sun,
+            self::Sick => FilamentIcon::resolve(DemoIconAlias::ENUMS_LEAVE_TYPE_SICK) ?? Heroicon::Heart,
+            self::Personal => FilamentIcon::resolve(DemoIconAlias::ENUMS_LEAVE_TYPE_PERSONAL) ?? Heroicon::User,
+            self::Unpaid => FilamentIcon::resolve(DemoIconAlias::ENUMS_LEAVE_TYPE_UNPAID) ?? Heroicon::Banknotes,
+            self::Parental => FilamentIcon::resolve(DemoIconAlias::ENUMS_LEAVE_TYPE_PARENTAL) ?? Heroicon::Gift,
         };
     }
 }

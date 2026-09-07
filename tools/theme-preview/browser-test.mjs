@@ -191,6 +191,16 @@ try {
             const result = await selection()
             assert.equal(result.theme, theme)
             assert.equal(result.compact, compact)
+            for (const selector of [
+                '.fi-sidebar a[href$="/shop/products"] svg',
+                '.live-demo-launcher svg',
+            ]) {
+                assert.equal(
+                    await page.$eval(selector, (el) => el.getAttribute('viewBox')),
+                    theme === 'sharp' ? '0 -960 960 960' : '0 0 24 24',
+                    'demo aliases use Material Sharp only in Sharp',
+                )
+            }
             const showroom = await page.evaluate(() => {
                 const style = (selector) =>
                     getComputedStyle(document.querySelector(selector))
@@ -557,9 +567,18 @@ try {
         waitUntil: 'networkidle0',
     })
     assert.match((await identity(other)).font, /Inter Variable/)
+    assert.equal(
+        await other.$eval('.live-demo-launcher svg', (el) => el.getAttribute('viewBox')),
+        '0 -960 960 960',
+    )
     await goto('/shop/products?theme=soft&compact=1')
     assert.notEqual((await identity(page)).primary, stockIdentity.primary)
     assert.match((await identity(page)).font, /Albert Sans/)
+    assert.equal(
+        await page.$eval('.live-demo-launcher svg', (el) => el.getAttribute('viewBox')),
+        '0 0 24 24',
+        'Sharp demo icons do not leak between sessions on the same worker',
+    )
     await other.goto(new URL('/app/login', base).href, {
         waitUntil: 'networkidle0',
     })

@@ -2,10 +2,14 @@
 
 namespace App\Enums;
 
+use App\Filament\DemoIconAlias;
+use BackedEnum;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Contracts\Support\Htmlable;
 
 enum LeaveStatus: string implements HasColor, HasIcon, HasLabel
 {
@@ -41,14 +45,14 @@ enum LeaveStatus: string implements HasColor, HasIcon, HasLabel
         };
     }
 
-    public function getIcon(): Heroicon
+    public function getIcon(): string | BackedEnum | Htmlable
     {
         return match ($this) {
-            self::Pending => Heroicon::Clock,
-            self::Approved => Heroicon::Check,
-            self::Rejected => Heroicon::XMark,
-            self::Taken => Heroicon::CheckBadge,
-            self::Cancelled => Heroicon::XCircle,
+            self::Pending => FilamentIcon::resolve(DemoIconAlias::ENUMS_LEAVE_STATUS_PENDING) ?? Heroicon::Clock,
+            self::Approved => FilamentIcon::resolve(DemoIconAlias::ENUMS_LEAVE_STATUS_APPROVED) ?? Heroicon::Check,
+            self::Rejected => FilamentIcon::resolve(DemoIconAlias::ENUMS_LEAVE_STATUS_REJECTED) ?? Heroicon::XMark,
+            self::Taken => FilamentIcon::resolve(DemoIconAlias::ENUMS_LEAVE_STATUS_TAKEN) ?? Heroicon::CheckBadge,
+            self::Cancelled => FilamentIcon::resolve(DemoIconAlias::ENUMS_LEAVE_STATUS_CANCELLED) ?? Heroicon::XCircle,
         };
     }
 }

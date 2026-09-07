@@ -4,6 +4,7 @@ namespace App\Filament\Resources\HR\Projects\Tables;
 
 use App\Enums\ProjectStatus;
 use App\Enums\TaskPriority;
+use App\Filament\DemoIconAlias;
 use App\Models\HR\Project;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
@@ -15,6 +16,7 @@ use Filament\Forms\Components\ToggleButtons;
 use Filament\Notifications\Notification;
 use Filament\Support\Enums\FontWeight;
 use Filament\Support\Enums\Width;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\TextColumn;
@@ -90,7 +92,7 @@ class ProjectsTable
                     ViewAction::make(),
                     EditAction::make(),
                     Action::make('change_status')
-                        ->icon(Heroicon::ArrowPathRoundedSquare)
+                        ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_PROJECTS_ACTIONS_CHANGE_STATUS) ?? Heroicon::ArrowPathRoundedSquare)
                         ->color('gray')
                         ->modalWidth(Width::Medium)
                         ->modalSubmitActionLabel('Save')
@@ -106,13 +108,13 @@ class ProjectsTable
                         ])
                         ->action(fn (Project $record, array $data) => $record->update($data)),
                     Action::make('put_on_hold')
-                        ->icon(Heroicon::Pause)
+                        ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_PROJECTS_ACTIONS_HOLD) ?? Heroicon::Pause)
                         ->color('warning')
                         ->visible(fn (Project $record): bool => $record->status === ProjectStatus::Active)
                         ->requiresConfirmation()
                         ->modalHeading('Put Project On Hold')
                         ->modalDescription('This will pause all work on this project.')
-                        ->modalIcon(Heroicon::ExclamationTriangle)
+                        ->modalIcon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_PROJECTS_MODALS_HOLD_WARNING) ?? Heroicon::ExclamationTriangle)
                         ->modalIconColor('warning')
                         ->action(function (Project $record): void {
                             $record->update(['status' => ProjectStatus::OnHold]);
@@ -123,7 +125,7 @@ class ProjectsTable
                                 ->send();
                         }),
                     Action::make('resume')
-                        ->icon(Heroicon::Play)
+                        ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_PROJECTS_ACTIONS_RESUME) ?? Heroicon::Play)
                         ->color('success')
                         ->visible(fn (Project $record): bool => $record->status === ProjectStatus::OnHold)
                         ->action(function (Project $record): void {
@@ -135,7 +137,7 @@ class ProjectsTable
                                 ->send();
                         }),
                     Action::make('complete')
-                        ->icon(Heroicon::CheckCircle)
+                        ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_PROJECTS_ACTIONS_COMPLETE) ?? Heroicon::CheckCircle)
                         ->color('success')
                         ->visible(fn (Project $record): bool => in_array($record->status, [ProjectStatus::Active, ProjectStatus::OnHold]))
                         ->requiresConfirmation()

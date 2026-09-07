@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\HR\Employees;
 
+use App\Filament\DemoIconAlias;
 use App\Filament\Resources\HR\Employees\Pages\CreateEmployee;
 use App\Filament\Resources\HR\Employees\Pages\EditEmployee;
 use App\Filament\Resources\HR\Employees\Pages\ListEmployees;
@@ -14,8 +15,10 @@ use App\Models\HR\Employee;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -30,13 +33,16 @@ class EmployeeResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    protected static string | BackedEnum | null $navigationIcon = Heroicon::OutlinedIdentification;
-
     protected static string | UnitEnum | null $navigationGroup = 'HR';
 
     protected static ?int $navigationSort = 0;
 
     protected static ?string $slug = 'hr/employees';
+
+    public static function getNavigationIcon(): string | BackedEnum | Htmlable | null
+    {
+        return FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_EMPLOYEES_NAVIGATION) ?? Heroicon::OutlinedIdentification;
+    }
 
     public static function form(Schema $schema): Schema
     {

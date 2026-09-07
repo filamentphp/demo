@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\HR\LeaveRequests\Pages;
 
 use App\Enums\LeaveStatus;
+use App\Filament\DemoIconAlias;
 use App\Filament\Resources\HR\LeaveRequests\LeaveRequestResource;
 use App\Models\HR\LeaveRequest;
 use Filament\Actions\Action;
@@ -11,6 +12,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Support\Enums\Width;
+use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
 
 class ViewLeaveRequest extends ViewRecord
@@ -21,7 +23,7 @@ class ViewLeaveRequest extends ViewRecord
     {
         return [
             Action::make('approve')
-                ->icon(Heroicon::Check)
+                ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_LEAVE_REQUESTS_ACTIONS_APPROVE) ?? Heroicon::Check)
                 ->color('success')
                 ->visible(fn (LeaveRequest $record): bool => $record->status === LeaveStatus::Pending)
                 ->requiresConfirmation()
@@ -39,7 +41,7 @@ class ViewLeaveRequest extends ViewRecord
                     $this->refreshFormData(['status']);
                 }),
             Action::make('reject')
-                ->icon(Heroicon::XMark)
+                ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_LEAVE_REQUESTS_ACTIONS_REJECT) ?? Heroicon::XMark)
                 ->color('danger')
                 ->visible(fn (LeaveRequest $record): bool => $record->status === LeaveStatus::Pending)
                 ->modalWidth(Width::Medium)
