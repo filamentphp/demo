@@ -18,7 +18,6 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Contracts\Support\Htmlable;
 
 class CategoriesTable
 {
@@ -50,7 +49,7 @@ class CategoriesTable
             ->recordActions([
                 ActionGroup::make([
                     Action::make('toggle_visibility')
-                        ->icon(fn (PostCategory $record): string | BackedEnum | Htmlable => $record->is_visible
+                        ->icon(fn (PostCategory $record): string | BackedEnum => $record->is_visible
                             ? (FilamentIcon::resolve(DemoIconAlias::RESOURCES_BLOG_CATEGORIES_ACTIONS_HIDE) ?? Heroicon::EyeSlash)
                             : (FilamentIcon::resolve(DemoIconAlias::RESOURCES_BLOG_CATEGORIES_ACTIONS_SHOW) ?? Heroicon::Eye))
                         ->color('gray')

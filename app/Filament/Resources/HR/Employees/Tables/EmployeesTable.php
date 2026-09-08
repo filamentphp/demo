@@ -28,7 +28,6 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
-use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Collection;
 
 class EmployeesTable
@@ -119,7 +118,7 @@ class EmployeesTable
                         ->modalSubmitAction(false),
                     EditAction::make(),
                     Action::make('toggle_active')
-                        ->icon(fn (Employee $record): string | BackedEnum | Htmlable => $record->is_active
+                        ->icon(fn (Employee $record): string | BackedEnum => $record->is_active
                             ? (FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_EMPLOYEES_ACTIONS_DEACTIVATE) ?? Heroicon::XMark)
                             : (FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_EMPLOYEES_ACTIONS_ACTIVATE) ?? Heroicon::Check))
                         ->label(fn (Employee $record): string => $record->is_active ? 'Deactivate' : 'Activate')

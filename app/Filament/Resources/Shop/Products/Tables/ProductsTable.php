@@ -28,7 +28,6 @@ use Filament\Tables\Filters\QueryBuilder\Constraints\DateConstraint;
 use Filament\Tables\Filters\QueryBuilder\Constraints\NumberConstraint;
 use Filament\Tables\Filters\QueryBuilder\Constraints\TextConstraint;
 use Filament\Tables\Table;
-use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Collection;
 
 class ProductsTable
@@ -130,7 +129,7 @@ class ProductsTable
                 ActionGroup::make([
                     EditAction::make(),
                     Action::make('toggle_visibility')
-                        ->icon(fn (Product $record): string | BackedEnum | Htmlable => $record->is_visible
+                        ->icon(fn (Product $record): string | BackedEnum => $record->is_visible
                             ? (FilamentIcon::resolve(DemoIconAlias::RESOURCES_SHOP_PRODUCTS_ACTIONS_HIDE) ?? Heroicon::EyeSlash)
                             : (FilamentIcon::resolve(DemoIconAlias::RESOURCES_SHOP_PRODUCTS_ACTIONS_SHOW) ?? Heroicon::Eye))
                         ->label(fn (Product $record): string => $record->is_visible ? 'Hide' : 'Show')

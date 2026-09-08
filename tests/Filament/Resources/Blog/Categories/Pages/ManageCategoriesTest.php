@@ -75,14 +75,14 @@ it('validates edit action data', function (array $data, array $errors) {
     '`name` is max 255 characters' => [['name' => Str::random(256)], ['name' => 'max']],
 ]);
 
-it('can toggle category visibility', function () {
-    $record = PostCategory::factory()->create(['is_visible' => true]);
+it('can toggle category visibility', function (bool $isVisible) {
+    $record = PostCategory::factory()->create(['is_visible' => $isVisible]);
 
     Livewire::test(ManageCategories::class)
         ->callAction(TestAction::make('toggle_visibility')->table($record));
 
-    $this->assertDatabaseHas(PostCategory::class, ['id' => $record->id, 'is_visible' => false]);
-});
+    $this->assertDatabaseHas(PostCategory::class, ['id' => $record->id, 'is_visible' => ! $isVisible]);
+})->with([true, false]);
 
 it('can delete a category', function () {
     $record = PostCategory::factory()->create();

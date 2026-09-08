@@ -25,7 +25,6 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
-use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
@@ -138,7 +137,7 @@ class TimesheetsTable
             ->recordActions([
                 Action::make('toggle_billable')
                     ->iconButton()
-                    ->icon(fn (Timesheet $record): string | BackedEnum | Htmlable => $record->is_billable
+                    ->icon(fn (Timesheet $record): string | BackedEnum => $record->is_billable
                         ? (FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_TIMESHEETS_ACTIONS_MARK_NON_BILLABLE) ?? Heroicon::CurrencyDollar)
                         : (FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_TIMESHEETS_ACTIONS_MARK_BILLABLE) ?? Heroicon::NoSymbol))
                     ->color(fn (Timesheet $record): string => $record->is_billable ? 'success' : 'gray')

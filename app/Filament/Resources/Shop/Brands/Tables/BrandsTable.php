@@ -15,7 +15,6 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Contracts\Support\Htmlable;
 
 class BrandsTable
 {
@@ -53,7 +52,7 @@ class BrandsTable
                     ->openUrlInNewTab()
                     ->hidden(fn (Brand $record): bool => blank($record->website)),
                 Action::make('toggle_visibility')
-                    ->icon(fn (Brand $record): string | BackedEnum | Htmlable => $record->is_visible
+                    ->icon(fn (Brand $record): string | BackedEnum => $record->is_visible
                         ? (FilamentIcon::resolve(DemoIconAlias::RESOURCES_SHOP_BRANDS_ACTIONS_HIDE) ?? Heroicon::EyeSlash)
                         : (FilamentIcon::resolve(DemoIconAlias::RESOURCES_SHOP_BRANDS_ACTIONS_SHOW) ?? Heroicon::Eye))
                     ->color('gray')
