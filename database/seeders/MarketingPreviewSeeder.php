@@ -10,6 +10,7 @@ use App\Enums\PaymentMethod;
 use App\Enums\ProjectStatus;
 use App\Enums\TaskPriority;
 use App\Enums\TaskStatus;
+use App\Filament\Resources\Shop\Orders\OrderResource;
 use App\Models\HR\Department;
 use App\Models\HR\Employee;
 use App\Models\HR\Expense;
@@ -24,6 +25,9 @@ use App\Models\Shop\OrderItem;
 use App\Models\Shop\Payment;
 use App\Models\Shop\Product;
 use App\Models\Shop\ProductCategory;
+use App\Models\User;
+use Filament\Actions\Action;
+use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
@@ -48,6 +52,7 @@ class MarketingPreviewSeeder extends Seeder
             $product = $this->seedProduct($referenceTime);
             $this->normalizeSharedNavigationBadges($project, $product);
             $orderNumbers = $this->seedOrders($product, $referenceTime);
+            $this->seedNotifications($orderNumbers);
 
             return [
                 'version' => 1,
@@ -485,6 +490,43 @@ class MarketingPreviewSeeder extends Seeder
         }
 
         return array_column($orders, 'number');
+    }
+
+    /**
+     * @param  list<string>  $orderNumbers
+     */
+    private function seedNotifications(array $orderNumbers): void
+    {
+        $user = User::query()
+            ->where('email', 'admin@filamentphp.com')
+            ->firstOrFail();
+
+        $user->notifications()->delete();
+
+        $orders = Order::query()
+            ->with(['customer', 'orderItems'])
+            ->whereIn('number', $orderNumbers)
+            ->orderByDesc('created_at')
+            ->limit(8)
+            ->get();
+
+        if ($orders->count() !== 8) {
+            throw new LogicException('Marketing previews require exactly eight notification orders.');
+        }
+
+        foreach ($orders as $order) {
+            $customerName = $order->customer->name ?? 'A guest customer';
+
+            Notification::make()
+                ->title('New order')
+                ->icon('heroicon-o-shopping-bag')
+                ->body("{$customerName} ordered {$order->orderItems->count()} products.")
+                ->actions([
+                    Action::make('View')
+                        ->url(OrderResource::getUrl('edit', ['record' => $order])),
+                ])
+                ->sendToDatabase($user);
+        }
     }
 
     /**
