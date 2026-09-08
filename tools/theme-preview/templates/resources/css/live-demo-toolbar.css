@@ -63,9 +63,7 @@ body:has(#amp-portal-review-host) .live-demo-launcher {
     box-shadow:
         0 6px 18px rgb(120 53 15 / 18%),
         0 2px 4px rgb(0 0 0 / 8%);
-    transition:
-        box-shadow 220ms ease,
-        transform 220ms ease;
+    transition: box-shadow 220ms ease;
 }
 
 .live-demo-launcher__icon {
@@ -94,7 +92,6 @@ body:has(#amp-portal-review-host) .live-demo-launcher {
 
 @media (hover: hover) and (pointer: fine) {
     .live-demo-launcher:hover {
-        transform: translateY(-2px);
         box-shadow:
             0 10px 28px rgb(245 158 11 / 28%),
             0 3px 6px rgb(0 0 0 / 10%);
