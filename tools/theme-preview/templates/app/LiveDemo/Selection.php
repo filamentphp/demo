@@ -34,9 +34,21 @@ final class Selection
             if (in_array($theme, ['stock', 'sharp', 'soft', 'noir'], true)) {
                 $selection['theme'] = $theme;
                 $selection['expanded'] = $selection['expanded'] || $isFirstVisit;
-                $request->session()->put('live-demo.scheme', $theme === 'noir' ? 'dark' : null);
+                $requestedScheme = match ($theme) {
+                    'sharp', 'soft' => 'light',
+                    'noir' => 'dark',
+                    default => null,
+                };
+                if ($requestedScheme) {
+                    $request->session()->put('live-demo.scheme', $requestedScheme);
+                } else {
+                    $request->session()->forget('live-demo.scheme');
+                }
             }
             if (in_array($compact, ['0', '1'], true)) {
+                if ($theme === null) {
+                    $selection['theme'] = 'stock';
+                }
                 $selection['compact'] = $compact === '1';
                 $selection['expanded'] = $selection['expanded'] || $isFirstVisit;
             }

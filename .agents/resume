@@ -2,4 +2,15 @@
 
 set -euo pipefail
 
+if [[ -n "${FILAMENT_PACKAGES_USERNAME:-}" || -n "${FILAMENT_PACKAGES_PASSWORD:-}" ]]; then
+    if [[ -z "${FILAMENT_PACKAGES_USERNAME:-}" || -z "${FILAMENT_PACKAGES_PASSWORD:-}" ]]; then
+        printf 'Both FILAMENT_PACKAGES_USERNAME and FILAMENT_PACKAGES_PASSWORD are required.\n' >&2
+        exit 1
+    fi
+
+    composer config --global --auth http-basic.packages.filamentphp.com \
+        "$FILAMENT_PACKAGES_USERNAME" \
+        "$FILAMENT_PACKAGES_PASSWORD"
+fi
+
 # Long-running preview services are supervised through `.amp/services.yaml`.

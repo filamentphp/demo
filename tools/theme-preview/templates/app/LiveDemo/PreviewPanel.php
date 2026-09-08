@@ -23,6 +23,7 @@ final class PreviewPanel extends Panel
             $middleware[] = $item;
 
             if ($item === StartSession::class) {
+                $middleware[] = SetUpSelection::class;
                 $middleware[] = "panel:{$this->getId()}";
             }
         }

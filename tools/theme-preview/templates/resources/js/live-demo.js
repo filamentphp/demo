@@ -1,3 +1,5 @@
+import { resolveScheme } from './live-demo-scheme.js'
+
 const state = (window.liveDemoToolbarState ??= {
     formIsDirty: false,
     listenersInstalled: false,
@@ -77,16 +79,23 @@ const currentScheme = () => {
 }
 
 const updateSchemeControls = (scheme = currentScheme()) => {
-    document.querySelectorAll('[data-live-demo-scheme]').forEach((button) => {
-        button.classList.toggle(
-            'fi-active',
-            button.dataset.liveDemoScheme === scheme,
-        )
-        button.setAttribute(
-            'aria-pressed',
-            String(button.dataset.liveDemoScheme === scheme),
-        )
-    })
+    scheme = resolveScheme(
+        scheme,
+        window.matchMedia('(prefers-color-scheme: dark)').matches,
+    )
+
+    document
+        .querySelectorAll('button[data-live-demo-scheme]')
+        .forEach((button) => {
+            button.classList.toggle(
+                'fi-active',
+                button.dataset.liveDemoScheme === scheme,
+            )
+            button.setAttribute(
+                'aria-pressed',
+                String(button.dataset.liveDemoScheme === scheme),
+            )
+        })
 }
 
 const initializeToolbar = () => {
@@ -95,15 +104,13 @@ const initializeToolbar = () => {
 
     const toolbar = controls.closest(toolbarSelector)
     const scheme = toolbar.dataset.liveDemoScheme
+    delete toolbar.dataset.liveDemoScheme
     if (scheme === 'light' || scheme === 'dark') {
-        delete toolbar.dataset.liveDemoScheme
-        if (sessionStorage.getItem('live-demo.reopen') !== location.href) {
-            localStorage.setItem('theme', scheme)
-            document.documentElement.classList.toggle('dark', scheme === 'dark')
-            window.dispatchEvent(
-                new CustomEvent('theme-changed', { detail: scheme }),
-            )
-        }
+        localStorage.setItem('theme', scheme)
+        document.documentElement.classList.toggle('dark', scheme === 'dark')
+        window.dispatchEvent(
+            new CustomEvent('theme-changed', { detail: scheme }),
+        )
     }
 
     if (controls.matches(':popover-open')) state.panelOpen = true
@@ -170,7 +177,9 @@ if (!state.listenersInstalled) {
     )
 
     document.addEventListener('click', (event) => {
-        const schemeButton = event.target.closest?.('[data-live-demo-scheme]')
+        const schemeButton = event.target.closest?.(
+            'button[data-live-demo-scheme]',
+        )
 
         if (schemeButton) {
             const scheme = schemeButton.dataset.liveDemoScheme
