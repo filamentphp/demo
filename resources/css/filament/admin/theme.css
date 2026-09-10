@@ -2,3 +2,31 @@
 
 @source '../../../../app/Filament/**/*';
 @source '../../../../resources/views/filament/**/*';
+
+.collaboration-carets__caret {
+    position: relative;
+    margin-inline: -1px;
+    border-inline: 1px solid;
+    word-break: normal;
+    pointer-events: none;
+}
+
+.collaboration-carets__label {
+    position: absolute;
+    top: -1.4em;
+    left: -1px;
+    padding: 2px 5px;
+    border-radius: 3px 3px 3px 0;
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+    user-select: none;
+}
+
+.page-chat-composer .tiptap {
+    min-height: 5rem;
+    max-height: 10rem;
+    overflow-y: auto;
+}

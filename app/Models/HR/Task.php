@@ -36,6 +36,10 @@ class Task extends Model
 
     protected static function booted(): void
     {
+        static::created(function (Task $task): void {
+            ProjectActivity::record($task->project_id, 'task_created', $task->title);
+        });
+
         static::saved(function (Task $task): void {
             ProjectChanged::dispatch($task->project_id);
 
@@ -45,6 +49,8 @@ class Task extends Model
         });
 
         static::deleted(function (Task $task): void {
+            ProjectActivity::record($task->project_id, 'task_deleted', $task->title);
+
             ProjectChanged::dispatch($task->project_id);
         });
     }

@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Enums\ProjectStatus;
 use App\Enums\TaskPriority;
 use App\Models\HR\Project;
+use Illuminate\Support\Facades\Context;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use Livewire\Attributes\Url;
@@ -59,9 +60,12 @@ class ClientProjects extends Component
         ]);
 
         $project = Project::query()->findOrFail($this->projectId);
-        $project->update($validated['data']);
+        Context::scope(
+            fn () => $project->update($validated['data']),
+            hidden: ['project_history_interface' => 'client_portal'],
+        );
 
-        $this->message = 'Project saved. Open Filament screens have been notified.';
+        $this->message = 'Project saved.';
     }
 
     public function addTask(): void
@@ -69,10 +73,13 @@ class ClientProjects extends Component
         $this->validate(['taskTitle' => ['required', 'string', 'max:255']]);
 
         $project = Project::query()->findOrFail($this->projectId);
-        $project->tasks()->create(['title' => $this->taskTitle]);
+        Context::scope(
+            fn () => $project->tasks()->create(['title' => $this->taskTitle]),
+            hidden: ['project_history_interface' => 'client_portal'],
+        );
 
         $this->reset('taskTitle');
-        $this->message = 'Task added. The project’s live task table has been notified.';
+        $this->message = 'Task added.';
     }
 
     public function render(): View

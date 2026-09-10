@@ -3,8 +3,10 @@
 namespace App\Filament\Resources\HR\Projects\Schemas;
 
 use App\Filament\DemoIconAlias;
+use App\Livewire\ProjectHistory;
 use Filament\Infolists\Components\ColorEntry;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Schemas\Components\Livewire;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
@@ -65,6 +67,12 @@ class ProjectInfolist
                                     ->numeric()
                                     ->suffix(' hours')
                                     ->placeholder('0'),
+                            ]),
+
+                        Tab::make('History')
+                            ->icon(Heroicon::Clock)
+                            ->schema([
+                                Livewire::make(ProjectHistory::class),
                             ]),
                     ])
                     ->columnSpanFull(),

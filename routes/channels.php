@@ -20,3 +20,5 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 });
 
 Broadcast::channel('projects', fn (User $user): bool => $user->canAccessPanel(Filament::getPanel('admin')));
+
+Broadcast::channel('page-chat.{room}', fn (User $user): bool => $user->canAccessPanel(Filament::getPanel('admin')));

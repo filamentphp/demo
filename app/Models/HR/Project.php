@@ -41,13 +41,31 @@ class Project extends Model
 
     protected static function booted(): void
     {
+        static::created(function (Project $project): void {
+            ProjectActivity::record($project->id, 'project_created');
+        });
+
+        static::updated(function (Project $project): void {
+            ProjectActivity::recordProjectUpdate($project);
+        });
+
         static::saved(function (Project $project): void {
             ProjectChanged::dispatch($project->id);
         });
 
         static::deleted(function (Project $project): void {
+            if (! $project->isForceDeleting()) {
+                ProjectActivity::record($project->id, 'project_deleted');
+            }
+
             ProjectChanged::dispatch($project->id);
         });
+    }
+
+    /** @return HasMany<ProjectActivity, $this> */
+    public function activities(): HasMany
+    {
+        return $this->hasMany(ProjectActivity::class);
     }
 
     /** @return BelongsTo<Department, $this> */

@@ -5,18 +5,22 @@ namespace App\Filament\Resources\HR\Projects\Schemas;
 use App\Enums\ProjectStatus;
 use App\Enums\TaskPriority;
 use App\Filament\DemoIconAlias;
+use App\Forms\Components\ProjectCollaborationPlugin;
+use App\Livewire\ProjectHistory;
 use App\Models\HR\Employee;
 use App\Models\HR\Project;
 use Filament\Forms\Components\Builder;
 use Filament\Forms\Components\Builder\Block;
 use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\ToggleButtons;
+use Filament\Schemas\Components\Livewire;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Components\Utilities\Get;
@@ -58,7 +62,13 @@ class ProjectForm
                                     ->unique(Project::class, 'slug', ignoreRecord: true),
 
                                 RichEditor::make('description')
+                                    ->plugins(fn (?Project $record): array => $record ? [app(ProjectCollaborationPlugin::class)] : [])
+                                    ->extraAttributes(fn (?Project $record): array => $record ? [
+                                        'data-collaboration' => base64_encode(json_encode(ProjectCollaborationPlugin::configuration($record->id), JSON_THROW_ON_ERROR)),
+                                    ] : [])
                                     ->columnSpanFull(),
+
+                                Hidden::make('description_state'),
 
                                 Select::make('department_id')
                                     ->relationship('department', 'name')
@@ -172,6 +182,12 @@ class ProjectForm
                                     ->dehydrated()
                                     ->required()
                                     ->default(0),
+                            ]),
+
+                        Tab::make('History')
+                            ->icon(Heroicon::Clock)
+                            ->schema([
+                                Livewire::make(ProjectHistory::class),
                             ]),
                     ])
                     ->columnSpanFull(),

@@ -11,7 +11,6 @@ use App\Livewire\ClientProjects;
 use App\Models\HR\Project;
 use App\Models\HR\Task;
 use Illuminate\Support\Facades\Event;
-use Livewire\Features\SupportEvents\SupportEvents;
 use Livewire\Livewire;
 
 it('saves client changes and broadcasts only the affected project id', function (): void {
@@ -23,7 +22,11 @@ it('saves client changes and broadcasts only the affected project id', function 
         ->set('data.status', 'on_hold')
         ->set('data.spent', '12345.67')
         ->call('save')
-        ->assertHasNoErrors();
+        ->assertHasNoErrors()
+        ->assertSet('message', 'Project saved.')
+        ->assertDontSee('REALTIME DEMO')
+        ->assertDontSee('Open live table')
+        ->assertDontSee('Read-only updates only');
 
     expect($project->refresh())->name->toBe('Client renamed project')
         ->status->toBe(ProjectStatus::OnHold)
@@ -109,11 +112,9 @@ it('does not change unsaved edit form data', function (): void {
 
     $project->update(['name' => 'Remote name']);
 
-    expect(SupportEvents::getListenerEventNames($page->instance()))
-        ->not->toContain('echo-private:projects,ProjectChanged');
-
-    $page->call('$refresh')
-        ->assertFormSet(['name' => 'Unsaved local draft']);
+    $page->dispatch('echo-private:projects,ProjectChanged', ['projectId' => $project->id])
+        ->assertFormSet(['name' => 'Unsaved local draft'])
+        ->assertSet('conflicts.name.remote', 'Remote name');
 });
 
 it('does not change a mounted action form during a broadcast', function (): void {

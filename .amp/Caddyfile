@@ -4,6 +4,10 @@
 }
 
 :{$PORT} {
+	handle /collaboration* {
+		reverse_proxy 127.0.0.1:8090
+	}
+
 	@websockets path /app/*
 	handle @websockets {
 		reverse_proxy 127.0.0.1:8080
