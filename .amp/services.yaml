@@ -8,6 +8,10 @@ services:
       url: /login
       title: Filament demo
       description: Sign in with admin@filamentphp.com and password "demo.Filament@2021!".
+    portals:
+      - url: /client/projects
+        title: Client project portal
+        description: Edit a project here while its Filament table or view page is open in another window.
     agent: control
   laravel:
     command: >-

@@ -8,12 +8,19 @@ use Filament\Widgets\Concerns\InteractsWithPageTable;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Database\Eloquent\Model;
+use Livewire\Attributes\On;
 
 class ProjectStats extends BaseWidget
 {
     use InteractsWithPageTable;
 
     protected ?string $pollingInterval = null;
+
+    #[On('echo-private:projects,ProjectChanged')]
+    public function refreshProject(): void
+    {
+        $this->cachedStats = null;
+    }
 
     protected function getTablePage(): string
     {

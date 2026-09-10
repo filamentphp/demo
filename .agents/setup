@@ -173,7 +173,7 @@ initialize_application() {
 
     if [[ "$database_was_created" == true ]]; then
         php "$repository_root/artisan" migrate --force
-        php "$repository_root/artisan" db:seed --force
+        BROADCAST_CONNECTION=null php "$repository_root/artisan" db:seed --force
         rm "$initialization_marker"
     else
         php "$repository_root/artisan" migrate --force

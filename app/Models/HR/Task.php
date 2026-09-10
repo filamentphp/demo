@@ -4,6 +4,7 @@ namespace App\Models\HR;
 
 use App\Enums\TaskPriority;
 use App\Enums\TaskStatus;
+use App\Events\ProjectChanged;
 use Database\Factories\HR\TaskFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -32,6 +33,21 @@ class Task extends Model
         'completed_at' => 'datetime',
         'labels' => 'array',
     ];
+
+    protected static function booted(): void
+    {
+        static::saved(function (Task $task): void {
+            ProjectChanged::dispatch($task->project_id);
+
+            if ($task->isDirty('project_id') && $task->getOriginal('project_id')) {
+                ProjectChanged::dispatch($task->getOriginal('project_id'));
+            }
+        });
+
+        static::deleted(function (Task $task): void {
+            ProjectChanged::dispatch($task->project_id);
+        });
+    }
 
     /** @return BelongsTo<Project, $this> */
     public function project(): BelongsTo

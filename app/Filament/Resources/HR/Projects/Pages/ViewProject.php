@@ -14,14 +14,56 @@ use Filament\Resources\Pages\ViewRecord;
 use Filament\Support\Enums\Width;
 use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Support\Js;
+use Livewire\Attributes\On;
 
 class ViewProject extends ViewRecord
 {
     protected static string $resource = ProjectResource::class;
 
+    /** @param array{projectId: int} $event */
+    #[On('echo-private:projects,ProjectChanged')]
+    public function refreshProject(array $event): void
+    {
+        if (($event['projectId'] !== $this->getRecord()->getKey()) || filled($this->mountedActions)) {
+            $this->skipRender();
+
+            return;
+        }
+
+        $this->getRecord()->refresh();
+
+        if ($this->getRecord()->getAttribute('deleted_at') !== null) {
+            $this->redirect(ProjectResource::getUrl('index'));
+
+            return;
+        }
+
+        $title = $this->getTitle();
+
+        if ($title instanceof Htmlable) {
+            $title = strip_tags($title->toHtml());
+        }
+
+        $brandName = filament()->getBrandName();
+
+        if ($brandName instanceof Htmlable) {
+            $brandName = strip_tags($brandName->toHtml());
+        }
+
+        $this->js('document.title = ' . Js::from($title . ' - ' . $brandName));
+        $this->dispatch('refresh-sidebar');
+    }
+
     protected function getActions(): array
     {
         return [
+            Action::make('client_portal')
+                ->label('Client portal')
+                ->color('gray')
+                ->url(fn (): string => route('client.projects', ['projectId' => $this->getRecord()->getKey()]))
+                ->openUrlInNewTab(),
             Action::make('change_status')
                 ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_PROJECTS_ACTIONS_CHANGE_STATUS) ?? Heroicon::ArrowPathRoundedSquare)
                 ->color('gray')

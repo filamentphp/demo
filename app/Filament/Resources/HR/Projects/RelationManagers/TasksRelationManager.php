@@ -4,6 +4,7 @@ namespace App\Filament\Resources\HR\Projects\RelationManagers;
 
 use App\Enums\TaskPriority;
 use App\Enums\TaskStatus;
+use App\Filament\Resources\HR\Projects\Pages\ViewProject;
 use App\Filament\Resources\HR\Tasks\Tables\TasksTable;
 use Filament\Actions\CreateAction;
 use Filament\Forms\Components\DatePicker;
@@ -13,12 +14,28 @@ use Filament\Forms\Components\ToggleButtons;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
 use Filament\Tables\Table;
+use Livewire\Attributes\On;
 
 class TasksRelationManager extends RelationManager
 {
     protected static string $relationship = 'tasks';
 
     protected static ?string $recordTitleAttribute = 'title';
+
+    /** @param array{projectId: int} $event */
+    #[On('echo-private:projects,ProjectChanged')]
+    public function refreshProject(array $event): void
+    {
+        if (($this->getPageClass() !== ViewProject::class)
+            || ($event['projectId'] !== $this->getOwnerRecord()->getKey())
+            || filled($this->mountedActions)) {
+            $this->skipRender();
+
+            return;
+        }
+
+        $this->flushCachedTableRecords();
+    }
 
     public function form(Schema $schema): Schema
     {

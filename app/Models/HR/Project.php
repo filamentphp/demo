@@ -4,6 +4,7 @@ namespace App\Models\HR;
 
 use App\Enums\ProjectStatus;
 use App\Enums\TaskPriority;
+use App\Events\ProjectChanged;
 use Database\Factories\HR\ProjectFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -37,6 +38,17 @@ class Project extends Model
         'end_date' => 'date',
         'plan' => 'array',
     ];
+
+    protected static function booted(): void
+    {
+        static::saved(function (Project $project): void {
+            ProjectChanged::dispatch($project->id);
+        });
+
+        static::deleted(function (Project $project): void {
+            ProjectChanged::dispatch($project->id);
+        });
+    }
 
     /** @return BelongsTo<Department, $this> */
     public function department(): BelongsTo
