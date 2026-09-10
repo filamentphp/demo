@@ -92,6 +92,40 @@ install_composer() {
     rm /tmp/composer-setup.php
 }
 
+install_caddy() {
+    if ! command -v caddy >/dev/null; then
+        sudo --preserve-env=DEBIAN_FRONTEND apt-get update
+        sudo --preserve-env=DEBIAN_FRONTEND apt-get install -y --no-install-recommends caddy
+    fi
+}
+
+configure_reverb() {
+    local name
+    local value
+
+    if [[ ! -f "$repository_root/.env" ]]; then
+        cp "$repository_root/.env.example" "$repository_root/.env"
+    fi
+
+    for name in BROADCAST_CONNECTION REVERB_APP_ID REVERB_APP_KEY REVERB_APP_SECRET REVERB_HOST REVERB_PORT REVERB_SCHEME; do
+        if grep -Eq "^${name}=.+" "$repository_root/.env"; then
+            continue
+        fi
+
+        case "$name" in
+            BROADCAST_CONNECTION) value=reverb ;;
+            REVERB_APP_ID) value=filament-demo ;;
+            REVERB_APP_KEY|REVERB_APP_SECRET) value="$(php -r 'echo bin2hex(random_bytes(24));')" ;;
+            REVERB_HOST) value=127.0.0.1 ;;
+            REVERB_PORT) value=8080 ;;
+            REVERB_SCHEME) value=http ;;
+        esac
+
+        sed -i "/^${name}=/d" "$repository_root/.env"
+        printf '\n%s=%s\n' "$name" "$value" >> "$repository_root/.env"
+    done
+}
+
 configure_portal_proxy() {
     local excluded_path='/config/trustedproxy.php'
 
@@ -154,9 +188,11 @@ cd "$repository_root"
 
 run_step 'Installing PHP 8.4 and extensions' install_php
 run_step 'Installing Composer' install_composer
+run_step 'Installing the portal WebSocket proxy' install_caddy
 run_step 'Installing Composer dependencies' composer install --prefer-dist --no-interaction
 run_step 'Installing Node.js dependencies' npm ci --ignore-scripts
 run_step 'Building frontend assets' npm run build
+run_step 'Configuring Reverb credentials' configure_reverb
 run_step 'Configuring the demo portal proxy' configure_portal_proxy
 run_step 'Initializing the Laravel application' initialize_application
 

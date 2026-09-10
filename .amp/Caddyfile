@@ -1,0 +1,17 @@
+{
+	admin off
+	auto_https off
+}
+
+:{$PORT} {
+	@websockets path /app/*
+	handle @websockets {
+		reverse_proxy 127.0.0.1:8080
+	}
+
+	handle {
+		reverse_proxy 127.0.0.1:8001 {
+			header_up X-Forwarded-Proto {http.request.header.X-Forwarded-Proto}
+		}
+	}
+}

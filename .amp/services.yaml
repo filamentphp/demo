@@ -1,12 +1,23 @@
 services:
+  reverb:
+    command: php artisan reverb:start --host=127.0.0.1 --port="$PORT" --no-interaction
+    port: 8080
   demo:
-    command: >-
-      php artisan optimize:clear &&
-      APP_ENV=production APP_DEBUG=false APP_URL="$PUBLIC_URL" ASSET_URL="$PUBLIC_URL" DEBUGBAR_ENABLED=false
-      php artisan serve --host=0.0.0.0 --port="$PORT"
-    health: /login
+    command: caddy run --config .amp/Caddyfile --adapter caddyfile
     portal:
       url: /login
       title: Filament demo
       description: Sign in with admin@filamentphp.com and password "demo.Filament@2021!".
     agent: control
+  laravel:
+    command: >-
+      php artisan optimize:clear &&
+      APP_ENV=production APP_DEBUG=false APP_URL="$DEMO_URL" ASSET_URL="$DEMO_URL" DEBUGBAR_ENABLED=false
+      php artisan serve --host=127.0.0.1 --port="$PORT" --no-interaction
+    port: 8001
+    health: /login
+    env:
+      DEMO_URL: ${services.demo.publicURL}
+      REVERB_PUBLIC_URL: ${services.demo.publicURL}
+      REVERB_PUBLIC_PORT: '443'
+      REVERB_PUBLIC_SCHEME: https

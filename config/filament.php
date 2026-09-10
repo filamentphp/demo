@@ -16,12 +16,18 @@ return [
 
     'broadcasting' => [
 
-        // 'echo' => [
-        //     'broadcaster' => 'pusher',
-        //     'key' => env('VITE_PUSHER_APP_KEY'),
-        //     'cluster' => env('VITE_PUSHER_APP_CLUSTER'),
-        //     'forceTLS' => true,
-        // ],
+        'echo' => env('BROADCAST_CONNECTION') === 'reverb' ? [
+            'broadcaster' => 'pusher',
+            'key' => env('REVERB_APP_KEY'),
+            'cluster' => 'mt1',
+            'wsHost' => env('REVERB_PUBLIC_URL')
+                ? parse_url(env('REVERB_PUBLIC_URL'), PHP_URL_HOST)
+                : env('REVERB_HOST', '127.0.0.1'),
+            'wsPort' => env('REVERB_PUBLIC_PORT', env('REVERB_PORT', 8080)),
+            'wssPort' => env('REVERB_PUBLIC_PORT', env('REVERB_PORT', 8080)),
+            'forceTLS' => env('REVERB_PUBLIC_SCHEME', env('REVERB_SCHEME', 'http')) === 'https',
+            'enabledTransports' => ['ws', 'wss'],
+        ] : null,
 
     ],
 
