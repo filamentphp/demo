@@ -8,10 +8,16 @@ use Illuminate\Support\Facades\Context;
 class ProjectActivity extends Model
 {
     /** @var array<string, string> */
-    protected $casts = ['changes' => 'array'];
+    protected $casts = [
+        'changes' => 'array',
+        'raw_changes' => 'array',
+    ];
 
-    /** @param array<string, array{old: ?string, new: ?string}> $changes */
-    public static function record(int $projectId, string $event, ?string $subject = null, array $changes = []): void
+    /**
+     * @param  array<string, array{old: ?string, new: ?string}>  $changes
+     * @param  array<string, array{old: scalar|null, new: scalar|null}>|null  $rawChanges
+     */
+    public static function record(int $projectId, string $event, ?string $subject = null, array $changes = [], ?array $rawChanges = null): void
     {
         $actor = Context::getHidden('project_history_actor', auth()->user());
         $interface = Context::getHidden('project_history_interface', $actor ? 'panel' : 'system');
@@ -24,12 +30,14 @@ class ProjectActivity extends Model
             'event' => $event,
             'subject' => $subject,
             'changes' => $changes,
+            'raw_changes' => $rawChanges,
         ]);
     }
 
     public static function recordProjectUpdate(Project $project): void
     {
         $changes = [];
+        $rawChanges = [];
 
         foreach (['name', 'slug', 'description', 'department_id', 'status', 'priority', 'color', 'start_date', 'end_date', 'budget', 'spent', 'estimated_hours', 'actual_hours', 'plan'] as $field) {
             if (! $project->wasChanged($field)) {
@@ -42,10 +50,17 @@ class ProjectActivity extends Model
                     'old' => static::formatValue($field, $project->getRawOriginal($field)),
                     'new' => static::formatValue($field, $project->getAttributes()[$field] ?? null),
                 ];
+
+            if (in_array($field, ['name', 'department_id', 'status', 'priority', 'color', 'start_date', 'end_date', 'budget', 'estimated_hours'], true)) {
+                $rawChanges[$field] = [
+                    'old' => $project->getRawOriginal($field),
+                    'new' => $project->getAttributes()[$field] ?? null,
+                ];
+            }
         }
 
         if ($changes !== []) {
-            static::record($project->id, 'project_updated', changes: $changes);
+            static::record($project->id, 'project_updated', changes: $changes, rawChanges: $rawChanges ?: null);
         }
 
         if ($project->wasChanged('deleted_at') && ! $project->deleted_at) {

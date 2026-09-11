@@ -33,6 +33,59 @@ class EditProject extends EditRecord
     /** @var array<string, string> */
     public array $conflictChoices = [];
 
+    /** @var array<string, array{before: mixed, saved: mixed, proposed: mixed}> */
+    #[Locked]
+    public array $agentProposal = [];
+
+    /** @param array<string, mixed> $values */
+    public function proposeAgentChanges(array $values): string
+    {
+        if ($this->agentProposal !== []) {
+            return 'A proposal is already awaiting review. Ask the user to apply or discard it first.';
+        }
+
+        $proposal = [];
+        foreach ($values as $path => $value) {
+            $field = str($path)->after('data.')->toString();
+            abort_unless(in_array($field, ['name', 'department_id', 'status', 'priority', 'color', 'start_date', 'end_date', 'budget', 'estimated_hours'], true), 422);
+            abort_unless(is_scalar($value) || $value === null, 422);
+            $proposal[$field] = ['before' => $this->data[$field] ?? null, 'saved' => $this->savedValues[$field] ?? null, 'proposed' => $value];
+        }
+        $this->agentProposal = $proposal;
+        $this->mountAction('reviewAgentProposal');
+
+        return 'Proposed changes for user review. No draft or saved values changed. The user must apply the proposal before saving.';
+    }
+
+    public function reviewAgentProposalAction(): Action
+    {
+        return Action::make('reviewAgentProposal')
+            ->label('Review Agent proposal')->icon('heroicon-m-sparkles')
+            ->modalHeading('Review proposed changes')
+            ->modalDescription('Apply these changes to your draft. Nothing is saved until you choose Save changes.')
+            ->modalContent(fn (): View => view('filament.projects.agent-proposal'))
+            ->modalSubmitActionLabel('Apply to my draft')
+            ->extraModalFooterActions([
+                Action::make('discard')->label('Discard')->color('gray')->action(function (): void {
+                    $this->agentProposal = [];
+                })->cancelParentActions(),
+            ])
+            ->action(function (): void {
+                $this->synchronizeProject();
+                foreach ($this->agentProposal as $field => $change) {
+                    if (isset($this->conflicts[$field]) || $this->normalizeValue($field, $this->data[$field] ?? null) !== $this->normalizeValue($field, $change['before']) || $this->normalizeValue($field, $this->savedValues[$field] ?? null) !== $this->normalizeValue($field, $change['saved'])) {
+                        Notification::make()->warning()->title('This proposal is out of date')->body('Your draft is safe. Discard this proposal and ask Agent to review the latest values.')->persistent()->send();
+                        $this->halt();
+                    }
+                }
+                foreach ($this->agentProposal as $field => $change) {
+                    $this->data[$field] = $change['proposed'];
+                }
+                $this->agentProposal = [];
+                Notification::make()->success()->title('Applied to your draft')->body('Review the form, then save when ready.')->send();
+            });
+    }
+
     protected function afterFill(): void
     {
         $this->savedValues = $this->getRecord()->attributesToArray();
@@ -209,6 +262,7 @@ class EditProject extends EditRecord
     protected function getActions(): array
     {
         return [
+            $this->reviewAgentProposalAction()->visible(fn (): bool => $this->agentProposal !== []),
             ViewAction::make(),
             DeleteAction::make(),
             RestoreAction::make(),

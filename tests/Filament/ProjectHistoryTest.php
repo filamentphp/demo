@@ -144,3 +144,25 @@ it('shows honest empty states and requires authentication', function (): void {
     auth()->logout();
     Livewire::test(ProjectHistory::class, ['record' => $project])->assertForbidden();
 });
+
+it('renders expandable field changes with status badges and summarized rich content', function (): void {
+    $project = Project::factory()->create(['status' => ProjectStatus::Active]);
+    $project->update(['status' => ProjectStatus::OnHold, 'description' => '<p>Private draft content</p>']);
+
+    $html = Livewire::test(ProjectHistory::class, ['record' => $project])
+        ->assertSee('Status')
+        ->assertSee('Description')
+        ->assertSee('Panel')
+        ->assertDontSee('Private draft content')
+        ->html();
+    $document = new DOMDocument;
+    @$document->loadHTML($html);
+    $xpath = new DOMXPath($document);
+    expect($xpath->query('//details[@open]')->length)->toBe(0)
+        ->and($xpath->query('//details//dd//span[contains(concat(" ", normalize-space(@class), " "), " fi-badge ") and contains(., "On hold")]')->length)->toBe(1);
+
+    $project->update(['name' => 'One field']);
+    $html = Livewire::test(ProjectHistory::class, ['record' => $project])->html();
+    @$document->loadHTML($html);
+    expect((new DOMXPath($document))->query('//details[@open]')->length)->toBe(1);
+});

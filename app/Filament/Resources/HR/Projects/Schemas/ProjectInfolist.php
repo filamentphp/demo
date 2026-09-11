@@ -3,7 +3,10 @@
 namespace App\Filament\Resources\HR\Projects\Schemas;
 
 use App\Filament\DemoIconAlias;
+use App\Filament\Resources\HR\Projects\Actions\DiscussProjectField;
 use App\Livewire\ProjectHistory;
+use App\Livewire\ProjectPresence;
+use App\Models\HR\Project;
 use Filament\Infolists\Components\ColorEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Livewire;
@@ -19,6 +22,9 @@ class ProjectInfolist
     {
         return $schema
             ->components([
+                Livewire::make(ProjectPresence::class)
+                    ->visible(fn (Project $record): bool => ! $record->trashed())
+                    ->columnSpanFull(),
                 Tabs::make('Project')
                     ->schema([
                         Tab::make('Overview')
@@ -43,6 +49,7 @@ class ProjectInfolist
                                     ->date()
                                     ->placeholder('No end date'),
                                 TextEntry::make('description')
+                                    ->hintAction(DiscussProjectField::make('description'))
                                     ->prose()
                                     ->markdown()
                                     ->columnSpanFull()

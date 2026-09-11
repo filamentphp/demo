@@ -2,6 +2,7 @@
 
 @source '../../../../app/Filament/**/*';
 @source '../../../../resources/views/filament/**/*';
+@source '../../../../resources/views/livewire/project-presence.blade.php';
 
 .collaboration-carets__caret {
     position: relative;
@@ -26,7 +27,18 @@
 }
 
 .page-chat-composer .tiptap {
-    min-height: 5rem;
-    max-height: 10rem;
+    min-height: 3rem;
     overflow-y: auto;
+}
+
+.page-chat-message .fi-prose {
+    & p, & ul, & ol { margin-block: 0.5rem; }
+    & > :first-child { margin-top: 0; }
+    & > :last-child { margin-bottom: 0; }
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .page-chat-message-actions { opacity: 0; }
+    .page-chat-message:hover .page-chat-message-actions,
+    .page-chat-message:focus-within .page-chat-message-actions { opacity: 1; }
 }

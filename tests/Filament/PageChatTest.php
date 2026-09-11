@@ -111,8 +111,8 @@ it('resolves mention searches and labels to the correct user identities', functi
     $provider = PageMessage::mentionProvider();
 
     expect($provider->getSearchResults('Alex'))
-        ->toMatchArray([$alex->id => 'Alex Rivera', $alexa->id => 'Alexa Stone'])
-        ->not->toHaveKey(auth()->id())
+        ->toMatchArray(['user:' . $alex->id => 'Alex Rivera', 'user:' . $alexa->id => 'Alexa Stone'])
+        ->not->toHaveKey('user:' . auth()->id())
         ->and($provider->getLabels([$alexa->id, $alex->id, 999999]))
         ->toMatchArray([$alex->id => 'Alex Rivera', $alexa->id => 'Alexa Stone'])
         ->not->toHaveKey(999999);
@@ -257,4 +257,138 @@ it('does not mark older messages read when newer history entries fill the feed',
     expect(PageMessageRead::query()->where('page_message_id', $message->id)->exists())->toBeFalse();
     $page->call('loadMore');
     expect(PageMessageRead::query()->where('page_message_id', $message->id)->exists())->toBeTrue();
+});
+
+it('preloads Agent first and preserves new and legacy user mentions', function (): void {
+    $user = User::factory()->create(['name' => 'Aaron Agent']);
+    $provider = PageMessage::mentionProvider();
+    expect(array_key_first($provider->getItems()))->toBe('agent')
+        ->and(array_key_first($provider->getSearchResults('Agent')))->toBe('agent')
+        ->and($provider->getItems())->toHaveKey('user:' . $user->id, 'Aaron Agent')
+        ->and($provider->getLabels(['user:' . $user->id, (string) $user->id]))->toBe(['user:' . $user->id => 'Aaron Agent', $user->id => 'Aaron Agent']);
+
+    foreach (['user:' . $user->id, (string) $user->id] as $id) {
+        $message = pageMessage('/', auth()->user(), '<p><span data-type="mention" data-id="' . $id . '" data-label="Old name" data-char="@">@Old name</span></p>');
+        expect($message->mentionsUser($user->id))->toBeTrue()
+            ->and($message->contentHtml())->toContain('Aaron Agent');
+    }
+});
+
+it('reserves the Agent mention and recognizes only its rich mention node', function (): void {
+    $provider = PageMessage::mentionProvider();
+    $realMention = pageMessage('/', auth()->user(), '<p><span data-type="mention" data-id="agent" data-label="Agent" data-char="@">@Agent</span></p>');
+    $plainText = pageMessage('/', auth()->user(), '<p>Please ask @Agent about this.</p>');
+
+    expect($provider->getSearchResults('Age'))->toHaveKey('agent', 'Agent')
+        ->and($provider->getLabels(['agent']))->toBe(['agent' => 'Agent'])
+        ->and($realMention->mentionsAgent())->toBeTrue()
+        ->and($plainText->mentionsAgent())->toBeFalse();
+});
+
+it('creates a pending Agent reply in the original thread and dispatches it without a created broadcast', function (): void {
+    Event::fake([PageChatChanged::class]);
+    $mention = '<p>Help <span data-type="mention" data-id="agent" data-label="Agent" data-char="@">@Agent</span></p>';
+
+    $component = Livewire::test(PageChat::class, ['page' => '/projects/22'])
+        ->set('body', $mention)
+        ->call('send')
+        ->assertSet('isOpen', true)
+        ->assertDispatched('page-agent-request');
+
+    $request = PageMessage::query()->where('is_agent', false)->sole();
+    $reply = PageMessage::query()->where('is_agent', true)->sole();
+    expect($reply)
+        ->user_id->toBeNull()
+        ->body->toBe('Thinking…')
+        ->body_format->toBe('text')
+        ->agent_status->toBe('pending')
+        ->agent_request_id->toBe($request->id)
+        ->parent_id->toBe($request->id)
+        ->and($reply->agentRequest->is($request))->toBeTrue()
+        ->and($component->get('threadId'))->toBe($request->id);
+
+    Event::assertDispatched(PageChatChanged::class, fn (PageChatChanged $event): bool => $event->messageId === $reply->id && $event->operation === 'updated');
+    Event::assertNotDispatched(PageChatChanged::class, fn (PageChatChanged $event): bool => $event->messageId === $reply->id && $event->operation === 'created');
+
+    Livewire::test(PageChat::class, ['page' => '/projects/22'])
+        ->call('openThread', $request->id)
+        ->set('body', $mention)
+        ->call('send');
+    $threadRequest = PageMessage::query()->where('is_agent', false)->latest('id')->firstOrFail();
+    expect($threadRequest->parent_id)->toBe($request->id)
+        ->and(PageMessage::query()->where('agent_request_id', $threadRequest->id)->sole()->parent_id)->toBe($request->id);
+});
+
+it('pauses automatic agent replies and resumes through a mention or the thread control', function (): void {
+    Event::fake([PageChatChanged::class]);
+    $mention = '<p><span data-type="mention" data-id="agent" data-label="Agent" data-char="@">@Agent</span> Help</p>';
+    $chat = Livewire::test(PageChat::class, ['page' => '/projects'])->set('body', $mention)->call('send');
+    $root = PageMessage::query()->whereNull('parent_id')->sole();
+    $chat->assertSee('Agent is participating')->call('toggleAgentPaused')->assertSee('Agent paused');
+    expect($root->refresh()->agent_paused)->toBeTrue();
+    $chat->set('body', '<p>Humans talking</p>')->call('send')->assertNotDispatched('page-agent-request');
+    expect(PageMessage::query()->where('is_agent', true)->count())->toBe(1);
+    $chat->set('body', $mention)->call('send')->assertDispatched('page-agent-request')->assertSee('Agent is participating');
+    expect($root->refresh()->agent_paused)->toBeFalse();
+    $chat->call('toggleAgentPaused')->call('toggleAgentPaused')->assertSee('Agent is participating');
+    $chat->set('body', '<p>Continue</p>')->call('send')->assertDispatched('page-agent-request');
+    expect(PageMessage::query()->where('is_agent', true)->count())->toBe(3);
+});
+
+it('rejects spoofed unavailable Agent updates and fails only the current users pending request', function (): void {
+    Event::fake([PageChatChanged::class]);
+    $owner = auth()->user();
+    $other = User::factory()->create();
+    $request = pageMessage('/projects/22', $owner, '<p>Request</p>');
+    $reply = PageMessage::query()->create([
+        'room' => $request->room,
+        'parent_id' => $request->id,
+        'body' => 'Thinking…',
+        'body_format' => 'text',
+        'is_agent' => true,
+        'agent_request_id' => $request->id,
+        'agent_status' => 'pending',
+    ]);
+
+    expect(fn () => Livewire::test(PageChat::class, ['page' => '/projects/23'])->call('agentUnavailable', $reply->id))
+        ->toThrow(ModelNotFoundException::class);
+    $this->actingAs($other);
+    expect(fn () => Livewire::test(PageChat::class, ['page' => '/projects/22'])->call('agentUnavailable', $reply->id))
+        ->toThrow(ModelNotFoundException::class);
+
+    $this->actingAs($owner);
+    Livewire::test(PageChat::class, ['page' => '/projects/22'])->call('agentUnavailable', $reply->id);
+    expect($reply->refresh())
+        ->agent_status->toBe('failed')
+        ->body->toContain('not available');
+    Event::assertDispatched(PageChatChanged::class, fn (PageChatChanged $event): bool => $event->messageId === $reply->id && $event->operation === 'created');
+});
+
+it('counts null-user Agent messages as unread and presents Agent identity without edit controls', function (): void {
+    $request = pageMessage('/projects/22', User::factory()->create(), '<p>Request</p>');
+    $reply = PageMessage::query()->create([
+        'room' => $request->room,
+        'parent_id' => $request->id,
+        'body' => 'Agent answer',
+        'body_format' => 'text',
+        'is_agent' => true,
+        'agent_request_id' => $request->id,
+        'agent_status' => 'completed',
+    ]);
+
+    expect($reply->authorName())->toBe('Agent')
+        ->and(PageMessage::query()->unreadFor(auth()->id())->pluck('id')->all())->toContain($reply->id);
+
+    Livewire::test(PageChat::class, ['page' => '/projects/22'])
+        ->call('openThread', $request->id)
+        ->assertSee('Agent answer')
+        ->assertSee('Message from Agent')
+        ->assertDontSeeHtml('wire:click="edit(' . $reply->id . ')"');
+});
+
+it('formats Agent paragraphs and lists without rendering unsafe HTML or links', function (): void {
+    $message = new PageMessage(['is_agent' => true, 'body' => "**Summary**\n\n- First item\n- Second item\n\n<script>alert(1)</script>\n\n[Unsafe](javascript:alert%281%29)"]);
+
+    expect($message->contentHtml())->toContain('<strong>Summary</strong>', '<ul>', '<li>First item</li>')
+        ->not->toContain('<script>', 'href="javascript:');
 });

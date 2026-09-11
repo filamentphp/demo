@@ -5,8 +5,10 @@ namespace App\Filament\Resources\HR\Projects\Schemas;
 use App\Enums\ProjectStatus;
 use App\Enums\TaskPriority;
 use App\Filament\DemoIconAlias;
+use App\Filament\Resources\HR\Projects\Actions\DiscussProjectField;
 use App\Forms\Components\ProjectCollaborationPlugin;
 use App\Livewire\ProjectHistory;
+use App\Livewire\ProjectPresence;
 use App\Models\HR\Employee;
 use App\Models\HR\Project;
 use Filament\Forms\Components\Builder;
@@ -36,6 +38,9 @@ class ProjectForm
     {
         return $schema
             ->components([
+                Livewire::make(ProjectPresence::class)
+                    ->visible(fn (?Project $record): bool => $record !== null && ! $record->trashed())
+                    ->columnSpanFull(),
                 Tabs::make('Project')
                     ->schema([
                         Tab::make('Overview')
@@ -62,6 +67,7 @@ class ProjectForm
                                     ->unique(Project::class, 'slug', ignoreRecord: true),
 
                                 RichEditor::make('description')
+                                    ->hintAction(DiscussProjectField::make('description'))
                                     ->plugins(fn (?Project $record): array => $record ? [app(ProjectCollaborationPlugin::class)] : [])
                                     ->extraAttributes(fn (?Project $record): array => $record ? [
                                         'data-collaboration' => base64_encode(json_encode(ProjectCollaborationPlugin::configuration($record->id), JSON_THROW_ON_ERROR)),

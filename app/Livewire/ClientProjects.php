@@ -5,14 +5,25 @@ namespace App\Livewire;
 use App\Enums\ProjectStatus;
 use App\Enums\TaskPriority;
 use App\Models\HR\Project;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Concerns\InteractsWithSchemas;
+use Filament\Schemas\Contracts\HasSchemas;
+use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Context;
-use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 
-class ClientProjects extends Component
+/**
+ * @property-read Schema $selectorForm
+ * @property-read Schema $projectForm
+ * @property-read Schema $taskForm
+ */
+class ClientProjects extends Component implements HasSchemas
 {
+    use InteractsWithSchemas;
+
     #[Url]
     public ?int $projectId = null;
 
@@ -22,6 +33,60 @@ class ClientProjects extends Component
     public string $taskTitle = '';
 
     public string $message = '';
+
+    public function selectorForm(Schema $schema): Schema
+    {
+        return $schema
+            ->components([
+                Select::make('projectId')
+                    ->label('Select project')
+                    ->options(fn (): array => Project::query()->orderBy('name')->pluck('name', 'id')->all())
+                    ->required()
+                    ->live(),
+            ]);
+    }
+
+    public function projectForm(Schema $schema): Schema
+    {
+        return $schema
+            ->components([
+                TextInput::make('name')
+                    ->label('Project name')
+                    ->required()
+                    ->maxLength(255),
+                Select::make('status')
+                    ->options(ProjectStatus::class)
+                    ->required(),
+                Select::make('priority')
+                    ->options(TaskPriority::class)
+                    ->required(),
+                TextInput::make('budget')
+                    ->label('Budget (USD)')
+                    ->numeric()
+                    ->minValue(0)
+                    ->maxValue(9999999999.99),
+                TextInput::make('spent')
+                    ->label('Spent (USD)')
+                    ->numeric()
+                    ->required()
+                    ->minValue(0)
+                    ->maxValue(9999999999.99),
+            ])
+            ->columns(2)
+            ->statePath('data');
+    }
+
+    public function taskForm(Schema $schema): Schema
+    {
+        return $schema
+            ->components([
+                TextInput::make('taskTitle')
+                    ->label('Task title')
+                    ->placeholder('Review the latest designs')
+                    ->required()
+                    ->maxLength(255),
+            ]);
+    }
 
     public function boot(): void
     {
@@ -38,30 +103,25 @@ class ClientProjects extends Component
     {
         $project = Project::query()->findOrFail($this->projectId);
 
-        $this->data = [
+        $this->projectForm->fill([
             'name' => $project->name,
             'status' => $project->status->value,
             'priority' => $project->priority->value,
             'budget' => $project->budget,
             'spent' => $project->spent,
-        ];
-        $this->reset('taskTitle', 'message');
+        ]);
+        $this->taskForm->fill(['taskTitle' => '']);
+        $this->reset('message');
         $this->resetValidation();
     }
 
     public function save(): void
     {
-        $validated = $this->validate([
-            'data.name' => ['required', 'string', 'max:255'],
-            'data.status' => ['required', Rule::enum(ProjectStatus::class)],
-            'data.priority' => ['required', Rule::enum(TaskPriority::class)],
-            'data.budget' => ['nullable', 'numeric', 'min:0', 'max:9999999999.99'],
-            'data.spent' => ['required', 'numeric', 'min:0', 'max:9999999999.99'],
-        ]);
+        $data = $this->projectForm->getState();
 
         $project = Project::query()->findOrFail($this->projectId);
         Context::scope(
-            fn () => $project->update($validated['data']),
+            fn () => $project->update($data),
             hidden: ['project_history_interface' => 'client_portal'],
         );
 
@@ -70,22 +130,20 @@ class ClientProjects extends Component
 
     public function addTask(): void
     {
-        $this->validate(['taskTitle' => ['required', 'string', 'max:255']]);
+        $data = $this->taskForm->getState();
 
         $project = Project::query()->findOrFail($this->projectId);
         Context::scope(
-            fn () => $project->tasks()->create(['title' => $this->taskTitle]),
+            fn () => $project->tasks()->create(['title' => $data['taskTitle']]),
             hidden: ['project_history_interface' => 'client_portal'],
         );
 
-        $this->reset('taskTitle');
+        $this->taskForm->fill(['taskTitle' => '']);
         $this->message = 'Task added.';
     }
 
     public function render(): View
     {
-        return view('livewire.client-projects', [
-            'projects' => Project::query()->orderBy('name')->get(['id', 'name']),
-        ])->layout('layouts.app');
+        return view('livewire.client-projects')->layout('layouts.app');
     }
 }
