@@ -45,3 +45,27 @@ each revision. Record the demo commit in every verification report.
 The demo's normal branch declares Filament 5, but this prototype has been exercised
 with local Composer path links to Filament 4.x. Reproduce those links and verify the
 resolved class paths; the manifest alone does not identify the runtime under test.
+
+## Loading-state browser regressions
+
+Run from the Filament checkout, where Playwright and Pest Browser's axe bundle are
+installed, against an isolated running demo with Livewire SPA enabled:
+
+```sh
+INERTIA_DEMO_URL=http://127.0.0.1:8000 INERTIA_TEST_SSR=false \
+  node ../repos/demo/tools/inertia/tests/loading.mjs
+```
+
+Repeat with `INERTIA_TEST_SSR=true` and a matching SSR-enabled demo service. Keep
+the demo's Vite manifest and served assets in sync. Use disposable test data, a
+separate session cookie, and `CACHE_DRIVER=array` to avoid login throttling.
+`FRAMEWORK=vue|react|svelte` limits the run; `ARTIFACT_DIRECTORY` saves screenshots.
+
+The harness holds renderer imports and deferred responses separately. It tests
+initial Blade loading, SSR preservation, shell updates while loading, mount
+readiness independent of deferred props, failed-import reloads, navigation away,
+and cached SPA returns. Cached returns pause the host's import scheduling rather
+than expecting an already imported module to download again. Both themes run axe
+checks during held states using Pest's serious/critical threshold, without the
+network-idle wait that would deadlock these deliberate request holds. Existing
+Pest browser tests continue to check settled integration states.
