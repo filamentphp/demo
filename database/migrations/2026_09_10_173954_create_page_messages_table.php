@@ -17,6 +17,14 @@ return new class extends Migration
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('parent_id')->nullable()->constrained('page_messages')->cascadeOnDelete();
             $table->text('body')->nullable();
+            $table->string('body_format')->default('text');
+            $table->foreignId('activity_id')->nullable()->unique()->constrained('project_activities')->cascadeOnDelete();
+            $table->timestamp('resolved_at')->nullable();
+            $table->boolean('is_agent')->default(false);
+            $table->foreignId('agent_request_id')->nullable()->unique()->constrained('page_messages')->nullOnDelete();
+            $table->string('agent_status')->nullable();
+            $table->boolean('agent_paused')->default(false);
+            $table->string('project_field')->nullable();
             $table->timestamp('edited_at')->nullable();
             $table->timestamps();
         });

@@ -11,9 +11,12 @@ return new class extends Migration
         Schema::create('projects', function (Blueprint $table): void {
             $table->id();
             $table->foreignId('department_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('owner_id')->nullable()->constrained('users')->nullOnDelete();
             $table->string('name');
             $table->string('slug')->unique();
             $table->text('description')->nullable();
+            $table->longText('description_state')->nullable();
+            $table->unsignedInteger('description_version')->default(0);
             $table->string('color')->nullable();
             $table->string('status')->default('planning');
             $table->string('priority')->default('medium');

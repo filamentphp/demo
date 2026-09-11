@@ -11,10 +11,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('projects', function (Blueprint $table): void {
-            $table->unsignedInteger('description_version')->default(0);
-            $table->foreignId('owner_id')->nullable()->constrained('users')->nullOnDelete();
-        });
         Schema::create('project_revisions', function (Blueprint $table): void {
             $table->id();
             $table->foreignId('project_id')->constrained()->cascadeOnDelete();
@@ -28,10 +24,17 @@ return new class extends Migration
             $table->text('feedback')->nullable();
             $table->json('base_values');
             $table->json('proposed_values');
+            $table->json('base_tasks')->nullable();
+            $table->json('proposed_tasks')->nullable();
             $table->unsignedInteger('version')->default(1);
             $table->foreignId('thread_id')->nullable()->constrained('page_messages')->nullOnDelete();
+            $table->foreignId('source_message_id')->nullable()->constrained('page_messages')->nullOnDelete();
+            $table->foreignId('rollback_of_id')->nullable()->constrained('project_revisions')->nullOnDelete();
             $table->timestamp('applied_at')->nullable();
             $table->timestamps();
+        });
+        Schema::table('project_activities', function (Blueprint $table): void {
+            $table->foreignId('revision_id')->nullable()->constrained('project_revisions')->nullOnDelete();
         });
     }
 
@@ -40,10 +43,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('project_revisions');
-        Schema::table('projects', function (Blueprint $table): void {
-            $table->dropConstrainedForeignId('owner_id');
-            $table->dropColumn('description_version');
+        Schema::table('project_activities', function (Blueprint $table): void {
+            $table->dropConstrainedForeignId('revision_id');
         });
+        Schema::dropIfExists('project_revisions');
     }
 };

@@ -6,8 +6,10 @@ use App\Models\HR\ProjectActivity;
 use App\Models\HR\ProjectRevision;
 use App\Models\HR\Task;
 use App\Models\User;
+use Database\Seeders\RealtimeDemoSeeder;
 use Illuminate\Support\Facades\Context;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
@@ -19,6 +21,28 @@ beforeEach(function (): void {
     $this->actingAs(User::factory()->create());
     $this->changes = collect();
     Event::listen(ProjectChanged::class, fn (ProjectChanged $event) => $this->changes->push($event->broadcastWith()));
+});
+
+it('rolls back and rebuilds the seeded collaboration schema including its circular foreign keys', function (): void {
+    $tables = ['project_activities', 'page_messages', 'page_message_reads', 'project_revisions'];
+    $schema = collect($tables)->mapWithKeys(fn (string $table): array => [$table => [
+        Schema::getColumns($table), Schema::getIndexes($table), Schema::getForeignKeys($table),
+    ]]);
+    $this->seed(RealtimeDemoSeeder::class);
+    $revision = ProjectRevision::query()->sole();
+    $revision->project->activities()->first()->update(['revision_id' => $revision->id]);
+
+    $this->artisan('migrate:rollback', ['--step' => 4, '--force' => true, '--no-interaction' => true])->assertSuccessful();
+    foreach ($tables as $table) {
+        expect(Schema::hasTable($table))->toBeFalse();
+    }
+    $this->artisan('migrate', ['--force' => true, '--no-interaction' => true])->assertSuccessful();
+    foreach ($tables as $table) {
+        expect([Schema::getColumns($table), Schema::getIndexes($table), Schema::getForeignKeys($table)])->toBe($schema[$table]);
+    }
+    $this->artisan('migrate:fresh', ['--seed' => true, '--seeder' => RealtimeDemoSeeder::class, '--force' => true, '--no-interaction' => true])->assertSuccessful();
+    expect(Project::query()->count())->toBe(6)
+        ->and(ProjectRevision::query()->sole()->requestedReviewer->email)->toBe('leo@northstar.example');
 });
 
 it('persists exactly the metadata envelope broadcast for a scoped rich content change', function (): void {

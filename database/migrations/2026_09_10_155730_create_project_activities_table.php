@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('event');
             $table->string('subject')->nullable();
             $table->json('changes');
+            $table->json('raw_changes')->nullable();
             $table->json('change_envelope')->nullable();
             $table->timestamps();
             $table->index(['project_id', 'id']);
