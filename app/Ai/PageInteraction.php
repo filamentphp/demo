@@ -3,7 +3,10 @@
 namespace App\Ai;
 
 use App\Filament\Resources\HR\Projects\Pages\EditProject;
+use App\Filament\Resources\HR\Projects\Pages\ViewProject;
+use App\Filament\Resources\HR\Projects\ProjectResource;
 use App\Models\HR\Project;
+use App\Models\HR\ProjectRevision;
 use App\Models\PageMessage;
 use BackedEnum;
 use Filament\Actions\Action;
@@ -27,6 +30,12 @@ use Traversable;
 
 class PageInteraction
 {
+    /** @var array{name: string, budget: string, end_date: ?string, description: string}|null */
+    protected ?array $inspectedProject = null;
+
+    /** @var array<int, array<string, mixed>> */
+    protected array $inspectedTasks = [];
+
     public function __construct(public Page $page, public PageMessage $request) {}
 
     public function room(): string
@@ -54,9 +63,6 @@ class PageInteraction
         if ($this->page instanceof EditRecord || $this->page instanceof CreateRecord) {
             $state['form'] = $this->describeFields($this->page->getSchema('form'));
             $state['form_is_unsaved_draft'] = true;
-            if ($this->page instanceof EditProject) {
-                $state['project_proposals'] = 'update_form only proposes scalar field edits for human review. Description and plan are manual-only. Pending proposals cannot be saved or accepted by Agent.';
-            }
         } elseif ($this->page instanceof ViewRecord) {
             foreach ($this->page->getSchema('infolist')?->getFlatComponents() ?? [] as $component) {
                 if ($component instanceof Entry && ! $component->isHidden()) {
@@ -88,6 +94,28 @@ class PageInteraction
             }
         }
 
+        if ($project = $this->project()?->fresh()) {
+            $state['saved_project'] = $this->inspectedProject = ProjectRevision::snapshot($project);
+            $state['project_owner'] = $project->owner?->only(['id', 'name']);
+            $state['current_tasks'] = $project->tasks()->orderBy('id')->get(['id', 'title', 'status', 'due_date'])->map(fn (Model $task): array => [
+                'id' => $task->getKey(),
+                'title' => $task->getAttribute('title'),
+                'status' => $this->value($task->getAttribute('status')),
+                'due_date' => $task->getAttribute('due_date')?->format('Y-m-d'),
+            ])->all();
+            $this->inspectedTasks = [];
+            foreach ($state['current_tasks'] as $task) {
+                $this->inspectedTasks[$task['id']] = ['title' => $task['title'], 'status' => $task['status'], 'due_date' => $task['due_date']];
+            }
+            $state['revision_capabilities'] = [
+                'agent' => ['propose_revision', 'read_revisions'],
+                'proposal_fields' => ProjectRevision::Fields,
+                'task_proposal_fields' => ['title', 'status', 'due_date'],
+                'review' => 'Human-only. The author must request a named reviewer before approval. Agent cannot assign owners or reviewers, approve, apply, reject, withdraw, or request changes.',
+                'source' => 'A proposal is authored by the requesting human and attributed to Agent through the source message.',
+            ];
+        }
+
         return $state;
     }
 
@@ -100,6 +128,8 @@ class PageInteraction
             'configure_table' => $this->configureTable($input),
             'run_action' => $this->runAction($input),
             'save_form' => $this->saveForm(),
+            'propose_revision' => $this->proposeRevision($input),
+            'read_revisions' => $this->revisions(),
             'read_history' => $this->history(),
             'read_chat' => $this->discussion(),
             default => throw ValidationException::withMessages(['operation' => 'Unknown operation.']),
@@ -147,19 +177,13 @@ class PageInteraction
     /** @param array<string, mixed> $input */
     protected function updateForm(array $input): string
     {
+        if ($this->project() instanceof Project) {
+            throw ValidationException::withMessages(['operation' => 'Project forms cannot be changed by Agent. Use propose_revision to create a durable proposal for human review.']);
+        }
         if (! ($this->page instanceof EditRecord || $this->page instanceof CreateRecord)) {
             throw ValidationException::withMessages(['form' => 'This page has no editable form.']);
         }
         $fields = $this->fields($this->page->getSchema('form'));
-        if ($this->page instanceof EditProject) {
-            foreach ($input as $path => $value) {
-                if (! isset($fields[$path]) || ! $this->editable($fields[$path]) || in_array($path, ['data.description', 'data.plan'], true) || ! (is_scalar($value) || $value === null)) {
-                    throw ValidationException::withMessages([$path => 'This field cannot be proposed. Project proposals support editable scalar fields only; description and plan must be edited manually.']);
-                }
-            }
-
-            return $this->page->proposeAgentChanges($input);
-        }
         $this->setFields($fields, $input);
 
         return 'Updated the form draft. Not saved. Inspect to verify the current values.';
@@ -229,9 +253,6 @@ class PageInteraction
                 $action->record($record);
             }
             foreach ($action instanceof ActionGroup ? $action->getFlatActions() : [$action] as $item) {
-                if ($this->page instanceof EditProject && $item->getName() === 'reviewAgentProposal') {
-                    continue;
-                }
                 $item = clone $item;
                 if ($record) {
                     $item->record($record);
@@ -249,6 +270,9 @@ class PageInteraction
     protected function runAction(array $input): string
     {
         validator($input, ['name' => 'required|string', 'record_key' => 'sometimes|nullable|string'])->validate();
+        if ($this->project() instanceof Project && preg_match('/(?:approve|apply).*revision|revision.*(?:approve|apply)/i', $input['name'])) {
+            throw ValidationException::withMessages(['name' => 'Agent cannot approve or apply project revisions. A human reviewer must use the revision controls.']);
+        }
         $page = $this->page;
         $record = isset($input['record_key']) && $page instanceof ListRecords ? $this->rows()->first(fn (Model $record): bool => $page->getTableRecordKey($record) === $input['record_key']) : null;
         if (isset($input['record_key']) && ! $record) {
@@ -267,8 +291,8 @@ class PageInteraction
 
     protected function saveForm(): string
     {
-        if ($this->page instanceof EditProject && $this->page->agentProposal !== []) {
-            return 'Not saved: a proposal is awaiting user review. Ask the user to apply or discard it first.';
+        if ($this->project() instanceof Project) {
+            throw ValidationException::withMessages(['operation' => 'Agent cannot save a Project form. Use propose_revision to create a durable proposal for human review.']);
         }
         if ($this->page instanceof EditRecord) {
             $this->page->save();
@@ -288,6 +312,104 @@ class PageInteraction
     protected function record(): ?Model
     {
         return $this->page instanceof EditRecord || $this->page instanceof ViewRecord ? $this->page->getRecord() : null;
+    }
+
+    protected function project(): ?Project
+    {
+        if (! ($this->page instanceof EditProject || $this->page instanceof ViewProject)) {
+            return null;
+        }
+
+        $record = $this->record();
+
+        return $record instanceof Project ? $record : null;
+    }
+
+    /** @param array<string, mixed> $input
+     * @return array<string, mixed>
+     */
+    protected function proposeRevision(array $input): array
+    {
+        $project = $this->authorizedProject();
+        $author = auth()->user();
+        abort_unless($author !== null, 403);
+        validator($input, [
+            'values' => ['sometimes', 'array'],
+            'values.*' => ['nullable'],
+            'tasks' => ['sometimes', 'array'],
+            'tasks.*' => ['array'],
+            'tasks.*.title' => ['sometimes', 'string', 'max:255'],
+            'tasks.*.status' => ['sometimes', 'string'],
+            'tasks.*.due_date' => ['sometimes', 'nullable', 'date'],
+            'reason' => ['required', 'string', 'max:5000'],
+        ])->validate();
+
+        $values = $input['values'] ?? [];
+        if (array_diff(array_keys($values), ProjectRevision::Fields) !== []) {
+            throw ValidationException::withMessages(['values' => 'Only name, budget, end_date, and description may be proposed.']);
+        }
+        $taskValues = $input['tasks'] ?? [];
+        $allowedTaskFields = ['title', 'status', 'due_date'];
+        foreach ($taskValues as $taskId => $taskChanges) {
+            if (array_diff(array_keys($taskChanges), $allowedTaskFields) !== []) {
+                throw ValidationException::withMessages(["tasks.{$taskId}" => 'Only title, status, and due_date may be proposed for a task.']);
+            }
+        }
+        $taskIds = array_map('intval', array_keys($taskValues));
+        if ($project->tasks()->whereKey($taskIds)->count() !== count(array_unique($taskIds))) {
+            throw ValidationException::withMessages(['tasks' => 'Every task must belong to the current project. Use task IDs from inspect.']);
+        }
+
+        if ($this->inspectedProject === null) {
+            $this->inspect();
+        }
+
+        $revision = ProjectRevision::propose(
+            $project,
+            $author,
+            $values,
+            $input['reason'],
+            expectedBase: $this->inspectedProject,
+            taskValues: $taskValues,
+            sourceMessage: $this->request,
+            expectedTasks: $this->inspectedTasks,
+        );
+
+        return ['created' => true, 'revision_id' => $revision->getKey(), 'status' => $revision->status];
+    }
+
+    /** @return array<int, array<string, mixed>> */
+    protected function revisions(): array
+    {
+        $project = $this->authorizedProject();
+
+        return ProjectRevision::query()->where('project_id', $project->getKey())->with(['author:id,name', 'reviewer:id,name', 'requestedReviewer:id,name'])->latest('id')->limit(30)->get()->map(fn (ProjectRevision $revision): array => [
+            'id' => $revision->id,
+            'status' => $revision->status,
+            'version' => $revision->version,
+            'reason' => $revision->reason,
+            'base_values' => $revision->base_values,
+            'proposed_values' => $revision->proposed_values,
+            'base_tasks' => $revision->base_tasks,
+            'proposed_tasks' => $revision->proposed_tasks,
+            'author' => $revision->author->name,
+            'reviewer' => $revision->reviewer?->name,
+            'requested_reviewer' => $revision->requestedReviewer?->only(['id', 'name']),
+            'next_step' => $revision->nextStep(),
+            'next_step_owner' => $revision->nextStepOwner()?->only(['id', 'name']),
+            'thread_id' => $revision->thread_id,
+            'created_at' => $revision->created_at?->toIso8601String(),
+        ])->all();
+    }
+
+    protected function authorizedProject(): Project
+    {
+        $project = $this->project();
+        if (! $project || ! auth()->check() || $this->request->user_id !== auth()->id() || ! ProjectResource::canView($project) || ! ProjectResource::canEdit($project)) {
+            throw ValidationException::withMessages(['operation' => 'Project revisions are available only on the authorized current Project view or edit page for the requesting user.']);
+        }
+
+        return $project;
     }
 
     /** @return Collection<int, Model> */
@@ -312,7 +434,7 @@ class PageInteraction
     {
         $record = $this->record();
 
-        return $record instanceof Project ? $record->activities()->latest('id')->limit(30)->get(['event', 'subject', 'actor_name', 'interface', 'changes', 'created_at'])->toArray() : ['No recorded history is available for this resource.'];
+        return $record instanceof Project ? $record->activities()->latest('id')->limit(30)->get(['event', 'subject', 'actor_name', 'interface', 'changes', 'change_envelope', 'created_at'])->toArray() : ['No recorded history is available for this resource.'];
     }
 
     /** @return array<mixed> */

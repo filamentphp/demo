@@ -176,6 +176,8 @@ it('notifies both projects when a task moves and only its current project on sub
 
     Event::fake([ProjectChanged::class]);
     $task->save();
+    Event::assertNotDispatched(ProjectChanged::class);
+    $task->update(['title' => 'New title after moving']);
     Event::assertDispatchedTimes(ProjectChanged::class, 1);
     Event::assertDispatched(ProjectChanged::class, fn (ProjectChanged $event): bool => $event->projectId === $newProject->id);
 

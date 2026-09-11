@@ -31,6 +31,11 @@ class ListProjects extends ListRecords
     protected function getActions(): array
     {
         return [
+            Action::make('attention')
+                ->label('Needs attention')
+                ->icon('heroicon-o-bell-alert')
+                ->color('gray')
+                ->url(ProjectResource::getUrl('attention')),
             Action::make('client_portal')
                 ->label('Client portal')
                 ->color('gray')

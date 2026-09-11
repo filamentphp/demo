@@ -28,8 +28,12 @@ const server = new Server({
             throw new Error('Unauthorized')
         }
         const user = JSON.parse(Buffer.from(payload, 'base64').toString())
-        if (user.expires < Date.now() / 1000 || documentName !== `project.${user.projectId}`) throw new Error('Unauthorized')
-        return { ...user, initial: await request(user.projectId) }
+        const version = user.version || 0
+        const expectedDocument = `project.${user.projectId}${version ? `.v${version}` : ''}`
+        if (user.expires < Date.now() / 1000 || documentName !== expectedDocument) throw new Error('Unauthorized')
+        const initial = await request(user.projectId)
+        if (initial.version !== version) throw new Error('Description has been replaced. Reload the project.')
+        return { ...user, initial }
     },
     async onLoadDocument({ context }) {
         if (context.initial.state) {

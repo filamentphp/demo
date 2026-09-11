@@ -106,6 +106,7 @@ it('renders isolated newest-first history with escaped values and older activity
     }
 
     $history = Livewire::test(ProjectHistory::class, ['record' => $project])
+        ->assertSeeHtml('class="w-full" aria-label="Project history"')
         ->assertSeeInOrder(['Revision 21', 'Revision 20'])
         ->assertDontSee('Project created')
         ->assertDontSee('Other project private activity')

@@ -14,6 +14,7 @@ class ProjectCollaborationController extends Controller
         abort_unless(hash_equals(config('collaboration.key'), $request->bearerToken() ?? ''), 403);
 
         return response()->json([
+            'version' => (int) $project->description_version,
             'state' => $project->description_state,
             'content' => RichContentRenderer::make($project->description)->getEditor()->getDocument(),
         ]);

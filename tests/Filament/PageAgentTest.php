@@ -9,6 +9,7 @@ use App\Filament\Resources\HR\Projects\Pages\ListProjects;
 use App\Filament\Resources\HR\Projects\Pages\ViewProject;
 use App\Livewire\PageChat;
 use App\Models\HR\Project;
+use App\Models\HR\ProjectRevision;
 use App\Models\PageMessage;
 use App\Models\User;
 use Illuminate\Support\Facades\Event;
@@ -16,34 +17,46 @@ use Illuminate\Validation\ValidationException;
 use Laravel\Ai\Responses\Data\ToolCall;
 use Livewire\Livewire;
 
-it('inspects and updates only editable form drafts without saving', function (): void {
+it('inspects project state and directs form mutations to durable revisions', function (): void {
     $project = Project::factory()->create(['name' => 'Original']);
     $component = Livewire::test(EditProject::class, ['record' => $project->id]);
-    $page = new PageInteraction($component->instance(), new PageMessage);
+    $request = PageMessage::query()->create([
+        'room' => hash('sha256', '/projects/' . $project->id),
+        'user_id' => auth()->id(),
+        'body' => 'Please rename this project.',
+    ]);
+    $page = new PageInteraction($component->instance(), $request);
     $state = $page->inspect();
     expect($state['page_type'])->toBe('edit')
         ->and($state['form']['data.name']['value'])->toBe('Original')
         ->and($state['form'])->not->toHaveKey('data.description_state')
         ->and($state['form']['data.slug']['editable'])->toBeFalse();
-    $page->operate('update_form', ['data.name' => 'Agent draft', 'data.budget' => 9234]);
-    expect($component->instance()->data['name'])->toBe('Original');
-    $page->page->callMountedAction();
-    expect($component->instance()->data['name'])->toBe('Agent draft')
-        ->and($project->refresh()->name)->toBe('Original');
-    expect(fn () => $page->operate('update_form', ['data.slug' => 'forbidden']))->toThrow(ValidationException::class);
+    foreach (['update_form' => ['data.name' => 'Agent draft'], 'save_form' => []] as $operation => $input) {
+        try {
+            $page->operate($operation, $input);
+            test()->fail("{$operation} should have been rejected.");
+        } catch (ValidationException $exception) {
+            expect(json_encode($exception->errors()))->toContain('propose_revision');
+        }
+    }
+    $result = $page->operate('propose_revision', ['values' => ['name' => 'Agent proposal'], 'reason' => 'Clearer name']);
+    expect($project->refresh()->name)->toBe('Original')
+        ->and(ProjectRevision::findOrFail($result['revision_id'])->proposed_values)->toBe(['name' => 'Agent proposal']);
 });
 
-it('uses native form validation and does not save unresolved concurrent changes', function (): void {
+it('rejects unauthorized source messages without creating a durable revision', function (): void {
     $project = Project::factory()->create(['name' => 'Original']);
-    $page = new PageInteraction(Livewire::test(EditProject::class, ['record' => $project->id])->instance(), new PageMessage);
-    $page->operate('update_form', ['data.name' => null]);
-    $page->page->callMountedAction();
-    expect(fn () => $page->operate('save_form', []))->toThrow(ValidationException::class);
-    $page->operate('update_form', ['data.name' => 'Local draft']);
-    $page->page->callMountedAction();
-    $project->update(['name' => 'Remote edit']);
-    expect($page->operate('save_form', []))->toContain('Not saved')
-        ->and($project->refresh()->name)->toBe('Remote edit');
+    $request = PageMessage::query()->create([
+        'room' => hash('sha256', '/projects/' . $project->id),
+        'user_id' => User::factory()->create()->id,
+        'body' => 'Unauthorized request',
+    ]);
+    $page = new PageInteraction(Livewire::test(EditProject::class, ['record' => $project->id])->instance(), $request);
+
+    expect(fn () => $page->operate('propose_revision', ['values' => ['name' => 'Unsafe'], 'reason' => 'No']))
+        ->toThrow(ValidationException::class)
+        ->and(ProjectRevision::query()->count())->toBe(0)
+        ->and($project->refresh()->name)->toBe('Original');
 });
 
 it('keeps pending replies unread until the answer actually arrives', function (): void {
@@ -92,7 +105,7 @@ it('excludes URL actions and invokes immediate native row actions', function ():
 
 it('runs a mentioned request once on its authorized page and persists the reply', function (): void {
     PageAssistant::fake([
-        new ToolCall('change-name', 'UsePage', ['operation' => 'update_form', 'input' => '{"data.name":"Tool loop draft"}']),
+        new ToolCall('change-name', 'UsePage', ['operation' => 'propose_revision', 'input' => '{"values":{"name":"Tool loop proposal"},"reason":"Requested by the user"}']),
         'This is the project editor.',
     ]);
     $project = Project::factory()->create(['name' => 'Persisted name']);
@@ -101,11 +114,14 @@ it('runs a mentioned request once on its authorized page and persists the reply'
         ->set('body', '<p><span data-type="mention" data-id="agent" data-label="Agent" data-char="@">@Agent</span> Which page is this?</p>')->call('send');
     $reply = PageMessage::query()->where('is_agent', true)->sole();
     $component = Livewire::test(EditProject::class, ['record' => $project->id]);
-    $component->call('pageAgentReply', $reply->id)->assertOk()->assertSet('data.name', 'Persisted name')
-        ->assertSet('agentProposal.name.proposed', 'Tool loop draft');
+    $component->call('pageAgentReply', $reply->id)->assertOk()->assertSet('data.name', 'Persisted name');
+    $revision = ProjectRevision::query()->sole();
     expect($reply->refresh()->agent_status)->toBe('completed')
         ->and($reply->body)->toBe('This is the project editor.')
-        ->and($project->refresh()->name)->toBe('Persisted name');
+        ->and($project->refresh()->name)->toBe('Persisted name')
+        ->and($revision->proposed_values)->toBe(['name' => 'Tool loop proposal'])
+        ->and($revision->reason)->toBe('Requested by the user')
+        ->and($revision->source_message_id)->toBe($reply->agent_request_id);
     $component->call('pageAgentReply', $reply->id)->assertOk();
     PageAssistant::assertPromptedTimes(1);
     PageAssistant::assertPrompted(fn ($prompt): bool => $prompt->contains('Recent saved project history') && $prompt->contains('$2,345.00'));

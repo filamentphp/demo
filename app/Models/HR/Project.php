@@ -4,13 +4,14 @@ namespace App\Models\HR;
 
 use App\Enums\ProjectStatus;
 use App\Enums\TaskPriority;
-use App\Events\ProjectChanged;
+use App\Models\User;
 use Database\Factories\HR\ProjectFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Context;
 
 class Project extends Model
 {
@@ -49,17 +50,23 @@ class Project extends Model
             ProjectActivity::recordProjectUpdate($project);
         });
 
-        static::saved(function (Project $project): void {
-            ProjectChanged::dispatch($project->id);
-        });
-
         static::deleted(function (Project $project): void {
-            if (! $project->isForceDeleting()) {
-                ProjectActivity::record($project->id, 'project_deleted');
+            if (Context::getHidden('project_history_revision_id')) {
+                return;
             }
 
-            ProjectChanged::dispatch($project->id);
+            if (! $project->isForceDeleting()) {
+                ProjectActivity::record($project->id, 'project_deleted', fields: ['deleted_at']);
+            } else {
+                ProjectActivity::notify($project->id, 'project_deleted');
+            }
         });
+    }
+
+    /** @return BelongsTo<User, $this> */
+    public function owner(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'owner_id');
     }
 
     /** @return HasMany<ProjectActivity, $this> */

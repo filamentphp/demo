@@ -8,6 +8,9 @@
         <testsuite name="Filament">
             <directory>tests/Filament</directory>
         </testsuite>
+        <testsuite name="Project change contract">
+            <file>tests/Feature/ProjectChangeContractTest.php</file>
+        </testsuite>
     </testsuites>
     <source>
         <include>

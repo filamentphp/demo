@@ -7,6 +7,7 @@ use App\Filament\DemoIconAlias;
 use App\Filament\Resources\HR\Projects\Pages\CreateProject;
 use App\Filament\Resources\HR\Projects\Pages\EditProject;
 use App\Filament\Resources\HR\Projects\Pages\ListProjects;
+use App\Filament\Resources\HR\Projects\Pages\ProjectAttention;
 use App\Filament\Resources\HR\Projects\Pages\ViewProject;
 use App\Filament\Resources\HR\Projects\RelationManagers\TasksRelationManager;
 use App\Filament\Resources\HR\Projects\RelationManagers\TimesheetsRelationManager;
@@ -81,6 +82,7 @@ class ProjectResource extends Resource
     {
         return [
             'index' => ListProjects::route('/'),
+            'attention' => ProjectAttention::route('/attention'),
             'create' => CreateProject::route('/create'),
             'edit' => EditProject::route('/{record}/edit'),
             'view' => ViewProject::route('/{record}'),

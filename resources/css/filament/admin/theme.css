@@ -3,6 +3,7 @@
 @source '../../../../app/Filament/**/*';
 @source '../../../../resources/views/filament/**/*';
 @source '../../../../resources/views/livewire/project-presence.blade.php';
+@source '../../../../resources/views/livewire/project-revisions.blade.php';
 
 .collaboration-carets__caret {
     position: relative;

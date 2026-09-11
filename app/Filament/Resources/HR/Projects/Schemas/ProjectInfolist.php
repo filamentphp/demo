@@ -6,6 +6,7 @@ use App\Filament\DemoIconAlias;
 use App\Filament\Resources\HR\Projects\Actions\DiscussProjectField;
 use App\Livewire\ProjectHistory;
 use App\Livewire\ProjectPresence;
+use App\Livewire\ProjectRevisions;
 use App\Models\HR\Project;
 use Filament\Infolists\Components\ColorEntry;
 use Filament\Infolists\Components\TextEntry;
@@ -18,14 +19,15 @@ use Filament\Support\Icons\Heroicon;
 
 class ProjectInfolist
 {
-    public static function configure(Schema $schema): Schema
+    public static function configure(Schema $schema, bool $preview = false): Schema
     {
         return $schema
             ->components([
                 Livewire::make(ProjectPresence::class)
-                    ->visible(fn (Project $record): bool => ! $record->trashed())
+                    ->visible(fn (Project $record): bool => ! $preview && ! $record->trashed())
                     ->columnSpanFull(),
                 Tabs::make('Project')
+                    ->persistTabInQueryString($preview ? null : 'project-tab')
                     ->schema([
                         Tab::make('Overview')
                             ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_PROJECTS_INFOLIST_TABS_OVERVIEW) ?? Heroicon::InformationCircle)
@@ -37,6 +39,9 @@ class ProjectInfolist
                                 TextEntry::make('department.name')
                                     ->label('Department')
                                     ->placeholder('No department'),
+                                TextEntry::make('owner.name')
+                                    ->label('Project owner')
+                                    ->placeholder('Unassigned'),
                                 TextEntry::make('status')
                                     ->badge(),
                                 TextEntry::make('priority')
@@ -49,7 +54,7 @@ class ProjectInfolist
                                     ->date()
                                     ->placeholder('No end date'),
                                 TextEntry::make('description')
-                                    ->hintAction(DiscussProjectField::make('description'))
+                                    ->hintActions($preview ? [] : [DiscussProjectField::make('description')])
                                     ->prose()
                                     ->markdown()
                                     ->columnSpanFull()
@@ -66,6 +71,9 @@ class ProjectInfolist
                                 TextEntry::make('spent')
                                     ->money('usd')
                                     ->placeholder('$0.00'),
+                                TextEntry::make('remaining_budget')
+                                    ->state(fn (Project $record): float => (float) $record->budget - (float) $record->spent)
+                                    ->money('usd'),
                                 TextEntry::make('estimated_hours')
                                     ->numeric()
                                     ->suffix(' hours')
@@ -77,9 +85,18 @@ class ProjectInfolist
                             ]),
 
                         Tab::make('History')
+                            ->visible(! $preview)
                             ->icon(Heroicon::Clock)
                             ->schema([
                                 Livewire::make(ProjectHistory::class),
+                            ]),
+
+                        Tab::make('Revisions')
+                            ->id('project-revisions')
+                            ->visible(! $preview)
+                            ->icon(Heroicon::DocumentDuplicate)
+                            ->schema([
+                                Livewire::make(ProjectRevisions::class),
                             ]),
                     ])
                     ->columnSpanFull(),

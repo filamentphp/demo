@@ -9,6 +9,7 @@ use App\Filament\Resources\HR\Projects\Actions\DiscussProjectField;
 use App\Forms\Components\ProjectCollaborationPlugin;
 use App\Livewire\ProjectHistory;
 use App\Livewire\ProjectPresence;
+use App\Livewire\ProjectRevisions;
 use App\Models\HR\Employee;
 use App\Models\HR\Project;
 use Filament\Forms\Components\Builder;
@@ -42,6 +43,7 @@ class ProjectForm
                     ->visible(fn (?Project $record): bool => $record !== null && ! $record->trashed())
                     ->columnSpanFull(),
                 Tabs::make('Project')
+                    ->persistTabInQueryString('project-tab')
                     ->schema([
                         Tab::make('Overview')
                             ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_PROJECTS_FORM_TABS_OVERVIEW) ?? Heroicon::InformationCircle)
@@ -194,6 +196,14 @@ class ProjectForm
                             ->icon(Heroicon::Clock)
                             ->schema([
                                 Livewire::make(ProjectHistory::class),
+                            ]),
+
+                        Tab::make('Revisions')
+                            ->id('project-revisions')
+                            ->icon(Heroicon::DocumentDuplicate)
+                            ->visible(fn (?Project $record): bool => $record !== null)
+                            ->schema([
+                                Livewire::make(ProjectRevisions::class),
                             ]),
                     ])
                     ->columnSpanFull(),

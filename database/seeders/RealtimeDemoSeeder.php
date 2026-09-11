@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\HR\Department;
 use App\Models\HR\Employee;
 use App\Models\HR\Project;
+use App\Models\HR\ProjectRevision;
 use App\Models\PageMessage;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -18,6 +19,9 @@ class RealtimeDemoSeeder extends Seeder
     public function run(): void
     {
         Project::withoutEvents(fn () => (new Project)->getConnection()->transaction(function (): void {
+            User::query()->firstOrCreate(['email' => 'admin@filamentphp.com'], [
+                'name' => 'Demo User', 'password' => Hash::make('demo.Filament@2021!'), 'email_verified_at' => now(),
+            ]);
             $department = Department::query()->firstOrCreate(['slug' => 'northstar-product'], [
                 'name' => 'Northstar Product', 'description' => 'The team building a calmer customer workspace.',
                 'budget' => 500000, 'headcount_limit' => 12, 'color' => '#6366f1',
@@ -50,6 +54,7 @@ class RealtimeDemoSeeder extends Seeder
                 $created = now()->startOfDay()->subDays(28)->setHour(9);
                 $project = Project::query()->create([
                     'slug' => 'northstar-' . $key, 'name' => $name, 'department_id' => $department->id,
+                    'owner_id' => $users[in_array($key, ['portal', 'migration', 'billing']) ? 'leo' : 'maya']->id,
                     'description' => '<p>' . $description . '</p>', 'status' => $status, 'priority' => $priority,
                     'budget' => $budget, 'spent' => $spent, 'estimated_hours' => 240,
                     'actual_hours' => $key === 'research' ? 0 : ($key === 'onboarding' ? 220 : 140),
@@ -109,6 +114,16 @@ class RealtimeDemoSeeder extends Seeder
                     $resolved = $this->message($room, $users['ava'], 'The accessible colour palette is approved. Can we close the visual review?', 72);
                     $this->message($room, $users['maya'], 'Yes, the contrast checks passed. No design changes are needed.', 71, $resolved);
                     $resolved->update(['resolved_at' => now()->subHours(70)]);
+                    $revisionThread = $this->message($room, $users['maya'], 'Proposal: allow two extra weeks for the security review and customer acceptance sessions. Leo, please review the delivery date before we share it with customers.', 3);
+                    ProjectRevision::query()->create([
+                        'project_id' => $project->id, 'open_project_id' => $project->id,
+                        'author_id' => $users['maya']->id, 'requested_reviewer_id' => $users['leo']->id,
+                        'review_requested_at' => now()->subHours(3), 'status' => 'pending',
+                        'reason' => 'Allow two extra weeks to complete the document-retention security review and customer acceptance sessions.',
+                        'base_values' => ProjectRevision::snapshot($project),
+                        'proposed_values' => ['end_date' => $project->end_date->copy()->addWeeks(2)->toDateString()],
+                        'thread_id' => $revisionThread->id, 'created_at' => now()->subHours(3), 'updated_at' => now()->subHours(3),
+                    ]);
                 }
             }
         }));

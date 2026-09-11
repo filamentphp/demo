@@ -4,6 +4,7 @@ use App\Events\ProjectChanged;
 use App\Livewire\PageChat;
 use App\Livewire\ProjectHistory;
 use App\Models\HR\Project;
+use App\Models\HR\ProjectRevision;
 use App\Models\PageMessage;
 use Database\Seeders\RealtimeDemoSeeder;
 use Illuminate\Support\Facades\Event;
@@ -17,6 +18,12 @@ it('seeds a coherent scenario without broadcasts and preserves it on reruns', fu
     $this->seed(RealtimeDemoSeeder::class);
 
     $portal = Project::query()->where('slug', 'northstar-portal')->sole();
+    $revision = ProjectRevision::query()->sole();
+    expect($portal->owner->email)->toBe('leo@northstar.example')
+        ->and($revision->project_id)->toBe($portal->id)
+        ->and($revision->author->email)->toBe('maya@northstar.example')
+        ->and($revision->nextStepOwner()->email)->toBe('leo@northstar.example')
+        ->and($revision->proposed_values['end_date'])->toBe($portal->end_date->copy()->addWeeks(2)->toDateString());
     $agent = PageMessage::query()->where('is_agent', true)->sole();
     expect(Project::query()->count())->toBe(7)
         ->and($portal->tasks()->count())->toBe(3)
@@ -42,6 +49,7 @@ it('seeds a coherent scenario without broadcasts and preserves it on reruns', fu
     $this->seed(RealtimeDemoSeeder::class);
     expect(Project::query()->count())->toBe(7)
         ->and(PageMessage::query()->count())->toBe($count)
+        ->and(ProjectRevision::query()->count())->toBe(1)
         ->and($portal->refresh()->name)->toBe('Presenter edit')
         ->and($unrelated->refresh()->name)->toBe('Existing work');
 });

@@ -4,12 +4,12 @@ namespace App\Models\HR;
 
 use App\Enums\TaskPriority;
 use App\Enums\TaskStatus;
-use App\Events\ProjectChanged;
 use Database\Factories\HR\TaskFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Context;
 
 class Task extends Model
 {
@@ -37,21 +37,33 @@ class Task extends Model
     protected static function booted(): void
     {
         static::created(function (Task $task): void {
-            ProjectActivity::record($task->project_id, 'task_created', $task->title);
+            if (! Context::getHidden('project_history_revision_id')) {
+                ProjectActivity::record($task->project_id, 'task_created', $task->title, entityType: 'task', entityId: $task->id);
+            }
         });
 
-        static::saved(function (Task $task): void {
-            ProjectChanged::dispatch($task->project_id);
+        static::updated(function (Task $task): void {
+            if (Context::getHidden('project_history_revision_id')) {
+                return;
+            }
 
-            if ($task->isDirty('project_id') && $task->getOriginal('project_id')) {
-                ProjectChanged::dispatch($task->getOriginal('project_id'));
+            $fields = array_values(array_diff(array_keys($task->getChanges()), ['created_at', 'updated_at']));
+
+            if ($fields === []) {
+                return;
+            }
+
+            ProjectActivity::notify($task->project_id, 'task_updated', 'task', $task->id, $fields);
+
+            if ($task->wasChanged('project_id') && $task->getRawOriginal('project_id')) {
+                ProjectActivity::notify($task->getRawOriginal('project_id'), 'task_updated', 'task', $task->id, $fields);
             }
         });
 
         static::deleted(function (Task $task): void {
-            ProjectActivity::record($task->project_id, 'task_deleted', $task->title);
-
-            ProjectChanged::dispatch($task->project_id);
+            if (! Context::getHidden('project_history_revision_id')) {
+                ProjectActivity::record($task->project_id, 'task_deleted', $task->title, entityType: 'task', entityId: $task->id);
+            }
         });
     }
 
