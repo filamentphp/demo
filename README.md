@@ -87,7 +87,7 @@ Here are some specific things to poke at if you're learning Filament:
 
 ## Trying the Inertia page proof of concept
 
-Open **Inertia Vue**, **Inertia React**, or **Inertia Svelte** in the sidebar. This is an experiment, not a supported Filament API. All three frameworks passed the Chromium browser suite in light and dark modes with SSR and SPA independently enabled and disabled. These checks cover post-hydration interactions, not the pre-hydration input-loss limitation documented below. The historical observations section describes the earlier Vue prototype unless stated otherwise.
+Open **Inertia Vue**, **Inertia React**, or **Inertia Svelte** in the sidebar. This is an experiment, not a supported Filament API. The latest Chromium matrix with lazy notifications enabled passed 71 of 72 cases across all three frameworks, light/dark modes, and SSR/SPA independently enabled and disabled. The remaining accessibility failure is Livewire's transient navigation progress bar using the invalid `role="bar"`; it is separate from the lifecycle patch and remains unfixed. These checks cover post-hydration interactions, not the pre-hydration input-loss limitation documented below. The historical observations section describes the earlier Vue prototype unless stated otherwise.
 
 The demo links `@inertiajs/core`, `@inertiajs/vue3`, `@inertiajs/react`, and `@inertiajs/svelte` from the adjacent `../inertia` checkout (based on v3.7.0). These packages add an opt-in `externalNavigation` option to `createInertiaApp()`. The Laravel adapter is unchanged.
 
