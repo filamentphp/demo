@@ -119,7 +119,7 @@ The expanded experiment uses Inertia Vue 3.7.0 and inertia-laravel 3.3.3, follow
 
 | Feature | Observed result |
 |---|---|
-| [Deferred props](https://inertiajs.com/docs/v3/data-props/deferred-props) | Two groups load independently after initial rendering; a deferred value nested inside a closure resolves through `analytics.total`. |
+| [Deferred props](https://inertiajs.com/docs/v3/data-props/deferred-props) | Two groups load independently after initial rendering; a nested deferred value resolves through `analytics.total`. The current demo uses a plain `analytics` array so partial requests can exclude its optional `audit` sibling. Children of a closure-returned array bypass partial filtering in inertia-laravel 3.3.3. |
 | [Partial reloads](https://inertiajs.com/docs/v3/data-props/partial-reloads) | Optional and nested optional props load on demand; `always()` is included; an unrequested closure that throws is not evaluated. |
 | [Once props](https://inertiajs.com/docs/v3/data-props/once-props) | A token is retained across Inertia visits; explicitly requesting the catalog generates a new token. Deferred plus `once()` also loads. |
 | [Merging props](https://inertiajs.com/docs/v3/data-props/merging-props) | Contact 24 is updated, 11 retained and 37 appended; resetting removes 37 and restores the first batch. |

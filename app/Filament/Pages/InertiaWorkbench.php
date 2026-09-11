@@ -112,7 +112,7 @@ class InertiaWorkbench extends Page
             'requestToken' => Inertia::always(static fn (): string => (string) Str::uuid()),
             'optionalSummary' => Inertia::optional(static fn (): string => 'Optional: 24 active accounts'),
             'catalog' => Inertia::once(static fn (): array => ['token' => (string) Str::uuid(), 'plans' => ['Standard', 'Enterprise']]),
-            'analytics' => static fn (): array => [
+            'analytics' => [
                 'total' => Inertia::defer(static fn (): int => 137, 'analytics'),
                 'audit' => Inertia::optional(static fn (): string => 'Nested optional audit loaded'),
             ],

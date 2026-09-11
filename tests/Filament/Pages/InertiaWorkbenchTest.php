@@ -130,6 +130,17 @@ it('exposes nested deferred metadata but omits optional props on the initial vis
         ->assertJsonMissingPath('props.optionalSummary');
 })->with('inertia frameworks');
 
+it('omits `analytics.audit` when only `analytics.total` is requested', function (string $page, string $component): void {
+    $this->get($page::getUrl(), [
+        'X-Inertia' => 'true',
+        'X-Inertia-Version' => app(Middleware::class)->version(request()),
+        'X-Inertia-Partial-Component' => $component,
+        'X-Inertia-Partial-Data' => 'analytics.total',
+    ])->assertOk()
+        ->assertJsonPath('props.analytics.total', 137)
+        ->assertJsonMissingPath('props.analytics.audit');
+})->with('inertia frameworks');
+
 it('resolves selected nested props and includes `always()` props without evaluating other closures', function (): void {
     Inertia::share('unrequested', static fn () => throw new RuntimeException('Unrequested closure evaluated'));
 
