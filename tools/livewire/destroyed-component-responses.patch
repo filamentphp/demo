@@ -1,0 +1,83 @@
+diff --git a/js/features/supportDisablingFormsDuringRequest.js b/js/features/supportDisablingFormsDuringRequest.js
+index 0aa051a..cb5f031 100644
+--- a/js/features/supportDisablingFormsDuringRequest.js
++++ b/js/features/supportDisablingFormsDuringRequest.js
+@@ -1,9 +1,9 @@
+ import { getDirectives } from '@/directives'
+ import { on } from '@/hooks'
+-import { Bag } from '@/utils'
++import { WeakBag } from '@/utils'
+ import Alpine from 'alpinejs'
+ 
+-let cleanups = new Bag
++let cleanups = new WeakBag
+ 
+ // Adding a setTimeout here so that these event listeners are
+ // registered AFTER most other event listenrs, this way, we
+@@ -15,22 +15,22 @@ on('directive.init', ({ el, directive, cleanup, component }) => setTimeout(() =>
+     // submission returns and the new DOM lacks these additions...
+     el.addEventListener('submit', () => {
+         // If using wire:submit="$parent...", we will need to use
+-        // the parent ID as a reference for undoing because it's
+-        // the ID that will come back from the network request.
+-        let componentId = directive.expression.startsWith('$parent')
+-            ? component.parent.id
+-            : component.id
++        // the parent instance as a reference for undoing because it's
++        // the instance that will receive the network response.
++        let targetComponent = directive.expression.startsWith('$parent')
++            ? component.parent
++            : component
+ 
+         let cleanup = disableForm(el)
+ 
+-        cleanups.add(componentId, cleanup)
++        cleanups.add(targetComponent, cleanup)
+     })
+ }))
+ 
+ on('commit', ({ component, respond }) => {
+     respond(() => {
+-        cleanups.each(component.id, i => i())
+-        cleanups.remove(component.id)
++        cleanups.each(component, i => i())
++        cleanups.remove(component)
+     })
+ })
+ 
+diff --git a/js/features/supportMorphDom.js b/js/features/supportMorphDom.js
+index 21bffc0..544da4c 100644
+--- a/js/features/supportMorphDom.js
++++ b/js/features/supportMorphDom.js
+@@ -15,6 +15,8 @@ on('effect', ({ component, effects }) => {
+     // Alpine effects (that are processed via flushJobs in scheduler).
+     queueMicrotask(() => {
+         queueMicrotask(() => {
++            if (component.el.__livewire !== component) return
++
+             morph(component, component.el, html)
+         })
+     })
+diff --git a/js/request/commit.js b/js/request/commit.js
+index ce29101..beda0c8 100644
+--- a/js/request/commit.js
++++ b/js/request/commit.js
+@@ -106,6 +106,18 @@ export class Commit {
+ 
+             respond()
+ 
++            // A navigation can destroy this instance while its request is in flight.
++            // Settle callers, but never apply its response to a restored component,
++            // even when the restored component has the same `wire:id`.
++            if (this.component.el.__livewire !== this.component) {
++                this.calls.forEach(({ handleReturn }, index) => {
++                    handleReturn(effects.returns?.[index])
++                })
++                this.resolvers.forEach(resolve => resolve())
++
++                return
++            }
++
+             // Wrap in Alpine.transaction() to defer reactive effects until
+             // after the morph completes. Without this, Alpine plugins like
+             // x-mask can fire synthetic input events during the reactive

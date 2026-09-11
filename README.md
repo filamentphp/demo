@@ -97,7 +97,7 @@ The Alpine wrapper mounts a framework app inside `wire:ignore` and disposes it b
 
 Build the local core and adapters before `npm run build:ssr` in this demo. The SSR entry dispatches to Vue, React, or Svelte based on the page component. The routes are `/inertia-workbench`, `/react-inertia-workbench`, and `/svelte-inertia-workbench`.
 
-The demo eagerly loads database notifications using `databaseNotifications(isLazy: false)`. With Livewire 3.8.8, a delayed notifications `__lazyLoad` response can try to morph a detached component after SPA navigation. This was reproduced on ordinary Filament pages without loading Inertia. Eager loading avoids that unrelated race in this prototype while keeping notifications enabled; it is not a fix to Livewire's handling of detached responses.
+Database notifications retain their normal lazy loading. The demo requires the local [Livewire lifecycle patch](tools/livewire/README.md): upstream Livewire 3.8.8 can apply a delayed `__lazyLoad` response to a destroyed component after SPA navigation, including on ordinary Filament pages without Inertia. The patch discards state and effects for destroyed instances while settling their request callers, and guards queued morphs. This is a separate Livewire change, not an Inertia workaround.
 
 SSR visibility does not mean controls are interactive. In a delayed-renderer test, Vue and React overwrote text entered into the server-rendered notes field before hydration; Svelte retained it. This prototype does not preserve pre-hydration edits or disable those controls while loading. Functional browser tests wait for deferred props after navigation to establish that hydration has completed; those passing tests do not guarantee safe pre-hydration interaction.
 

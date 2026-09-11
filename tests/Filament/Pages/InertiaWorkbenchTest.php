@@ -21,11 +21,11 @@ dataset('inertia frameworks', [
     'Svelte' => [SvelteInertiaWorkbench::class, 'SvelteWorkbench', 'Svelte'],
 ]);
 
-it('keeps database notifications enabled without lazy loading', function (): void {
+it('keeps database notifications enabled with lazy loading', function (): void {
     $panel = Filament::getPanel('admin');
 
     expect($panel->hasDatabaseNotifications())->toBeTrue()
-        ->and($panel->hasLazyLoadedDatabaseNotifications())->toBeFalse();
+        ->and($panel->hasLazyLoadedDatabaseNotifications())->toBeTrue();
 });
 
 it('renders an Inertia root inside the normal Livewire page response', function (string $page): void {
