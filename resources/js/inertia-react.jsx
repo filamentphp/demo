@@ -1,10 +1,10 @@
 import { createInertiaApp } from '@inertiajs/react'
-import { useEffect } from 'react'
+import { useLayoutEffect } from 'react'
 import { createRoot, hydrateRoot } from 'react-dom/client'
 import ReactWorkbench from './ReactWorkbench'
 
 function Mounted({ children, onMounted }) {
-    useEffect(onMounted, [onMounted])
+    useLayoutEffect(onMounted, [onMounted])
 
     return children
 }
