@@ -7,6 +7,7 @@ use App\Filament\DemoIconAlias;
 use App\Filament\Resources\HR\Projects\ProjectResource;
 use App\Models\HR\Project;
 use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\ToggleButtons;
 use Filament\Notifications\Notification;
@@ -59,79 +60,76 @@ class ViewProject extends ViewRecord
     protected function getActions(): array
     {
         return [
-            Action::make('client_portal')
-                ->label('Client portal')
-                ->color('gray')
-                ->url(fn (): string => route('client.projects', ['projectId' => $this->getRecord()->getKey()]))
-                ->openUrlInNewTab(),
-            Action::make('change_status')
-                ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_PROJECTS_ACTIONS_CHANGE_STATUS) ?? Heroicon::ArrowPathRoundedSquare)
-                ->color('gray')
-                ->modalWidth(Width::Medium)
-                ->modalSubmitActionLabel('Save')
-                ->stickyModalFooter()
-                ->fillForm(fn (Project $record): array => [
-                    'status' => $record->status,
-                ])
-                ->schema([
-                    ToggleButtons::make('status')
-                        ->options(ProjectStatus::class)
-                        ->inline()
-                        ->required(),
-                ])
-                ->action(function (Project $record, array $data): void {
-                    $record->update($data);
-                    $this->refreshFormData(['status']);
-                }),
-            Action::make('put_on_hold')
-                ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_PROJECTS_ACTIONS_HOLD) ?? Heroicon::Pause)
-                ->color('warning')
-                ->visible(fn (Project $record): bool => $record->status === ProjectStatus::Active)
-                ->requiresConfirmation()
-                ->modalHeading('Put Project On Hold')
-                ->modalDescription('This will pause all work on this project.')
-                ->modalIcon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_PROJECTS_MODALS_HOLD_WARNING) ?? Heroicon::ExclamationTriangle)
-                ->modalIconColor('warning')
-                ->action(function (Project $record): void {
-                    $record->update(['status' => ProjectStatus::OnHold]);
-                    $this->refreshFormData(['status']);
-
-                    Notification::make()
-                        ->title('Project put on hold')
-                        ->warning()
-                        ->send();
-                }),
-            Action::make('resume')
-                ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_PROJECTS_ACTIONS_RESUME) ?? Heroicon::Play)
-                ->color('success')
-                ->visible(fn (Project $record): bool => $record->status === ProjectStatus::OnHold)
-                ->action(function (Project $record): void {
-                    $record->update(['status' => ProjectStatus::Active]);
-                    $this->refreshFormData(['status']);
-
-                    Notification::make()
-                        ->title('Project resumed')
-                        ->success()
-                        ->send();
-                }),
-            Action::make('complete')
-                ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_PROJECTS_ACTIONS_COMPLETE) ?? Heroicon::CheckCircle)
-                ->color('success')
-                ->visible(fn (Project $record): bool => in_array($record->status, [ProjectStatus::Active, ProjectStatus::OnHold]))
-                ->requiresConfirmation()
-                ->action(function (Project $record): void {
-                    $record->update([
-                        'status' => ProjectStatus::Completed,
-                        'end_date' => now(),
-                    ]);
-                    $this->refreshFormData(['status', 'end_date']);
-
-                    Notification::make()
-                        ->title('Project completed')
-                        ->success()
-                        ->send();
-                }),
             EditAction::make(),
+            ActionGroup::make([
+                Action::make('change_status')
+                    ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_PROJECTS_ACTIONS_CHANGE_STATUS) ?? Heroicon::ArrowPathRoundedSquare)
+                    ->color('gray')
+                    ->modalWidth(Width::Medium)
+                    ->modalSubmitActionLabel('Save')
+                    ->stickyModalFooter()
+                    ->fillForm(fn (Project $record): array => [
+                        'status' => $record->status,
+                    ])
+                    ->schema([
+                        ToggleButtons::make('status')
+                            ->options(ProjectStatus::class)
+                            ->inline()
+                            ->required(),
+                    ])
+                    ->action(function (Project $record, array $data): void {
+                        $record->update($data);
+                        $this->refreshFormData(['status']);
+                    }),
+                Action::make('put_on_hold')
+                    ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_PROJECTS_ACTIONS_HOLD) ?? Heroicon::Pause)
+                    ->color('warning')
+                    ->visible(fn (Project $record): bool => $record->status === ProjectStatus::Active)
+                    ->requiresConfirmation()
+                    ->modalHeading('Put Project On Hold')
+                    ->modalDescription('This will pause all work on this project.')
+                    ->modalIcon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_PROJECTS_MODALS_HOLD_WARNING) ?? Heroicon::ExclamationTriangle)
+                    ->modalIconColor('warning')
+                    ->action(function (Project $record): void {
+                        $record->update(['status' => ProjectStatus::OnHold]);
+                        $this->refreshFormData(['status']);
+
+                        Notification::make()
+                            ->title('Project put on hold')
+                            ->warning()
+                            ->send();
+                    }),
+                Action::make('resume')
+                    ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_PROJECTS_ACTIONS_RESUME) ?? Heroicon::Play)
+                    ->color('success')
+                    ->visible(fn (Project $record): bool => $record->status === ProjectStatus::OnHold)
+                    ->action(function (Project $record): void {
+                        $record->update(['status' => ProjectStatus::Active]);
+                        $this->refreshFormData(['status']);
+
+                        Notification::make()
+                            ->title('Project resumed')
+                            ->success()
+                            ->send();
+                    }),
+                Action::make('complete')
+                    ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_PROJECTS_ACTIONS_COMPLETE) ?? Heroicon::CheckCircle)
+                    ->color('success')
+                    ->visible(fn (Project $record): bool => in_array($record->status, [ProjectStatus::Active, ProjectStatus::OnHold]))
+                    ->requiresConfirmation()
+                    ->action(function (Project $record): void {
+                        $record->update([
+                            'status' => ProjectStatus::Completed,
+                            'end_date' => now(),
+                        ]);
+                        $this->refreshFormData(['status', 'end_date']);
+
+                        Notification::make()
+                            ->title('Project completed')
+                            ->success()
+                            ->send();
+                    }),
+            ])->label('More')->icon(Heroicon::EllipsisHorizontal)->button()->color('gray'),
         ];
     }
 }

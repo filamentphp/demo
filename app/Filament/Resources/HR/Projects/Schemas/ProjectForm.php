@@ -7,7 +7,6 @@ use App\Enums\TaskPriority;
 use App\Filament\DemoIconAlias;
 use App\Filament\Resources\HR\Projects\Actions\DiscussProjectField;
 use App\Forms\Components\ProjectCollaborationPlugin;
-use App\Livewire\ProjectHistory;
 use App\Livewire\ProjectPresence;
 use App\Livewire\ProjectRevisions;
 use App\Models\HR\Employee;
@@ -190,12 +189,6 @@ class ProjectForm
                                     ->dehydrated()
                                     ->required()
                                     ->default(0),
-                            ]),
-
-                        Tab::make('History')
-                            ->icon(Heroicon::Clock)
-                            ->schema([
-                                Livewire::make(ProjectHistory::class),
                             ]),
 
                         Tab::make('Revisions')

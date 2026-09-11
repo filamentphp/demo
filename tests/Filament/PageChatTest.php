@@ -3,9 +3,11 @@
 use App\Events\PageChatChanged;
 use App\Livewire\PageChat;
 use App\Models\HR\Project;
+use App\Models\HR\ProjectActivity;
 use App\Models\PageMessage;
 use App\Models\PageMessageRead;
 use App\Models\User;
+use Filament\Forms\Components\RichEditor\RichContentRenderer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Event;
 use Livewire\Livewire;
@@ -391,4 +393,51 @@ it('formats Agent paragraphs and lists without rendering unsafe HTML or links', 
 
     expect($message->contentHtml())->toContain('<strong>Summary</strong>', '<ul>', '<li>First item</li>')
         ->not->toContain('<script>', 'href="javascript:');
+});
+
+it('filters project activity without hiding resolved history or reading unseen discussions', function (): void {
+    $project = Project::factory()->create(['name' => 'Before']);
+    $project->update(['name' => 'After']);
+    $activity = $project->activities()->latest('id')->firstOrFail();
+    $other = User::factory()->create();
+    $path = '/projects/' . $project->id;
+    $message = pageMessage($path, $other, '<p>Unread discussion</p>');
+    $resolved = pageMessage($path, $other, '', attributes: ['activity_id' => $activity->id, 'resolved_at' => now()]);
+
+    $chat = Livewire::test(PageChat::class, ['page' => $path])
+        ->set('body', '<p>Unsent draft</p>')
+        ->call('filterFeed', 'changes')->set('isOpen', true)
+        ->assertViewHas('entries', fn ($entries): bool => $entries->count() === 2 && $entries->every(fn ($entry): bool => $entry instanceof ProjectActivity))
+        ->assertDontSee('Unread discussion');
+    expect(PageMessageRead::query()->where('user_id', auth()->id())->count())->toBe(0);
+
+    $chat->call('filterFeed', 'all')
+        ->assertViewHas('entries', fn ($entries): bool => $entries->contains(fn ($entry): bool => $entry instanceof ProjectActivity && $entry->id === $activity->id))
+        ->call('filterFeed', 'discussion')
+        ->assertViewHas('entries', fn ($entries): bool => $entries->count() === 1 && $entries->first()->id === $message->id)
+        ->set('showResolved', true)
+        ->assertViewHas('entries', fn ($entries): bool => $entries->count() === 2 && $entries->contains('id', $resolved->id))
+        ->assertSet('body', fn ($body): bool => RichContentRenderer::make($body)->toHtml() === '<p>Unsent draft</p>');
+    expect(PageMessageRead::query()->where('user_id', auth()->id())->where('page_message_id', $message->id)->exists())->toBeTrue();
+
+    Livewire::test(PageChat::class, ['page' => '/orders'])->assertSee('Page chat')->assertDontSee('Activity filters')
+        ->call('filterFeed', 'changes')->assertNotFound();
+});
+
+it('restores from Activity with the same stale value guard as History', function (): void {
+    $project = Project::factory()->create(['name' => 'Original']);
+    $project->update(['name' => 'Updated']);
+    $activity = $project->activities()->latest('id')->firstOrFail();
+    $chat = Livewire::test(PageChat::class, ['page' => '/projects/' . $project->id])
+        ->call('filterFeed', 'changes')->assertSee('Restore')
+        ->mountAction('restoreField', ['activity' => $activity->id, 'field' => 'name']);
+    $project->update(['name' => 'Newer value']);
+    $chat->callMountedAction()->assertNotified('Could not restore value');
+    expect($project->fresh()->name)->toBe('Newer value');
+
+    $latest = $project->activities()->latest('id')->firstOrFail();
+    Livewire::test(PageChat::class, ['page' => '/projects/' . $project->id])
+        ->callAction('restoreField', arguments: ['activity' => $latest->id, 'field' => 'name'])
+        ->assertNotified('Project value restored');
+    expect($project->fresh()->name)->toBe('Updated');
 });

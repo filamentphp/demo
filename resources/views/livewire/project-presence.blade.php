@@ -1,5 +1,5 @@
 <div
-    aria-label="People viewing this project"
+    aria-label="Project owner and viewers"
     x-on:project-focus-field.window="
         const link = [...document.querySelectorAll('[data-project-field-link]')].find(el => el.dataset.projectFieldLink === $event.detail.field)
         if (link) {
@@ -22,7 +22,7 @@
         onlineHandler: null,
         offlineHandler: null,
         people() {
-            return Object.values(this.members).sort((first, second) => first.name.localeCompare(second.name))
+            return Object.values(this.members).filter(person => person.id !== this.userId).sort((first, second) => first.name.localeCompare(second.name))
         },
         memberId(member) {
             return String(member.id)
@@ -120,13 +120,18 @@
     }"
     class="flex min-h-9 flex-wrap items-center gap-2"
 >
+    <div class="me-auto flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+        <span class="text-gray-500 dark:text-gray-400">Owner <span class="ms-1 font-medium text-gray-700 dark:text-gray-200">{{ $owner?->name ?? 'Unassigned' }}</span></span>
+        {{ $this->assignOwnerAction }}
+    </div>
     <template x-for="person in people()" :key="person.id">
         <span class="inline-flex max-w-full items-center gap-1.5 rounded-full bg-gray-100 px-2.5 py-1 text-xs text-gray-700 dark:bg-white/5 dark:text-gray-300">
             <span class="size-1.5 shrink-0 rounded-full bg-success-500" aria-hidden="true"></span>
-            <span class="truncate font-medium" x-text="person.id === userId ? `${person.name} (you)` : person.name"></span>
+            <span class="truncate font-medium" x-text="person.name"></span>
             <span x-show="focusFor(person.id)" class="truncate text-gray-500 dark:text-gray-400" x-text="`· ${focusFor(person.id)}`"></span>
         </span>
     </template>
 
     <span x-show="status !== 'connected'" x-text="status === 'offline' ? 'Offline' : (status === 'reconnecting' ? 'Reconnecting…' : 'Connecting…')" class="text-xs text-gray-400" role="status"></span>
+    <x-filament-actions::modals />
 </div>

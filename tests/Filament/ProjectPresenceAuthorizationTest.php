@@ -48,7 +48,7 @@ it('protects the presence component and scopes it to an existing project', funct
     $project = createProjectForPresenceTest();
 
     Livewire::test(ProjectPresence::class, ['record' => $project])
-        ->assertSee('People viewing this project');
+        ->assertSee('Project owner and viewers');
 
     $project->delete();
 

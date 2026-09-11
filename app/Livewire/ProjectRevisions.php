@@ -26,9 +26,7 @@ use Filament\Schemas\Concerns\InteractsWithSchemas;
 use Filament\Schemas\Contracts\HasSchemas;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Context;
 use Illuminate\Support\HtmlString;
-use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
@@ -46,9 +44,6 @@ class ProjectRevisions extends Component implements HasActions, HasSchemas
 
     #[Locked]
     public ?int $mountedRevisionVersion = null;
-
-    #[Locked]
-    public ?int $mountedOwnerId = null;
 
     /** @var array<string, mixed> */
     #[Locked]
@@ -102,36 +97,6 @@ class ProjectRevisions extends Component implements HasActions, HasSchemas
             });
     }
 
-    public function assignOwnerAction(): Action
-    {
-        return $this->revisionAction('assignOwner')->label('Change owner')->icon('heroicon-m-user-circle')->color('gray')
-            ->modalHeading('Who owns this project?')
-            ->modalDescription('The project owner is accountable for delivery. Each revision has its own reviewer and next step.')
-            ->schema([Select::make('owner_id')->label('Project owner')->options(fn (): array => $this->participants())->searchable()->preload()->placeholder('Unassigned')])
-            ->mountUsing(function (?Schema $schema): void {
-                $this->mountedOwnerId = $this->project()->owner_id;
-                $schema?->fill(['owner_id' => $this->mountedOwnerId]);
-            })
-            ->action(function (array $data): void {
-                $project = $this->project();
-                $project->getConnection()->transaction(function () use ($project, $data): void {
-                    $project = Project::query()->whereKey($project->id)->lockForUpdate()->firstOrFail();
-                    if ($project->owner_id !== $this->mountedOwnerId) {
-                        throw ValidationException::withMessages(['owner_id' => 'The owner changed. Reopen this action before assigning someone.']);
-                    }
-                    $owner = filled($data['owner_id'] ?? null) ? User::query()->whereKey($data['owner_id'])->firstOrFail() : null;
-                    if ($owner && ! ProjectRevision::canParticipate($project, $owner)) {
-                        throw ValidationException::withMessages(['owner_id' => 'Choose someone who can view and edit this project.']);
-                    }
-                    Context::scope(fn () => $project->update(['owner_id' => $owner?->id]), hidden: [
-                        'project_history_actor' => $this->revisionActor, 'project_history_interface' => 'panel',
-                        'project_history_reason' => 'ownership_assigned', 'project_history_source' => 'ownership',
-                    ]);
-                });
-                Notification::make()->success()->title('Project owner updated')->send();
-            });
-    }
-
     public function requestReviewAction(): Action
     {
         return $this->reviewAction('requestReview', 'Request review', 'gray')->icon('heroicon-m-user-plus')
@@ -162,7 +127,7 @@ class ProjectRevisions extends Component implements HasActions, HasSchemas
         return $this->revisionAction('revise')
             ->label(fn (array $arguments): string => $this->revision($arguments)->status === 'changes_requested' ? 'Edit & resubmit' : 'Edit proposal')
             ->icon('heroicon-m-pencil-square')
-            ->color('gray')
+            ->color('primary')
             ->schema($this->revisionForm())
             ->mountUsing(function (array $arguments, ?Schema $schema): void {
                 $revision = $this->revision($arguments);
@@ -438,6 +403,46 @@ class ProjectRevisions extends Component implements HasActions, HasSchemas
         };
     }
 
+    public function proposalTitle(ProjectRevision $revision): string
+    {
+        if (filled($revision->proposed_tasks)) {
+            return 'Project proposal';
+        }
+
+        return match (array_keys($revision->proposed_values)) {
+            ['end_date'] => 'Delivery-date proposal',
+            ['budget'] => 'Budget proposal',
+            ['name'] => 'Project-name proposal',
+            ['description'] => 'Description proposal',
+            default => 'Project proposal',
+        };
+    }
+
+    public function decisionStatus(ProjectRevision $revision, bool $hasConflicts): string
+    {
+        if (! in_array($revision->status, ['pending', 'changes_requested'], true)) {
+            return str($revision->status)->replace('_', ' ')->title()->toString();
+        }
+
+        $isAuthor = $this->revisionActor->id === $revision->author_id;
+
+        if ($hasConflicts) {
+            return $isAuthor ? 'Resolve conflicts before review' : 'Awaiting ' . $revision->author->name . '’s conflict resolution';
+        }
+
+        if ($revision->status === 'changes_requested') {
+            return $isAuthor ? 'Changes requested · Edit & resubmit' : 'Awaiting ' . $revision->author->name . '’s resubmission';
+        }
+
+        if (! $revision->requestedReviewer) {
+            return $isAuthor ? 'Choose a reviewer' : 'Awaiting a reviewer';
+        }
+
+        return $this->revisionActor->id === $revision->requested_reviewer_id
+            ? 'Awaiting your review'
+            : 'Awaiting ' . $revision->requestedReviewer->name . '’s review';
+    }
+
     public function render(): View
     {
         if ($this->record !== null) {
@@ -447,6 +452,6 @@ class ProjectRevisions extends Component implements HasActions, HasSchemas
         $revisions = $this->record === null ? collect() : ProjectRevision::query()
             ->where('project_id', $this->record->getKey())->with(['author', 'reviewer', 'requestedReviewer'])->latest('id')->get();
 
-        return view('livewire.project-revisions', ['revisions' => $revisions, 'projectOwner' => $this->record?->fresh()?->owner]);
+        return view('livewire.project-revisions', ['revisions' => $revisions]);
     }
 }

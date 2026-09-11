@@ -4,11 +4,9 @@ namespace App\Filament\Resources\HR\Projects\Schemas;
 
 use App\Filament\DemoIconAlias;
 use App\Filament\Resources\HR\Projects\Actions\DiscussProjectField;
-use App\Livewire\ProjectHistory;
 use App\Livewire\ProjectPresence;
 use App\Livewire\ProjectRevisions;
 use App\Models\HR\Project;
-use Filament\Infolists\Components\ColorEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Livewire;
 use Filament\Schemas\Components\Tabs;
@@ -33,21 +31,14 @@ class ProjectInfolist
                             ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_PROJECTS_INFOLIST_TABS_OVERVIEW) ?? Heroicon::InformationCircle)
                             ->columns(2)
                             ->schema([
-                                TextEntry::make('name'),
-                                TextEntry::make('slug')
-                                    ->copyable(),
+                                TextEntry::make('name')->visible($preview),
                                 TextEntry::make('department.name')
                                     ->label('Department')
                                     ->placeholder('No department'),
-                                TextEntry::make('owner.name')
-                                    ->label('Project owner')
-                                    ->placeholder('Unassigned'),
                                 TextEntry::make('status')
                                     ->badge(),
                                 TextEntry::make('priority')
                                     ->badge(),
-                                ColorEntry::make('color')
-                                    ->placeholder('No color'),
                                 TextEntry::make('start_date')
                                     ->date(),
                                 TextEntry::make('end_date')
@@ -82,13 +73,6 @@ class ProjectInfolist
                                     ->numeric()
                                     ->suffix(' hours')
                                     ->placeholder('0'),
-                            ]),
-
-                        Tab::make('History')
-                            ->visible(! $preview)
-                            ->icon(Heroicon::Clock)
-                            ->schema([
-                                Livewire::make(ProjectHistory::class),
                             ]),
 
                         Tab::make('Revisions')

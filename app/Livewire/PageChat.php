@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Events\PageChatChanged;
+use App\Livewire\Concerns\InteractsWithProjectHistory;
 use App\Models\HR\Project;
 use App\Models\HR\ProjectActivity;
 use App\Models\PageMessage;
@@ -35,6 +36,7 @@ use Livewire\Component;
 class PageChat extends Component implements HasActions, HasSchemas
 {
     use InteractsWithActions;
+    use InteractsWithProjectHistory;
     use InteractsWithSchemas;
 
     protected User $chatUser;
@@ -47,6 +49,9 @@ class PageChat extends Component implements HasActions, HasSchemas
     public array $unreadIds = [];
 
     public bool $showResolved = false;
+
+    #[Locked]
+    public string $feedFilter = 'all';
 
     #[Locked]
     public string $room;
@@ -93,7 +98,7 @@ class PageChat extends Component implements HasActions, HasSchemas
     protected function editor(string $field): RichEditor
     {
         return RichEditor::make($field)->hiddenLabel()->required()->maxLength(16000)
-            ->minHeight('4.5rem')->maxHeight('12rem')
+            ->minHeight($this->projectId ? '3rem' : '4.5rem')->maxHeight('12rem')
             ->placeholder('Write a message… Type @ to mention')
             ->toolbarButtons([['bold', 'italic', 'link', 'bulletList', 'orderedList']])
             ->mentions([PageMessage::mentionProvider()]);
@@ -389,6 +394,25 @@ class PageChat extends Component implements HasActions, HasSchemas
         $this->markVisibleRead();
     }
 
+    public function filterFeed(string $filter): void
+    {
+        abort_unless($this->projectId && in_array($filter, ['all', 'discussion', 'changes'], true), 404);
+        $this->feedFilter = $filter;
+        $this->limit = 30;
+        $this->markVisibleRead();
+        $this->dispatch('page-chat-scroll', room: $this->room, force: true);
+    }
+
+    protected function historyProject(): ?Project
+    {
+        return $this->projectId ? Project::query()->findOrFail($this->projectId) : null;
+    }
+
+    protected function historyActor(): User
+    {
+        return $this->chatUser;
+    }
+
     protected function markVisibleRead(): void
     {
         if (! $this->isOpen) {
@@ -422,12 +446,14 @@ class PageChat extends Component implements HasActions, HasSchemas
     /** @return Collection<int, PageMessage|ProjectActivity> */
     protected function feedEntries(): Collection
     {
-        $messages = $this->visibleMessageQuery()->with(['user', 'activity'])->withCount([
-            'replies', 'replies as unread_replies_count' => fn ($query) => $query->unreadFor($this->chatUser->id),
-        ])->latest('created_at')->latest('id')->limit($this->limit + 1)->get();
-        $activities = $this->projectId && ! $this->threadId
+        $messages = $this->visibleMessageQuery()
+            ->when($this->projectId && ! $this->threadId && $this->feedFilter === 'changes', fn (Builder $query) => $query->whereKey([]))
+            ->with(['user', 'activity'])->withCount([
+                'replies', 'replies as unread_replies_count' => fn ($query) => $query->unreadFor($this->chatUser->id),
+            ])->latest('created_at')->latest('id')->limit($this->limit + 1)->get();
+        $activities = $this->projectId && ! $this->threadId && $this->feedFilter !== 'discussion'
             ? ProjectActivity::query()->where('project_id', $this->projectId)
-                ->whereNotIn('id', $this->messageQuery()->whereNotNull('activity_id')->select('activity_id'))
+                ->when($this->feedFilter === 'all', fn (Builder $query) => $query->whereNotIn('id', $this->visibleMessageQuery()->whereNotNull('activity_id')->select('activity_id')))
                 ->latest('id')->limit($this->limit + 1)->get()
             : collect();
 

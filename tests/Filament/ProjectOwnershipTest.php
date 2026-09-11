@@ -1,6 +1,7 @@
 <?php
 
 use App\Filament\Resources\HR\Projects\Pages\ProjectAttention;
+use App\Livewire\ProjectPresence;
 use App\Livewire\ProjectRevisions;
 use App\Models\HR\Project;
 use App\Models\HR\ProjectRevision;
@@ -75,12 +76,12 @@ it('assigns project ownership independently and refuses a stale assignment modal
     $owner = User::factory()->create(['name' => 'Maya']);
     $other = User::factory()->create(['name' => 'Leo']);
     $project = Project::factory()->create(['owner_id' => null]);
-    $page = Livewire::test(ProjectRevisions::class, ['record' => $project])
+    $page = Livewire::test(ProjectPresence::class, ['record' => $project])
         ->mountAction('assignOwner')->fillForm(['owner_id' => $owner->id]);
     $project->update(['owner_id' => $other->id]);
     $page->callMountedAction()->assertHasErrors(['owner_id']);
     expect($project->fresh()->owner_id)->toBe($other->id);
-    Livewire::test(ProjectRevisions::class, ['record' => $project])
+    Livewire::test(ProjectPresence::class, ['record' => $project])
         ->mountAction('assignOwner')->fillForm(['owner_id' => $owner->id])->callMountedAction()->assertHasNoErrors()->assertSee('Maya');
     $activity = $project->activities()->latest('id')->first();
     expect($project->fresh()->owner_id)->toBe($owner->id)

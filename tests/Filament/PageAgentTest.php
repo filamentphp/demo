@@ -70,11 +70,12 @@ it('keeps pending replies unread until the answer actually arrives', function ()
 });
 
 it('reads infolist state and project history without exposing another projects history', function (): void {
-    $project = Project::factory()->create(['name' => 'Original']);
+    $project = Project::factory()->create(['name' => 'Original', 'status' => ProjectStatus::OnHold]);
     $project->update(['name' => 'Reviewed']);
     $other = Project::factory()->create(['name' => 'Private other project']);
     $page = new PageInteraction(Livewire::test(ViewProject::class, ['record' => $project->id])->instance(), new PageMessage);
-    expect($page->inspect()['record']['name'])->toBe('Reviewed')
+    expect($page->inspect()['saved_project']['name'])->toBe('Reviewed')
+        ->and($page->inspect()['record']['status'])->toBe('on_hold')
         ->and(json_encode($page->history()))->toContain('Original', 'Reviewed')->not->toContain('Private other project');
 });
 

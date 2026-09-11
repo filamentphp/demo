@@ -1,5 +1,6 @@
 <div x-data="{
     open: $wire.entangle('isOpen').live,
+    narrow: window.innerWidth < 1280,
     streamListener: null,
     following: true,
     hasNewMessages: false,
@@ -15,18 +16,23 @@
     init() {
         this.streamListener = (event) => window.dispatchEvent(new CustomEvent('page-agent-stream', { detail: event }))
         window.Echo.private(@js('page-chat.' . $room)).listen('PageAgentStreamed', this.streamListener)
-        this.$watch('open', (value) => { if (value) this.jumpToLatest() })
+        this.$watch('open', (value) => {
+            if (@js((bool) $projectId)) document.body.classList.toggle('project-activity-open', value)
+            if (value) this.jumpToLatest()
+        })
+        if (@js((bool) $projectId)) document.body.classList.toggle('project-activity-open', this.open)
         if (this.open) this.jumpToLatest()
     },
     destroy() {
+        if (@js((bool) $projectId)) document.body.classList.remove('project-activity-open')
         window.Echo.private(@js('page-chat.' . $room)).stopListening('PageAgentStreamed', this.streamListener)
     },
-}" x-on:keydown.escape.window="open = false">
+}" x-on:resize.window="narrow = window.innerWidth < 1280" x-on:keydown.escape.window="if (! $wire.mountedActions.length) open = false">
     <div x-show="! open" class="fixed end-6 bottom-6 z-40">
-        <x-filament::button icon="heroicon-o-chat-bubble-left-right" x-on:click="open = true" aria-label="Open page chat">Page chat @if ($unreadCount)<span class="ms-2 rounded-full bg-white/20 px-2 text-xs">{{ $unreadCount }}</span>@endif</x-filament::button>
+        <x-filament::button icon="heroicon-o-chat-bubble-left-right" x-on:click="open = true" :aria-label="$projectId ? 'Open discussion' : 'Open page chat'">{{ $projectId ? 'Discussion' : 'Page chat' }} @if ($unreadCount)<span class="ms-2 rounded-full bg-white/20 px-2 text-xs">{{ $unreadCount }}</span>@endif</x-filament::button>
     </div>
 
-    <aside x-cloak x-show="open" x-transition.opacity aria-label="Page chat" class="fixed inset-y-0 end-0 z-40 flex w-full max-w-md flex-col border-s border-gray-200 bg-white shadow-xl dark:border-white/10 dark:bg-gray-900">
+    <aside x-cloak x-show="open" x-transition.opacity x-trap.noscroll="open && narrow && @js((bool) $projectId) && ! $wire.mountedActions.length" aria-label="{{ $projectId ? 'Activity' : 'Page chat' }}" @class(['project-activity-panel' => $projectId, 'fixed inset-y-0 end-0 z-40 flex w-full flex-col border-s border-gray-200 bg-white shadow-xl dark:border-white/10 dark:bg-gray-900', 'max-w-md' => ! $projectId])>
         <header class="flex shrink-0 items-center gap-3 px-5 pt-5 pb-3">
             @if ($thread)
                 <x-filament::icon-button wire:click="openThread" icon="heroicon-m-arrow-left" color="gray" label="All conversations and activity" />
@@ -35,7 +41,7 @@
             @endif
             <div class="min-w-0 flex-1">
                 <h2 class="truncate text-sm font-semibold text-gray-950 dark:text-white" title="{{ $pageLabel }}">{{ $pageLabel }}</h2>
-                <p class="mt-0.5 text-xs text-gray-500 dark:text-gray-400">{{ $thread ? 'Conversation' : 'Conversations & activity' }}</p>
+                <p class="mt-0.5 text-xs text-gray-500 dark:text-gray-400">{{ $thread ? 'Conversation' : ($projectId ? 'Activity' : 'Conversations & activity') }}</p>
             </div>
             @if ($projectId && ! $thread)
                 <x-filament::icon-button wire:click="catchUpProject" icon="heroicon-m-sparkles" color="gray" label="Catch me up" wire:loading.attr="disabled" />
@@ -65,6 +71,20 @@
                 @endif
                 @if ($thread->resolved_at)<span class="text-xs font-medium text-success-600 dark:text-success-400">Resolved</span>@endif
             </div>
+        @elseif ($projectId)
+            <nav aria-label="Activity filters" class="flex shrink-0 gap-1 border-b border-gray-100 px-5 pb-3 dark:border-white/5">
+                @foreach (['all' => 'All', 'discussion' => 'Discussion', 'changes' => 'Changes'] as $filter => $label)
+                    <button type="button" wire:click="filterFeed('{{ $filter }}')" aria-pressed="{{ $feedFilter === $filter ? 'true' : 'false' }}" @class(['rounded-lg px-3 py-2 text-xs font-medium transition', 'bg-gray-100 text-gray-950 dark:bg-white/10 dark:text-white' => $feedFilter === $filter, 'text-gray-500 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-white/5' => $feedFilter !== $filter])>{{ $label }}</button>
+                @endforeach
+                @if ($feedFilter !== 'changes')
+                    <x-filament::dropdown placement="bottom-end">
+                        <x-slot name="trigger"><x-filament::icon-button icon="heroicon-m-adjustments-horizontal" color="gray" label="Activity options" /></x-slot>
+                        <x-filament::dropdown.list>
+                            <label class="flex items-center gap-2 px-3 py-2 text-xs text-gray-500"><input type="checkbox" wire:model.live="showResolved" class="rounded border-gray-300 text-primary-600" /> Include resolved conversations</label>
+                        </x-filament::dropdown.list>
+                    </x-filament::dropdown>
+                @endif
+            </nav>
         @else
             <label class="flex items-center gap-2 border-b border-gray-100 px-5 py-3 text-xs text-gray-500 dark:border-white/5 dark:text-gray-400"><input type="checkbox" wire:model.live="showResolved" class="rounded border-gray-300 text-primary-600" /> Include resolved conversations</label>
         @endif
@@ -91,7 +111,6 @@
                 @if ($entry instanceof \App\Models\HR\ProjectActivity)
                     <div wire:key="activity-entry-{{ $entry->id }}">
                         @include('filament.chat.activity', ['activity' => $entry])
-                        <button type="button" wire:click="replyToActivity({{ $entry->id }})" class="mt-2 text-xs font-medium text-primary-600 dark:text-primary-400">Discuss this change</button>
                     </div>
                 @else
                     @php
@@ -115,7 +134,7 @@
         @if ($thread?->resolved_at)
             <div class="border-t border-gray-200 bg-success-50 px-5 py-5 text-sm text-success-700 dark:border-white/10 dark:bg-success-400/10 dark:text-success-300">This conversation is resolved. Reopen it to continue the discussion.</div>
         @else
-        <form wire:submit="send" x-on:keydown="if ($event.key === 'Enter' && ($event.metaKey || $event.ctrlKey) && ! $event.isComposing) { $event.preventDefault(); $event.stopPropagation(); $el.requestSubmit() }" class="page-chat-composer shrink-0 border-t border-gray-100 p-4 dark:border-white/10">
+        <form wire:submit="send" x-show="! @js((bool) $projectId) || $wire.threadId || $wire.feedFilter !== 'changes'" x-on:keydown="if ($event.key === 'Enter' && ($event.metaKey || $event.ctrlKey) && ! $event.isComposing) { $event.preventDefault(); $event.stopPropagation(); $el.requestSubmit() }" @class(['project-chat-composer' => $projectId, 'page-chat-composer shrink-0 border-t border-gray-100 p-4 dark:border-white/10'])>
             @if ($projectField)<p class="mb-2 text-xs font-medium text-primary-600 dark:text-primary-400">Discussing {{ str($projectField)->replace('_', ' ') }}</p>@endif
             {{ $this->form }}
             <div class="mt-3 flex items-center justify-between gap-3">

@@ -120,8 +120,8 @@ it('renders isolated newest-first history with escaped values and older activity
         ->assertSee('&lt;script&gt;alert(1)&lt;/script&gt;', escape: false)
         ->assertDontSee('<script>alert(1)</script>', escape: false);
 
-    Livewire::test(EditProject::class, ['record' => $project->id])->assertSee('History');
-    Livewire::test(ViewProject::class, ['record' => $project->id])->assertSee('History');
+    Livewire::test(EditProject::class, ['record' => $project->id])->assertDontSee('History');
+    Livewire::test(ViewProject::class, ['record' => $project->id])->assertDontSee('History');
 });
 
 it('records each explicit description save separately', function (): void {

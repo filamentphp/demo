@@ -32,6 +32,29 @@
     overflow-y: auto;
 }
 
+.project-chat-composer:not(:focus-within) .fi-fo-rich-editor-toolbar {
+    display: none;
+}
+
+.project-chat-composer .tiptap {
+    min-height: 1.5rem;
+}
+
+.project-activity-panel {
+    width: 100%;
+}
+
+@media (min-width: 80rem) {
+    .project-activity-open .fi-main-ctn {
+        margin-inline-end: 28rem;
+    }
+
+    .project-activity-panel {
+        width: 28rem;
+        box-shadow: none;
+    }
+}
+
 .page-chat-message .fi-prose {
     & p, & ul, & ol { margin-block: 0.5rem; }
     & > :first-child { margin-top: 0; }
