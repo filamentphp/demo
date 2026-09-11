@@ -87,7 +87,7 @@ Here are some specific things to poke at if you're learning Filament:
 
 ## Trying the Inertia page proof of concept
 
-Open **Inertia Vue**, **Inertia React**, or **Inertia Svelte** in the sidebar. This is an experiment, not a supported Filament API. The three-framework revision is under integration testing; the observations below describe the earlier Vue prototype unless stated otherwise.
+Open **Inertia Vue**, **Inertia React**, or **Inertia Svelte** in the sidebar. This is an experiment, not a supported Filament API. All three frameworks passed the Chromium browser suite in light and dark modes with SSR and SPA independently enabled and disabled. These checks cover post-hydration interactions, not the pre-hydration input-loss limitation documented below. The historical observations section describes the earlier Vue prototype unless stated otherwise.
 
 The demo links `@inertiajs/core`, `@inertiajs/vue3`, `@inertiajs/react`, and `@inertiajs/svelte` from the adjacent `../inertia` checkout (based on v3.7.0). These packages add an opt-in `externalNavigation` option to `createInertiaApp()`. The Laravel adapter is unchanged.
 
