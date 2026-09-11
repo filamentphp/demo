@@ -82,7 +82,9 @@ it('uses external navigation for report sections and preserves only shell-local 
         ->assertSeeIn('#mounted-section', 'activity')
         ->assertSeeIn('#content-section', 'activity')
         ->assertValue('#report-notes', 'Follow up with the customer success team.')
-        ->assertScript('document === window.workbenchDocumentSentinel', $spaEnabled);
+        ->assertScript('document === window.workbenchDocumentSentinel', $spaEnabled)
+        ->assertSeeIn('#deferred-analytics', '137')
+        ->assertSeeIn('#deferred-permissions', 'review, publish');
 
     if ($spaEnabled) {
         $browser->assertScript('history.state !== null && Object.hasOwn(history.state, "alpine") && !Object.hasOwn(history.state, "page")');
@@ -144,13 +146,18 @@ it('exercises props, forms, remembered state, and navigation round trips', funct
         ->assertNotPresent('#draft-error')
         ->assertSeeIn('#draft-status', 'Ready')
         ->assertSeeIn('#mounted-section', 'activity')
-        ->assertSeeIn('#content-section', 'activity');
+        ->assertSeeIn('#content-section', 'activity')
+        ->assertSeeIn('#deferred-analytics', '137')
+        ->assertSeeIn('#deferred-permissions', 'review, publish');
 
     expect($browser->script('document.querySelector("#catalog-token").textContent.trim()'))->not->toBe($catalogToken);
 
     $browser->fill('#draft-title', 'Unsaved remembered text');
     $browser->page()->locator("a[href$=\"{$path}?section=overview\"]")->click(['noWaitAfter' => true]);
-    $browser->assertSee('Quarterly overview')->back()->assertSee('Recent activity')->assertValue('#draft-title', 'Unsaved remembered text');
+    $browser->assertSee('Quarterly overview')->back()->assertSee('Recent activity')
+        ->assertSeeIn('#deferred-analytics', '137')
+        ->assertSeeIn('#deferred-permissions', 'review, publish')
+        ->assertValue('#draft-title', 'Unsaved remembered text');
 
     $browser->fill('#component-title', 'No');
     $browser->page()->locator('#save-component')->click(['noWaitAfter' => true]);

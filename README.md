@@ -99,6 +99,8 @@ Build the local core and adapters before `npm run build:ssr` in this demo. The S
 
 The demo eagerly loads database notifications using `databaseNotifications(isLazy: false)`. With Livewire 3.8.8, a delayed notifications `__lazyLoad` response can try to morph a detached component after SPA navigation. This was reproduced on ordinary Filament pages without loading Inertia. Eager loading avoids that unrelated race in this prototype while keeping notifications enabled; it is not a fix to Livewire's handling of detached responses.
 
+SSR visibility does not mean controls are interactive. In a delayed-renderer test, Vue and React overwrote text entered into the server-rendered notes field before hydration; Svelte retained it. This prototype does not preserve pre-hydration edits or disable those controls while loading. Functional browser tests wait for deferred props after navigation to establish that hydration has completed; those passing tests do not guarantee safe pre-hydration interaction.
+
 ### Earlier Vue-only prototype observations
 
 `InertiaWorkbench` remains a regular `Filament\Pages\Page`. On the initial document load, Livewire mounts the page, checks page access, renders Blade and renders the panel layout. The page's Blade content embeds an actual Inertia root view, produced by `Inertia::render()->rootView()->toResponse()`. Vue owns only the element inside `wire:ignore` and `x-ignore`.
