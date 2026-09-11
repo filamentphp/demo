@@ -97,6 +97,8 @@ The Alpine wrapper mounts a framework app inside `wire:ignore` and disposes it b
 
 Build the local core and adapters before `npm run build:ssr` in this demo. The SSR entry dispatches to Vue, React, or Svelte based on the page component. The routes are `/inertia-workbench`, `/react-inertia-workbench`, and `/svelte-inertia-workbench`.
 
+The demo eagerly loads database notifications using `databaseNotifications(isLazy: false)`. With Livewire 3.8.8, a delayed notifications `__lazyLoad` response can try to morph a detached component after SPA navigation. This was reproduced on ordinary Filament pages without loading Inertia. Eager loading avoids that unrelated race in this prototype while keeping notifications enabled; it is not a fix to Livewire's handling of detached responses.
+
 ### Earlier Vue-only prototype observations
 
 `InertiaWorkbench` remains a regular `Filament\Pages\Page`. On the initial document load, Livewire mounts the page, checks page access, renders Blade and renders the panel layout. The page's Blade content embeds an actual Inertia root view, produced by `Inertia::render()->rootView()->toResponse()`. Vue owns only the element inside `wire:ignore` and `x-ignore`.

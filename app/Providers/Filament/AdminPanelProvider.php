@@ -39,7 +39,7 @@ class AdminPanelProvider extends PanelProvider
                 'Projects',
                 'Blog',
             ])
-            ->databaseNotifications()
+            ->databaseNotifications(isLazy: false)
             ->globalSearchKeyBindings(['command+k', 'ctrl+k'])
             ->globalSearchFieldKeyBindingSuffix()
             ->middleware([
