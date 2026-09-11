@@ -1,8 +1,8 @@
-<x-filament-panels::page>
-    @php
-        $vite = app(\Illuminate\Foundation\Vite::class)->createAssetPathsUsing(static fn (string $path): string => "/{$path}");
-    @endphp
+@php
+    $vite = app(\Illuminate\Foundation\Vite::class)->createAssetPathsUsing(static fn (string $path): string => "/{$path}");
+@endphp
 
+<x-filament-panels::page>
     @push('styles')
         {{ $vite('resources/css/inertia-workbench.css') }}
     @endpush
