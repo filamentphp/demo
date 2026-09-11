@@ -1,0 +1,1283 @@
+diff --git a/packages/core/src/eventHandler.ts b/packages/core/src/eventHandler.ts
+index 75a543b..3c8712e 100644
+--- a/packages/core/src/eventHandler.ts
++++ b/packages/core/src/eventHandler.ts
+@@ -14,16 +14,27 @@ class EventHandler {
+     listener: (...args: any[]) => void
+   }[] = []
+ 
+-  public init() {
++  public init(external = false): VoidFunction {
++    if (external) return () => {}
++    const controller = new AbortController()
++    const popstate = this.handlePopstateEvent.bind(this)
++    const pageshow = this.handlePageshowEvent.bind(this)
++    const windowScroll = debounce(() => {
++      if (!controller.signal.aborted) Scroll.onWindowScroll()
++    }, 100)
++    const documentScroll = debounce((event: Event) => {
++      if (!controller.signal.aborted) Scroll.onScroll(event)
++    }, 100)
+     if (typeof window !== 'undefined') {
+-      window.addEventListener('popstate', this.handlePopstateEvent.bind(this))
+-      window.addEventListener('pageshow', this.handlePageshowEvent.bind(this))
+-      window.addEventListener('scroll', debounce(Scroll.onWindowScroll.bind(Scroll), 100), true)
++      window.addEventListener('popstate', popstate, { signal: controller.signal })
++      window.addEventListener('pageshow', pageshow, { signal: controller.signal })
++      window.addEventListener('scroll', windowScroll, { capture: true, signal: controller.signal })
+     }
+ 
+     if (typeof document !== 'undefined') {
+-      document.addEventListener('scroll', debounce(Scroll.onScroll.bind(Scroll), 100), true)
++      document.addEventListener('scroll', documentScroll, { capture: true, signal: controller.signal })
+     }
++    return () => controller.abort()
+   }
+ 
+   public onGlobalEvent<TEventName extends GlobalEventNames>(
+diff --git a/packages/core/src/history.ts b/packages/core/src/history.ts
+index 9e311b4..f9e7c59 100644
+--- a/packages/core/src/history.ts
++++ b/packages/core/src/history.ts
+@@ -2,6 +2,7 @@ import { cloneDeep, isEqual } from 'es-toolkit'
+ import { decryptHistory, encryptHistory, historySessionStorageKeys } from './encryption'
+ import { eventHandler } from './eventHandler'
+ import { page as currentPage } from './page'
++import { navigation } from './navigation'
+ import Queue from './queue'
+ import { SessionStorage } from './sessionStorage'
+ import { Page, ScrollRegion } from './types'
+@@ -18,7 +19,17 @@ class History {
+   // We need initialState for `restore`
+   protected initialState: Partial<Page> | null = null
+ 
++  public reset(): void {
++    this.current = {}
++    this.initialState = null
++    this.preserveUrl = false
++  }
++
+   public remember(data: unknown, key: string): void {
++    if (navigation.external?.remember) {
++      navigation.external.remember(data, key)
++      return
++    }
+     this.replaceState({
+       ...currentPage.getWithoutFlashData(),
+       rememberedState: {
+@@ -29,6 +40,7 @@ class History {
+   }
+ 
+   public restore(key: string): unknown {
++    if (navigation.external?.restore) return navigation.external.restore(key)
+     if (!isServer) {
+       return this.current[this.rememberedState]?.[key] !== undefined
+         ? this.current[this.rememberedState]?.[key]
+@@ -37,6 +49,11 @@ class History {
+   }
+ 
+   public pushState(page: Page, cb: (() => void) | null = null): void {
++    if (navigation.external) {
++      this.current = page
++      cb?.()
++      return
++    }
+     if (isServer) {
+       return
+     }
+@@ -174,6 +191,11 @@ class History {
+     const { flash, ...pageWithoutFlash } = page
+     currentPage.merge(pageWithoutFlash)
+ 
++    if (navigation.external) {
++      this.current = page
++      cb?.()
++      return
++    }
+     if (isServer) {
+       return
+     }
+@@ -292,6 +314,7 @@ class History {
+   }
+ 
+   public clear() {
++    if (navigation.external) return
+     SessionStorage.remove(historySessionStorageKeys.key)
+     SessionStorage.remove(historySessionStorageKeys.iv)
+   }
+@@ -309,8 +332,4 @@ class History {
+   }
+ }
+ 
+-if (typeof window !== 'undefined' && window.history.scrollRestoration) {
+-  window.history.scrollRestoration = 'manual'
+-}
+-
+ export const history = new History()
+diff --git a/packages/core/src/initialVisit.ts b/packages/core/src/initialVisit.ts
+index dc62962..d07f533 100644
+--- a/packages/core/src/initialVisit.ts
++++ b/packages/core/src/initialVisit.ts
+@@ -2,6 +2,7 @@ import { eventHandler } from './eventHandler'
+ import { fireFlashEvent, fireNavigateEvent } from './events'
+ import { history } from './history'
+ import { navigationType } from './navigationType'
++import { navigation } from './navigation'
+ import { page as currentPage } from './page'
+ import { Scroll } from './scroll'
+ import { SessionStorage } from './sessionStorage'
+@@ -10,6 +11,10 @@ import { uid } from './uid'
+ 
+ export class InitialVisit {
+   public static handle(): void {
++    if (navigation.external) {
++      this.handleDefault()
++      return
++    }
+     this.clearRememberedStateOnReload()
+ 
+     const scenarios = [this.handleBackForward, this.handleLocation, this.handleDefault]
+@@ -95,6 +100,7 @@ export class InitialVisit {
+   }
+ 
+   protected static handleDefault(): void {
++    const generation = navigation.generation
+     if (typeof window !== 'undefined') {
+       currentPage.setUrlHash(window.location.hash)
+     }
+@@ -104,6 +110,11 @@ export class InitialVisit {
+     currentPage
+       .set(currentPage.get(), { preserveScroll: true, preserveState: true, initialRender: true, visitId })
+       .then(() => {
++        if (!navigation.isCurrent(generation)) return
++        if (navigation.external) {
++          this.fireInitialEvents(visitId)
++          return
++        }
+         if (navigationType.isReload()) {
+           Scroll.restore(history.getScrollRegions())
+         } else {
+diff --git a/packages/core/src/navigation.ts b/packages/core/src/navigation.ts
+new file mode 100644
+index 0000000..be21f93
+--- /dev/null
++++ b/packages/core/src/navigation.ts
+@@ -0,0 +1,18 @@
++import { ExternalNavigationOptions } from './types'
++
++// A document has one active Inertia router, even when its host replaces the mount.
++export const navigation = {
++  external: undefined as ExternalNavigationOptions | undefined,
++  generation: 0,
++  active: true,
++
++  init(external?: ExternalNavigationOptions) {
++    this.external = external
++    this.active = true
++    return ++this.generation
++  },
++
++  isCurrent(generation: number) {
++    return this.active && generation === this.generation
++  },
++}
+diff --git a/packages/core/src/page.ts b/packages/core/src/page.ts
+index 2e53ad1..7ccbc25 100644
+--- a/packages/core/src/page.ts
++++ b/packages/core/src/page.ts
+@@ -3,6 +3,7 @@ import { get, set } from 'es-toolkit/compat'
+ import { eventHandler } from './eventHandler'
+ import { fireNavigateEvent } from './events'
+ import { history } from './history'
++import { navigation } from './navigation'
+ import { prefetchedRequests } from './prefetched'
+ import { Scroll } from './scroll'
+ import { Component, FlashData, Page, PageEvent, PageHandler, PageResolver, RouterInitParams, Visit } from './types'
+@@ -25,6 +26,7 @@ class CurrentPage {
+   protected optimisticBaseline: Partial<Page['props']> = {}
+   protected pendingOptimistics: { id: number; callback: (props: Page['props']) => Partial<Page['props']> | void }[] = []
+   protected optimisticCounter = 0
++  protected disposeQuota: VoidFunction = () => {}
+ 
+   public init<ComponentType = Component>({
+     initialPage,
+@@ -37,13 +39,24 @@ class CurrentPage {
+     this.resolveComponent = resolveComponent
+     this.onFlashCallback = onFlash
+ 
+-    eventHandler.on('historyQuotaExceeded', () => {
++    this.disposeQuota = eventHandler.on('historyQuotaExceeded', () => {
+       this.historyQuotaExceeded = true
+     })
+ 
+     return this
+   }
+ 
++  public destroy(): void {
++    this.componentId = {}
++    this.cleared = true
++    this.isFirstPageLoad = true
++    this.pendingDeferredProps = null
++    this.historyQuotaExceeded = false
++    this.listeners = []
++    this.clearOptimisticState()
++    this.disposeQuota()
++  }
++
+   public set(
+     page: Page,
+     {
+@@ -104,6 +117,8 @@ class CurrentPage {
+       return new Promise<void>((resolve) =>
+         replace ? history.replaceState(pageForHistory, resolve) : history.pushState(pageForHistory, resolve),
+       ).then(() => {
++        if (componentId !== this.componentId) return
++
+         const isNewComponent = !this.isTheSame(page)
+ 
+         if (!isNewComponent && Object.keys(page.props.errors || {}).length > 0) {
+@@ -142,7 +157,11 @@ class CurrentPage {
+           viewTransition,
+           initialRender,
+         }).then(() => {
+-          if (preserveScroll) {
++          if (componentId !== this.componentId) return
++
++          if (navigation.external) {
++            // The host owns document and scroll restoration.
++          } else if (preserveScroll) {
+             // Scroll regions must be explicitly restored since the DOM elements are destroyed
+             // and recreated during the component 'swap'. Document scroll is naturally
+             // preserved as the document element itself persists across navigations.
+diff --git a/packages/core/src/request.ts b/packages/core/src/request.ts
+index ee5a409..fb2a614 100644
+--- a/packages/core/src/request.ts
++++ b/packages/core/src/request.ts
+@@ -9,6 +9,7 @@ import {
+ import { http } from './http'
+ import { HttpCancelledError, HttpResponseError } from './httpErrors'
+ import { interceptors } from './interceptors'
++import { navigation } from './navigation'
+ import { page as currentPage } from './page'
+ import { RequestParams } from './requestParams'
+ import { Response } from './response'
+@@ -22,6 +23,7 @@ export class Request {
+   protected requestParams: RequestParams
+   protected requestHasFinished = false
+   protected optimistic: boolean
++  protected navigationGeneration = navigation.generation
+ 
+   constructor(
+     params: ActiveVisit,
+@@ -91,14 +93,16 @@ export class Request {
+       .getClient()
+       .request(processedConfig)
+       .then((response) => {
+-        this.response = Response.create(this.requestParams, response, this.page)
++        if (!navigation.isCurrent(this.navigationGeneration)) return
++        this.response = Response.create(this.requestParams, response, this.page, this.navigationGeneration)
+ 
+         return this.response.handle()
+       })
+       .catch((error) => {
+         // Handle HTTP error responses (4xx/5xx)
+         if (error instanceof HttpResponseError) {
+-          this.response = Response.create(this.requestParams, error.response, this.page)
++          if (!navigation.isCurrent(this.navigationGeneration)) return
++          this.response = Response.create(this.requestParams, error.response, this.page, this.navigationGeneration)
+ 
+           return this.response.handle()
+         }
+diff --git a/packages/core/src/response.ts b/packages/core/src/response.ts
+index b074a88..9c27936 100644
+--- a/packages/core/src/response.ts
++++ b/packages/core/src/response.ts
+@@ -13,6 +13,7 @@ import {
+ } from './events'
+ import { history } from './history'
+ import { interceptors } from './interceptors'
++import { navigation } from './navigation'
+ import { page as currentPage } from './page'
+ import { partialReloadRequestsProp } from './partialReload'
+ import Queue from './queue'
+@@ -31,10 +32,11 @@ export class Response {
+     protected requestParams: RequestParams,
+     protected response: HttpResponse,
+     protected originatingPage: Page,
++    protected navigationGeneration = navigation.generation,
+   ) {}
+ 
+-  public static create(params: RequestParams, response: HttpResponse, originatingPage: Page): Response {
+-    return new Response(params, response, originatingPage)
++  public static create(params: RequestParams, response: HttpResponse, originatingPage: Page, generation = navigation.generation): Response {
++    return new Response(params, response, originatingPage, generation)
+   }
+ 
+   public isProcessed(): boolean {
+@@ -52,6 +54,7 @@ export class Response {
+   }
+ 
+   public async process() {
++    if (!navigation.isCurrent(this.navigationGeneration)) return
+     if (this.requestParams.all().prefetch) {
+       this.wasPrefetched = true
+       this.requestParams.all().prefetch = false
+@@ -86,10 +89,28 @@ export class Response {
+ 
+     await history.processQueue()
+ 
++    if (!navigation.isCurrent(this.navigationGeneration)) return
++
++    if (navigation.external) {
++      const destination = this.getPageResponse()
++      const sameComponent = destination.component === currentPage.get().component
++      const sameUrl = isSameUrlWithoutHash(hrefToUrl(destination.url), hrefToUrl(currentPage.get().url))
++      if (!sameComponent || (!sameUrl && !this.requestParams.isPartial())) {
++        const errors = destination.props.errors || {}
++        if (Object.keys(errors).length === 0) {
++          fireSuccessEvent(destination, { visitId: this.requestParams.all().id })
++          await this.requestParams.all().onSuccess(destination)
++        }
++        if (navigation.isCurrent(this.navigationGeneration)) navigation.external.navigate(destination.url)
++        return
++      }
++    }
++
+     history.preserveUrl = this.requestParams.all().preserveUrl
+ 
+     await this.setPage()
+ 
++    if (!navigation.isCurrent(this.navigationGeneration)) return
+     const { flash } = currentPage.get()
+ 
+     if (Object.keys(flash).length > 0 && !this.requestParams.isDeferredPropsRequest()) {
+@@ -221,6 +242,11 @@ export class Response {
+         return
+       }
+ 
++      if (navigation.external && !versionChange) {
++        navigation.external.navigate(url.href)
++        return
++      }
++
+       SessionStorage.set(SessionStorage.locationVisitKey, {
+         preserveScroll: this.requestParams.all().preserveScroll === true,
+       })
+@@ -244,6 +270,7 @@ export class Response {
+ 
+     this.response = await interceptors.processResponse(this.requestParams.all(), this.response)
+ 
++    if (!navigation.isCurrent(this.navigationGeneration)) return
+     this.mergeProps(pageResponse)
+     currentPage.mergeOncePropsIntoResponse(pageResponse)
+     this.preserveOptimisticProps(pageResponse)
+@@ -251,9 +278,11 @@ export class Response {
+ 
+     await this.setRememberedState(pageResponse)
+ 
++    if (!navigation.isCurrent(this.navigationGeneration)) return
++
+     this.requestParams.setPreserveOptions(pageResponse)
+ 
+-    pageResponse.url = history.preserveUrl ? currentPage.get().url : this.pageUrl(pageResponse)
++    pageResponse.url = (history.preserveUrl || navigation.external) ? currentPage.get().url : this.pageUrl(pageResponse)
+ 
+     this.requestParams.all().onBeforeUpdate(pageResponse)
+     fireBeforeUpdateEvent(pageResponse)
+diff --git a/packages/core/src/router.ts b/packages/core/src/router.ts
+index ecfc7e5..488d5b0 100644
+--- a/packages/core/src/router.ts
++++ b/packages/core/src/router.ts
+@@ -6,6 +6,7 @@ import { eventHandler } from './eventHandler'
+ import { fireBeforeEvent, fireClientVisitEvent, fireFlashEvent } from './events'
+ import { history } from './history'
+ import { InitialVisit } from './initialVisit'
++import { navigation } from './navigation'
+ import { setPathPreservingIdentity, stripTopLevelUndefined } from './objectUtils'
+ import { page as currentPage } from './page'
+ import { polls } from './polls'
+@@ -67,13 +68,23 @@ export class Router {
+   protected clientVisitQueue = new Queue<Promise<void>>()
+ 
+   protected pendingOptimisticCallback: OptimisticCallback | undefined = undefined
++  protected disposeCurrent: VoidFunction | undefined
+ 
+   public init<ComponentType = Component>({
+     initialPage,
+     resolveComponent,
+     swapComponent,
+     onFlash,
+-  }: RouterInitParams<ComponentType>): void {
++    externalNavigation,
++  }: RouterInitParams<ComponentType>): VoidFunction {
++    this.disposeCurrent?.()
++    const generation = navigation.init(externalNavigation)
++    if (externalNavigation) {
++      history.reset()
++    } else if (typeof window !== 'undefined') {
++      window.history.scrollRestoration = 'manual'
++    }
++
+     currentPage.init({
+       initialPage,
+       resolveComponent,
+@@ -81,23 +92,36 @@ export class Router {
+       onFlash,
+     })
+ 
+-    InitialVisit.handle()
+-
+-    eventHandler.init()
++    const disposeEvents = eventHandler.init(!!externalNavigation)
+ 
+-    eventHandler.on('missingHistoryItem', () => {
++    const disposeMissingHistory = eventHandler.on('missingHistoryItem', () => {
+       if (typeof window !== 'undefined') {
+         this.visit(window.location.href, { preserveState: true, preserveScroll: true, replace: true })
+       }
+     })
+ 
+-    eventHandler.on('loadDeferredProps', (deferredProps: Page['deferredProps']) => {
++    const disposeDeferred = eventHandler.on('loadDeferredProps', (deferredProps: Page['deferredProps']) => {
+       this.loadDeferredProps(deferredProps)
+     })
+ 
+-    eventHandler.on('historyQuotaExceeded', (url) => {
++    const disposeQuota = eventHandler.on('historyQuotaExceeded', (url) => {
+       window.location.href = url
+     })
++
++    InitialVisit.handle()
++
++    return this.disposeCurrent = () => {
++      if (!navigation.isCurrent(generation)) return
++      navigation.active = false
++      this.cancelAll()
++      polls.clear()
++      this.flushAll()
++      currentPage.destroy()
++      disposeEvents()
++      disposeMissingHistory()
++      disposeDeferred()
++      disposeQuota()
++    }
+   }
+ 
+   public optimistic<TProps>(callback: OptimisticCallback<TProps>): this {
+@@ -159,7 +183,7 @@ export class Router {
+       return
+     }
+ 
+-    return this.visit(window.location.href, {
++    return this.visit(navigation.external ? currentPage.get().url : window.location.href, {
+       ...options,
+       preserveScroll: true,
+       preserveState: true,
+@@ -256,6 +280,8 @@ export class Router {
+     href: string | URL | UrlMethodPair,
+     options: VisitOptions<T> = {},
+   ): void {
++    if (!navigation.active) return
++
+     options.optimistic = options.optimistic ?? this.pendingOptimisticCallback
+     this.pendingOptimisticCallback = undefined
+ 
+@@ -275,6 +301,12 @@ export class Router {
+       return
+     }
+ 
++    if (navigation.external && visit.method === 'get' && !visit.async &&
++      !visit.only.length && !visit.except.length && !visit.reset.length) {
++      navigation.external.navigate(visit.url.href)
++      return
++    }
++
+     const currentPageUrl = hrefToUrl(currentPage.get().url)
+     const isPartialReload = visit.only.length > 0 || visit.except.length > 0 || visit.reset.length > 0
+ 
+@@ -554,7 +586,21 @@ export class Router {
+     params: ClientSideVisitOptions<TProps>,
+     { replace = false }: { replace?: boolean } = {},
+   ): void {
+-    this.clientVisitQueue.add(() => this.performClientVisit(params, { replace }))
++    const generation = navigation.generation
++    this.clientVisitQueue.add(() => {
++      if (!navigation.isCurrent(generation)) return Promise.resolve()
++
++      const current = currentPage.get()
++      if (navigation.external && (
++        (params.url && !isSameUrlWithoutHash(hrefToUrl(params.url), hrefToUrl(current.url))) ||
++        (params.component && params.component !== current.component)
++      )) {
++        navigation.external.navigate(hrefToUrl(params.url || current.url).href)
++        return Promise.resolve()
++      }
++
++      return this.performClientVisit(params, { replace })
++    })
+   }
+ 
+   protected performClientVisit<TProps = Page['props']>(
+diff --git a/packages/core/src/scroll.ts b/packages/core/src/scroll.ts
+index f0551db..bacc99b 100644
+--- a/packages/core/src/scroll.ts
++++ b/packages/core/src/scroll.ts
+@@ -1,5 +1,6 @@
+ import { requestAnimationFrame } from './domUtils'
+ import { history } from './history'
++import { navigation } from './navigation'
+ import { ScrollRegion } from './types'
+ 
+ const isServer = typeof window === 'undefined'
+@@ -7,6 +8,7 @@ const isFirefox = !isServer && /Firefox/i.test(window.navigator.userAgent)
+ 
+ export class Scroll {
+   public static save(): void {
++    if (navigation.external || !navigation.active) return
+     history.saveScrollPositions(this.getScrollRegions())
+   }
+ 
+@@ -31,6 +33,7 @@ export class Scroll {
+   }
+ 
+   public static reset(): void {
++    if (navigation.external || !navigation.active) return
+     const anchorHash = isServer ? null : window.location.hash
+ 
+     if (!anchorHash) {
+diff --git a/packages/core/src/types.ts b/packages/core/src/types.ts
+index 4a09546..253c42d 100644
+--- a/packages/core/src/types.ts
++++ b/packages/core/src/types.ts
+@@ -532,11 +532,18 @@ export type PollOptions = {
+ 
+ export type VisitHelperOptions<T extends RequestPayload = RequestPayload> = Omit<VisitOptions<T>, 'method' | 'data'>
+ 
++export type ExternalNavigationOptions = {
++  navigate: (url: string) => void
++  remember?: (data: unknown, key: string) => void
++  restore?: (key: string) => unknown
++}
++
+ export type RouterInitParams<ComponentType = Component> = {
+   initialPage: Page
+   resolveComponent: PageResolver
+   swapComponent: PageHandler<ComponentType>
+   onFlash?: (flash: Page['flash']) => void
++  externalNavigation?: ExternalNavigationOptions
+ }
+ 
+ export type PendingVisitOptions = {
+@@ -587,6 +594,7 @@ export type ProgressOptions = {
+ 
+ interface BaseCreateInertiaAppOptions<TComponentResolver, TSetupOptions, TSetupReturn, TAdditionalInertiaAppConfig> {
+   resolve: TComponentResolver
++  externalNavigation?: ExternalNavigationOptions
+   pages?: PagesOption
+   layout?: (name: string, page: Page) => unknown
+   setup: (options: TSetupOptions) => TSetupReturn
+@@ -636,6 +644,7 @@ export type ServerHeadOption = boolean | string | ServerHeadResolver
+ 
+ export interface CreateInertiaAppOptions<TComponentResolver, TSetupOptions, TSetupReturn, TAdditionalInertiaAppConfig> {
+   id?: string
++  externalNavigation?: ExternalNavigationOptions
+   resolve?: TComponentResolver
+   pages?: PagesOption
+   layout?: (name: string, page: Page) => unknown
+diff --git a/packages/core/tests/externalNavigation.test.ts b/packages/core/tests/externalNavigation.test.ts
+new file mode 100644
+index 0000000..68d09e6
+--- /dev/null
++++ b/packages/core/tests/externalNavigation.test.ts
+@@ -0,0 +1,280 @@
++import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
++import type { Page } from '../src/types'
++
++type CoreModules = {
++  Request: typeof import('../src/request').Request
++  router: typeof import('../src').router
++}
++
++const initialPage = (url = '/inertia?tab=current', props: Page['props'] = { count: 1 }): Page => ({
++  component: 'Dashboard',
++  props: { errors: {}, ...props },
++  url,
++  version: null,
++  flash: {},
++  rescuedProps: [],
++  rememberedState: {},
++})
++
++const tick = () => new Promise((resolve) => setTimeout(resolve, 0))
++
++describe('external navigation', () => {
++  let core: CoreModules
++  let windowTarget: EventTarget
++  let documentTarget: EventTarget
++  let pushState: ReturnType<typeof vi.fn>
++  let replaceState: ReturnType<typeof vi.fn>
++  let windowAddEventListener: ReturnType<typeof vi.fn>
++  let documentAddEventListener: ReturnType<typeof vi.fn>
++
++  beforeEach(async () => {
++    vi.resetModules()
++
++    windowTarget = new EventTarget()
++    documentTarget = new EventTarget()
++    pushState = vi.fn()
++    replaceState = vi.fn()
++    windowAddEventListener = vi.fn(windowTarget.addEventListener.bind(windowTarget))
++    documentAddEventListener = vi.fn(documentTarget.addEventListener.bind(documentTarget))
++
++    vi.stubGlobal(
++      'window',
++      Object.assign(windowTarget, {
++        addEventListener: windowAddEventListener,
++        removeEventListener: windowTarget.removeEventListener.bind(windowTarget),
++        dispatchEvent: windowTarget.dispatchEvent.bind(windowTarget),
++        history: { state: null, scrollRestoration: 'auto', pushState, replaceState },
++        location: new URL('https://host.test/shell?host=state'),
++        navigator: { userAgent: 'vitest' },
++        requestAnimationFrame: (callback: FrameRequestCallback) => callback(0),
++        setInterval,
++        clearInterval,
++        scrollTo: vi.fn(),
++      }),
++    )
++    vi.stubGlobal(
++      'document',
++      Object.assign(documentTarget, {
++        addEventListener: documentAddEventListener,
++        removeEventListener: documentTarget.removeEventListener.bind(documentTarget),
++        dispatchEvent: documentTarget.dispatchEvent.bind(documentTarget),
++        querySelectorAll: vi.fn(() => []),
++        getElementById: vi.fn(() => null),
++        visibilityState: 'visible',
++        hidden: false,
++      }),
++    )
++    vi.stubGlobal(
++      'CustomEvent',
++      class<T> extends Event {
++        detail: T
++
++        constructor(type: string, options?: CustomEventInit<T>) {
++          super(type, options)
++          this.detail = options?.detail as T
++        }
++      },
++    )
++
++    const [{ router }, { Request }] = await Promise.all([import('../src'), import('../src/request')])
++    core = { router, Request }
++  })
++
++  afterEach(() => {
++    vi.restoreAllMocks()
++    vi.unstubAllGlobals()
++    vi.useRealTimers()
++  })
++
++  const init = (
++    externalNavigation: {
++      navigate: (url: string) => void
++      remember?: (data: unknown, key: string) => void
++      restore?: (key: string) => unknown
++    },
++    overrides: Partial<Parameters<CoreModules['router']['init']>[0]> = {},
++  ) =>
++    core.router.init({
++      initialPage: initialPage(),
++      resolveComponent: vi.fn(async (component) => component),
++      swapComponent: vi.fn(async () => undefined),
++      externalNavigation,
++      ...overrides,
++    })
++
++  it('leaves browser history and navigation listeners entirely under host control', async () => {
++    const dispose = init({ navigate: vi.fn() })
++    await tick()
++
++    expect(pushState).not.toHaveBeenCalled()
++    expect(replaceState).not.toHaveBeenCalled()
++    expect(window.history.scrollRestoration).toBe('auto')
++    expect(windowAddEventListener.mock.calls.map(([type]) => type)).not.toContain('popstate')
++
++    dispose()
++  })
++
++  it('hands plain GET visits to the host with an absolute URL and makes no request', async () => {
++    const navigate = vi.fn()
++    const request = vi.spyOn(core.Request, 'create')
++    const dispose = init({ navigate })
++    await tick()
++
++    core.router.get('/reports?filter=open#results')
++
++    expect(navigate).toHaveBeenCalledOnce()
++    expect(navigate).toHaveBeenCalledWith('https://host.test/reports?filter=open#results')
++    expect(request).not.toHaveBeenCalled()
++    expect(pushState).not.toHaveBeenCalled()
++    expect(replaceState).not.toHaveBeenCalled()
++
++    dispose()
++  })
++
++  it('uses HTTP for same-page reloads even when the host URL is different', async () => {
++    const navigate = vi.fn()
++    const requestInstance = {
++      send: vi.fn(() => new Promise<void>(() => {})),
++      cancel: vi.fn(),
++      isPrefetch: vi.fn(() => false),
++      isOptimistic: vi.fn(() => false),
++      isPendingOptimistic: vi.fn(() => false),
++    }
++    vi.spyOn(core.Request, 'create').mockReturnValue(requestInstance as never)
++    const dispose = init({ navigate })
++    await tick()
++
++    core.router.reload()
++
++    expect(navigate).not.toHaveBeenCalled()
++    expect(core.Request.create).toHaveBeenCalledOnce()
++    expect(requestInstance.send).toHaveBeenCalledOnce()
++
++    dispose()
++    expect(requestInstance.cancel).toHaveBeenCalled()
++  })
++
++  it('keeps same-page prop updates local', async () => {
++    const navigate = vi.fn()
++    const swapComponent = vi.fn(async () => undefined)
++    const request = vi.spyOn(core.Request, 'create')
++    const dispose = init({ navigate }, { swapComponent })
++    await tick()
++    swapComponent.mockClear()
++
++    core.router.replaceProp('count', 2)
++    await tick()
++
++    expect(swapComponent).toHaveBeenCalledOnce()
++    expect(swapComponent.mock.calls[0][0].page.props.count).toBe(2)
++    expect(navigate).not.toHaveBeenCalled()
++    expect(request).not.toHaveBeenCalled()
++    expect(pushState).not.toHaveBeenCalled()
++    expect(replaceState).not.toHaveBeenCalled()
++
++    dispose()
++  })
++
++  it('delegates client-side URL changes instead of changing only the embedded page', async () => {
++    const navigate = vi.fn()
++    const swapComponent = vi.fn(async () => undefined)
++    const dispose = init({ navigate }, { swapComponent })
++    await tick()
++    swapComponent.mockClear()
++
++    core.router.push({ url: '/reports/42', props: { count: 99 } })
++    await tick()
++
++    expect(navigate).toHaveBeenCalledWith('https://host.test/reports/42')
++    expect(swapComponent).not.toHaveBeenCalled()
++    expect(pushState).not.toHaveBeenCalled()
++    expect(replaceState).not.toHaveBeenCalled()
++
++    dispose()
++  })
++
++  it('delegates remembered state to optional host callbacks without touching history', async () => {
++    const remember = vi.fn()
++    const restore = vi.fn((key: string) => (key === 'filters' ? { status: 'open' } : undefined))
++    const dispose = init({ navigate: vi.fn(), remember, restore })
++    await tick()
++
++    core.router.remember({ status: 'open' }, 'filters')
++
++    expect(remember).toHaveBeenCalledWith({ status: 'open' }, 'filters')
++    expect(core.router.restore('filters')).toEqual({ status: 'open' })
++    expect(restore).toHaveBeenCalledWith('filters')
++    expect(pushState).not.toHaveBeenCalled()
++    expect(replaceState).not.toHaveBeenCalled()
++
++    dispose()
++  })
++
++  it('invalidates outstanding component resolutions when disposed', async () => {
++    let resolvePendingComponent!: (component: unknown) => void
++    const pendingComponent = new Promise((resolve) => (resolvePendingComponent = resolve))
++    const oldSwap = vi.fn(async () => undefined)
++    const dispose = init(
++      { navigate: vi.fn() },
++      { resolveComponent: vi.fn(() => pendingComponent), swapComponent: oldSwap },
++    )
++
++    dispose()
++    const newSwap = vi.fn(async () => undefined)
++    const disposeNew = init(
++      { navigate: vi.fn() },
++      { initialPage: initialPage('/new', { generation: 'new' }), swapComponent: newSwap },
++    )
++    await tick()
++    newSwap.mockClear()
++
++    resolvePendingComponent('stale component')
++    await tick()
++
++    expect(oldSwap).not.toHaveBeenCalled()
++    expect(newSwap).not.toHaveBeenCalled()
++
++    disposeNew()
++  })
++
++  it('destroys active polls when disposed', async () => {
++    const dispose = init({ navigate: vi.fn() })
++    await tick()
++
++    core.router.poll(60_000)
++    expect(core.router.activePolls).toBe(1)
++
++    dispose()
++    expect(core.router.activePolls).toBe(0)
++  })
++
++  it('does not let an old disposer tear down a newer mount', async () => {
++    const firstDispose = init({ navigate: vi.fn() })
++    await tick()
++    const secondNavigate = vi.fn()
++    const secondDispose = init({ navigate: secondNavigate })
++    await tick()
++
++    firstDispose()
++    core.router.get('/owned-by-second-mount')
++
++    expect(secondNavigate).toHaveBeenCalledWith('https://host.test/owned-by-second-mount')
++
++    secondDispose()
++  })
++
++  it('preserves default history and popstate behavior when external navigation is absent', async () => {
++    const dispose = core.router.init({
++      initialPage: initialPage(),
++      resolveComponent: vi.fn(async (component) => component),
++      swapComponent: vi.fn(async () => undefined),
++    })
++    await tick()
++
++    expect(window.history.scrollRestoration).toBe('manual')
++    expect(windowAddEventListener.mock.calls.map(([type]) => type)).toContain('popstate')
++    expect(pushState.mock.calls.length + replaceState.mock.calls.length).toBeGreaterThan(0)
++
++    dispose()
++  })
++})
+diff --git a/packages/react/src/App.ts b/packages/react/src/App.ts
+index aa27cfe..3412eb4 100755
+--- a/packages/react/src/App.ts
++++ b/packages/react/src/App.ts
+@@ -10,6 +10,7 @@ import {
+   PageProps,
+   resolveServerHead,
+   router,
++  type ExternalNavigationOptions,
+   type ServerHeadOption,
+ } from '@inertiajs/core'
+ import {
+@@ -52,6 +53,7 @@ function isLayoutResolver(value: unknown): boolean {
+ 
+ let pendingInitialSwap: ReactPageHandlerArgs | null = null
+ let routerIsInitialized = false
++let disposeRouter: VoidFunction | null = null
+ let swapComponent: PageHandler<ReactComponent> = async (args) => {
+   // Dummy function so we can init the router outside of the useEffect hook. This is
+   // needed so `router.reload()` works right away (on mount) in any of the user's
+@@ -77,6 +79,7 @@ export interface InertiaAppProps<SharedProps extends PageProps = PageProps> {
+   onHeadUpdate?: HeadManagerOnUpdateCallback
+   defaultLayout?: (name: string, page: Page) => unknown
+   serverHead?: ServerHeadOption
++  externalNavigation?: ExternalNavigationOptions
+ }
+ 
+ export type InertiaApp = FunctionComponent<InertiaAppProps>
+@@ -95,6 +98,7 @@ export default function App<SharedProps extends PageProps = PageProps>({
+   onHeadUpdate,
+   defaultLayout,
+   serverHead,
++  externalNavigation,
+ }: InertiaAppProps<SharedProps>) {
+   const [current, setCurrent] = useState<CurrentPage>({
+     component: initialComponent || null,
+@@ -116,10 +120,15 @@ export default function App<SharedProps extends PageProps = PageProps>({
+ 
+   const dynamicLayoutProps = useSyncExternalStore(store.subscribe, store.get, () => emptySnapshot)
+ 
+-  if (!routerIsInitialized) {
+-    router.init<ReactComponent>({
++  const initializeRouter = () => {
++    if (routerIsInitialized) {
++      return
++    }
++
++    disposeRouter = router.init<ReactComponent>({
+       initialPage,
+       resolveComponent: resolveComponent!,
++      externalNavigation,
+       swapComponent: async (args) => swapComponent(args),
+       onFlash: (flash) => {
+         setCurrent((current) => ({
+@@ -132,7 +141,11 @@ export default function App<SharedProps extends PageProps = PageProps>({
+     routerIsInitialized = true
+   }
+ 
++  initializeRouter()
++
+   useEffect(() => {
++    initializeRouter()
++
+     swapComponent = async ({ component, page, preserveState, initialRender }: ReactPageHandlerArgs) => {
+       if (initialRender) {
+         // We block setting the current page on the initial page to
+@@ -170,6 +183,20 @@ export default function App<SharedProps extends PageProps = PageProps>({
+     return () => {
+       removeNavigateListener()
+       removeClientVisitListener()
++
++      if (externalNavigation) {
++        const currentDisposer = disposeRouter
++        currentDisposer?.()
++
++        if (disposeRouter === currentDisposer) {
++          disposeRouter = null
++          routerIsInitialized = false
++          pendingInitialSwap = null
++          swapComponent = async (args) => {
++            pendingInitialSwap = args
++          }
++        }
++      }
+     }
+   }, [])
+ 
+diff --git a/packages/react/src/createInertiaApp.ts b/packages/react/src/createInertiaApp.ts
+index 8341f1e..00c7474 100644
+--- a/packages/react/src/createInertiaApp.ts
++++ b/packages/react/src/createInertiaApp.ts
+@@ -107,6 +107,7 @@ export default async function createInertiaApp<SharedProps extends PageProps = P
+     http,
+     layout,
+     serverHead,
++    externalNavigation,
+     strictMode = false,
+     withApp,
+     dev = !!import.meta.env?.DEV,
+@@ -156,6 +157,7 @@ export default async function createInertiaApp<SharedProps extends PageProps = P
+         onHeadUpdate: (elements: string[]) => (head = elements),
+         defaultLayout: layout,
+         serverHead,
++        externalNavigation,
+       }
+ 
+       let reactApp: ReactElement
+@@ -187,7 +189,7 @@ export default async function createInertiaApp<SharedProps extends PageProps = P
+ 
+   const reactApp = await Promise.all([
+     resolveComponent(initialPage.component, initialPage),
+-    router.decryptHistory().catch(() => {}),
++    externalNavigation ? Promise.resolve() : router.decryptHistory().catch(() => {}),
+   ]).then(([initialComponent]) => {
+     const props: InertiaAppProps<SharedProps> = {
+       initialPage,
+@@ -197,6 +199,7 @@ export default async function createInertiaApp<SharedProps extends PageProps = P
+       onHeadUpdate: isServer ? (elements: string[]) => (head = elements) : undefined,
+       defaultLayout: layout,
+       serverHead,
++      externalNavigation,
+     }
+ 
+     if (isServer) {
+@@ -230,7 +233,7 @@ export default async function createInertiaApp<SharedProps extends PageProps = P
+     }
+   })
+ 
+-  if (!isServer && progress) {
++  if (!isServer && progress && !externalNavigation) {
+     setupProgress(progress)
+   }
+ 
+diff --git a/packages/svelte/src/components/App.svelte b/packages/svelte/src/components/App.svelte
+index 635ecd8..18dd22b 100644
+--- a/packages/svelte/src/components/App.svelte
++++ b/packages/svelte/src/components/App.svelte
+@@ -1,5 +1,5 @@
+ <script module lang="ts">
+-  import { type Page, type PageProps } from '@inertiajs/core'
++  import { type ExternalNavigationOptions, type Page, type PageProps, type ServerHeadOption } from '@inertiajs/core'
+   import type { ComponentResolver, ResolvedComponent } from '../types'
+ 
+   export interface InertiaAppProps<SharedProps extends PageProps = PageProps> {
+@@ -7,13 +7,21 @@
+     initialPage: Page<SharedProps>
+     resolveComponent: ComponentResolver
+     defaultLayout?: (name: string, page: Page) => unknown
++    serverHead?: ServerHeadOption
++    externalNavigation?: ExternalNavigationOptions
+   }
+ </script>
+ 
+ <script lang="ts">
+-  import { isPropsObjectOrCallback, isPropsObject, normalizeLayouts } from '@inertiajs/core'
+-  import { router } from '@inertiajs/core'
+-  import type { Component } from 'svelte'
++  import {
++    createHeadManager,
++    isPropsObjectOrCallback,
++    isPropsObject,
++    normalizeLayouts,
++    resolveServerHead,
++    router,
++  } from '@inertiajs/core'
++  import { onDestroy, type Component } from 'svelte'
+   import { resetLayoutProps, storeState } from '../layoutProps.svelte'
+   import { setPage } from '../page.svelte'
+   import type { LayoutType, LayoutResolver } from '../types'
+@@ -24,9 +32,12 @@
+     initialPage: InertiaAppProps['initialPage']
+     resolveComponent: InertiaAppProps['resolveComponent']
+     defaultLayout?: InertiaAppProps['defaultLayout']
++    serverHead?: InertiaAppProps['serverHead']
++    externalNavigation?: InertiaAppProps['externalNavigation']
+   }
+ 
+-  const { initialComponent, initialPage, resolveComponent, defaultLayout }: Props = $props()
++  const { initialComponent, initialPage, resolveComponent, defaultLayout, serverHead, externalNavigation }: Props =
++    $props()
+ 
+   // svelte-ignore state_referenced_locally
+   let component = $state(initialComponent)
+@@ -49,9 +60,10 @@
+ 
+   if (!isServer) {
+     // svelte-ignore state_referenced_locally
+-    router.init<ResolvedComponent>({
++    const disposeRouter = router.init<ResolvedComponent>({
+       initialPage,
+       resolveComponent,
++      externalNavigation,
+       swapComponent: async (args) => {
+         // Explicitly sync the global page store before swapping components,
+         // ensuring the page store is up-to-date when the new component's
+@@ -69,6 +81,33 @@
+         page = { ...page, flash }
+       },
+     })
++
++    // Mount options stay fixed for this app's lifetime.
++    // svelte-ignore state_referenced_locally
++    const serverHeadManager = externalNavigation && serverHead
++      ? createHeadManager(
++          false,
++          (title) => title,
++          () => {},
++          resolveServerHead(initialPage, serverHead),
++        )
++      : null
++
++    const syncServerHead = (event: { detail: { page: Page } }) => {
++      serverHeadManager?.updateServerHead(resolveServerHead(event.detail.page, serverHead))
++    }
++
++    const removeNavigateListener = serverHeadManager ? router.on('navigate', syncServerHead) : () => {}
++    const removeClientVisitListener = serverHeadManager ? router.on('clientVisit', syncServerHead) : () => {}
++
++    // svelte-ignore state_referenced_locally
++    if (externalNavigation) {
++      onDestroy(() => {
++        disposeRouter()
++        removeNavigateListener()
++        removeClientVisitListener()
++      })
++    }
+   }
+ 
+   function isComponent(value: unknown): value is Component {
+diff --git a/packages/svelte/src/createInertiaApp.ts b/packages/svelte/src/createInertiaApp.ts
+index dc10697..34ffa78 100644
+--- a/packages/svelte/src/createInertiaApp.ts
++++ b/packages/svelte/src/createInertiaApp.ts
+@@ -85,6 +85,7 @@ export default async function createInertiaApp<SharedProps extends PageProps = P
+     http,
+     layout,
+     serverHead,
++    externalNavigation,
+     withApp,
+     dev = !!import.meta.env?.DEV,
+   }:
+@@ -120,6 +121,7 @@ export default async function createInertiaApp<SharedProps extends PageProps = P
+         initialComponent,
+         resolveComponent,
+         defaultLayout: layout,
++        externalNavigation,
+       }
+ 
+       let svelteApp: SvelteRenderResult
+@@ -151,7 +153,7 @@ export default async function createInertiaApp<SharedProps extends PageProps = P
+ 
+   const initialPage = page || getInitialPageFromDOM<Page<SharedProps>>(id)!
+   const serverHeadManager =
+-    !isServer && serverHead
++    !isServer && !externalNavigation && serverHead
+       ? createHeadManager(
+           false,
+           (title) => title,
+@@ -162,10 +164,17 @@ export default async function createInertiaApp<SharedProps extends PageProps = P
+ 
+   const [initialComponent] = await Promise.all([
+     resolveComponent(initialPage.component, initialPage) as Promise<ResolvedComponent>,
+-    router.decryptHistory().catch(() => {}),
++    externalNavigation ? Promise.resolve() : router.decryptHistory().catch(() => {}),
+   ])
+ 
+-  const props: InertiaAppProps<SharedProps> = { initialPage, initialComponent, resolveComponent, defaultLayout: layout }
++  const props: InertiaAppProps<SharedProps> = {
++    initialPage,
++    initialComponent,
++    resolveComponent,
++    defaultLayout: layout,
++    serverHead,
++    externalNavigation,
++  }
+ 
+   // SSR with page provided (legacy pattern used by ssr.ts)
+   if (isServer) {
+@@ -215,7 +224,7 @@ export default async function createInertiaApp<SharedProps extends PageProps = P
+     router.on('clientVisit', syncServerHead)
+   }
+ 
+-  if (progress) {
++  if (progress && !externalNavigation) {
+     setupProgress(progress)
+   }
+ }
+diff --git a/packages/vue3/src/app.ts b/packages/vue3/src/app.ts
+index a29f601..506071b 100755
+--- a/packages/vue3/src/app.ts
++++ b/packages/vue3/src/app.ts
+@@ -11,6 +11,7 @@ import {
+   resolveServerHead,
+   router,
+   SharedPageProps,
++  type ExternalNavigationOptions,
+   type ServerHeadOption,
+ } from '@inertiajs/core'
+ import {
+@@ -25,6 +26,7 @@ import {
+   reactive,
+   ref,
+   shallowRef,
++  onUnmounted,
+ } from 'vue'
+ import { state as layoutPropsState, resetLayoutProps } from './layoutProps'
+ import remember from './remember'
+@@ -73,6 +75,7 @@ export interface InertiaAppProps<SharedProps extends PageProps = PageProps> {
+   onHeadUpdate?: HeadManagerOnUpdateCallback
+   defaultLayout?: (name: string, page: Page) => unknown
+   serverHead?: ServerHeadOption
++  externalNavigation?: ExternalNavigationOptions
+ }
+ 
+ export type InertiaApp = DefineComponent<InertiaAppProps>
+@@ -117,6 +120,10 @@ const App: InertiaApp = defineComponent({
+       type: [Boolean, String, Function] as PropType<ServerHeadOption>,
+       required: false,
+     },
++    externalNavigation: {
++      type: Object as PropType<ExternalNavigationOptions>,
++      required: false,
++    },
+   },
+   setup({
+     initialPage,
+@@ -126,6 +133,7 @@ const App: InertiaApp = defineComponent({
+     onHeadUpdate,
+     defaultLayout,
+     serverHead,
++    externalNavigation,
+   }: InertiaAppProps) {
+     component.value = initialComponent ? markRaw(initialComponent) : undefined
+     page.value = { ...initialPage, flash: initialPage.flash ?? {} }
+@@ -141,9 +149,10 @@ const App: InertiaApp = defineComponent({
+     )
+ 
+     if (!isServer) {
+-      router.init<DefineComponent>({
++      const disposeRouter = router.init<DefineComponent>({
+         initialPage,
+         resolveComponent: resolveComponent!,
++        externalNavigation,
+         swapComponent: async (options: VuePageHandlerArgs) => {
+           if (!options.preserveState) {
+             resetLayoutProps()
+@@ -162,8 +171,16 @@ const App: InertiaApp = defineComponent({
+         headManager.updateServerHead(resolveServerHead(event.detail.page, serverHead))
+       }
+ 
+-      router.on('navigate', syncServerHead)
+-      router.on('clientVisit', syncServerHead)
++      const removeNavigateListener = router.on('navigate', syncServerHead)
++      const removeClientVisitListener = router.on('clientVisit', syncServerHead)
++
++      if (externalNavigation) {
++        onUnmounted(() => {
++          disposeRouter()
++          removeNavigateListener()
++          removeClientVisitListener()
++        })
++      }
+     }
+ 
+     return () => {
+diff --git a/packages/vue3/src/createInertiaApp.ts b/packages/vue3/src/createInertiaApp.ts
+index 2785316..6ae6bb8 100644
+--- a/packages/vue3/src/createInertiaApp.ts
++++ b/packages/vue3/src/createInertiaApp.ts
+@@ -103,6 +103,7 @@ export default async function createInertiaApp<SharedProps extends PageProps = P
+     http,
+     layout,
+     serverHead,
++    externalNavigation,
+     withApp,
+     dev = !!import.meta.env?.DEV,
+   }:
+@@ -145,6 +146,7 @@ export default async function createInertiaApp<SharedProps extends PageProps = P
+         onHeadUpdate: (elements: string[]) => (head = elements),
+         defaultLayout: layout,
+         serverHead,
++        externalNavigation,
+       }
+ 
+       let vueApp: VueApp
+@@ -178,7 +180,7 @@ export default async function createInertiaApp<SharedProps extends PageProps = P
+ 
+   const vueApp = await Promise.all([
+     resolveComponent(initialPage.component, initialPage),
+-    router.decryptHistory().catch(() => {}),
++    externalNavigation ? Promise.resolve() : router.decryptHistory().catch(() => {}),
+   ]).then(([initialComponent]) => {
+     const props: InertiaAppProps<SharedProps> = {
+       initialPage,
+@@ -188,6 +190,7 @@ export default async function createInertiaApp<SharedProps extends PageProps = P
+       onHeadUpdate: isServer ? (elements: string[]) => (head = elements) : undefined,
+       defaultLayout: layout,
+       serverHead,
++      externalNavigation,
+     }
+ 
+     if (isServer) {
+@@ -232,7 +235,7 @@ export default async function createInertiaApp<SharedProps extends PageProps = P
+     }
+   })
+ 
+-  if (!isServer && progress) {
++  if (!isServer && progress && !externalNavigation) {
+     setupProgress(progress)
+   }
+ 

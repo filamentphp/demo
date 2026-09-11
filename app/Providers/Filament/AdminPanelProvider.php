@@ -56,7 +56,7 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->spa()
+            ->spa((bool) env('INERTIA_DEMO_SPA', true))
             ->colors([
                 'primary' => Color::Blue,
             ])

@@ -16,6 +16,7 @@
         "filament/spatie-laravel-tags-plugin": "^5.0",
         "flowframe/laravel-trend": "^0.4.0",
         "guzzlehttp/guzzle": "^7.2",
+        "inertiajs/inertia-laravel": "^3.0",
         "laravel/framework": "^12.0",
         "laravel/octane": "^2.15",
         "laravel/sanctum": "^4.0",

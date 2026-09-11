@@ -1,0 +1,99 @@
+.fi-body.fi-inertia-page .fi-main-ctn {
+    display: flex;
+    opacity: 1;
+}
+
+.fi-inertia-workbench {
+    display: grid;
+    gap: 1rem;
+    padding: 1.5rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.75rem;
+    background: #fff;
+    color: #111827;
+}
+
+.fi-inertia-workbench nav {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.fi-inertia-workbench a {
+    color: #1d4ed8;
+    text-decoration: underline;
+}
+
+.fi-inertia-workbench a[aria-current] {
+    font-weight: 700;
+}
+
+.fi-inertia-workbench h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.fi-inertia-eyebrow {
+    font-size: 0.875rem;
+}
+
+.fi-inertia-workbench textarea {
+    min-height: 5rem;
+    padding: 0.75rem;
+    border: 1px solid #6b7280;
+    border-radius: 0.5rem;
+}
+
+.dark .fi-inertia-workbench {
+    background: #18181b;
+    color: #f4f4f5;
+    border-color: #52525b;
+}
+
+.dark .fi-inertia-workbench a {
+    color: #93c5fd;
+}
+
+#filament-inertia {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.fi-inertia-workbench form {
+    display: grid;
+    gap: 0.75rem;
+    padding-block: 1rem;
+    border-top: 1px solid #6b7280;
+}
+
+.fi-inertia-workbench input {
+    padding: 0.75rem;
+    border: 1px solid #6b7280;
+    border-radius: 0.5rem;
+}
+
+.fi-inertia-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.fi-inertia-workbench button {
+    padding: 0.5rem 0.75rem;
+    background: #1d4ed8;
+    color: white;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
+.fi-inertia-workbench button:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+.fi-inertia-workbench [role='alert'] {
+    color: #b91c1c;
+}
+
+.dark .fi-inertia-workbench [role='alert'] {
+    color: #fca5a5;
+}

@@ -1,0 +1,1 @@
+@inertia('filament-inertia')
