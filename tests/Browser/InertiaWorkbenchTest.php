@@ -175,7 +175,7 @@ it('exercises props, forms, remembered state, and navigation round trips', funct
         ->assertSeeIn('#saved-draft', 'Saved through Form component')
         ->assertNoAccessibilityIssues();
 
-    $browser->page()->locator('a[href="/"]')->click(['noWaitAfter' => true]);
+    $browser->page()->getByRole('link', ['name' => 'Back to dashboard', 'exact' => true])->click(['noWaitAfter' => true]);
     $browser->assertSee('Welcome to the Filament Demo!');
     $browser->page()->locator("a[href$=\"{$otherFrameworkPath}\"]")->click(['noWaitAfter' => true]);
     $browser->assertSeeIn('#deferred-analytics', '137')->back()->assertSee('Welcome to the Filament Demo!')->forward()->assertSeeIn('#deferred-permissions', 'review, publish')->assertNoJavaScriptErrors();
