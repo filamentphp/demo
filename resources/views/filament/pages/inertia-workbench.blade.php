@@ -28,30 +28,46 @@
                         container = this.$el.querySelector('[data-inertia-container]')
                         originalMarkup = container.innerHTML
                         const root = container.querySelector('#filament-inertia')
+                        const stage = container.querySelector('[data-inertia-stage]')
+                        const loading = container.querySelector('[data-inertia-loading]')
+                        const error = container.querySelector('[data-inertia-error]')
+                        container.querySelector('[data-inertia-retry]').onclick = () => location.reload()
                         const pageKey = location.pathname + location.search
                         document.addEventListener('livewire:navigating', stop)
 
                         requestAnimationFrame(() => setTimeout(async () => {
                             if (stopped) return
-                            const { default: mount } = await import(moduleUrl)
-                            if (stopped) return
-                            dispose = await mount(root, {
-                                navigate(url) {
-                                    if (spa && new URL(url, location.href).origin === location.origin) {
-                                        Livewire.navigate(url)
-                                    } else {
-                                        location.assign(url)
-                                    }
-                                },
-                                remember(data, key) {
-                                    sessionStorage.setItem(`filament-inertia:${pageKey}:${key}`, JSON.stringify(data))
-                                },
-                                restore(key) {
-                                    const data = sessionStorage.getItem(`filament-inertia:${pageKey}:${key}`)
-                                    return data === null ? undefined : JSON.parse(data)
-                                },
-                            })
-                            if (stopped) dispose?.()
+                            try {
+                                const { default: mount } = await import(moduleUrl)
+                                if (stopped) return
+                                dispose = await mount(root, {
+                                    navigate(url) {
+                                        if (spa && new URL(url, location.href).origin === location.origin) {
+                                            Livewire.navigate(url)
+                                        } else {
+                                            location.assign(url)
+                                        }
+                                    },
+                                    remember(data, key) {
+                                        sessionStorage.setItem(`filament-inertia:${pageKey}:${key}`, JSON.stringify(data))
+                                    },
+                                    restore(key) {
+                                        const data = sessionStorage.getItem(`filament-inertia:${pageKey}:${key}`)
+                                        return data === null ? undefined : JSON.parse(data)
+                                    },
+                                }, () => {
+                                    if (stopped) return
+                                    loading.hidden = true
+                                    stage.setAttribute('aria-busy', 'false')
+                                })
+                                if (stopped) dispose?.()
+                            } catch (exception) {
+                                if (stopped) return
+                                loading.hidden = true
+                                stage.setAttribute('aria-busy', 'false')
+                                error.hidden = false
+                                console.error('Unable to mount the Inertia page.', exception)
+                            }
                         }, 0))
                     },
                     destroy() {

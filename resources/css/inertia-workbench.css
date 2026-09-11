@@ -3,6 +3,35 @@
     opacity: 1;
 }
 
+[data-inertia-stage][aria-busy='true'] {
+    min-height: 12rem;
+}
+
+.fi-inertia-loading:not([hidden]),
+.fi-inertia-error:not([hidden]) {
+    display: flex;
+    min-height: 12rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 1.5rem;
+    color: #4b5563;
+}
+
+.fi-inertia-loading .fi-loading-indicator {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.fi-inertia-error:not([hidden]) {
+    flex-direction: column;
+}
+
+.dark .fi-inertia-loading,
+.dark .fi-inertia-error {
+    color: #d1d5db;
+}
+
 .fi-inertia-workbench {
     display: grid;
     gap: 1rem;

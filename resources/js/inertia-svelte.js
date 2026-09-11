@@ -1,8 +1,8 @@
 import { createInertiaApp } from '@inertiajs/svelte'
-import { hydrate, mount, unmount } from 'svelte'
+import { flushSync, hydrate, mount, unmount } from 'svelte'
 import SvelteWorkbench from './SvelteWorkbench.svelte'
 
-export default async function mountPage(element, externalNavigation) {
+export default async function mountPage(element, externalNavigation, onMounted) {
     let app
 
     await createInertiaApp({
@@ -16,6 +16,8 @@ export default async function mountPage(element, externalNavigation) {
                 target: el,
                 props,
             })
+            flushSync()
+            onMounted()
         },
     })
 

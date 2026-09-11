@@ -2,7 +2,7 @@ import { createInertiaApp } from '@inertiajs/vue3'
 import { createApp, createSSRApp, h } from 'vue'
 import Workbench from './Workbench'
 
-export default async function mount(root, externalNavigation) {
+export default async function mount(root, externalNavigation, onMounted) {
     let app
 
     await createInertiaApp({
@@ -17,6 +17,7 @@ export default async function mount(root, externalNavigation) {
 
             app = create({ render: () => h(App, props) }).use(plugin)
             app.mount(el)
+            onMounted()
         },
     })
 

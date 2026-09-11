@@ -44,8 +44,30 @@ it('keeps client rendering available when SSR is disabled', function (): void {
     $this->get(InertiaWorkbench::getUrl())
         ->assertOk()
         ->assertSee('<div id="filament-inertia"></div>', escape: false)
+        ->assertSee('Loading page…')
         ->assertDontSee('<h2 id="inertia-report-title">', escape: false);
 });
+
+it('shows the page loading state only when the SSR gateway returns no content', function (string $page, string $component, string $framework, bool $hasServerRenderedContent): void {
+    config(['inertia.ssr.enabled' => true]);
+
+    $this->mock(\Inertia\Ssr\Gateway::class)
+        ->shouldReceive('dispatch')
+        ->once()
+        ->andReturn($hasServerRenderedContent
+            ? new \Inertia\Ssr\Response('', '<div id="filament-inertia">Rendered report</div>')
+            : null);
+
+    $response = $this->get($page::getUrl())->assertOk();
+    $document = new DOMDocument;
+    @$document->loadHTML($response->getContent());
+    $xpath = new DOMXPath($document);
+
+    expect($xpath->query('//*[@data-inertia-loading]')->item(0)->hasAttribute('hidden'))
+        ->toBe($hasServerRenderedContent)
+        ->and($xpath->query('//*[@data-inertia-stage]')->item(0)->getAttribute('aria-busy'))->toBe('true')
+        ->and($xpath->query('//*[@data-inertia-error]')->item(0)->hasAttribute('hidden'))->toBeTrue();
+})->with('inertia frameworks')->with([false, true]);
 
 it('embeds actual server-rendered content in the first Livewire response', function (string $page): void {
     config(['inertia.ssr.enabled' => true, 'inertia.ssr.throw_on_error' => true]);
