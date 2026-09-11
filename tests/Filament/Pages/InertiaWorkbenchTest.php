@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\View;
 use Inertia\Inertia;
 use Inertia\Middleware;
 use Inertia\Response as InertiaResponse;
+use Inertia\Ssr\Gateway;
+use Inertia\Ssr\Response;
 use Livewire\Livewire;
 
 beforeEach(function (): void {
@@ -51,11 +53,11 @@ it('keeps client rendering available when SSR is disabled', function (): void {
 it('shows the page loading state only when the SSR gateway returns no content', function (string $page, string $component, string $framework, bool $hasServerRenderedContent): void {
     config(['inertia.ssr.enabled' => true]);
 
-    $this->mock(\Inertia\Ssr\Gateway::class)
+    $this->mock(Gateway::class)
         ->shouldReceive('dispatch')
         ->once()
         ->andReturn($hasServerRenderedContent
-            ? new \Inertia\Ssr\Response('', '<div id="filament-inertia">Rendered report</div>')
+            ? new Response('', '<div id="filament-inertia">Rendered report</div>')
             : null);
 
     $response = $this->get($page::getUrl())->assertOk();
