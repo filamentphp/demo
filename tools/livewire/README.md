@@ -33,3 +33,34 @@ Reverse the previous revision's patch before applying an updated patch. The
 preparation script never resets an incompatible checkout. Rebuild and reinstall
 assets after every patch revision. The change does not cancel HTTP requests or
 change request-wide redirects, errors, or asset loading.
+
+## Regression tests
+
+From the demo, run the dependency-free source tests:
+
+```sh
+node --experimental-vm-modules --test tools/livewire/tests/lifecycle.test.mjs
+```
+
+These load the actual Livewire commit, pool, hooks, utilities, and feature modules,
+stubbing browser and scheduling boundaries. `LIVEWIRE_DIRECTORY` can select a
+separate unpatched checkout for a negative control. The patched source passes all
+nine cases; unpatched v3.8.8 passes the normal-response control and fails the other
+eight.
+
+Run the browser regression from the Filament checkout, where Playwright is
+installed, against a disposable running demo with SPA and lazy notifications
+enabled:
+
+```sh
+INERTIA_DEMO_URL=http://127.0.0.1:8000 node ../repos/demo/tools/livewire/tests/browser.mjs
+```
+
+Use an isolated test database and session cookie, and `CACHE_DRIVER=array` to
+avoid login throttling across automated cases. The harness holds HTTP responses
+after server processing, then releases them after navigation or component
+destruction. It checks object generations, cleanup, suppressed effects, restored
+lazy loading, and surviving pooled commits. It appends observable dispatch
+effects to test responses without changing snapshots or method return values.
+All three browser cases pass with patched assets and fail with upstream assets.
+`CASES=away,restored,bundle` selects cases explicitly.
