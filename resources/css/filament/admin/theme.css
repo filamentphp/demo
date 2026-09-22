@@ -2,3 +2,37 @@
 
 @source '../../../../app/Filament/**/*';
 @source '../../../../resources/views/filament/**/*';
+
+.avatar-demo {
+    @apply grid gap-4;
+
+    & p,
+    & output {
+        @apply text-sm text-gray-600 dark:text-gray-300;
+    }
+}
+
+.avatar-demo-profile {
+    @apply flex min-h-16 items-center gap-4;
+}
+
+.avatar-demo-controls {
+    @apply flex flex-wrap items-center gap-4 text-sm;
+
+    & label {
+        @apply flex items-center gap-2;
+    }
+
+    & select {
+        @apply rounded-md border border-gray-300 bg-white p-1 text-gray-950 dark:border-gray-600 dark:bg-gray-900 dark:text-white;
+    }
+}
+
+.avatar-demo-large {
+    @apply size-16;
+}
+
+.avatar-demo-accent {
+    outline: 3px solid var(--primary-500);
+    outline-offset: 3px;
+}
