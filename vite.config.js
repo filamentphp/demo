@@ -25,6 +25,9 @@ export default defineConfig({
                 'resources/js/filament/widgets/fieldset-react.jsx',
                 'resources/js/filament/widgets/fieldset-vue.js',
                 'resources/js/filament/widgets/fieldset-svelte.svelte.js',
+                'resources/js/filament/widgets/loading-indicator-react.jsx',
+                'resources/js/filament/widgets/loading-indicator-vue.js',
+                'resources/js/filament/widgets/loading-indicator-svelte.svelte.js',
             ],
             refresh: [
                 ...refreshPaths,
