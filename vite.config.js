@@ -22,6 +22,9 @@ export default defineConfig({
                 'resources/js/filament/widgets/breadcrumbs-react.jsx',
                 'resources/js/filament/widgets/breadcrumbs-vue.js',
                 'resources/js/filament/widgets/breadcrumbs-svelte.svelte.js',
+                'resources/js/filament/widgets/fieldset-react.jsx',
+                'resources/js/filament/widgets/fieldset-vue.js',
+                'resources/js/filament/widgets/fieldset-svelte.svelte.js',
             ],
             refresh: [
                 ...refreshPaths,

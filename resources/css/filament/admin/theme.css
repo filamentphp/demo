@@ -57,3 +57,25 @@
 .breadcrumbs-demo-accent {
     @apply bg-primary-50 dark:bg-primary-950 rounded-lg p-3;
 }
+
+.fieldset-demo {
+    @apply grid gap-4;
+
+    & p,
+    & output {
+        @apply text-sm text-gray-600 dark:text-gray-300;
+    }
+}
+
+.fieldset-demo-controls {
+    @apply flex flex-wrap items-center gap-4 text-sm;
+}
+
+.fieldset-demo-option,
+.fieldset-demo-controls label {
+    @apply flex items-center gap-2 text-sm;
+}
+
+.fieldset-demo-accent {
+    @apply bg-primary-50 dark:bg-primary-950;
+}
