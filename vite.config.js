@@ -28,6 +28,9 @@ export default defineConfig({
                 'resources/js/filament/widgets/loading-indicator-react.jsx',
                 'resources/js/filament/widgets/loading-indicator-vue.js',
                 'resources/js/filament/widgets/loading-indicator-svelte.svelte.js',
+                'resources/js/filament/widgets/checkbox-react.jsx',
+                'resources/js/filament/widgets/checkbox-vue.js',
+                'resources/js/filament/widgets/checkbox-svelte.svelte.js',
             ],
             refresh: [
                 ...refreshPaths,

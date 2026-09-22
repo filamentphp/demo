@@ -107,3 +107,23 @@
 .loading-indicator-demo-accent {
     @apply text-primary-600 dark:text-primary-400;
 }
+
+.checkbox-demo,
+.checkbox-demo form {
+    @apply grid gap-4;
+}
+
+.checkbox-demo {
+    & label {
+        @apply flex items-center gap-2 text-sm;
+    }
+
+    & p,
+    & output {
+        @apply text-sm text-gray-600 dark:text-gray-300;
+    }
+}
+
+.checkbox-demo-controls {
+    @apply flex flex-wrap gap-4;
+}
