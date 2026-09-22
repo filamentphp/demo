@@ -12,7 +12,17 @@ export default defineConfig({
         filamentSvelte(),
         filamentVue(),
         laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js', 'resources/css/filament/admin/theme.css', 'resources/js/filament/widgets/avatar-react.jsx', 'resources/js/filament/widgets/avatar-vue.js', 'resources/js/filament/widgets/avatar-svelte.svelte.js'],
+            input: [
+                'resources/css/app.css',
+                'resources/js/app.js',
+                'resources/css/filament/admin/theme.css',
+                'resources/js/filament/widgets/avatar-react.jsx',
+                'resources/js/filament/widgets/avatar-vue.js',
+                'resources/js/filament/widgets/avatar-svelte.svelte.js',
+                'resources/js/filament/widgets/breadcrumbs-react.jsx',
+                'resources/js/filament/widgets/breadcrumbs-vue.js',
+                'resources/js/filament/widgets/breadcrumbs-svelte.svelte.js',
+            ],
             refresh: [
                 ...refreshPaths,
                 'app/Filament/**',

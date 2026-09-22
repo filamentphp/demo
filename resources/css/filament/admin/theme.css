@@ -36,3 +36,24 @@
     outline: 3px solid var(--primary-500);
     outline-offset: 3px;
 }
+
+.breadcrumbs-demo {
+    @apply grid gap-4;
+
+    & p,
+    & output {
+        @apply text-sm text-gray-600 dark:text-gray-300;
+    }
+}
+
+.breadcrumbs-demo-controls {
+    @apply flex flex-wrap items-center gap-4 text-sm;
+
+    & label {
+        @apply flex items-center gap-2;
+    }
+}
+
+.breadcrumbs-demo-accent {
+    @apply bg-primary-50 dark:bg-primary-950 rounded-lg p-3;
+}
