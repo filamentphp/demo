@@ -127,3 +127,28 @@
 .checkbox-demo-controls {
     @apply flex flex-wrap gap-4;
 }
+
+.radio-demo,
+.radio-demo form,
+.radio-demo fieldset {
+    @apply grid gap-4;
+}
+
+.radio-demo {
+    & label {
+        @apply flex items-center gap-2 text-sm;
+    }
+
+    & legend {
+        @apply mb-3 text-sm font-medium;
+    }
+
+    & p,
+    & output {
+        @apply text-sm break-words text-gray-600 dark:text-gray-300;
+    }
+}
+
+.radio-demo-controls {
+    @apply flex flex-wrap gap-4;
+}

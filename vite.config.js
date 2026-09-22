@@ -31,6 +31,9 @@ export default defineConfig({
                 'resources/js/filament/widgets/checkbox-react.jsx',
                 'resources/js/filament/widgets/checkbox-vue.js',
                 'resources/js/filament/widgets/checkbox-svelte.svelte.js',
+                'resources/js/filament/widgets/radio-react.jsx',
+                'resources/js/filament/widgets/radio-vue.js',
+                'resources/js/filament/widgets/radio-svelte.svelte.js',
             ],
             refresh: [
                 ...refreshPaths,
