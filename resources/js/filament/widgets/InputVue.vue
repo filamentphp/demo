@@ -111,8 +111,10 @@ function reset(event) {
         </p>
         <output data-testid="result">{{ result }}</output>
         <p>
-            Vue emits strings, including empty. Reset is host-owned for
-            controlled state; native reset alone does not update v-model.
+            Vue emits strings here, including empty; v-model.number and
+            v-model.trim opt into conversion. Updates include IME composition
+            input. Reset is host-owned; native reset alone does not update
+            v-model.
         </p>
     </div>
 </template>

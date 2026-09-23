@@ -91,10 +91,8 @@
                 bind:checked={inline}
             /> Inline affixes</label
         >
-        <button
-            type="button"
-            data-testid="empty"
-            onclick={() => (price = undefined)}>Empty price</button
+        <button type="button" data-testid="empty" onclick={() => (price = null)}
+            >Empty price</button
         >
         <button type="button" data-testid="zero" onclick={() => (price = 0)}
             >Zero price</button
@@ -108,11 +106,13 @@
         >
     </div>
     <p data-testid="state">
-        Host price: {JSON.stringify(price) ?? 'undefined'} ({typeof price})
+        Host price: {JSON.stringify(price)} ({price === null
+            ? 'null'
+            : typeof price})
     </p>
     <output data-testid="result">{result}</output>
     <p>
-        Svelte binds numbers, or undefined when empty. Native reset restores
-        defaultValue and synchronizes the bound state.
+        Svelte 5.57 binds numbers, or null when empty. Native reset restores
+        this explicit zero default and synchronizes the bound state.
     </p>
 </div>
