@@ -46,6 +46,9 @@ export default defineConfig({
                 'resources/js/filament/widgets/select-react.jsx',
                 'resources/js/filament/widgets/select-vue.js',
                 'resources/js/filament/widgets/select-svelte.svelte.js',
+                'resources/js/filament/widgets/empty-state-react.jsx',
+                'resources/js/filament/widgets/empty-state-vue.js',
+                'resources/js/filament/widgets/empty-state-svelte.svelte.js',
             ],
             refresh: [
                 ...refreshPaths,
