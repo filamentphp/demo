@@ -97,4 +97,6 @@ Open `/badge-playground` after signing in to compare Blade with plain-JavaScript
 
 Use Alt+B for Blade, Alt+R for React, Alt+V for Vue, and Alt+S for Svelte, including while the filter input has focus. Disabled tooltip badges remain focusable but cannot activate. The host owns loading, labels, and navigation; these examples do not call PHP Actions or infer Livewire loading.
 
+The adapters are client-mounted, not SSR-hydrated. Disabled links retain their link role and restore their URL when enabled. Shortcut dispatch skips hidden, inert, and disabled elements and is restricted to the last visible modal. The shared helper owns a separate Mousetrap engine and ignores Tippy data attributes so tooltip content stays plain text.
+
 Run `npm run build` and `php artisan filament:assets` after setup. Vite deduplicates framework runtimes because the Composer path packages are symlinks to a Filament checkout with its own dependencies. Scope checks to `[data-framework="react"]`, `vue`, or `svelte`, then use `data-testid="palette"`, `interactive-badges`, `project-link`, `save-badge`, `delete-badge` (its native `button` deletes), `filter-name`, `finish`, `reset`, `disabled`, `enhanced`, `visible`, and `result`.
