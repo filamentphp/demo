@@ -40,6 +40,9 @@ export default defineConfig({
                 'resources/js/filament/widgets/input-wrapper-react.jsx',
                 'resources/js/filament/widgets/input-wrapper-vue.js',
                 'resources/js/filament/widgets/input-wrapper-svelte.svelte.js',
+                'resources/js/filament/widgets/input-react.jsx',
+                'resources/js/filament/widgets/input-vue.js',
+                'resources/js/filament/widgets/input-svelte.svelte.js',
             ],
             refresh: [
                 ...refreshPaths,
