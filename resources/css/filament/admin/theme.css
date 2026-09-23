@@ -80,7 +80,8 @@
     @apply bg-primary-50 dark:bg-primary-950;
 }
 
-.loading-indicator-demo {
+.loading-indicator-demo,
+.icon-demo {
     @apply grid gap-4;
 
     & p {
@@ -88,11 +89,17 @@
     }
 }
 
-.loading-indicator-demo-status {
+.loading-indicator-demo-status,
+.icon-demo-preview {
     @apply flex min-h-12 items-center gap-3 text-sm;
 }
 
-.loading-indicator-demo-controls {
+.icon-demo-sample {
+    @apply grid justify-items-center gap-2;
+}
+
+.loading-indicator-demo-controls,
+.icon-demo-controls {
     @apply flex flex-wrap items-center gap-4 text-sm;
 
     & label {
@@ -104,7 +111,8 @@
     }
 }
 
-.loading-indicator-demo-accent {
+.loading-indicator-demo-accent,
+.icon-demo-accent {
     @apply text-primary-600 dark:text-primary-400;
 }
 

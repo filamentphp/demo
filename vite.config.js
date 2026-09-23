@@ -34,6 +34,9 @@ export default defineConfig({
                 'resources/js/filament/widgets/radio-react.jsx',
                 'resources/js/filament/widgets/radio-vue.js',
                 'resources/js/filament/widgets/radio-svelte.svelte.js',
+                'resources/js/filament/widgets/icon-react.jsx',
+                'resources/js/filament/widgets/icon-vue.js',
+                'resources/js/filament/widgets/icon-svelte.svelte.js',
             ],
             refresh: [
                 ...refreshPaths,
