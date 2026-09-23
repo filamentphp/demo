@@ -90,3 +90,11 @@ Here are some specific things to poke at if you're learning Filament:
 Open `/callout-playground` after signing in to compare the Blade callout with plain-JavaScript React, Vue, and Svelte consumers. Change the color (including the registered `brand` palette), icon artwork, independent icon color and size, description, and actions. Review and dismiss operate only on local state; Reset restores the notice. No release is published.
 
 The framework examples import Support's `Callout` from the Composer path package and use the existing Filament theme. Run `npm run build` after changing them. Each renderer unmounts through `HasJsRenderer` when its host is removed. For browser checks, scope selectors to `[data-framework="react"]`, `vue`, `svelte`, or `blade`, then use `data-testid="callout"`, `color`, `icon`, `override`, `details`, `actions`, `review`, `dismiss`, `result`, and `reset`.
+
+## Badge playground
+
+Open `/badge-playground` after signing in to compare Blade with plain-JavaScript React, Vue, and Svelte Badge widgets. Each card shows sizes, a registered `brand` color, icons before/after the label, a local fragment link, an external-form submit badge, and a removable filter. The JavaScript cards expose explicit save/delete loading, disabled actions, tooltip/shortcut removal, and mounting/unmounting. Finish completes pending work; Reset restores local state. No database records change.
+
+Use Alt+B for Blade, Alt+R for React, Alt+V for Vue, and Alt+S for Svelte, including while the filter input has focus. Disabled tooltip badges remain focusable but cannot activate. The host owns loading, labels, and navigation; these examples do not call PHP Actions or infer Livewire loading.
+
+Run `npm run build` and `php artisan filament:assets` after setup. Vite deduplicates framework runtimes because the Composer path packages are symlinks to a Filament checkout with its own dependencies. Scope checks to `[data-framework="react"]`, `vue`, or `svelte`, then use `data-testid="palette"`, `interactive-badges`, `project-link`, `save-badge`, `delete-badge` (its native `button` deletes), `filter-name`, `finish`, `reset`, `disabled`, `enhanced`, `visible`, and `result`.

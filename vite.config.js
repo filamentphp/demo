@@ -5,6 +5,9 @@ import laravel, { refreshPaths } from 'laravel-vite-plugin'
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
+    resolve: {
+        dedupe: ['react', 'react-dom', 'vue', 'svelte'],
+    },
     build: {
         rolldownOptions: { preserveEntrySignatures: 'exports-only' },
     },
@@ -58,6 +61,9 @@ export default defineConfig({
                 'resources/js/filament/widgets/loading-section-react.jsx',
                 'resources/js/filament/widgets/loading-section-vue.js',
                 'resources/js/filament/widgets/loading-section-svelte.svelte.js',
+                'resources/js/filament/widgets/badge-react.jsx',
+                'resources/js/filament/widgets/badge-vue.js',
+                'resources/js/filament/widgets/badge-svelte.svelte.js',
             ],
             refresh: [
                 ...refreshPaths,
