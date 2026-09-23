@@ -4,11 +4,13 @@ import LoadingSection from '../../../../vendor/filament/support/resources/js/vue
 const state = ref('loading')
 const tall = ref(false)
 const visible = ref(true)
+const gridOffset = ref(false)
 
 function reset() {
     state.value = 'loading'
     tall.value = false
     visible.value = true
+    gridOffset.value = false
 }
 </script>
 
@@ -23,23 +25,40 @@ function reset() {
                     Load the latest community garden milestones. Finish manually
                     to explore success and failure.
                 </p>
-                <template v-if="visible">
-                    <LoadingSection
-                        v-if="state === 'loading'"
-                        data-testid="loading-section"
-                        :height="tall ? '12rem' : undefined"
-                        loading-label="Loading project overview"
-                    />
-                    <div v-else class="fi-section" data-testid="content">
-                        <div class="fi-section-content">
-                            {{
-                                state === 'ready'
-                                    ? 'Community garden · 8 of 12 milestones complete.'
-                                    : 'Project overview could not be loaded. Try again.'
-                            }}
+                <div
+                    class="fi-grid"
+                    data-testid="preview-grid"
+                    style="--cols-default: repeat(4, minmax(0, 1fr))"
+                >
+                    <template v-if="visible">
+                        <LoadingSection
+                            v-if="state === 'loading'"
+                            data-testid="loading-section"
+                            :height="tall ? '12rem' : undefined"
+                            loading-label="Loading project overview"
+                            :column-span="
+                                gridOffset
+                                    ? { default: 'full', lg: 2 }
+                                    : { default: 'full' }
+                            "
+                            :column-start="gridOffset ? { lg: 3 } : undefined"
+                        />
+                        <div
+                            v-else
+                            class="fi-section fi-grid-col"
+                            style="--col-span-default: 1 / -1"
+                            data-testid="content"
+                        >
+                            <div class="fi-section-content">
+                                {{
+                                    state === 'ready'
+                                        ? 'Community garden · 8 of 12 milestones complete.'
+                                        : 'Project overview could not be loaded. Try again.'
+                                }}
+                            </div>
                         </div>
-                    </div>
-                </template>
+                    </template>
+                </div>
                 <div class="icon-demo-controls">
                     <button
                         type="button"
@@ -90,6 +109,14 @@ function reset() {
                               : ''
                     }}
                 </p>
+                <label
+                    ><input
+                        v-model="gridOffset"
+                        type="checkbox"
+                        data-testid="grid-offset"
+                    />
+                    Use columns 3–4 on wide screens (1024px+)</label
+                >
             </div>
         </div>
     </section>

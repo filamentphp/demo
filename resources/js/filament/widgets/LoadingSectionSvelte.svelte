@@ -3,6 +3,7 @@
     let loadingState = $state('loading')
     let tall = $state(false)
     let visible = $state(true)
+    let gridOffset = $state(false)
 </script>
 
 <section class="fi-section">
@@ -13,20 +14,34 @@
                 Load the latest community garden milestones. Finish manually to
                 explore success and failure.
             </p>
-            {#if visible}
-                {#if loadingState === 'loading'}<LoadingSection
-                        data-testid="loading-section"
-                        height={tall ? '12rem' : undefined}
-                        loadingLabel="Loading project overview"
-                    />
-                {:else}<div class="fi-section" data-testid="content">
-                        <div class="fi-section-content">
-                            {loadingState === 'ready'
-                                ? 'Community garden · 8 of 12 milestones complete.'
-                                : 'Project overview could not be loaded. Try again.'}
-                        </div>
-                    </div>{/if}
-            {/if}
+            <div
+                class="fi-grid"
+                data-testid="preview-grid"
+                style="--cols-default: repeat(4, minmax(0, 1fr))"
+            >
+                {#if visible}
+                    {#if loadingState === 'loading'}<LoadingSection
+                            data-testid="loading-section"
+                            height={tall ? '12rem' : undefined}
+                            loadingLabel="Loading project overview"
+                            columnSpan={gridOffset
+                                ? { default: 'full', lg: 2 }
+                                : { default: 'full' }}
+                            columnStart={gridOffset ? { lg: 3 } : undefined}
+                        />
+                    {:else}<div
+                            class="fi-section fi-grid-col"
+                            style="--col-span-default: 1 / -1"
+                            data-testid="content"
+                        >
+                            <div class="fi-section-content">
+                                {loadingState === 'ready'
+                                    ? 'Community garden · 8 of 12 milestones complete.'
+                                    : 'Project overview could not be loaded. Try again.'}
+                            </div>
+                        </div>{/if}
+                {/if}
+            </div>
             <div class="icon-demo-controls">
                 <button
                     type="button"
@@ -56,6 +71,7 @@
                         loadingState = 'loading'
                         tall = false
                         visible = true
+                        gridOffset = false
                     }}>Reset</button
                 >
             </div>
@@ -80,6 +96,13 @@
                       ? 'Loading failed. You can retry.'
                       : ''}
             </p>
+            <label
+                ><input
+                    bind:checked={gridOffset}
+                    type="checkbox"
+                    data-testid="grid-offset"
+                /> Use columns 3–4 on wide screens (1024px+)</label
+            >
         </div>
     </div>
 </section>

@@ -6,6 +6,7 @@ function LoadingSectionReact() {
     const [state, setState] = useState('loading')
     const [tall, setTall] = useState(false)
     const [visible, setVisible] = useState(true)
+    const [gridOffset, setGridOffset] = useState(false)
     return (
         <section className="fi-section">
             <div className="fi-section-content">
@@ -17,22 +18,42 @@ function LoadingSectionReact() {
                         Load the latest community garden milestones. Finish
                         manually to explore success and failure.
                     </p>
-                    {visible &&
-                        (state === 'loading' ? (
-                            <LoadingSection
-                                data-testid="loading-section"
-                                height={tall ? '12rem' : undefined}
-                                loadingLabel="Loading project overview"
-                            />
-                        ) : (
-                            <div className="fi-section" data-testid="content">
-                                <div className="fi-section-content">
-                                    {state === 'ready'
-                                        ? 'Community garden · 8 of 12 milestones complete.'
-                                        : 'Project overview could not be loaded. Try again.'}
+                    <div
+                        className="fi-grid"
+                        data-testid="preview-grid"
+                        style={{
+                            '--cols-default': 'repeat(4, minmax(0, 1fr))',
+                        }}
+                    >
+                        {visible &&
+                            (state === 'loading' ? (
+                                <LoadingSection
+                                    data-testid="loading-section"
+                                    height={tall ? '12rem' : undefined}
+                                    loadingLabel="Loading project overview"
+                                    columnSpan={
+                                        gridOffset
+                                            ? { default: 'full', lg: 2 }
+                                            : { default: 'full' }
+                                    }
+                                    columnStart={
+                                        gridOffset ? { lg: 3 } : undefined
+                                    }
+                                />
+                            ) : (
+                                <div
+                                    className="fi-section fi-grid-col"
+                                    style={{ '--col-span-default': '1 / -1' }}
+                                    data-testid="content"
+                                >
+                                    <div className="fi-section-content">
+                                        {state === 'ready'
+                                            ? 'Community garden · 8 of 12 milestones complete.'
+                                            : 'Project overview could not be loaded. Try again.'}
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            ))}
+                    </div>
                     <div className="icon-demo-controls">
                         <button
                             type="button"
@@ -65,6 +86,7 @@ function LoadingSectionReact() {
                                 setState('loading')
                                 setTall(false)
                                 setVisible(true)
+                                setGridOffset(false)
                             }}
                         >
                             Reset
@@ -97,6 +119,17 @@ function LoadingSectionReact() {
                               ? 'Loading failed. You can retry.'
                               : ''}
                     </p>
+                    <label>
+                        <input
+                            type="checkbox"
+                            data-testid="grid-offset"
+                            checked={gridOffset}
+                            onChange={(event) =>
+                                setGridOffset(event.target.checked)
+                            }
+                        />{' '}
+                        Use columns 3–4 on wide screens (1024px+)
+                    </label>
                 </div>
             </div>
         </section>
