@@ -43,6 +43,9 @@ export default defineConfig({
                 'resources/js/filament/widgets/input-react.jsx',
                 'resources/js/filament/widgets/input-vue.js',
                 'resources/js/filament/widgets/input-svelte.svelte.js',
+                'resources/js/filament/widgets/select-react.jsx',
+                'resources/js/filament/widgets/select-vue.js',
+                'resources/js/filament/widgets/select-svelte.svelte.js',
             ],
             refresh: [
                 ...refreshPaths,
