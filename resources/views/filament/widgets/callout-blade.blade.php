@@ -6,6 +6,7 @@
             x-data="{ visible: true, message: 'No changes published.' }"
         >
             <h2 class="fi-section-header-heading">Blade · reference</h2>
+            <h3 class="fi-sr-only">Release notices</h3>
             <x-filament::callout
                 heading="Your next release"
                 data-testid="callout"

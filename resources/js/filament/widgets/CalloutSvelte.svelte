@@ -30,6 +30,7 @@
     >{/snippet}
 <section class="callout-demo" data-framework="svelte">
     <h2 class="fi-section-header-heading">Svelte · JavaScript</h2>
+    <h3 class="fi-sr-only">Release notices</h3>
     {#if visible}<Callout
             data-testid="callout"
             {color}

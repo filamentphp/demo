@@ -14,6 +14,7 @@ function CalloutReact() {
     return (
         <section className="callout-demo" data-framework="react">
             <h2 className="fi-section-header-heading">React · JavaScript</h2>
+            <h3 className="fi-sr-only">Release notices</h3>
             {visible && (
                 <Callout
                     data-testid="callout"

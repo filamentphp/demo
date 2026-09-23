@@ -26,6 +26,7 @@ function reset() {
 <template>
     <section class="callout-demo" data-framework="vue">
         <h2 class="fi-section-header-heading">Vue · JavaScript</h2>
+        <h3 class="fi-sr-only">Release notices</h3>
         <Callout
             v-if="visible"
             data-testid="callout"
