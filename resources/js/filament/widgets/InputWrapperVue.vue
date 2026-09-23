@@ -86,8 +86,8 @@ function reset() {
             </button>
         </div>
         <p>
-            Native input value: {{ amount || 'empty' }}. Wrapper styling and
-            input semantics are supplied separately.
+            Native input value: {{ amount === '' ? 'empty' : amount }}. Wrapper
+            styling and input semantics are supplied separately.
         </p>
     </div>
 </template>
