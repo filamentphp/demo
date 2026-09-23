@@ -55,6 +55,9 @@ export default defineConfig({
                 'resources/js/filament/widgets/actions-react.jsx',
                 'resources/js/filament/widgets/actions-vue.js',
                 'resources/js/filament/widgets/actions-svelte.svelte.js',
+                'resources/js/filament/widgets/loading-section-react.jsx',
+                'resources/js/filament/widgets/loading-section-vue.js',
+                'resources/js/filament/widgets/loading-section-svelte.svelte.js',
             ],
             refresh: [
                 ...refreshPaths,
