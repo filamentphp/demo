@@ -164,3 +164,28 @@
 .callout-demo {
     @apply grid gap-4;
 }
+
+.actions-demo {
+    @apply grid gap-4;
+
+    & form {
+        @apply grid gap-4;
+    }
+
+    & form > label {
+        @apply grid gap-2 text-sm;
+    }
+
+    & form input {
+        @apply min-w-0 rounded-md border border-gray-300 bg-white p-2 text-gray-950 dark:border-gray-600 dark:bg-gray-900 dark:text-white;
+    }
+
+    & button,
+    & a {
+        @apply text-primary-700 ring-primary-300 dark:text-primary-300 dark:ring-primary-700 rounded-md px-3 py-2 text-sm font-medium ring-1;
+    }
+
+    & p {
+        @apply text-sm;
+    }
+}

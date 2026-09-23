@@ -52,6 +52,9 @@ export default defineConfig({
                 'resources/js/filament/widgets/callout-react.jsx',
                 'resources/js/filament/widgets/callout-vue.js',
                 'resources/js/filament/widgets/callout-svelte.svelte.js',
+                'resources/js/filament/widgets/actions-react.jsx',
+                'resources/js/filament/widgets/actions-vue.js',
+                'resources/js/filament/widgets/actions-svelte.svelte.js',
             ],
             refresh: [
                 ...refreshPaths,
