@@ -37,6 +37,9 @@ export default defineConfig({
                 'resources/js/filament/widgets/icon-react.jsx',
                 'resources/js/filament/widgets/icon-vue.js',
                 'resources/js/filament/widgets/icon-svelte.svelte.js',
+                'resources/js/filament/widgets/input-wrapper-react.jsx',
+                'resources/js/filament/widgets/input-wrapper-vue.js',
+                'resources/js/filament/widgets/input-wrapper-svelte.svelte.js',
             ],
             refresh: [
                 ...refreshPaths,
