@@ -160,3 +160,7 @@
 .radio-demo-controls {
     @apply flex flex-wrap gap-4;
 }
+
+.callout-demo {
+    @apply grid gap-4;
+}

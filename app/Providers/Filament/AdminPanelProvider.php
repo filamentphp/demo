@@ -59,6 +59,7 @@ class AdminPanelProvider extends PanelProvider
             ->spa()
             ->colors([
                 'primary' => Color::Blue,
+                'brand' => Color::Violet,
             ])
             ->font('Albert Sans');
     }

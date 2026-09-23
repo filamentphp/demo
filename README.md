@@ -84,3 +84,9 @@ Here are some specific things to poke at if you're learning Filament:
 | Global search | Press Cmd+K anywhere |
 | Keyboard shortcuts | Cmd+Shift+P to quick-publish a post |
 | Navigation badges | Check sidebar counts on orders, leave requests, and expenses |
+
+## Callout playground
+
+Open `/callout-playground` after signing in to compare the Blade callout with plain-JavaScript React, Vue, and Svelte consumers. Change the color (including the registered `brand` palette), icon artwork, independent icon color and size, description, and actions. Review and dismiss operate only on local state; Reset restores the notice. No release is published.
+
+The framework examples import Support's `Callout` from the Composer path package and use the existing Filament theme. Run `npm run build` after changing them. Each renderer unmounts through `HasJsRenderer` when its host is removed. For browser checks, scope selectors to `[data-framework="react"]`, `vue`, `svelte`, or `blade`, then use `data-testid="callout"`, `color`, `icon`, `override`, `details`, `actions`, `review`, `dismiss`, `result`, and `reset`.
