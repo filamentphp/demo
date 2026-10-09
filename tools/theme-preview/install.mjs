@@ -15,10 +15,14 @@ import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const directory = dirname(fileURLToPath(import.meta.url))
-const themes = ['compact', 'sharp', 'soft', 'noir']
+const themes = {
+    compact: '^1.2',
+    sharp: '^1.1',
+    soft: '^1.2',
+    noir: '^1.2',
+}
 const variants = ['stock', 'sharp', 'soft', 'noir']
 const registry = 'https://packages.filamentphp.com/composer'
-const themeVersion = '^1.0'
 const hash = (value) => createHash('sha256').update(value).digest('hex')
 const json = (value) => `${JSON.stringify(value, null, 4)}\n`
 
@@ -89,12 +93,12 @@ export function install(root, { production = false, run = execute } = {}) {
     assertNoSymlinks('composer.lock')
     const composer = JSON.parse(read('composer.json'))
     const originalLock = read('composer.lock')
-    for (const theme of themes) {
+    for (const [theme, version] of Object.entries(themes)) {
         if (composer.require[`filament/${theme}-theme`])
             throw new Error(
                 `Theme already configured: ${theme}; use a fresh build checkout`,
             )
-        composer.require[`filament/${theme}-theme`] = themeVersion
+        composer.require[`filament/${theme}-theme`] = version
     }
     composer.require['kienso/blade-google-material-symbols'] = '^1.0'
     {
@@ -224,14 +228,14 @@ export function install(root, { production = false, run = execute } = {}) {
         write('composer.json', files.get('composer.json'))
         run(root, 'composer', [
             'update',
-            ...themes.map((theme) => `filament/${theme}-theme`),
+            ...Object.keys(themes).map((theme) => `filament/${theme}-theme`),
             'kienso/blade-google-material-symbols',
             '--no-interaction',
             '--prefer-dist',
             '--no-scripts',
             ...(production ? ['--no-dev'] : []),
         ])
-        for (const theme of themes) {
+        for (const theme of Object.keys(themes)) {
             if (
                 !existsSync(
                     join(
