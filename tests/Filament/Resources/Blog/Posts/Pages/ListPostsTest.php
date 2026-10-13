@@ -1,10 +1,12 @@
 <?php
 
 use App\Filament\Resources\Blog\Posts\Pages\ListPosts;
+use App\Filament\Resources\Blog\Posts\PostResource;
 use App\Models\Blog\Post;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\Testing\TestAction;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
 
 it('can render the list page', function () {
@@ -13,6 +15,36 @@ it('can render the list page', function () {
     Livewire::test(ListPosts::class)
         ->assertOk()
         ->assertCanSeeTableRecords($records);
+});
+
+it('names post image links without disabling empty image cells', function () {
+    Storage::fake('public');
+
+    $records = Post::factory()->createMany([
+        ['title' => 'Accessibility "with" & image', 'published_at' => null],
+        ['title' => 'Accessibility without an image'],
+    ]);
+    $records[1]->clearMediaCollection('post-images');
+
+    $page = Livewire::test(ListPosts::class)
+        ->searchTable('Accessibility')
+        ->assertCanSeeTableRecords($records);
+
+    $document = new DOMDocument;
+    @$document->loadHTML($page->html());
+    $xpath = new DOMXPath($document);
+    $url = PostResource::getUrl('view', ['record' => $records[0]]);
+    $images = $xpath->query('//a[@href="' . $url . '"]//img');
+
+    expect($images->length)->toBeGreaterThan(0);
+    expect($images->item(0)->getAttribute('alt'))->toBe('View Accessibility "with" & image');
+
+    $emptyImageLinks = $xpath->query('//a[@href="' . PostResource::getUrl('view', ['record' => $records[1]]) . '"][.//div[contains(@class, "fi-ta-image")] and not(.//img)]');
+    expect($emptyImageLinks->length)->toBe(1);
+
+    $statusLinks = $xpath->query('//a[@href="' . $url . '"][normalize-space(.)="Draft"]');
+    expect($statusLinks->length)->toBe(1);
+    expect($statusLinks->item(0)->hasAttribute('aria-label'))->toBeFalse();
 });
 
 it('can toggle publish on a draft post', function () {

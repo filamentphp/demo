@@ -1,10 +1,12 @@
 <?php
 
 use App\Filament\Resources\Shop\Products\Pages\ListProducts;
+use App\Filament\Resources\Shop\Products\ProductResource;
 use App\Models\Shop\Product;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\Testing\TestAction;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
 
 it('can render the list page', function () {
@@ -13,6 +15,39 @@ it('can render the list page', function () {
     Livewire::test(ListProducts::class)
         ->assertOk()
         ->assertCanSeeTableRecords($records);
+});
+
+it('names product image links in search results', function () {
+    Storage::fake('public');
+
+    $records = Product::factory()->createMany([
+        ['name' => 'Artisan "lamp" & shade', 'price' => 12.34],
+        ['name' => 'Artisan vase'],
+        ['name' => 'Artisan without an image'],
+    ]);
+    $records[2]->clearMediaCollection('product-images');
+
+    $page = Livewire::test(ListProducts::class)
+        ->searchTable('Artisan')
+        ->assertCanSeeTableRecords($records);
+
+    $document = new DOMDocument;
+    @$document->loadHTML($page->html());
+    $xpath = new DOMXPath($document);
+
+    foreach ($records->take(2) as $record) {
+        $url = ProductResource::getUrl('edit', ['record' => $record]);
+        $images = $xpath->query('//a[@href="' . $url . '"]//img');
+        expect($images->length)->toBeGreaterThan(0);
+        expect($images->item(0)->getAttribute('alt'))->toBe("Edit {$record->name}");
+    }
+
+    $emptyImageLinks = $xpath->query('//a[@href="' . ProductResource::getUrl('edit', ['record' => $records[2]]) . '"][.//div[contains(@class, "fi-ta-image")] and not(.//img)]');
+    expect($emptyImageLinks->length)->toBe(1);
+
+    $priceLinks = $xpath->query('//a[@href="' . ProductResource::getUrl('edit', ['record' => $records[0]]) . '"][normalize-space(.)="$12.34"]');
+    expect($priceLinks->length)->toBe(1);
+    expect($priceLinks->item(0)->hasAttribute('aria-label'))->toBeFalse();
 });
 
 it('can toggle product visibility', function () {

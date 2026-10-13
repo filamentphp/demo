@@ -38,7 +38,8 @@ class ProductsTable
             ->columns([
                 SpatieMediaLibraryImageColumn::make('image')
                     ->collection('product-images')
-                    ->conversion('thumb'),
+                    ->conversion('thumb')
+                    ->alt(fn (Product $record): string => "Edit {$record->name}"),
 
                 TextColumn::make('name')
                     ->searchable()

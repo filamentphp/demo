@@ -5,6 +5,7 @@ use App\Enums\ExpenseStatus;
 use App\Filament\Resources\HR\Expenses\Pages\CreateExpense;
 use App\Models\HR\Employee;
 use App\Models\HR\Expense;
+use Filament\Actions\Testing\TestAction;
 use Filament\Forms\Components\Repeater;
 use Illuminate\Support\Str;
 use Livewire\Livewire;
@@ -73,12 +74,59 @@ it('calculates total_amount from line items on create', function () {
         ])
         ->goToWizardStep(2)
         ->goToWizardStep(3)
+        ->assertSchemaStateSet(['total_amount' => '200.00'])
+        ->fillForm(['total_amount' => 999.99])
         ->call('create')
         ->assertHasNoFormErrors()
         ->assertNotified();
 
     $expense = Expense::where('employee_id', $employee->id)->first();
     expect((float) $expense->total_amount)->toBe(200.00);
+
+    $undoRepeaterFake();
+});
+
+it('updates the review total after editing adding and removing unsaved lines', function () {
+    $undoRepeaterFake = Repeater::fake();
+
+    Livewire::test(CreateExpense::class)
+        ->fillForm([
+            'employee_id' => Employee::factory()->create()->id,
+            'category' => ExpenseCategory::Travel,
+            'description' => 'Unsaved expenses',
+        ])
+        ->goToWizardStep(2)
+        ->fillForm([
+            'expenseLines.0.description' => 'Travel',
+            'expenseLines.0.quantity' => 5,
+            'expenseLines.0.unit_price' => 352.97,
+        ])
+        ->assertSchemaStateSet(['total_amount' => '1764.85'])
+        ->fillForm(['expenseLines.0.quantity' => 2])
+        ->assertSchemaStateSet(['total_amount' => '705.94'])
+        ->fillForm(['expenseLines.0.unit_price' => 12.50])
+        ->assertSchemaStateSet(['total_amount' => '25.00'])
+        ->callAction(TestAction::make('add')->schemaComponent('expenseLines'))
+        ->set('data.expenseLines.1.description', 'Meals')
+        ->set('data.expenseLines.1.quantity', 3)
+        ->set('data.expenseLines.1.unit_price', 20.25)
+        ->assertSet('data.expenseLines.0.description', 'Travel')
+        ->assertSet('data.expenseLines.1.description', 'Meals')
+        ->assertSchemaStateSet(['total_amount' => '85.75'])
+        ->callAction(TestAction::make('delete')->schemaComponent('expenseLines')->arguments(['item' => 0]))
+        ->assertSchemaStateSet(['total_amount' => '60.75'])
+        ->callAction(TestAction::make('delete')->schemaComponent('expenseLines')->arguments(['item' => 1]))
+        ->assertSchemaStateSet(['total_amount' => '0.00'])
+        ->callAction(TestAction::make('add')->schemaComponent('expenseLines'))
+        ->fillForm([
+            'expenseLines.0.description' => 'Taxi',
+            'expenseLines.0.quantity' => 2,
+            'expenseLines.0.unit_price' => 4.75,
+        ])
+        ->goToWizardStep(3)
+        ->assertSchemaStateSet(['total_amount' => '9.50']);
+
+    expect(Expense::count())->toBe(0);
 
     $undoRepeaterFake();
 });

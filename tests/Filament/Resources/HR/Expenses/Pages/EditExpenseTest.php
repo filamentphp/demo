@@ -5,6 +5,7 @@ use App\Filament\Resources\HR\Expenses\Pages\EditExpense;
 use App\Models\HR\Employee;
 use App\Models\HR\Expense;
 use App\Models\HR\ExpenseLine;
+use Filament\Actions\Testing\TestAction;
 use Filament\Forms\Components\Repeater;
 use Illuminate\Support\Str;
 use Livewire\Livewire;
@@ -45,6 +46,7 @@ it('recalculates total_amount on save', function () {
     Livewire::test(EditExpense::class, ['record' => $record->getRouteKey()])
         ->fillForm([
             'description' => 'Updated description',
+            'total_amount' => 999.99,
         ])
         ->call('save')
         ->assertHasNoFormErrors()
@@ -52,6 +54,42 @@ it('recalculates total_amount on save', function () {
 
     $record->refresh();
     expect((float) $record->total_amount)->toBe(100.00);
+});
+
+it('updates the unsaved total when lines change', function () {
+    $undoRepeaterFake = Repeater::fake();
+
+    $record = Expense::factory()->for(Employee::factory(), 'employee')->create([
+        'total_amount' => 1802.35,
+    ]);
+    $lines = $record->expenseLines()->createMany([
+        ['description' => 'Travel', 'quantity' => 5, 'unit_price' => 352.97, 'amount' => 1764.85, 'date' => now()],
+        ['description' => 'Meals', 'quantity' => 3, 'unit_price' => 12.50, 'amount' => 37.50, 'date' => now()],
+    ]);
+    $firstLineKey = 'record-' . $lines[0]->getKey();
+    $secondLineKey = 'record-' . $lines[1]->getKey();
+
+    Livewire::test(EditExpense::class, ['record' => $record->getRouteKey()])
+        ->fillForm(["expenseLines.{$firstLineKey}.quantity" => 2])
+        ->assertSchemaStateSet(['total_amount' => '743.44'])
+        ->fillForm(["expenseLines.{$secondLineKey}.unit_price" => 20.25])
+        ->assertSchemaStateSet(['total_amount' => '766.69'])
+        ->callAction(TestAction::make('delete')->schemaComponent('expenseLines')->arguments(['item' => $firstLineKey]))
+        ->assertSchemaStateSet(['total_amount' => '60.75'])
+        ->callAction(TestAction::make('delete')->schemaComponent('expenseLines')->arguments(['item' => $secondLineKey]))
+        ->assertSchemaStateSet(['total_amount' => '0.00'])
+        ->callAction(TestAction::make('add')->schemaComponent('expenseLines'))
+        ->fillForm([
+            'expenseLines.0.description' => 'Taxi',
+            'expenseLines.0.quantity' => 2,
+            'expenseLines.0.unit_price' => 4.75,
+        ])
+        ->assertSchemaStateSet(['total_amount' => '9.50']);
+
+    expect((float) $record->fresh()->total_amount)->toBe(1802.35);
+    expect($lines[0]->fresh()->quantity)->toBe(5);
+
+    $undoRepeaterFake();
 });
 
 it('validates the form data', function (array $data, array $errors) {

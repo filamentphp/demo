@@ -31,7 +31,8 @@ class PostsTable
             ->columns([
                 SpatieMediaLibraryImageColumn::make('image')
                     ->collection('post-images')
-                    ->conversion('thumb'),
+                    ->conversion('thumb')
+                    ->alt(fn (Post $record): string => "View {$record->title}"),
 
                 TextColumn::make('title')
                     ->searchable()

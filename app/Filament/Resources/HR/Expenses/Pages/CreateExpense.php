@@ -77,6 +77,12 @@ class CreateExpense extends CreateRecord
                     Repeater::make('expenseLines')
                         ->relationship()
                         ->defaultItems(1)
+                        ->afterStateUpdated(function (?array $state, Set $set): void {
+                            $total = collect($state ?? [])
+                                ->sum(fn (array $line): float => (int) ($line['quantity'] ?? 1) * (float) ($line['unit_price'] ?? 0));
+
+                            $set('total_amount', number_format($total, 2, '.', ''));
+                        })
                         ->table([
                             TableColumn::make('Description'),
                             TableColumn::make('Quantity')
