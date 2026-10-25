@@ -78,7 +78,6 @@ class FeaturesOverview extends Widget
                 ['name' => 'Column summarizers', 'description' => 'Scroll to the table footer to see summed order totals and shipping costs', 'url' => OrderResource::getUrl('index'), 'resource' => 'Orders'],
                 ['name' => 'Inline editing', 'description' => 'Click a status cell to change it inline', 'url' => LeaveRequestResource::getUrl('index'), 'resource' => 'Leave Requests'],
                 ['name' => 'Table grouping', 'description' => 'Toggle grouping using the group icon in table header', 'url' => OrderResource::getUrl('index'), 'resource' => 'Orders'],
-                ['name' => 'Live polling', 'description' => 'Table data auto-refreshes every 30 seconds in the background', 'url' => ExpenseResource::getUrl('index'), 'resource' => 'Expenses'],
                 ['name' => 'Toggleable columns', 'description' => 'Click the column toggle icon in the table header', 'url' => EmployeeResource::getUrl('index'), 'resource' => 'Employees'],
                 ['name' => 'Color columns', 'description' => 'Hidden by default — enable "Team color" via the column toggle icon to see swatches', 'url' => EmployeeResource::getUrl('index'), 'resource' => 'Employees'],
                 ['name' => 'Column layouts', 'description' => 'Custom multi-row layouts with split and stack', 'url' => AuthorResource::getUrl('index'), 'resource' => 'Authors'],

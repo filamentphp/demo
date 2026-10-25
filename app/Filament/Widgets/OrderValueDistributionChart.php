@@ -11,6 +11,8 @@ class OrderValueDistributionChart extends ChartWidget
 {
     use InteractsWithPageFilters;
 
+    protected ?string $pollingInterval = null;
+
     protected ?string $heading = 'Order Value Distribution';
 
     protected static ?int $sort = 6;

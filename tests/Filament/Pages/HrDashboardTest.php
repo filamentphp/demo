@@ -1,6 +1,11 @@
 <?php
 
 use App\Filament\Pages\HrDashboard;
+use App\Filament\Widgets\BudgetBurnRateChart;
+use App\Filament\Widgets\DepartmentLeaveLoadChart;
+use App\Filament\Widgets\ProjectHealthChart;
+use App\Filament\Widgets\UtilizationRateChart;
+use App\Filament\Widgets\WorkforceInsightsStats;
 use App\Models\HR\Department;
 use App\Models\HR\Employee;
 use App\Models\HR\Expense;
@@ -8,6 +13,7 @@ use App\Models\HR\ExpenseLine;
 use App\Models\HR\LeaveRequest;
 use App\Models\HR\Project;
 use App\Models\HR\Timesheet;
+use Livewire\Livewire;
 
 it('renders the hr dashboard page with all widgets', function () {
     $departments = Department::factory()->count(3)->create();
@@ -50,3 +56,16 @@ it('renders the hr dashboard page with all widgets', function () {
     $this->get(HrDashboard::getUrl())
         ->assertOk();
 });
+
+it('renders hr widgets without polling', function (string $widget) {
+    Livewire::withoutLazyLoading()
+        ->test($widget)
+        ->assertOk()
+        ->assertDontSeeHtml('wire:poll');
+})->with([
+    WorkforceInsightsStats::class,
+    DepartmentLeaveLoadChart::class,
+    ProjectHealthChart::class,
+    UtilizationRateChart::class,
+    BudgetBurnRateChart::class,
+]);

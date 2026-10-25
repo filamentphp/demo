@@ -13,6 +13,8 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 
 class WorkforceInsightsStats extends BaseWidget
 {
+    protected ?string $pollingInterval = null;
+
     protected static ?int $sort = 8;
 
     protected function getStats(): array

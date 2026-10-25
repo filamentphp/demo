@@ -11,6 +11,8 @@ class CustomerSegmentsChart extends ChartWidget
 {
     use InteractsWithPageFilters;
 
+    protected ?string $pollingInterval = null;
+
     protected ?string $heading = 'Customer Segments';
 
     protected static ?int $sort = 5;

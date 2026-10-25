@@ -8,6 +8,8 @@ use Filament\Widgets\ChartWidget;
 
 class DepartmentLeaveLoadChart extends ChartWidget
 {
+    protected ?string $pollingInterval = null;
+
     protected ?string $heading = 'Department Leave Load';
 
     protected static ?int $sort = 9;

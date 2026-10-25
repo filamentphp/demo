@@ -14,7 +14,12 @@ it('can render the list page', function () {
 
     Livewire::test(ListExpenses::class)
         ->assertOk()
-        ->assertCanSeeTableRecords($records);
+        ->assertCanSeeTableRecords($records)
+        ->assertDontSeeHtml('wire:poll')
+        ->searchTable($records->first()->expense_number)
+        ->assertCanSeeTableRecords($records->take(1))
+        ->assertCanNotSeeTableRecords($records->skip(1))
+        ->assertDontSeeHtml('wire:poll');
 });
 
 it('can approve a submitted expense', function () {

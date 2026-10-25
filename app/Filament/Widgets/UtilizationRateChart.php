@@ -10,6 +10,8 @@ use Illuminate\Support\Carbon;
 
 class UtilizationRateChart extends ChartWidget
 {
+    protected ?string $pollingInterval = null;
+
     protected ?string $heading = 'Utilization Rate';
 
     protected static ?int $sort = 11;

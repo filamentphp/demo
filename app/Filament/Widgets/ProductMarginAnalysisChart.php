@@ -10,6 +10,8 @@ class ProductMarginAnalysisChart extends ChartWidget
 {
     use InteractsWithPageFilters;
 
+    protected ?string $pollingInterval = null;
+
     protected ?string $heading = 'Product Margin Analysis';
 
     protected static ?int $sort = 7;

@@ -11,6 +11,8 @@ use Illuminate\Support\Carbon;
 
 class BudgetBurnRateChart extends ChartWidget
 {
+    protected ?string $pollingInterval = null;
+
     protected ?string $heading = 'Budget Burn Rate';
 
     protected static ?int $sort = 12;

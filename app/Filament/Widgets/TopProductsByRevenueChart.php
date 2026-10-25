@@ -12,6 +12,8 @@ class TopProductsByRevenueChart extends ChartWidget
 {
     use InteractsWithPageFilters;
 
+    protected ?string $pollingInterval = null;
+
     protected ?string $heading = 'Top Products by Revenue';
 
     protected static ?int $sort = 4;

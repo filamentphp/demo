@@ -9,6 +9,8 @@ use Illuminate\Support\Carbon;
 
 class ProjectHealthChart extends ChartWidget
 {
+    protected ?string $pollingInterval = null;
+
     protected ?string $heading = 'Project Health';
 
     protected static ?int $sort = 10;

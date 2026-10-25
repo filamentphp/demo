@@ -37,7 +37,7 @@ Products, orders, customers, brands, and categories: the kind of CRUD you'd find
 - **Drag-and-drop reordering**: sortable brand list
 - **Media uploads**: multiple product images via Spatie Media Library
 - **Soft deletes**: restore and force-delete on orders and customers
-- **Dashboard**: filterable stats, charts, and a latest orders widget with live polling
+- **Dashboard**: filterable stats, charts, and a latest orders widget
 
 ### Blog
 

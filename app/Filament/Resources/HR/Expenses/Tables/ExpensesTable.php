@@ -61,7 +61,6 @@ class ExpensesTable
                     ->toggleable(),
             ])
             ->defaultSort('created_at', 'desc')
-            ->poll('30s')
             ->recordActions([
                 ActionGroup::make([
                     ViewAction::make(),

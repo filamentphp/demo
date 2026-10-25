@@ -11,6 +11,8 @@ class OrdersYearOverYearChart extends ChartWidget
 {
     use InteractsWithPageFilters;
 
+    protected ?string $pollingInterval = null;
+
     protected ?string $heading = 'Orders Year-over-Year';
 
     protected static ?int $sort = 1;

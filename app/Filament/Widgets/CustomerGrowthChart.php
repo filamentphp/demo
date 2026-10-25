@@ -11,6 +11,8 @@ class CustomerGrowthChart extends ChartWidget
 {
     use InteractsWithPageFilters;
 
+    protected ?string $pollingInterval = null;
+
     protected ?string $heading = 'Customer Growth';
 
     protected static ?int $sort = 2;
