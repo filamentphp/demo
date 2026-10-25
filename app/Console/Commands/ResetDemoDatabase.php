@@ -3,9 +3,10 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
-use Throwable;
+use RuntimeException;
 
 class ResetDemoDatabase extends Command
 {
@@ -49,66 +50,79 @@ class ResetDemoDatabase extends Command
     {
         $this->info('Preparing fresh schema...');
 
-        DB::statement('DROP SCHEMA IF EXISTS old CASCADE');
+        $this->dropOldSchema();
         DB::statement('DROP SCHEMA IF EXISTS fresh CASCADE');
         DB::statement('CREATE SCHEMA fresh');
         DB::statement('GRANT ALL ON SCHEMA fresh TO PUBLIC');
 
+        $originalSearchPath = config('database.connections.pgsql.search_path');
+
         config(['database.connections.pgsql.search_path' => 'fresh']);
         DB::purge();
-        DB::reconnect();
 
-        $this->info('Running migrations and seeders...');
+        try {
+            $this->info('Running migrations and seeders...');
 
-        Artisan::call('migrate', ['--seed' => true, '--force' => true]);
-        $this->info(Artisan::output());
+            foreach (['migrate', 'db:seed'] as $command) {
+                $exitCode = Artisan::call($command, ['--force' => true]);
+                $this->info(Artisan::output());
 
-        config(['database.connections.pgsql.search_path' => 'public']);
-        DB::purge();
-        DB::reconnect();
+                if ($exitCode !== self::SUCCESS) {
+                    throw new RuntimeException("The [{$command}] command failed. The demo database has not been swapped.");
+                }
+            }
+        } finally {
+            config(['database.connections.pgsql.search_path' => $originalSearchPath]);
+            DB::purge();
+            DB::reconnect();
+        }
     }
 
     protected function swap(): void
     {
-        Artisan::call('down', ['--render' => 'maintenance']);
-        $this->info('Maintenance mode enabled, waiting for in-flight requests...');
-
-        sleep(2);
-
-        // Terminate other connections so schema rename can proceed
-        DB::statement('
-            SELECT pg_terminate_backend(pid)
-            FROM pg_stat_activity
-            WHERE datname = current_database()
-              AND pid != pg_backend_pid()
-        ');
-
-        DB::purge();
-        DB::reconnect();
-
-        $this->info('Swapping schemas...');
-
         try {
-            DB::statement('ALTER SCHEMA public RENAME TO old');
-            DB::statement('ALTER SCHEMA fresh RENAME TO public');
-        } catch (Throwable $e) {
-            // If public was renamed but fresh rename failed, restore
-            if (! $this->schemaExists('public') && $this->schemaExists('old')) {
-                DB::statement('ALTER SCHEMA old RENAME TO public');
+            if (Artisan::call('down', ['--render' => 'maintenance']) !== self::SUCCESS) {
+                throw new RuntimeException('Could not enable maintenance mode. The demo database has not been swapped.');
             }
 
-            throw $e;
+            $this->info('Maintenance mode enabled, waiting for in-flight requests...');
+
+            sleep(2);
+
+            $this->info('Swapping schemas...');
+
+            DB::transaction(function (): void {
+                DB::statement('ALTER SCHEMA public RENAME TO old');
+                DB::statement('ALTER SCHEMA fresh RENAME TO public');
+            });
+
+            DB::purge();
+            DB::reconnect();
+        } finally {
+            Artisan::call('up');
         }
 
-        DB::statement('DROP SCHEMA IF EXISTS old CASCADE');
+        try {
+            $this->dropOldSchema();
+        } catch (QueryException $exception) {
+            if ($exception->getCode() !== '55P03') {
+                throw $exception;
+            }
 
-        DB::purge();
-        DB::reconnect();
+            $this->warn('Old schema is still in use. Cleanup will be retried on the next reset.');
+        }
 
-        Artisan::call('up');
         Artisan::call('queue:restart');
 
         $this->info('Demo database has been reset.');
+    }
+
+    protected function dropOldSchema(): void
+    {
+        DB::transaction(function (): void {
+            DB::statement("SET LOCAL lock_timeout = '1s'");
+            DB::statement('DROP SCHEMA IF EXISTS old CASCADE');
+        });
     }
 
     protected function schemaExists(string $name): bool

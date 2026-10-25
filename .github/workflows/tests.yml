@@ -14,6 +14,19 @@ concurrency:
 jobs:
   run-tests:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: demo_reset_test
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -28,7 +41,7 @@ jobs:
         uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
         with:
           php-version: 8.4
-          extensions: mbstring, pdo, pdo_sqlite
+          extensions: mbstring, pdo, pdo_sqlite, pdo_pgsql
           coverage: none
       - name: Prepare environment
         run: cp .env.example .env
@@ -48,3 +61,12 @@ jobs:
           touch database/database.sqlite
       - name: Execute tests
         run: composer test:pest
+      - name: Test PostgreSQL schema resets
+        run: php artisan test --compact tests/Feature/ResetDemoDatabaseTest.php
+        env:
+          DB_CONNECTION: pgsql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 5432
+          DB_DATABASE: demo_reset_test
+          DB_USERNAME: postgres
+          DB_PASSWORD: ''
