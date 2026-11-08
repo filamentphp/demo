@@ -137,7 +137,7 @@ class OrderForm
                     ->label('Product')
                     ->options(Product::query()->pluck('name', 'id'))
                     ->required()
-                    ->reactive()
+                    ->live()
                     ->afterStateUpdated(fn ($state, Set $set) => $set('unit_price', Product::find($state)->price ?? 0))
                     ->distinct()
                     ->disableOptionsWhenSelectedInSiblingRepeaterItems()
@@ -164,7 +164,7 @@ class OrderForm
                     ->tooltip('Open product')
                     ->icon(FilamentIcon::resolve(DemoIconAlias::RESOURCES_SHOP_ORDERS_FIELDS_ITEMS_ACTIONS_OPEN_PRODUCT) ?? Heroicon::ArrowTopRightOnSquare)
                     ->url(function (array $arguments, Repeater $component): ?string {
-                        $itemData = $component->getRawItemState($arguments['item']);
+                        $itemData = $component->getItemStateSnapshot($arguments['item']);
 
                         $product = Product::find($itemData['product_id']);
 
@@ -174,7 +174,7 @@ class OrderForm
 
                         return ProductResource::getUrl('edit', ['record' => $product]);
                     }, shouldOpenInNewTab: true)
-                    ->hidden(fn (array $arguments, Repeater $component): bool => blank($component->getRawItemState($arguments['item'])['product_id'])),
+                    ->hidden(fn (array $arguments, Repeater $component): bool => blank($component->getItemStateSnapshot($arguments['item'])['product_id'])),
             ])
             ->orderColumn('sort')
             ->defaultItems(1)

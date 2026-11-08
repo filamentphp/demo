@@ -25,31 +25,31 @@ class ListLeaveRequests extends ListRecords
         return [
             null => Tab::make('All')
                 ->badge(static fn (): int => LeaveRequest::query()->count())
-                ->deferBadge(),
+                ->lazyLoadedBadge(),
             'pending' => Tab::make('Pending')
                 ->badge(static fn (): int => LeaveRequest::query()->where('status', LeaveStatus::Pending)->count())
                 ->badgeColor(LeaveStatus::Pending->getColor())
-                ->deferBadge()
+                ->lazyLoadedBadge()
                 ->query(fn ($query) => $query->where('status', LeaveStatus::Pending)),
             'approved' => Tab::make('Approved')
                 ->badge(static fn (): int => LeaveRequest::query()->where('status', LeaveStatus::Approved)->count())
                 ->badgeColor(LeaveStatus::Approved->getColor())
-                ->deferBadge()
+                ->lazyLoadedBadge()
                 ->query(fn ($query) => $query->where('status', LeaveStatus::Approved)),
             'rejected' => Tab::make('Rejected')
                 ->badge(static fn (): int => LeaveRequest::query()->where('status', LeaveStatus::Rejected)->count())
                 ->badgeColor(LeaveStatus::Rejected->getColor())
-                ->deferBadge()
+                ->lazyLoadedBadge()
                 ->query(fn ($query) => $query->where('status', LeaveStatus::Rejected)),
             'taken' => Tab::make('Taken')
                 ->badge(static fn (): int => LeaveRequest::query()->where('status', LeaveStatus::Taken)->count())
                 ->badgeColor(LeaveStatus::Taken->getColor())
-                ->deferBadge()
+                ->lazyLoadedBadge()
                 ->query(fn ($query) => $query->where('status', LeaveStatus::Taken)),
             'cancelled' => Tab::make('Cancelled')
                 ->badge(static fn (): int => LeaveRequest::query()->where('status', LeaveStatus::Cancelled)->count())
                 ->badgeColor(LeaveStatus::Cancelled->getColor())
-                ->deferBadge()
+                ->lazyLoadedBadge()
                 ->query(fn ($query) => $query->where('status', LeaveStatus::Cancelled)),
         ];
     }

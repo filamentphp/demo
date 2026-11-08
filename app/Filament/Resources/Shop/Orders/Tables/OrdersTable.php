@@ -68,7 +68,7 @@ class OrdersTable
 
                 Filter::make('created_at')
                     ->label('Order date')
-                    ->schema([
+                    ->form([
                         DatePicker::make('created_from')
                             ->placeholder(fn ($state): string => 'Dec 18, ' . now()->subYear()->format('Y')),
                         DatePicker::make('created_until')

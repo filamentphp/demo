@@ -2,6 +2,7 @@
 
 use App\Enums\OrderStatus;
 use App\Filament\Resources\Shop\Orders\Pages\CreateOrder;
+use App\Filament\Resources\Shop\Products\ProductResource;
 use App\Models\Shop\Customer;
 use App\Models\Shop\Order;
 use App\Models\Shop\Product;
@@ -11,6 +12,34 @@ use Livewire\Livewire;
 it('can render the create page', function () {
     Livewire::test(CreateOrder::class)
         ->assertOk();
+});
+
+it('updates item prices and links to products before the item is valid', function () {
+    $undoRepeaterFake = Repeater::fake();
+
+    $products = Product::factory()->createMany([
+        ['price' => 12.50],
+        ['price' => 37.25],
+    ]);
+
+    try {
+        $page = Livewire::test(CreateOrder::class)
+            ->fillForm([
+                'items' => [
+                    ['product_id' => null, 'qty' => null],
+                ],
+            ]);
+
+        foreach ($products as $product) {
+            $page
+                ->set('data.items.0.product_id', $product->id)
+                ->assertSet('data.items.0.unit_price', $product->price)
+                ->assertSeeHtml('href="' . ProductResource::getUrl('edit', ['record' => $product]) . '"')
+                ->assertHasNoFormErrors();
+        }
+    } finally {
+        $undoRepeaterFake();
+    }
 });
 
 it('can create a record', function () {

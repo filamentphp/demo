@@ -46,16 +46,16 @@ class ListEmployees extends ListRecords
         return [
             null => Tab::make('All')
                 ->badge(static fn (): int => Employee::query()->count())
-                ->deferBadge(),
+                ->lazyLoadedBadge(),
             'active' => Tab::make('Active')
                 ->badge(static fn (): int => Employee::query()->where('is_active', true)->count())
                 ->badgeColor('success')
-                ->deferBadge()
+                ->lazyLoadedBadge()
                 ->query(fn ($query) => $query->where('is_active', true)),
             'inactive' => Tab::make('Inactive')
                 ->badge(static fn (): int => Employee::query()->where('is_active', false)->count())
                 ->badgeColor('gray')
-                ->deferBadge()
+                ->lazyLoadedBadge()
                 ->query(fn ($query) => $query->where('is_active', false)),
         ];
     }

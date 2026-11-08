@@ -20,6 +20,7 @@ use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 
@@ -69,7 +70,7 @@ class PostsTable
             ])
             ->filters([
                 Filter::make('published_at')
-                    ->schema([
+                    ->form([
                         DatePicker::make('published_from')
                             ->placeholder(fn ($state): string => 'Dec 18, ' . now()->subYear()->format('Y')),
                         DatePicker::make('published_until')
@@ -102,7 +103,7 @@ class PostsTable
             ->recordActions([
                 ActionGroup::make([
                     Action::make('toggle_publish')
-                        ->icon(fn (Post $record): string | BackedEnum => $record->published_at?->isPast()
+                        ->icon(fn (Post $record): string | BackedEnum | Htmlable => $record->published_at?->isPast()
                             ? (FilamentIcon::resolve(DemoIconAlias::RESOURCES_BLOG_POSTS_ACTIONS_UNPUBLISH) ?? Heroicon::XCircle)
                             : (FilamentIcon::resolve(DemoIconAlias::RESOURCES_BLOG_POSTS_ACTIONS_PUBLISH) ?? Heroicon::RocketLaunch))
                         ->label(fn (Post $record): string => $record->published_at?->isPast() ? 'Unpublish' : 'Publish')

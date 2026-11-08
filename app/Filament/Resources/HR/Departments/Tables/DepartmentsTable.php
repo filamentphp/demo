@@ -21,6 +21,7 @@ use Filament\Tables\Columns\ColorColumn;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Str;
 
 class DepartmentsTable
@@ -77,7 +78,7 @@ class DepartmentsTable
                         ])
                         ->action(fn (Department $record, array $data) => $record->update($data)),
                     Action::make('toggle_active')
-                        ->icon(fn (Department $record): string | BackedEnum => $record->is_active
+                        ->icon(fn (Department $record): string | BackedEnum | Htmlable => $record->is_active
                             ? (FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_DEPARTMENTS_ACTIONS_DEACTIVATE) ?? Heroicon::XMark)
                             : (FilamentIcon::resolve(DemoIconAlias::RESOURCES_HR_DEPARTMENTS_ACTIONS_ACTIVATE) ?? Heroicon::Check))
                         ->label(fn (Department $record): string => $record->is_active ? 'Deactivate' : 'Activate')

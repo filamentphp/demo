@@ -33,31 +33,31 @@ class ListExpenses extends ListRecords
         return [
             null => Tab::make('All')
                 ->badge(static fn (): int => Expense::query()->count())
-                ->deferBadge(),
+                ->lazyLoadedBadge(),
             'draft' => Tab::make('Draft')
                 ->badge(static fn (): int => Expense::query()->where('status', ExpenseStatus::Draft)->count())
                 ->badgeColor(ExpenseStatus::Draft->getColor())
-                ->deferBadge()
+                ->lazyLoadedBadge()
                 ->query(fn ($query) => $query->where('status', ExpenseStatus::Draft)),
             'submitted' => Tab::make('Submitted')
                 ->badge(static fn (): int => Expense::query()->where('status', ExpenseStatus::Submitted)->count())
                 ->badgeColor(ExpenseStatus::Submitted->getColor())
-                ->deferBadge()
+                ->lazyLoadedBadge()
                 ->query(fn ($query) => $query->where('status', ExpenseStatus::Submitted)),
             'approved' => Tab::make('Approved')
                 ->badge(static fn (): int => Expense::query()->where('status', ExpenseStatus::Approved)->count())
                 ->badgeColor(ExpenseStatus::Approved->getColor())
-                ->deferBadge()
+                ->lazyLoadedBadge()
                 ->query(fn ($query) => $query->where('status', ExpenseStatus::Approved)),
             'rejected' => Tab::make('Rejected')
                 ->badge(static fn (): int => Expense::query()->where('status', ExpenseStatus::Rejected)->count())
                 ->badgeColor(ExpenseStatus::Rejected->getColor())
-                ->deferBadge()
+                ->lazyLoadedBadge()
                 ->query(fn ($query) => $query->where('status', ExpenseStatus::Rejected)),
             'reimbursed' => Tab::make('Reimbursed')
                 ->badge(static fn (): int => Expense::query()->where('status', ExpenseStatus::Reimbursed)->count())
                 ->badgeColor(ExpenseStatus::Reimbursed->getColor())
-                ->deferBadge()
+                ->lazyLoadedBadge()
                 ->query(fn ($query) => $query->where('status', ExpenseStatus::Reimbursed)),
         ];
     }
